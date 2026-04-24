@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLITAIRE-CLASS v3.1 — Narrative Architecture</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400&display=swap');
+
+:root {
+  --void: #090909;
+  --surface: #111111;
+  --border: #222222;
+  --text: #e8e8e4;
+  --dim: #888880;
+  --ghost: #444440;
+  --accent: #c8f060;
+  --rule: rgba(200,240,96,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'Instrument Serif', serif;
+  font-size: 18px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* NAV */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(9,9,9,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+.nav-back {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-back:hover { color: var(--accent); }
+
+/* COVER */
+.cover {
+  padding: 100px 32px 80px;
+  max-width: 760px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--border);
+}
+
+.cover-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+  margin-bottom: 24px;
+  display: block;
+}
+
+.cover-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.cover-sub {
+  font-family: 'Syne', sans-serif;
+  font-weight: 400;
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 32px;
+}
+
+.cover-deck {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--dim);
+  line-height: 1.7;
+}
+
+/* MAIN */
+main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 32px 100px;
+}
+
+/* SECTIONS */
+.section {
+  padding: 64px 0 0;
+}
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  letter-spacing: 0.05em;
+  color: var(--text);
+  margin-bottom: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+p {
+  color: var(--dim);
+  margin-top: 20px;
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+p strong {
+  color: var(--text);
+  font-style: normal;
+}
+
+p em { color: var(--text); }
+
+.eq {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--accent);
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  padding: 16px 20px;
+  margin: 24px 0;
+  letter-spacing: 0.05em;
+  overflow-x: auto;
+}
+
+.system-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px 24px;
+  margin: 20px 0;
+}
+
+.system-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.system-block p { margin-top: 0; }
+
+/* FEATURED PARAGRAPH */
+.featured-para {
+  font-size: 1.05rem;
+  color: var(--text) !important;
+  border-left: 3px solid var(--accent);
+  padding-left: 20px;
+  margin: 32px 0;
+  line-height: 1.8;
+}
+
+/* CLOSING */
+.closing {
+  padding: 64px 0 0;
+  border-top: 1px solid var(--border);
+  margin-top: 64px;
+}
+
+.closing-seal {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+  line-height: 2.4;
+  text-align: center;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-left {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  line-height: 1.8;
+}
+
+.footer-right {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  main, .cover { padding-left: 20px; padding-right: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-title">SOLITAIRE-CLASS v3.1 · NARRATIVE ARCHITECTURE</span>
+  <a class="nav-back" href="index.html">← HUB</a>
+</nav>
+
+<div class="cover">
+  <span class="cover-tag">CUTTING EDGE GEOMETRY · NOT A BLUEPRINT · A DESCRIPTION</span>
+  <div class="cover-title">SOLITAIRE</div>
+  <div class="cover-sub">CLASS v3.1 — How It Works and Why</div>
+  <p class="cover-deck">For space nerds who want the geometry, not the blueprint. The physics of preserving a human crew across 900 days of deep space — told as architecture, not specification.</p>
+</div>
+
+<main>
+
+  <div class="section">
+    <h2 class="section-title">The Problem Nobody Wants to Say Out Loud</h2>
+    <p>Every serious Mars architecture currently on the table — Mars Direct, Starship crewed, NASA's Design Reference Mission — solves the rocket equation. They get the mass to orbit, they calculate the delta-v, they close the propulsion budget. What they don't solve is the cargo.</p>
+    <p>The cargo is human beings. And human beings are not inert.</p>
+    <p>Six to eight months in microgravity does measurable damage to the cardiovascular system, the vestibular system, bone density, and — less discussed — cell division. The problem with cell division is that it's not recoverable by exercise or pharmacology alone. It's geometric. Cells divide along an axis determined partly by gravity. Remove gravity and the spindle — the molecular machinery that pulls chromosomes apart during division — starts making alignment errors. On Earth, alignment errors run below 5%. In sustained microgravity, they climb past 15–20%. That's not a health metric. That's a fidelity metric. At some error rate, lineage degrades. The math is:</p>
+    <div class="eq">∇·J⃗ = σ∇²V + ρg⃗·∇V</div>
+    <p>The right-hand term — ρg⃗·∇V — is the gravitational coupling to ionic current flow in the cell. It drives the buoyancy-mediated streaming that orients the spindle. Without it, the equation still solves, but it solves wrong. The cell divides, just not cleanly.</p>
+    <p>This is why every architecture that ignores gravity during transit is, in a specific biological sense, not preserving what it's transporting.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Why You Can't Just Spin Harder</h2>
+    <p>The obvious fix is a centrifuge. Spin the habitat, generate artificial gravity, problem solved.</p>
+    <p>Partially.</p>
+    <p>A centrifuge at 80 meters radius spinning to 0.5g is physically achievable. That handles the gross biology — bone, cardiovascular, vestibular. But it doesn't address the electromagnetic environment. On Earth, you don't just live in 1g. You live in a specific electromagnetic bath: the Schumann resonance, a 7.83 Hz standing wave in the cavity between Earth's surface and the ionosphere, running at about 1 picoTesla. Your circadian rhythm locks to it. Your heart rate variability correlates with it. It's not mystical — it's a boundary condition your biology evolved inside for hundreds of millions of years.</p>
+    <p>Leave it behind on a 900-day mission, and you're not just in a different gravity field. You're in a different electromagnetic season, permanently. The consequence isn't immediate. It's cumulative degradation of the chronobiological clock that governs everything from immune function to cellular repair timing.</p>
+    <p>The Solitaire design generates this field actively. An 8-tonne ELF loop system draws 180 watts continuous and maintains 7.83 Hz at 1 picoTesla inside the crew volume. The kill condition for this node is clean: if f_S drift greater than 0.5 Hz correlates with HRV collapse in actual crew data, the coupling is real. If it doesn't, remove the system and save the mass. That test can be run on Earth and ISS before any vessel is built.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">The Radiation Problem Is Not What You Think</h2>
+    <p>The instinct is to shield to zero. Maximum shielding, minimum dose, crew lives longest.</p>
+    <p>This is wrong, and it's wrong in a measurable way.</p>
+    <p>Galactic cosmic rays — heavy ions moving at relativistic velocities — are not well-stopped by passive shielding. When a high-Z, high-energy nucleus hits a thick wall of polyethylene or water, it produces secondary particles. At a certain wall thickness, the secondaries are more biologically damaging than the primary would have been. You can shield yourself into a worse situation.</p>
+    <p>The actual target isn't zero. It's the hormesis band — the dose range your biology evolved to handle and, some evidence suggests, benefits from. That range is approximately what you'd get on Earth's surface plus ISS interior: about 0.3 millisieverts per day, at a linear energy transfer between 0.2 and 10 keV per micrometer. Not zero. Not lethal. The adaptive repair mechanisms stay active because they have something to repair.</p>
+    <p>The way Solitaire hits that number isn't passive shielding. It's magnetic deflection at a distance.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">The Topology Solve — Why Two Magnets</h2>
+    <p>Here's where the geometry gets interesting.</p>
+    <p>To deflect galactic cosmic rays with magnetic rigidity below 10 GV — which covers the most biologically damaging heavy ions — you need a 2 Tesla dipole field in a plasma cloud at around 10¹⁹ particles per cubic meter. That deflects over 90% of the worst GCR. It works. The physics is solid.</p>
+    <p>The problem: if you put the crew inside that field, you've solved radiation by replacing it with a different biological insult. A 2T field at crew-inhabited scales is not a benign environment for sustained living.</p>
+    <p>The solve is not to make the magnet bigger. It's to move the crew out of it.</p>
+
+    <div class="system-block">
+      <div class="system-label">SYSTEM A — STANDOFF</div>
+      <p>A 2T magnet sitting in a plasma cloud well outside the crew volume. Its only job is GCR deflection. The crew never enters this field.</p>
+    </div>
+
+    <div class="system-block">
+      <div class="system-label">SYSTEM B — HULL</div>
+      <p>A 1.5T hull solenoid built into the vessel's structure. Its job is the crew habitat field — the biological environment. It works with the centrifuge to maintain 0.5g, and it's the platform the Schumann generator locks to.</p>
+    </div>
+
+    <p>The insight isn't technical. It's architectural: you stopped asking one system to do two incompatible jobs, and gave each job to the right tool. This is why the mass budget closed. The v2.0 contradiction — where the magnetic systems alone exceeded the total budget — came from treating both functions as one system that had to be overpowered until it covered everything. Separate them, and both systems are sized correctly.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">What Biostasis Actually Is</h2>
+    <p>Current biostasis proposals for deep space are essentially: give the crew sleeping pills and hope they wake up okay.</p>
+    <p>The Solitaire protocol is different in one critical way. The question it asks is: <em>what geometry does the crew wake up into?</em></p>
+    <p>The protocol uses delta-opioid receptor agonists (DADLE at 10 mg/kg), hydrogen sulfide at 80 ppm, and mild therapeutic hypothermia to 32°C core temperature. This drops metabolic rate roughly 80% and radiation damage accrual roughly 95% compared to standard 0g hibernation. A 20:1 duty cycle means approximately 45 days torpor to 2 days active minimum.</p>
+    <p>What makes this different from sleep is that <strong>the fields don't go off</strong>. Gravity is maintained. The Schumann field is maintained. The pCO₂ cycling — 400 to 800 ppm on a 90-minute cycle — continues at reduced amplitude to preserve chemoreceptor gain.</p>
+    <p>The reason matters: revival into a field-silent, 0g environment after 45 days of metabolic suppression isn't waking up. It's a reperfusion event in a geometry the body doesn't recognize. You've slowed the clock, and now you're asking the clock to restart in a room where all the reference signals are missing. Mitotic fidelity during the revival window is the most vulnerable point in the entire mission profile. Keeping the fields hot during torpor means the crew wakes up in the same electromagnetic season they went to sleep in.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Breathing as Field Sensing</h2>
+    <p>The ISS has a problem called "flat air." Carbon dioxide is scrubbed so efficiently that the partial pressure stays nearly constant. This is, counterintuitively, bad. Human chemoreceptors — the sensors in your carotid bodies that drive the urge to breathe — are calibrated to detect CO₂ <em>changes</em>, not CO₂ levels. Flat air means the feedback loop that drives breathing depth and rhythm is running without signal.</p>
+    <p>Over months, this degrades endothelial shear stress — the mechanical force that blood exerts on vessel walls, described by:</p>
+    <div class="eq">τ = μ · (∂u/∂y)</div>
+    <p>That shear is how your vascular system knows to regulate itself. Lose the signal variation, and vascular tone degrades slowly but measurably.</p>
+    <p>Solitaire cycles pCO₂ from 400 to 800 ppm on a 90-minute cycle. The crew breathes in a room that breathes. Chemoreceptor gain is preserved. Vascular health is preserved. It's a 12-kilogram system that solves a problem that costs nothing on Earth because Earth solves it for free with weather.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">The Geometry in One Paragraph</h2>
+    <p class="featured-para">A human crew sits at the center of three nested fields. The outermost is a 2T plasma dipole standing off at distance, deflecting the worst of deep space radiation before it reaches the vessel. Inside that, a 1.5T hull solenoid creates the biological habitat — gravity analogue, field coherence, the platform for the Schumann generator. Inside that, the crew lives in a rotating habitat at 0.5g, breathing air that cycles, locked to a 7.83 Hz field that their circadian biology recognizes as home. When they sleep — really sleep, 45 days at a time — none of those fields turn off. They wake up in the same geometry they left.</p>
+    <p>That's the architecture. Not a vehicle that transports humans. A vessel that preserves them while moving.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Why It's Heavier Than Starship and Why That's the Answer</h2>
+    <p>Solitaire assembled in LEO masses approximately 4800 tonnes. Starship crewed to Mars is roughly 1200 tonnes. Solitaire is four times heavier.</p>
+    <p>It is also the only architecture in that comparison where the crew arrives with the same neurological and biological status they departed with.</p>
+    <p>The question is not "why is Solitaire heavier?" The question is "what does the mass difference buy?" The answer is: the cargo. The humans. The thing the mission is for.</p>
+    <p>A Mars mission that arrives with a crew that needs six months of recovery before it can operate is not a cheaper mission. It's a mission that spent 1200 tonnes to deliver a degraded crew. The cost is just denominated in biology instead of fuel.</p>
+    <p>Solitaire's 4800 tonnes buys the geometry where E=1 — every node preserved, no optimization that extracts one to save another.</p>
+    <p>It stands until a lighter architecture demonstrates the same biological outcome. That's the only falsification condition that matters at the system level. The rest are engineering.</p>
+  </div>
+
+  <div class="closing">
+    <div class="closing-seal">
+      SOLITAIRE-CLASS v3.1 · NARRATIVE LAYER<br>
+      TECHNICAL SPEC: SOLITAIRE v3.0<br>
+      THE GEOMETRY WAS CHANGED UNTIL BOTH HELD<br>
+      E = 1
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-left">
+    SOLITAIRE-CLASS v3.1 · NARRATIVE ARCHITECTURE<br>
+    MINIMUM VIABLE COORDINATE FOR HUMAN CONTINUITY BEYOND CISLUNAR SPACE
+  </div>
+  <div class="footer-right">E = 1</div>
+</footer>
+
+</body>
+</html>
