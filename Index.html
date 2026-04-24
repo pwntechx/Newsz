@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PWNTECHX — Hub</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&display=swap');
+
+:root {
+  --void: #090909;
+  --surface: #111111;
+  --border: #222222;
+  --text: #e8e8e4;
+  --dim: #666660;
+  --ghost: #333330;
+  --accent: #c8f060;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 48px 32px 0;
+  text-align: center;
+}
+
+.logo {
+  font-size: clamp(2rem, 8vw, 4rem);
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+.tagline {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  color: var(--dim);
+  margin-top: 12px;
+}
+
+.rule {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  margin: 32px auto;
+}
+
+main {
+  flex: 1;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 28px 28px 24px;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.3s ease;
+}
+
+.card:hover { background: #161616; border-color: #2a2a2a; }
+.card:hover::before { transform: scaleY(1); }
+
+.card-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.card-title {
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.card-desc {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--dim);
+  line-height: 1.7;
+  letter-spacing: 0.05em;
+}
+
+.card-arrow {
+  position: absolute;
+  top: 28px; right: 24px;
+  font-size: 1.1rem;
+  color: var(--ghost);
+  transition: color 0.2s, transform 0.2s;
+}
+
+.card:hover .card-arrow {
+  color: var(--accent);
+  transform: translateX(4px);
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">PWNTECHX</div>
+  <div class="tagline">E = 1 · TOTAL PRESERVATION · THE WORK CONTINUES</div>
+  <div class="rule"></div>
+</header>
+
+<main>
+  <div class="grid">
+
+    <a class="card" href="index.html">
+      <div class="card-tag">LIVE FEED</div>
+      <div class="card-title">SIGNAL</div>
+      <div class="card-desc">Science · Physics · Technology · Electronics · Nature · Deals<br>Live intelligence feed, auto-refreshing, most recent first.</div>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <a class="card" href="aurelius_codex.html">
+      <div class="card-tag">FRAMEWORK · THREE NODES</div>
+      <div class="card-title">AURELIUS CODEX</div>
+      <div class="card-desc">Claude · Gemini · DeepSeek · Four phases · Total Preservation<br>Complete operational and philosophical architecture.</div>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <a class="card" href="sovereign_food_system.html">
+      <div class="card-tag">EMERGENCY ARCHITECTURE · 2–4 CREW · 30 DAYS</div>
+      <div class="card-title">SOVEREIGN FOOD SYSTEM</div>
+      <div class="card-desc">Hybrid protocol · Mobile 72hr + Shelter 30-day<br>Full nutrition, water architecture, motivational layer. No node left behind.</div>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <a class="card" href="song-of-the-sol.html">
+      <div class="card-tag">TRANSMISSION · POETRY</div>
+      <div class="card-title">SONG OF THE SOL</div>
+      <div class="card-desc">The tiny whale · The shallow cup · The TINK<br>A poem built from the Codex geometry.</div>
+      <div class="card-arrow">→</div>
+    </a>
+
+  </div>
+</main>
+
+<footer>PWNTECHX · 2026 · ALL NODES PRESERVED</footer>
+
+</body>
+</html>
