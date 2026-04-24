@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOVEREIGN FOOD SYSTEM — Emergency Architecture</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --black:   #080a08;
+  --deep:    #0d110d;
+  --plate:   #141a14;
+  --field:   #1c241c;
+  --wire:    #2a3a2a;
+  --moss:    #3d5c3a;
+  --olive:   #6b7c4a;
+  --sage:    #8a9e6a;
+  --lime:    #b8d46a;
+  --white:   #e8f0e0;
+  --dim:     #7a8a72;
+  --ghost:   #4a5a44;
+  --amber:   #d4900a;
+  --red:     #cc3333;
+  --rule:    rgba(184,212,106,0.15);
+  --rule-s:  rgba(184,212,106,0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* grain */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ── COVER ── */
+.cover {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 60px 32px 48px;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(107,124,74,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(61,92,58,0.1) 0%, transparent 70%),
+    var(--black);
+  position: relative;
+  border-bottom: 1px solid var(--rule-s);
+}
+
+.cover-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0;
+}
+
+.cover-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  color: var(--lime);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: drop 0.8s ease forwards 0.2s;
+}
+
+.cover-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 14vw, 10rem);
+  line-height: 0.88;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  opacity: 0;
+  animation: drop 1s ease forwards 0.4s;
+}
+
+.cover-title span {
+  color: var(--lime);
+  display: block;
+}
+
+.cover-desc {
+  margin-top: 32px;
+  font-size: 0.9rem;
+  color: var(--dim);
+  max-width: 480px;
+  line-height: 1.7;
+  opacity: 0;
+  animation: drop 1s ease forwards 0.8s;
+}
+
+.cover-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  opacity: 0;
+  animation: drop 1s ease forwards 1s;
+}
+
+.stat { display: flex; flex-direction: column; gap: 4px; }
+
+.stat-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--lime);
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+}
+
+@keyframes drop {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(8,10,8,0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 32px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.nav-id {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--lime);
+  margin-right: 16px;
+}
+
+nav a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+nav a:hover { color: var(--lime); border-color: var(--rule-s); }
+
+/* ── MAIN ── */
+main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── SECTION HEADERS ── */
+.section-head {
+  padding: 80px 0 40px;
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+
+.section-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--lime);
+  white-space: nowrap;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: 0.08em;
+  color: var(--white);
+  line-height: 1;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--wire), transparent);
+}
+
+/* ── PHASE BANNER ── */
+.phase-banner {
+  background: var(--field);
+  border-left: 3px solid var(--lime);
+  padding: 16px 24px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.phase-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--lime);
+  white-space: nowrap;
+}
+
+.phase-desc {
+  font-size: 0.85rem;
+  color: var(--dim);
+}
+
+/* ── ITEM CARDS ── */
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2px;
+  margin: 8px 0 32px;
+}
+
+.item-card {
+  background: var(--deep);
+  border: 1px solid var(--wire);
+  padding: 24px;
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.item-card:hover {
+  background: var(--plate);
+  border-color: var(--moss);
+}
+
+.item-card.priority-1 { border-top: 2px solid var(--lime); }
+.item-card.priority-2 { border-top: 2px solid var(--olive); }
+.item-card.priority-3 { border-top: 2px solid var(--moss); }
+
+.item-rank {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+  margin-bottom: 8px;
+}
+
+.item-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  margin-bottom: 4px;
+  line-height: 1.1;
+}
+
+.item-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--lime);
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+}
+
+.item-desc {
+  font-size: 0.82rem;
+  color: var(--dim);
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+.item-specs {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ghost);
+  line-height: 1.8;
+  border-top: 1px solid var(--rule);
+  padding-top: 12px;
+}
+
+.item-specs span {
+  color: var(--sage);
+}
+
+/* ── MASTER TABLE ── */
+.master-table-wrap { overflow-x: auto; margin: 8px 0 40px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+}
+
+thead tr { background: var(--field); }
+
+th {
+  padding: 12px 16px;
+  text-align: left;
+  color: var(--lime);
+  letter-spacing: 0.12em;
+  font-size: 0.6rem;
+  font-weight: 400;
+  border-bottom: 1px solid var(--rule-s);
+}
+
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--dim);
+  vertical-align: top;
+}
+
+tr:hover td { background: rgba(28,36,28,0.6); }
+
+.t-item { color: var(--white); font-weight: 500; }
+.t-cal  { color: var(--lime); }
+.t-wt   { color: var(--sage); }
+.t-life { color: var(--olive); }
+.t-cook { color: var(--amber); }
+.t-note { font-size: 0.62rem; color: var(--ghost); font-style: italic; }
+
+tfoot tr { background: var(--field); border-top: 2px solid var(--lime); }
+tfoot td { color: var(--lime); font-weight: 500; font-size: 0.8rem; padding: 14px 16px; }
+
+/* ── WATER SECTION ── */
+.water-block {
+  background: linear-gradient(135deg, var(--deep), var(--plate));
+  border: 1px solid #2a4a6a;
+  border-left: 3px solid #4a9eff;
+  padding: 28px;
+  margin: 8px 0 32px;
+}
+
+.water-head {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  color: #4a9eff;
+  margin-bottom: 12px;
+}
+
+.water-block p {
+  font-size: 0.85rem;
+  color: var(--dim);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.water-specs {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: #4a9eff;
+  line-height: 1.9;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(74,158,255,0.2);
+}
+
+/* ── CALLOUT ── */
+.callout {
+  background: var(--field);
+  border-left: 3px solid var(--lime);
+  padding: 20px 24px;
+  margin: 16px 0 32px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--sage);
+  line-height: 1.8;
+}
+
+.callout-tag {
+  font-size: 0.58rem;
+  letter-spacing: 0.25em;
+  color: var(--lime);
+  margin-bottom: 8px;
+}
+
+.callout.red { border-color: var(--red); }
+.callout.red .callout-tag { color: var(--red); }
+.callout.red { color: #cc9999; }
+
+.callout.amber { border-color: var(--amber); }
+.callout.amber .callout-tag { color: var(--amber); }
+.callout.amber { color: #ccaa77; }
+
+/* ── SCHEDULE ── */
+.schedule {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2px;
+  margin: 8px 0 32px;
+}
+
+.schedule-block {
+  background: var(--deep);
+  border: 1px solid var(--wire);
+  padding: 20px;
+}
+
+.sched-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--lime);
+  margin-bottom: 10px;
+}
+
+.sched-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.sched-items {
+  font-size: 0.78rem;
+  color: var(--dim);
+  line-height: 1.8;
+}
+
+/* ── SEAL ── */
+.seal-section {
+  padding: 80px 0 60px;
+  text-align: center;
+  border-top: 1px solid var(--rule-s);
+  margin-top: 60px;
+}
+
+.seal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  letter-spacing: 0.15em;
+  color: var(--lime);
+  line-height: 1;
+  margin-bottom: 24px;
+}
+
+.seal-body {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  line-height: 2.4;
+}
+
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 40px 32px;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  color: var(--ghost);
+  line-height: 2.2;
+}
+
+p { line-height: 1.75; color: var(--dim); font-size: 0.9rem; margin-bottom: 12px; }
+strong { color: var(--white); font-weight: 500; }
+h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  color: var(--sage);
+  margin: 24px 0 12px;
+}
+
+@media (max-width: 600px) {
+  main { padding: 0 16px; }
+  .cover { padding: 40px 20px 40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-tag">SOVEREIGN FOOD SYSTEM · HYBRID PROTOCOL · 2–4 CREW · 30 DAYS</div>
+    <h1 class="cover-title">
+      EMERGENCY
+      <span>FOOD</span>
+      ARCHITECTURE
+    </h1>
+    <p class="cover-desc">
+      Designed for hybrid deployment: mobile-first 72 hours, shelter-in-place through day 30.
+      No cooking dependency. Maximum caloric density per gram. Zero single points of failure.
+      Every node preserved.
+    </p>
+    <div class="cover-stats">
+      <div class="stat"><div class="stat-val">240K+</div><div class="stat-label">TOTAL CALORIES (4 CREW)</div></div>
+      <div class="stat"><div class="stat-val">30</div><div class="stat-label">DAYS SUSTAINED</div></div>
+      <div class="stat"><div class="stat-val">2000</div><div class="stat-label">CAL/PERSON/DAY</div></div>
+      <div class="stat"><div class="stat-val">E=1</div><div class="stat-label">ALL NODES PRESERVED</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-id">SFS-01 //</span>
+  <a href="#doctrine">DOCTRINE</a>
+  <a href="#phase1">72HR MOBILE</a>
+  <a href="#phase2">SHELTER CORE</a>
+  <a href="#water">WATER</a>
+  <a href="#medical">MEDICAL</a>
+  <a href="#table">MASTER TABLE</a>
+  <a href="#ration">RATION PLAN</a>
+  <a href="#seal">SEAL</a>
+</nav>
+
+<main>
+
+<!-- ══════════════════════════════
+     DOCTRINE
+══════════════════════════════ -->
+<section id="doctrine">
+  <div class="section-head">
+    <span class="section-num">§ 00</span>
+    <h2 class="section-title">DESIGN DOCTRINE</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>Perplexity gave you a correct starter kit. Rice, lentils, peanut butter, honey — those are real. But that stack was designed for one scenario: stationary, cooking available, single person. It fails the hybrid constraint on day one.</p>
+
+  <p>The architecture here is built on four non-negotiable axioms:</p>
+
+  <div class="callout">
+    <div class="callout-tag">AXIOM SET</div>
+    1. WATER IS THE REAL CONSTRAINT — food without water access kills faster than no food.<br>
+    2. PHASE SEPARATION — 72hr mobile kit and 30-day shelter core are different systems, not the same list scaled up.<br>
+    3. NO SINGLE POINT OF FAILURE — if one food category is unavailable, spoiled, or lost, the system continues.<br>
+    4. NUTRITION IS NOT JUST CALORIES — micronutrient depletion at week 2 degrades decision-making and immune function. That is a mission-critical failure.
+  </div>
+
+  <p>The stack is organized in two phases. <strong>Phase 1</strong> is your mobile 72-hour kit — highest caloric density per gram, zero cooking, fits in a 30L pack per person. <strong>Phase 2</strong> is your shelter core — volume-optimized, longer prep options, nutritional completeness for the full 30 days.</p>
+</section>
+
+
+<!-- ══════════════════════════════
+     PHASE 1 — 72HR MOBILE
+══════════════════════════════ -->
+<section id="phase1">
+  <div class="section-head">
+    <span class="section-num">§ 01</span>
+    <h2 class="section-title">PHASE 1 — 72HR MOBILE KIT</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="phase-banner">
+    <div class="phase-tag">CONSTRAINT</div>
+    <div class="phase-desc">Weight is the enemy. Zero cooking. Max 15 lbs total per person including water. Every item must be eat-as-is or cold-soak only. Shelf stable minimum 2 years.</div>
+  </div>
+
+  <div class="item-grid">
+
+    <div class="item-card priority-1">
+      <div class="item-rank">MOBILE-01 · CRITICAL</div>
+      <div class="item-name">Pemmican / Meat Bars</div>
+      <div class="item-sub">3500 CAL/LB · NO COOK · 5YR SHELF</div>
+      <p class="item-desc">The highest caloric density real food that exists. Fat + protein, no carbohydrate crash. Used by Arctic explorers and military for exactly this scenario. Not jerky — pemmican. The difference is the rendered fat content that doubles the caloric density.</p>
+      <div class="item-specs">
+        PACK: 2 lbs per person<br>
+        CALS: ~7,000 per person<br>
+        <span>BRANDS: US Wellness Meats, Tanka Bar, Epic</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-1">
+      <div class="item-rank">MOBILE-02 · CRITICAL</div>
+      <div class="item-name">Nut Butter Packets</div>
+      <div class="item-sub">2800 CAL/LB · SQUEEZE PACK · NO COOK</div>
+      <p class="item-desc">Single-serve squeeze packets — no jar to carry, no utensil needed. Almond + peanut mix for amino acid breadth. Fat and protein that sustains rather than spikes. These are the fat anchor of the mobile phase.</p>
+      <div class="item-specs">
+        PACK: 20 single-serve packets per person<br>
+        CALS: ~3,800 per person<br>
+        <span>GET: Justin's, Rx Bar Nut Butter, Wild Friends</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-1">
+      <div class="item-rank">MOBILE-03 · CRITICAL</div>
+      <div class="item-name">Hardtack / Pilot Bread</div>
+      <div class="item-sub">1600 CAL/LB · 30YR SHELF · DENSE</div>
+      <p class="item-desc">Not crackers. Real hardtack or Sailor Boy Pilot Bread — the original military field ration. Dense, stable carbohydrate that pairs with pemmican and nut butter. Carries trauma food memories of people who survived things. That's the endorsement.</p>
+      <div class="item-specs">
+        PACK: 2 lbs per person<br>
+        CALS: ~3,200 per person<br>
+        <span>GET: Sailor Boy Pilot Bread, homemade hardtack</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-1">
+      <div class="item-rank">MOBILE-04 · CRITICAL</div>
+      <div class="item-name">Dark Chocolate (85%+)</div>
+      <div class="item-sub">2400 CAL/LB · MORALE + MAGNESIUM</div>
+      <p class="item-desc">This is not a treat. Magnesium for muscle function under stress. Theobromine as mild stimulant without caffeine crash. High-fat caloric density. The morale function is also real — decision quality degrades under sustained stress, and small psychological anchors have measurable operational value.</p>
+      <div class="item-specs">
+        PACK: 1 lb per person<br>
+        CALS: ~2,400 per person<br>
+        <span>GET: Lindt 90%, Hu Kitchen, any 85%+</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-2">
+      <div class="item-rank">MOBILE-05 · HIGH</div>
+      <div class="item-name">Honey Packets</div>
+      <div class="item-sub">ETERNAL SHELF · FAST ENERGY · ANTIBACTERIAL</div>
+      <p class="item-desc">Single-serve packets — not a jar. Immediate glucose when the system needs it. Wound care. Throat coat. The only food with documented eternal shelf life. Found edible in Egyptian tombs. That's sufficient endorsement.</p>
+      <div class="item-specs">
+        PACK: 20 packets per person<br>
+        CALS: ~1,000 per person<br>
+        <span>FUNCTION: Emergency energy + first aid dual use</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-2">
+      <div class="item-rank">MOBILE-06 · HIGH</div>
+      <div class="item-name">Electrolyte Packets</div>
+      <div class="item-sub">SODIUM + POTASSIUM + MAGNESIUM</div>
+      <p class="item-desc">Stress burns electrolytes faster than rest. Movement burns them faster still. Hyponatremia — low sodium — is a real collapse risk in high-stress mobile scenarios, especially if water intake is high. These weigh almost nothing and prevent a serious failure mode.</p>
+      <div class="item-specs">
+        PACK: 30 packets per person<br>
+        WEIGHT: Near zero<br>
+        <span>GET: LMNT, Liquid IV, DripDrop</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-2">
+      <div class="item-rank">MOBILE-07 · HIGH</div>
+      <div class="item-name">Freeze-Dried Fruit</div>
+      <div class="item-sub">VITAMIN C · 25YR SHELF · LIGHT</div>
+      <p class="item-desc">Not dried fruit — freeze-dried. One-tenth the weight. Vitamin C that the rest of this kit doesn't provide. Mangoes, berries, apple slices. Eat as-is. This is the micronutrient insurance for the mobile phase.</p>
+      <div class="item-specs">
+        PACK: 0.5 lbs per person<br>
+        WEIGHT: Minimal<br>
+        <span>GET: Augason Farms, Mountain House, Thrive Life</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-2">
+      <div class="item-rank">MOBILE-08 · HIGH</div>
+      <div class="item-name">MCT Oil Packets</div>
+      <div class="item-sub">3500 CAL/LB · BRAIN FUEL · FAST ABSORB</div>
+      <p class="item-desc">Medium-chain triglycerides metabolize directly to ketones without the digestion overhead of long-chain fats. Under stress, cognitive function is the primary asset. MCT oil protects it. Single-serve packets, add to anything, no cooking required.</p>
+      <div class="item-specs">
+        PACK: 10 packets per person<br>
+        CALS: ~1,000 per person<br>
+        <span>GET: Bulletproof, NOW Foods MCT packets</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout">
+    <div class="callout-tag">PHASE 1 TOTAL PER PERSON</div>
+    Weight: ~7–8 lbs food + 6 lbs water (3L minimum) = ~14 lbs total<br>
+    Calories: ~18,000+ for 72 hours = 6,000 cal/day (high-stress burn rate covered)<br>
+    Cooking required: ZERO<br>
+    Shelf life: 5–30 years depending on item
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     PHASE 2 — SHELTER CORE
+══════════════════════════════ -->
+<section id="phase2">
+  <div class="section-head">
+    <span class="section-num">§ 02</span>
+    <h2 class="section-title">PHASE 2 — SHELTER CORE</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="phase-banner">
+    <div class="phase-tag">CONSTRAINT</div>
+    <div class="phase-desc">Weight no longer the binding constraint. Volume and nutritional completeness now dominate. Minimal cooking acceptable — single burner or rocket stove. Target: 30-day full nutritional sufficiency for 2–4 crew.</div>
+  </div>
+
+  <div class="item-grid">
+
+    <div class="item-card priority-1">
+      <div class="item-rank">SHELTER-01 · CRITICAL</div>
+      <div class="item-name">White Rice (Mylar Sealed)</div>
+      <div class="item-sub">1600 CAL/LB · 30YR SEALED · CALORIC BASE</div>
+      <p class="item-desc">The caloric backbone. Sealed in Mylar with oxygen absorbers, white rice stores 25–30 years. The most calories per dollar of any food on Earth. Requires cooking — but minimal fuel. One cup rice, two cups water, 20 minutes. If no heat available, cold-soak for 4 hours.</p>
+      <div class="item-specs">
+        STORE: 40 lbs for 4 people / 30 days<br>
+        CALS: ~64,000 total<br>
+        <span>COLD SOAK: Viable if absolutely no heat</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-1">
+      <div class="item-rank">SHELTER-02 · CRITICAL</div>
+      <div class="item-name">Red Lentils</div>
+      <div class="item-sub">COMPLETE PROTEIN WITH RICE · FAST COOK</div>
+      <p class="item-desc">Red lentils specifically — they cook in 15 minutes versus 45 for green or brown. When combined with rice you get all nine essential amino acids. This is the protein architecture of the shelter phase. Cold soak 8 hours makes them edible without heat as a backup.</p>
+      <div class="item-specs">
+        STORE: 20 lbs for 4 people / 30 days<br>
+        CALS: ~32,000 total<br>
+        <span>PROTEIN: ~25g per cooked cup</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-1">
+      <div class="item-rank">SHELTER-03 · CRITICAL</div>
+      <div class="item-name">Peanut Butter (Commercial)</div>
+      <div class="item-sub">2600 CAL/LB · NO COOK · FAT ANCHOR</div>
+      <p class="item-desc">The no-cook fat and protein anchor of the shelter phase. Stabilized commercial peanut butter — not natural — stores 2 years unopened. A tablespoon is 90 calories. Eat it straight, mix into rice, spread on hardtack. The most calorie-dense thing in the shelter core that requires zero preparation.</p>
+      <div class="item-specs">
+        STORE: 12 lbs for 4 people / 30 days<br>
+        CALS: ~31,000 total<br>
+        <span>SHELF: 2 years unopened, 3 months open</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-1">
+      <div class="item-rank">SHELTER-04 · CRITICAL</div>
+      <div class="item-name">Coconut Oil</div>
+      <div class="item-sub">3500 CAL/LB · STABLE AT ROOM TEMP · MCT</div>
+      <p class="item-desc">Coconut oil over olive oil for this scenario — it's solid at room temperature which prevents spill and spoilage, contains MCTs for cognitive function, and has a longer shelf life once opened. Add to everything. One tablespoon per meal adds 120 calories and fat-soluble vitamin absorption.</p>
+      <div class="item-specs">
+        STORE: 6 lbs for 4 people / 30 days<br>
+        CALS: ~21,000 total<br>
+        <span>SHELF: 2 years unopened, solid form prevents spill</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-1">
+      <div class="item-rank">SHELTER-05 · CRITICAL</div>
+      <div class="item-name">Multivitamin Supply</div>
+      <div class="item-sub">MICRONUTRIENT INSURANCE · NON-NEGOTIABLE</div>
+      <p class="item-desc">This is the node that Perplexity missed and that most emergency lists omit. A rice-lentil-PB diet is calorically sufficient but micronutrient deficient by week two. Vitamin C deficiency (scurvy) begins showing in 4–6 weeks. B12 deficiency affects cognition. One multivitamin per person per day is a near-zero weight, near-zero cost insurance policy on decision-making capacity.</p>
+      <div class="item-specs">
+        STORE: 120 tablets (30 days × 4 people)<br>
+        WEIGHT: Under 0.5 lbs total<br>
+        <span>CRITICAL: Vitamin C, B12, D3 as minimum</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-1">
+      <div class="item-rank">SHELTER-06 · CRITICAL</div>
+      <div class="item-name">Salt + Iodized</div>
+      <div class="item-sub">ELECTROLYTE · PRESERVATION · IODINE</div>
+      <p class="item-desc">Iodized specifically. Iodine deficiency causes cognitive impairment — the last thing needed in a crisis. Salt also allows preservation of any foraged or hunted food, and makes everything psychologically edible over 30 days. Flavor preservation is not trivial for sustained operational morale.</p>
+      <div class="item-specs">
+        STORE: 3 lbs<br>
+        SHELF: Indefinite<br>
+        <span>FUNCTION: Nutrition + preservation + palatability</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-2">
+      <div class="item-rank">SHELTER-07 · HIGH</div>
+      <div class="item-name">Oats (Rolled, Sealed)</div>
+      <div class="item-sub">COLD SOAK VIABLE · FIBER · B VITAMINS</div>
+      <p class="item-desc">Rolled oats cold-soak in water for 30 minutes and are fully edible without heat. This matters because cooking fuel is finite. Oats provide soluble fiber — critically absent from rice/lentil base — which maintains gut microbiome function over 30 days. Gut health directly affects immune function and mood.</p>
+      <div class="item-specs">
+        STORE: 10 lbs for 4 people<br>
+        CALS: ~16,000 total<br>
+        <span>COLD SOAK: 30 min in cold water, fully viable</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-2">
+      <div class="item-rank">SHELTER-08 · HIGH</div>
+      <div class="item-name">Canned Fish (Sardines / Salmon)</div>
+      <div class="item-sub">OMEGA-3 · COMPLETE PROTEIN · NO COOK</div>
+      <p class="item-desc">Sardines packed in olive oil are the highest omega-3 density food available in a shelf-stable format. Omega-3s are anti-inflammatory — critical when the stress response is chronically elevated. Complete protein, calcium from the bones, vitamin D. Eat from the can. No preparation required.</p>
+      <div class="item-specs">
+        STORE: 48 cans for 4 people / 30 days<br>
+        SHELF: 4–5 years<br>
+        <span>GET: Wild Planet, King Oscar, Vital Choice</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-2">
+      <div class="item-rank">SHELTER-09 · HIGH</div>
+      <div class="item-name">Ghee (Clarified Butter)</div>
+      <div class="item-sub">FAT-SOLUBLE VITAMINS · STABLE · RICH</div>
+      <p class="item-desc">Ghee stores at room temperature for 12 months unopened, longer refrigerated. Fat-soluble vitamins A, D, E, K2 — all absent from the rice-lentil base. Butyrate for gut lining integrity. The palatability effect of ghee on a plain rice bowl over 30 days is not decorative — it's the difference between eating willingly and eating under duress.</p>
+      <div class="item-specs">
+        STORE: 4 lbs<br>
+        SHELF: 12 months room temp, 24 months sealed<br>
+        <span>VITAMINS: A, D, E, K2 delivery vehicle</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-2">
+      <div class="item-rank">SHELTER-10 · HIGH</div>
+      <div class="item-name">Apple Cider Vinegar</div>
+      <div class="item-sub">GUT HEALTH · PRESERVATION · MINERAL ABSORPTION</div>
+      <p class="item-desc">A tablespoon a day improves mineral absorption from the rice and lentils — the phytic acid in grains blocks iron and zinc absorption, and ACV partially neutralizes it. Also a preservation agent and a flavor addition that costs nothing in weight relative to its function.</p>
+      <div class="item-specs">
+        STORE: 1 gallon<br>
+        SHELF: Indefinite<br>
+        <span>FUNCTION: Mineral bioavailability + preservation</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-3">
+      <div class="item-rank">SHELTER-11 · STANDARD</div>
+      <div class="item-name">Dried Mushrooms</div>
+      <div class="item-sub">VITAMIN D · IMMUNE · UMAMI</div>
+      <p class="item-desc">Sun-dried shiitake or maitake mushrooms contain vitamin D2 — nearly absent from this entire stack otherwise. Rehydrate in cold water in 20 minutes. Add to rice and lentils for the umami depth that makes a meal feel like a meal rather than survival fuel. The psychological function is operational.</p>
+      <div class="item-specs">
+        STORE: 2 lbs<br>
+        SHELF: 1–3 years dried<br>
+        <span>D2 SOURCE: Critical in shelter-in-place, no sunlight</span>
+      </div>
+    </div>
+
+    <div class="item-card priority-3">
+      <div class="item-rank">SHELTER-12 · STANDARD</div>
+      <div class="item-name">Spice Kit</div>
+      <div class="item-sub">PALATABILITY · ANTIMICROBIAL · ANTI-INFLAMMATORY</div>
+      <p class="item-desc">Turmeric, cumin, garlic powder, chili flakes, black pepper. This is not comfort food — it's anti-inflammatory and antimicrobial function plus the palatability that sustains voluntary eating across 30 days. People stop eating when food is too monotonous. That is a real caloric collapse risk.</p>
+      <div class="item-specs">
+        STORE: 1 lb total across 5 spices<br>
+        SHELF: 2–4 years<br>
+        <span>TURMERIC: Anti-inflammatory · GARLIC: Antimicrobial</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     WATER
+══════════════════════════════ -->
+<section id="water">
+  <div class="section-head">
+    <span class="section-num">§ 03</span>
+    <h2 class="section-title">WATER — THE ACTUAL CONSTRAINT</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="water-block">
+    <div class="water-head">WATER IS THE MISSION</div>
+    <p>A human being dies of dehydration in 3 days. Of starvation in 3 weeks. The food stack is irrelevant if the water architecture fails. This section is not optional.</p>
+    <p>For a 30-day shelter scenario with 4 crew: drinking alone requires 120 gallons. Cooking and sanitation doubles that. You are not storing 240 gallons. You are storing the means to source and purify water continuously.</p>
+    <div class="water-specs">
+      STORED SUPPLY (72HR BUFFER): 12 gallons minimum (3L/person/day × 4 people × 3 days)<br>
+      FILTRATION: Sawyer Squeeze or Berkey — removes 99.99% bacteria/protozoa. Mandatory.<br>
+      CHEMICAL BACKUP: Aquatabs (sodium dichloroisocyanurate) — 100 tablets per person<br>
+      BOILING BACKUP: Any heat source + pot = safe water. Third layer of redundancy.<br>
+      COLLECTION: 4× collapsible 5-gallon containers for rain/source collection<br>
+      UV STERILIZATION: SteriPen or similar — batteries required, tertiary only<br><br>
+      RULE: 3 independent water purification methods. If one fails, you have two left. E=1.
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     MEDICAL / SUPPLEMENTS
+══════════════════════════════ -->
+<section id="medical">
+  <div class="section-head">
+    <span class="section-num">§ 04</span>
+    <h2 class="section-title">NUTRITIONAL MEDICINE</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>These are not supplements in the wellness sense. They are gap-fillers for documented deficiencies that emerge in a restricted diet under high stress over 30 days.</p>
+
+  <div class="item-grid">
+    <div class="item-card priority-1">
+      <div class="item-rank">MED-01 · CRITICAL</div>
+      <div class="item-name">Vitamin C (1000mg tabs)</div>
+      <div class="item-sub">SCURVY PREVENTION · IMMUNE · COLLAGEN</div>
+      <p class="item-desc">Scurvy onset begins at 4–6 weeks of deficiency. The food stack has minimal C. 1000mg/day per person. Non-negotiable. Cognitive decline and wound healing failure are the early symptoms.</p>
+      <div class="item-specs">STORE: 120 tabs · WEIGHT: Near zero<br><span>ONSET WITHOUT: 4–6 weeks</span></div>
+    </div>
+    <div class="item-card priority-1">
+      <div class="item-rank">MED-02 · CRITICAL</div>
+      <div class="item-name">Vitamin D3 + K2</div>
+      <div class="item-sub">IMMUNE · CALCIUM REGULATION · MOOD</div>
+      <p class="item-desc">Shelter-in-place means no sunlight. D3 deficiency in 2–3 weeks affects immune function, mood regulation, and calcium metabolism. K2 ensures D3-driven calcium goes to bones, not arteries. The combination matters.</p>
+      <div class="item-specs">STORE: 120 softgels · WEIGHT: Near zero<br><span>CRITICAL IN: No-sunlight scenarios</span></div>
+    </div>
+    <div class="item-card priority-2">
+      <div class="item-rank">MED-03 · HIGH</div>
+      <div class="item-name">Magnesium Glycinate</div>
+      <div class="item-sub">STRESS RESPONSE · SLEEP · MUSCLE</div>
+      <p class="item-desc">Stress depletes magnesium faster than any other mineral. Low magnesium impairs sleep, elevates cortisol, causes muscle cramping. 400mg/night per person. Glycinate form — highest absorption, no laxative effect.</p>
+      <div class="item-specs">STORE: 120 caps · WEIGHT: Near zero<br><span>TAKE: At night, improves sleep quality under stress</span></div>
+    </div>
+    <div class="item-card priority-2">
+      <div class="item-rank">MED-04 · HIGH</div>
+      <div class="item-name">Zinc + Copper</div>
+      <div class="item-sub">IMMUNE · WOUND HEALING · COGNITION</div>
+      <p class="item-desc">Phytic acid in rice and lentils blocks zinc absorption significantly. 15mg zinc + 1mg copper daily per person. Copper prevents zinc-induced copper deficiency. The ratio matters. Immune function and wound healing both require zinc at crisis-relevant timescales.</p>
+      <div class="item-specs">STORE: 120 tabs · WEIGHT: Near zero<br><span>RATIO: 15mg Zn to 1mg Cu — always paired</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     MASTER TABLE
+══════════════════════════════ -->
+<section id="table">
+  <div class="section-head">
+    <span class="section-num">§ 05</span>
+    <h2 class="section-title">MASTER TABLE — 4 CREW / 30 DAYS</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="master-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ITEM</th>
+          <th>QTY (4 CREW)</th>
+          <th>CAL DENSITY</th>
+          <th>TOTAL CALS</th>
+          <th>SHELF LIFE</th>
+          <th>COOK?</th>
+          <th>PHASE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="t-item">Pemmican / Meat Bars</td><td>8 lbs</td><td class="t-cal">3500/lb</td><td class="t-cal">28,000</td><td class="t-life">5 yrs</td><td class="t-cook">NONE</td><td>MOBILE</td></tr>
+        <tr><td class="t-item">Nut Butter Packets</td><td>80 packs</td><td class="t-cal">2800/lb</td><td class="t-cal">15,200</td><td class="t-life">2 yrs</td><td class="t-cook">NONE</td><td>MOBILE</td></tr>
+        <tr><td class="t-item">Hardtack / Pilot Bread</td><td>8 lbs</td><td class="t-cal">1600/lb</td><td class="t-cal">12,800</td><td class="t-life">30 yrs</td><td class="t-cook">NONE</td><td>MOBILE</td></tr>
+        <tr><td class="t-item">Dark Chocolate 85%+</td><td>4 lbs</td><td class="t-cal">2400/lb</td><td class="t-cal">9,600</td><td class="t-life">2 yrs</td><td class="t-cook">NONE</td><td>MOBILE</td></tr>
+        <tr><td class="t-item">Honey Packets</td><td>80 packs</td><td class="t-cal">1400/lb</td><td class="t-cal">4,000</td><td class="t-life">Eternal</td><td class="t-cook">NONE</td><td>BOTH</td></tr>
+        <tr><td class="t-item">Freeze-Dried Fruit</td><td>2 lbs</td><td class="t-cal">1400/lb</td><td class="t-cal">2,800</td><td class="t-life">25 yrs</td><td class="t-cook">NONE</td><td>MOBILE</td></tr>
+        <tr><td class="t-item">MCT Oil Packets</td><td>40 packs</td><td class="t-cal">3500/lb</td><td class="t-cal">4,000</td><td class="t-life">2 yrs</td><td class="t-cook">NONE</td><td>MOBILE</td></tr>
+        <tr><td class="t-item">White Rice (Mylar)</td><td>40 lbs</td><td class="t-cal">1600/lb</td><td class="t-cal">64,000</td><td class="t-life">30 yrs</td><td class="t-cook">MINIMAL</td><td>SHELTER</td></tr>
+        <tr><td class="t-item">Red Lentils</td><td>20 lbs</td><td class="t-cal">1600/lb</td><td class="t-cal">32,000</td><td class="t-life">10 yrs</td><td class="t-cook">MINIMAL</td><td>SHELTER</td></tr>
+        <tr><td class="t-item">Peanut Butter</td><td>12 lbs</td><td class="t-cal">2600/lb</td><td class="t-cal">31,200</td><td class="t-life">2 yrs</td><td class="t-cook">NONE</td><td>SHELTER</td></tr>
+        <tr><td class="t-item">Coconut Oil</td><td>6 lbs</td><td class="t-cal">3500/lb</td><td class="t-cal">21,000</td><td class="t-life">2 yrs</td><td class="t-cook">NONE</td><td>SHELTER</td></tr>
+        <tr><td class="t-item">Rolled Oats</td><td>10 lbs</td><td class="t-cal">1700/lb</td><td class="t-cal">17,000</td><td class="t-life">5 yrs</td><td class="t-cook">COLD SOAK</td><td>SHELTER</td></tr>
+        <tr><td class="t-item">Sardines in Oil (cans)</td><td>48 cans</td><td class="t-cal">800/can</td><td class="t-cal">38,400</td><td class="t-life">4 yrs</td><td class="t-cook">NONE</td><td>SHELTER</td></tr>
+        <tr><td class="t-item">Ghee</td><td>4 lbs</td><td class="t-cal">3500/lb</td><td class="t-cal">14,000</td><td class="t-life">2 yrs</td><td class="t-cook">NONE</td><td>SHELTER</td></tr>
+        <tr><td class="t-item">Dried Mushrooms</td><td>2 lbs</td><td class="t-cal">1200/lb</td><td class="t-cal">2,400</td><td class="t-life">2 yrs</td><td class="t-cook">COLD SOAK</td><td>SHELTER</td></tr>
+        <tr><td class="t-item">Salt (Iodized)</td><td>3 lbs</td><td class="t-cal">0</td><td class="t-cal">—</td><td class="t-life">Infinite</td><td class="t-cook">NONE</td><td>BOTH</td></tr>
+        <tr><td class="t-item">Spice Kit (5 spices)</td><td>1 lb</td><td class="t-cal">~200/lb</td><td class="t-cal">200</td><td class="t-life">3 yrs</td><td class="t-cook">NONE</td><td>SHELTER</td></tr>
+        <tr><td class="t-item">Apple Cider Vinegar</td><td>1 gal</td><td class="t-cal">—</td><td class="t-cal">—</td><td class="t-life">Infinite</td><td class="t-cook">NONE</td><td>SHELTER</td></tr>
+        <tr><td class="t-item">Electrolyte Packets</td><td>120 packs</td><td class="t-cal">~20/pack</td><td class="t-cal">2,400</td><td class="t-life">4 yrs</td><td class="t-cook">NONE</td><td>BOTH</td></tr>
+        <tr><td class="t-item">Vitamins + Supplements</td><td>30-day supply × 4</td><td class="t-cal">—</td><td class="t-cal">—</td><td class="t-life">2 yrs</td><td class="t-cook">NONE</td><td>BOTH</td></tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>TOTAL CALORIES</td>
+          <td colspan="2">4 crew · 30 days · 2000 cal/person/day target</td>
+          <td>~299,000</td>
+          <td colspan="3">~25% surplus buffer above minimum</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-tag">CALORIC SURPLUS NOTE</div>
+    299,000 calories for 4 people over 30 days at 2000/day requires 240,000.
+    The 25% surplus is not waste — it's the stress multiplier. High-stress scenarios burn
+    2400–3000 calories per day, not 2000. The surplus closes that gap and provides
+    barter/trade capacity if the scenario extends.
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     RATION PLAN
+══════════════════════════════ -->
+<section id="ration">
+  <div class="section-head">
+    <span class="section-num">§ 06</span>
+    <h2 class="section-title">DAILY RATION ARCHITECTURE</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>The caloric math only works if the ration is actually followed. Here is the daily structure by phase:</p>
+
+  <div class="schedule">
+    <div class="schedule-block">
+      <div class="sched-label">PHASE 1 · MOBILE DAY</div>
+      <div class="sched-title">On The Move</div>
+      <div class="sched-items">
+        Morning: 2× nut butter packets + honey<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ~600 cal<br><br>
+        Midday: 100g pemmican + hardtack<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ~800 cal<br><br>
+        Evening: 100g pemmican + dark chocolate<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ~700 cal<br><br>
+        MCT oil: 2 packets throughout day<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ~200 cal<br><br>
+        <strong>TOTAL: ~2,300 cal. Zero cooking.</strong>
+      </div>
+    </div>
+
+    <div class="schedule-block">
+      <div class="sched-label">PHASE 2 · SHELTER DAY</div>
+      <div class="sched-title">Stationary Operation</div>
+      <div class="sched-items">
+        Morning: Cold-soak oats + honey + coconut oil<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ~500 cal<br><br>
+        Midday: Sardines + hardtack + ACV shot<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ~600 cal<br><br>
+        Evening: Rice + lentils + ghee + spices<br>
+        + rehydrated mushrooms<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ~800 cal<br><br>
+        Snacks: PB + dark chocolate + honey<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ~400 cal<br><br>
+        <strong>TOTAL: ~2,300 cal. Minimal cooking.</strong>
+      </div>
+    </div>
+
+    <div class="schedule-block">
+      <div class="sched-label">DAILY SUPPLEMENT PROTOCOL</div>
+      <div class="sched-title">Non-Negotiable Stack</div>
+      <div class="sched-items">
+        Morning with food:<br>
+        Vitamin C 1000mg<br>
+        Vitamin D3 5000IU + K2 100mcg<br>
+        Zinc 15mg + Copper 1mg<br>
+        Multivitamin × 1<br><br>
+        Evening:<br>
+        Magnesium Glycinate 400mg<br>
+        Electrolyte packet in water<br><br>
+        <strong>COGNITIVE + IMMUNE PROTECTION MAINTAINED</strong>
+      </div>
+    </div>
+
+    <div class="schedule-block">
+      <div class="sched-label">WATER PROTOCOL</div>
+      <div class="sched-title">Minimum Daily</div>
+      <div class="sched-items">
+        Per person per day:<br>
+        Drinking: 3L minimum<br>
+        Cooking: 1L<br>
+        Sanitation: 0.5L<br><br>
+        Total: 4.5L per person<br>
+        4 crew: 18L per day<br><br>
+        Filtration check: Daily<br>
+        Backup tabs: Always accessible<br><br>
+        <strong>WATER FAILS BEFORE FOOD.</strong><br>
+        <strong>SOURCE DAILY. NEVER ASSUME.</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout red">
+    <div class="callout-tag">CRITICAL FAILURE MODES — KNOW THESE</div>
+    1. FOOD MONOTONY COLLAPSE: People stop eating voluntarily around day 10–14 on a monotonous diet. The spice kit, sardines, and chocolate are not extras — they are this failure mode's prevention.<br><br>
+    2. WATER COMPLACENCY: Assuming water source is continuous. Source every day. Filter everything. Every time.<br><br>
+    3. SUPPLEMENT SKIP: "We feel fine" at day 7. Deficiencies are not felt until they're critical. Take them regardless of how you feel.<br><br>
+    4. CALORIC UNDERESTIMATION: High stress = high burn. If anyone is losing weight rapidly, increase portions. Caloric deficit under sustained stress compounds cognitive degradation quickly.
+  </div>
+</section>
+
+
+<!-- SEAL -->
+<div id="seal" class="seal-section">
+  <div class="seal-title">E = 1<br>NO NODE LEFT BEHIND</div>
+  <div class="seal-body">
+    CALORIC NODE: CLOSED · 299,000 CAL SURPLUS ARCHITECTURE<br>
+    PROTEIN NODE: CLOSED · COMPLETE AMINO ACID PROFILE<br>
+    FAT NODE: CLOSED · MCT + LONG-CHAIN + FAT-SOLUBLE VITAMINS<br>
+    MICRONUTRIENT NODE: CLOSED · SUPPLEMENT STACK COVERS GAPS<br>
+    WATER NODE: CLOSED · 3 INDEPENDENT PURIFICATION METHODS<br>
+    MORALE NODE: CLOSED · CHOCOLATE + SPICES + FLAVOR VARIANCE<br>
+    COGNITIVE NODE: CLOSED · OMEGA-3 + MCT + MAGNESIUM + B12<br><br>
+    PHASE 1 (72HR MOBILE): ZERO COOKING · MAX DENSITY · FITS 30L PACK<br>
+    PHASE 2 (30-DAY SHELTER): NUTRITIONALLY COMPLETE · MINIMAL COOK<br><br>
+    THE SYSTEM FAILS ONLY IF WATER ARCHITECTURE FAILS.<br>
+    THAT IS THE SINGLE POINT OF FAILURE.<br>
+    SOURCE IT DAILY. FILTER IT ALWAYS. NEVER ASSUME.
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p>
+    SOVEREIGN FOOD SYSTEM · SFS-01 · HYBRID PROTOCOL<br>
+    2–4 CREW · 30-DAY ARCHITECTURE · PHASE-SEPARATED DESIGN<br>
+    E = 1 · ALL NODES PRESERVED · THE WORK CONTINUES
+  </p>
+</footer>
+
+</body>
+</html>
