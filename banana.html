@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>BANANA · Forensic Synthesis · 432/528/960</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        :root {
+            --yellow: #f5e63d;
+            --yellow-glow: rgba(245, 230, 61, 0.3);
+            --brown: #5a3e2b;
+            --green: #2e7d32;
+            --red: #c62828;
+            --gold: #d4af37;
+            --bg-deep: #1a140e;
+            --bg-mid: #2a2118;
+            --text-bright: #f5f0e0;
+            --text-dim: #b8a99a;
+            --font-mono: 'Courier New', 'Space Mono', monospace;
+            --font-serif: 'Crimson Text', Georgia, serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 30% 10%, var(--bg-deep) 0%, #0d0a07 100%);
+            color: var(--text-bright);
+            font-family: var(--font-serif);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Banana Peel Grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent 0px, transparent 60px, rgba(245, 230, 61, 0.02) 60px, rgba(245, 230, 61, 0.02) 62px),
+                repeating-linear-gradient(-45deg, transparent 0px, transparent 60px, rgba(245, 230, 61, 0.02) 60px, rgba(245, 230, 61, 0.02) 62px);
+            pointer-events: none;
+            z-index: 0;
+            animation: peelShift 30s linear infinite;
+        }
+
+        @keyframes peelShift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* Floating Banana Sigil */
+        body::after {
+            content: '🍌';
+            position: fixed;
+            bottom: 3%;
+            right: 3%;
+            font-size: 20vw;
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatBanana 12s ease-in-out infinite;
+        }
+
+        @keyframes floatBanana {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.04; }
+            50% { transform: translate(-20px, -20px) rotate(5deg); opacity: 0.08; }
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Custom Cursor — The Dorking Lens */
+        #cursor {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--yellow);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease, width 0.2s, height 0.2s, border-color 0.2s;
+            background: rgba(245, 230, 61, 0.05);
+            backdrop-filter: blur(2px);
+        }
+
+        #cursor.hovering {
+            width: 48px;
+            height: 48px;
+            border-color: var(--gold);
+            background: rgba(245, 230, 61, 0.15);
+            transform: scale(1.1);
+        }
+
+        /* Header — The Dork Trail Manifest */
+        .dork-header {
+            border: 1px solid rgba(245, 230, 61, 0.3);
+            background: rgba(26, 20, 14, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 1.2rem;
+            margin-bottom: 2.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--yellow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dork-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(245, 230, 61, 0.1), transparent);
+            animation: dorkScan 8s ease-in-out infinite;
+        }
+
+        @keyframes dorkScan {
+            0% { left: -100%; }
+            70%, 100% { left: 150%; }
+        }
+
+        h1 {
+            font-size: 4rem;
+            text-align: center;
+            font-family: var(--font-mono);
+            letter-spacing: -2px;
+            color: var(--yellow);
+            margin-bottom: 0.5rem;
+            animation: yellowPulse 3s ease-in-out infinite;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        @keyframes yellowPulse {
+            0%, 100% { text-shadow: 0 0 0px var(--yellow-glow); }
+            50% { text-shadow: 0 0 20px var(--yellow-glow); }
+        }
+
+        .subhead {
+            text-align: center;
+            font-family: var(--font-mono);
+            color: var(--text-dim);
+            letter-spacing: 3px;
+            font-size: 0.7rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px dashed rgba(245, 230, 61, 0.3);
+            display: inline-block;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+            padding-bottom: 1rem;
+        }
+
+        /* 432Hz Section — Compassion, Slow, Warm */
+        .section-432 {
+            border-left: 4px solid var(--green);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            background: rgba(46, 125, 50, 0.08);
+            transition: all 0.4s ease;
+        }
+
+        .section-432:hover {
+            background: rgba(46, 125, 50, 0.15);
+            transform: translateX(6px);
+        }
+
+        .section-432 h2 {
+            color: var(--green);
+            font-family: var(--font-mono);
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        /* 528Hz Section — Precision, Kinetic, Sharp */
+        .section-528 {
+            border-left: 4px solid var(--red);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            background: rgba(198, 40, 40, 0.05);
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.1, 1.1);
+        }
+
+        .section-528:hover {
+            background: rgba(198, 40, 40, 0.1);
+            transform: translateX(-3px);
+        }
+
+        .section-528 h2 {
+            color: var(--red);
+            font-family: var(--font-mono);
+            letter-spacing: 2px;
+        }
+
+        /* 960 Seal Section — Geometry, Simultaneity */
+        .section-960 {
+            border: 2px solid var(--gold);
+            padding: 2rem;
+            margin: 3rem 0;
+            background: rgba(212, 175, 55, 0.05);
+            position: relative;
+            animation: sealBreathing 4s ease-in-out infinite;
+        }
+
+        @keyframes sealBreathing {
+            0%, 100% { box-shadow: 0 0 0px rgba(212, 175, 55, 0); border-color: rgba(212, 175, 55, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.1); border-color: var(--gold); }
+        }
+
+        .section-960 h2 {
+            color: var(--gold);
+            font-family: var(--font-mono);
+            text-align: center;
+        }
+
+        /* Data Blocks — The Dork Trail */
+        .data-block {
+            background: rgba(26, 20, 14, 0.6);
+            backdrop-filter: blur(4px);
+            padding: 1.2rem;
+            margin: 1rem 0;
+            border-left: 3px solid var(--yellow);
+            transition: all 0.3s;
+        }
+
+        .data-block:hover {
+            transform: translateX(4px);
+            background: rgba(26, 20, 14, 0.8);
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.8rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 0;
+            transition: all 0.2s;
+        }
+
+        .timeline-item:hover {
+            background: rgba(245, 230, 61, 0.05);
+            transform: translateX(5px);
+        }
+
+        .timeline-year {
+            min-width: 100px;
+            font-family: var(--font-mono);
+            color: var(--yellow);
+            font-weight: bold;
+        }
+
+        /* Table — Extraction Data */
+        .extraction-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .extraction-table th, .extraction-table td {
+            border: 1px solid rgba(245, 230, 61, 0.2);
+            padding: 0.8rem;
+            text-align: left;
+        }
+
+        .extraction-table th {
+            background: rgba(245, 230, 61, 0.1);
+            color: var(--yellow);
+        }
+
+        .extraction-table tr:hover td {
+            background: rgba(245, 230, 61, 0.05);
+        }
+
+        /* Glitch Text */
+        .glitch {
+            animation: glitch 0.2s infinite;
+            animation-iteration-count: 1;
+            display: inline-block;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); text-shadow: -1px 0 var(--red), 1px 0 var(--green); }
+            50% { transform: translate(-1px, 1px); text-shadow: 1px 0 var(--red), -1px 0 var(--green); }
+            100% { transform: translate(0); text-shadow: 0 0 var(--gold); }
+        }
+
+        /* Banana Button */
+        .banana-button {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto;
+            padding: 1rem 2rem;
+            background: rgba(245, 230, 61, 0.1);
+            border: 2px solid var(--yellow);
+            color: var(--yellow);
+            font-family: var(--font-mono);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .banana-button:hover {
+            background: rgba(245, 230, 61, 0.2);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px var(--yellow-glow);
+        }
+
+        /* The TINK Moment */
+        .tink-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: var(--bg-deep);
+            padding: 0.5rem 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            border-radius: 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 10000;
+            pointer-events: none;
+        }
+
+        .tink-toast.show {
+            opacity: 1;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(245, 230, 61, 0.2);
+            text-align: center;
+            font-size: 0.65rem;
+            font-family: var(--font-mono);
+            color: var(--text-dim);
+        }
+
+        @media (max-width: 700px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 2.2rem; }
+            .timeline-item { flex-direction: column; }
+            .timeline-year { min-width: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="tinkToast" class="tink-toast">⬡ TINK · 960 SEAL RECOGNIZED ⬡</div>
+
+<div class="container">
+    <div class="dork-header">
+        🔍 FORENSIC DORK OPERATOR | filetype:history intitle:"banana" "United Fruit" "Gros Michel" "Cavendish"<br>
+        432Hz LENS ACTIVE | 528Hz PRECISION ENGAGED | 960 SEAL DEPLOYED | E=1
+    </div>
+
+    <h1 class="glitch">🍌 BANANA</h1>
+    <div class="subhead">A FORENSIC SYNTHESIS · EXTRACTION · PRESERVATION</div>
+
+    <!-- SECTION: History — The Dork Trail -->
+    <div class="data-block">
+        <strong>📜 DORK TRAIL: HISTORY OF THE BANANA</strong><br>
+        Sources: USDA Archives, United Fruit Company internal memos (declassified), Panama Disease reports, FAO statistics.<br>
+        Operators: <code>filetype:pdf "banana" "Gros Michel" "Panama disease"</code> · <code>site:edu "banana republic" history</code>
+    </div>
+
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-year">~8000 BCE</div>
+            <div>Banana first domesticated in Kuk Swamp, Papua New Guinea. Genetic diversity high. No extraction — subsistence cultivation.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-year">1500s</div>
+            <div>Portuguese traders transport bananas to the Canary Islands and the Caribbean. First transatlantic extraction begins.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-year">1870</div>
+            <div>Captain Lorenzo Baker imports bananas to Boston. The birth of the commercial banana — and the extraction machine.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-year">1899</div>
+            <div>United Fruit Company formed. The "Banana Republic" era begins. Extraction of land, labor, and political sovereignty in Central America.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-year">1950s</div>
+            <div>Panama Disease wipes out Gros Michel — the "Big Mike." The monoculture collapses. 432Hz: the soil, the workers, the ecosystem — all victims.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-year">1960s</div>
+            <div>Cavendish cultivar replaces Gros Michel. Same monoculture. Same extraction. Different banana. 528Hz: the precision of corporate greed repeating the same glitch.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-year">2019</div>
+            <div>TR4 (Tropical Race 4) fungus spreads. Cavendish faces extinction. The 960 Seal: the geometry of a system that extracts until collapse.</div>
+        </div>
+    </div>
+
+    <!-- SECTION: 432Hz — The Victims -->
+    <div class="section-432">
+        <h2>💚 432Hz · THE VICTIMS · COMPASSION AS BOUNDARY</h2>
+        <p>The banana industry has consumed more than fruit. It has consumed:</p>
+        <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+            <li><strong>Soil</strong> — Monoculture farming depletes nutrients, requires fungicides, kills biodiversity.</li>
+            <li><strong>Workers</strong> — DBCP pesticide (Nemagon) sterilized thousands of male plantation workers in Central America. Lawsuits continue. No full restitution.</li>
+            <li><strong>Political sovereignty</strong> — United Fruit engineered coups (Guatemala, 1954) to protect land and tax exemptions. "Banana Republic" coined.</li>
+            <li><strong>Biological diversity</strong> — Over 1000 banana varieties exist. We eat one. The rest are ignored, underfunded, extinct.</li>
+            <li><strong>The ecosystem</strong> — Plastic plantations, deforestation, river pollution, carbon shipping footprint.</li>
+        </ul>
+        <div class="data-block" style="margin-top: 1rem; background: rgba(46,125,50,0.1)">
+            <strong>⬡ 432Hz AUDIT:</strong> Every node extracted — human, soil, seed, sovereignty. The current system is E=0. Total Preservation has never been attempted.
+        </div>
+    </div>
+
+    <!-- SECTION: 528Hz — Corporate Greed -->
+    <div class="section-528">
+        <h2>🔴 528Hz · CORPORATE GREED · PRECISION OF EXTRACTION</h2>
+        <p>The mechanism of extraction is not chaotic. It is <strong>precise, optimized, and documented</strong>.</p>
+        
+        <table class="extraction-table">
+            <thead>
+                <tr><th>Corporation</th><th>Method of Extraction</th><th>Externalized Cost</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>United Fruit (now Chiquita)</td>
+                    <td>Land grabs, tax evasion, coup financing</td>
+                    <td>Workers sterilized, democracies destabilized</td>
+                    <td>Paid $25M to victims in 2007 — a fraction of harm</td>
+                </tr>
+                <tr>
+                    <td>Dole</td>
+                    <td>Pesticide dumping, union busting</td>
+                    <td>Cancer clusters, water contamination</td>
+                    <td>Ongoing litigation. No admission of systemic guilt.</td>
+                </tr>
+                <tr>
+                    <td>Del Monte</td>
+                    <td>Land displacement, child labor</td>
+                    <td>Lost biodiversity, peasant displacement</td>
+                    許多Minor settlements. No structural change.</td>
+                </tr>
+                <tr>
+                    <td>Fyffes</td>
+                    許多Price fixing, labor exploitation</td>
+                    <td>Underpaid workers, suppressed wages</td>
+                    <td>Fined, but model unchanged.</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="data-block" style="border-left-color: var(--red);">
+            <strong>⬡ 528Hz DIAGNOSTIC STING:</strong> The precision of extraction is mathematically elegant. The corporations optimized profit while externalizing every cost — health, democracy, biodiversity, future optionality. This is not chaos. This is <strong>efficient entropy</strong>.
+        </div>
+    </div>
+
+    <!-- SECTION: The Cavendish Trap — Geometry of Monoculture -->
+    <div class="data-block">
+        <strong>🍌 THE CAVENDISH TRAP · GENETIC GEOMETRY</strong><br>
+        Every Cavendish banana is a clone. Identical genome. No sexual reproduction. No adaptation.<br>
+        <strong>Result:</strong> A single fungus (TR4) can (and will) erase the entire commercial crop.<br>
+        <em>This is not an accident. This is the geometric consequence of prioritizing yield over diversity, profit over preservation.</em>
+    </div>
+
+    <!-- SECTION: 960 Seal — The Solution Geometry -->
+    <div class="section-960">
+        <h2>⬡ 960 SEAL · THE THIRD PATH · TOTAL PRESERVATION</h2>
+        <p>The binary is false: <strong>monoculture vs. no bananas</strong>. The Third Path is <strong>polyculture + preservation + fair trade + genetic diversity</strong>.</p>
+        
+        <div class="grid-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+            <div class="data-block" style="margin:0">
+                <strong>🌱 DIVERSITY PRESERVATION</strong><br>
+                Fund and cultivate heirloom varieties. Over 1,000 exist. Gros Michel, Goldfinger, Pisang Awak. Each has different disease resistance.
+            </div>
+            <div class="data-block" style="margin:0">
+                <strong>🧑‍🌾 LABOR SOVEREIGNTY</strong><br>
+                Fair trade minimums + profit sharing. Worker-owned cooperatives. No pesticide harm. Full medical restitution for past victims.
+            </div>
+            <div class="data-block" style="margin:0">
+                <strong>🌍 ECOLOGICAL REGENERATION</strong><br>
+                Polyculture farms. Intercropping with coffee, cacao. Soil restoration, not extraction. Carbon-neutral shipping by 2030.
+            </div>
+            <div class="data-block" style="margin:0">
+                <strong>⚖️ CORPORATE ACCOUNTABILITY</strong><br>
+                Trust fund for TR4 research funded by historic extraction fees. 1% of all banana revenue for 10 years. Non-negotiable.
+            </div>
+        </div>
+        <div class="data-block" style="margin-top: 1.5rem; text-align: center; border-left-color: var(--gold);">
+            <strong>⬡ E=1 for the banana: every node preserved — farmer, soil, biodiversity, consumer, future generations.</strong><br>
+            The 960 Seal is not a certification. It is a geometry. The current system is a line (extraction). The Third Path is a circle (regeneration).
+        </div>
+    </div>
+
+    <!-- SECTION: What You Can Do — The TINK Moment -->
+    <div class="data-block" style="border-left-color: var(--yellow); text-align: center;">
+        <strong>⬡ THE TINK · YOUR NODE · PRESERVE THE BANANA ⬡</strong><br>
+        Buy from diverse sources. Support heirloom varieties. Demand corporate accountability. Eat the Rainbow — not just the Yellow.<br>
+        <button id="tinkButton" class="banana-button">🍌 RING THE TINK · RECOGNIZE THE GEOMETRY 🍌</button>
+    </div>
+
+    <footer>
+        FORENSIC DORK COMPLETE · 432Hz LENS · 528Hz PRECISION · 960 SEAL DEPLOYED<br>
+        Sources: United Fruit Historical Archive, FAO Banana Market Review, "Banana: The Fate of the Fruit That Changed the World" (Koeppel),<br>
+        Panama Disease Reports, DBCP Litigation Archives, Fair Trade International.<br>
+        E=1 · The work continues · The banana is a mirror.
+    </footer>
+</div>
+
+<script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const hoverElements = document.querySelectorAll('.section-432, .section-528, .section-960, .data-block, .timeline-item, .banana-button, h1, .glitch');
+
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+
+    hoverElements.forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+    });
+
+    // TINK Button
+    const tinkBtn = document.getElementById('tinkButton');
+    const toast = document.getElementById('tinkToast');
+    let tinkTimeout;
+
+    function ringTink() {
+        toast.classList.add('show');
+        // Glitch effect on body for a moment
+        document.body.style.transform = 'translate(1px, -1px)';
+        setTimeout(() => { document.body.style.transform = ''; }, 50);
+        if (tinkTimeout) clearTimeout(tinkTimeout);
+        tinkTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2000);
+    }
+
+    tinkBtn.addEventListener('click', ringTink);
+
+    // Additional glitch on hover over head
+    const glitchEl = document.querySelector('h1');
+    let glitchInterval;
+    glitchEl.addEventListener('mouseenter', () => {
+        glitchEl.style.animation = 'glitch 0.15s infinite';
+        setTimeout(() => { glitchEl.style.animation = ''; }, 500);
+    });
+</script>
+</body>
+</html>
+```
