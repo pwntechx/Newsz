@@ -477,6 +477,580 @@ footer {
 </footer>
 
 <script>
+const PROXIES = [
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://thingproxy.freeboard.io/fetch/${url}`,
+];
+
+const CHANNELS = [
+  // SCIENCE
+  { name: 'SciShow',             id: 'UCZYTClx2T1of7BRZ86-8fow', emoji: '🔬', cat: 'science' },
+  { name: 'Sabine Hossenfelder', id: 'UC1yNl2E66ZzKApQdRuTQ4tw', emoji: '🧠', cat: 'science' },
+  { name: 'Real Science',        id: 'UCtESv1e7ntJaLJYKIO1FoYw', emoji: '🧬', cat: 'science' },
+  { name: 'Veritasium',          id: 'UCHnyfMqiRRG1u-2MsSQLbXA', emoji: '⚛️', cat: 'science' },
+  { name: 'Kurzgesagt',          id: 'UCsXVk37bltHxD1rDPwtNM8Q', emoji: '🐦', cat: 'science' },
+  { name: 'SmarterEveryDay',     id: 'UC6107grRI4m0o2-emgoDnAA', emoji: '🔭', cat: 'science' },
+  // SPACE
+  { name: 'PBS Space Time',      id: 'UC7_gcs09iThXybpVgjHZ_7g', emoji: '🌌', cat: 'space' },
+  { name: 'Area 52',             id: 'UCvQ_8t8I_5_N2Yp6b6rE5uQ', emoji: '👁️', cat: 'space' },
+  { name: 'Cold Fusion',         id: 'UC4QZ_LsYcvcq7qOsOhpAX4A', emoji: '❄️', cat: 'space' },
+  // TECHNOLOGY
+  { name: 'MKBHD',               id: 'UCBJycsmduvYEL83R_U4JriQ', emoji: '📱', cat: 'tech' },
+  { name: 'Dami Lee',            id: 'UCJ_2hNMxOzNjviJBiLWHMqg', emoji: '🎨', cat: 'tech' },
+  { name: 'Bloomberg Tech',      id: 'UCrM7B7SL_g1edFOnmj-SDKg', emoji: '📈', cat: 'tech' },
+  { name: 'Business Insider',    id: 'UCcyq283he07B7_KUX07mmtA', emoji: '💼', cat: 'tech' },
+  { name: 'Infographics Show',   id: 'UCfdNM3NAhaBOXCafH7krzrA', emoji: '📊', cat: 'tech' },
+  // SOCIETY
+  { name: 'Asian Boss',          id: 'UC2-_WWPT_124iN6jiym4fOw', emoji: '🗣️', cat: 'society' },
+  { name: 'CNA',                 id: 'UC83jt4dlz1Gjl58fzQrrKZg', emoji: '🌏', cat: 'society' },
+  { name: 'Thoughty2',           id: 'UCRlICXvO4XR4HMeEB9JjDlA', emoji: '💡', cat: 'society' },
+  { name: 'Wendover Productions',id: 'UC9RM-iSsfbt2diR6JAvcos',  emoji: '✈️', cat: 'society' },
+  // INVESTIGATION
+  { name: 'The Military Show',   id: 'UCKfak8fBm_Lhy4eX9UKxEpA', emoji: '🎖️', cat: 'investigation' },
+  { name: 'Epicurious',          id: 'UCpSTWn9L_7p_Y_L593o_Mog', emoji: '🍽️', cat: 'investigation' },
+];
+
+const CATEGORIES = [
+  { key: 'science',       label: 'SCIENCE',       color: 'var(--cat-science)' },
+  { key: 'space',         label: 'SPACE',         color: 'var(--cat-space)' },
+  { key: 'tech',          label: 'TECHNOLOGY',    color: 'var(--cat-tech)' },
+  { key: 'society',       label: 'SOCIETY',       color: 'var(--cat-society)' },
+  { key: 'investigation', label: 'INVESTIGATION', color: 'var(--cat-investigation)' },
+];
+
+let allVideos = [];
+let activeFilter = 'all';
+let stats = { total: 0, sources: 0, failed: 0 };
+
+function timeAgo(dateStr) {
+  const d = new Date(dateStr);
+  if (isNaN(d)) return '';
+  const s = (Date.now() - d) / 1000;
+  if (s < 60) return `${Math.floor(s)}s ago`;
+  if (s < 3600) return `${Math.floor(s/60)}m ago`;
+  if (s < 86400) return `${Math.floor(s/3600)}h ago`;
+  return `${Math.floor(s/86400)}d ago`;
+}
+
+async function proxiedFetch(url) {
+  for (const proxy of PROXIES) {
+    try {
+      const res = await fetch(proxy(url), { signal: AbortSignal.timeout(9000) });
+      if (res.ok) { const t = await res.text(); if (t && t.length > 100) return t; }
+    } catch { continue; }
+  }
+  return null;
+}
+
+async function fetchChannel(ch) {
+  try {
+    const url = `https://www.youtube.com/feeds/videos.xml?channel_id=${ch.id}`;
+    const text = await proxiedFetch(url);
+    if (!text) return null;
+    const xml = new DOMParser().parseFromString(text, 'text/xml');
+    const entries = [...xml.querySelectorAll('entry')];
+    if (!entries.length) return null;
+    return entries.slice(0, 8).map(e => {
+      const videoId = e.querySelector('videoId')?.textContent || '';
+      return {
+        title:     e.querySelector('title')?.textContent?.trim() || '',
+        link:      e.querySelector('link')?.getAttribute('href') || `https://www.youtube.com/watch?v=${videoId}`,
+        published: e.querySelector('published')?.textContent || '',
+        thumb:     videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '',
+        videoId, channel: ch.name, emoji: ch.emoji, cat: ch.cat,
+      };
+    }).filter(v => v.title && v.videoId);
+  } catch { return null; }
+}
+
+function cardHTML(v, i) {
+  const delay = Math.min(i * 30, 400);
+  return `
+    <div class="card" data-cat="${v.cat}" style="animation-delay:${delay}ms" onclick="window.open('${v.link}','_blank')">
+      <div class="thumb-wrap">
+        <img src="${v.thumb}" alt="" loading="lazy" onerror="this.style.display='none'">
+        <div class="play-overlay"><div class="play-btn">▶</div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-channel">${v.emoji} ${v.channel}</span>
+          <span class="card-time">${timeAgo(v.published)}</span>
+        </div>
+        <div class="card-title">${v.title}</div>
+        <a class="card-link" href="${v.link}" target="_blank" rel="noopener" onclick="event.stopPropagation()">WATCH →</a>
+      </div>
+    </div>`;
+}
+
+function renderAll() {
+  const container = document.getElementById('feedContainer');
+  const videos = activeFilter === 'all' ? allVideos : allVideos.filter(v => v.cat === activeFilter);
+  if (!videos.length) { container.innerHTML = '<div class="empty-state">NO SIGNAL · RETRY</div>'; return; }
+
+  if (activeFilter !== 'all') {
+    container.innerHTML = `<div class="cat-grid">${videos.map((v,i) => cardHTML(v,i)).join('')}</div>`;
+    return;
+  }
+
+  let html = '';
+  CATEGORIES.forEach(cat => {
+    const catVideos = videos.filter(v => v.cat === cat.key);
+    if (!catVideos.length) return;
+    html += `
+      <div class="cat-section">
+        <div class="cat-header">
+          <span class="cat-title" style="color:${cat.color}">⬡ ${cat.label}</span>
+          <span class="cat-count">${catVideos.length} VIDEOS</span>
+        </div>
+        <div class="cat-grid">${catVideos.map((v,i) => cardHTML(v,i)).join('')}</div>
+      </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function setFilter(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAll();
+}
+
+function updateStats() {
+  document.getElementById('statTotal').textContent = stats.total;
+  document.getElementById('statSources').textContent = stats.sources;
+  document.getElementById('statFailed').textContent = stats.failed;
+  if (allVideos.length) {
+    const newest = new Date(Math.max(...allVideos.map(v => new Date(v.published || 0))));
+    document.getElementById('statAge').textContent = timeAgo(newest);
+  }
+}
+
+function updateClock() {
+  const n = new Date();
+  document.getElementById('timestamp').textContent =
+    n.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
+async function loadFeeds() {
+  const btn = document.getElementById('refreshBtn');
+  const dot = document.getElementById('statusDot');
+  const statusText = docum
+.logo {
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+}
+
+.yt-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+  border: 1px solid var(--rule);
+  padding: 2px 8px;
+}
+
+.live-dot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  color: var(--dim);
+}
+
+.dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: blink 2s ease-in-out infinite;
+}
+.dot.loading { background: #ffaa00; animation: none; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+.header-right { display: flex; align-items: center; gap: 10px; }
+
+.timestamp {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--ghost);
+  letter-spacing: 0.08em;
+}
+
+.nav-back {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.nav-back:hover { color: var(--accent); border-color: var(--accent); }
+
+.refresh-btn {
+  background: var(--accent-dim);
+  border: 1px solid rgba(255,68,68,0.25);
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.refresh-btn:hover { background: rgba(255,68,68,0.2); }
+.refresh-btn.spinning .refresh-icon { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* STATS BAR */
+.stats-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 7px 28px;
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.stat-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stat-val { color: var(--accent); }
+.stat-label { color: var(--ghost); }
+
+/* FILTER BAR */
+.filter-bar {
+  background: var(--void);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 28px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.18em;
+  color: var(--ghost);
+  margin-right: 6px;
+}
+.filter-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--ghost);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filter-btn:hover { color: var(--text); border-color: var(--border-lit); }
+.filter-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+/* MAIN */
+main { max-width: 1440px; margin: 0 auto; padding: 28px; }
+
+/* LOADING */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 20px;
+}
+.loading-bars { display: flex; gap: 4px; align-items: flex-end; height: 32px; }
+.loading-bar {
+  width: 3px; background: var(--accent); border-radius: 2px;
+  animation: bar-pulse 1.2s ease-in-out infinite;
+}
+.loading-bar:nth-child(1){animation-delay:0s;height:40%}
+.loading-bar:nth-child(2){animation-delay:.1s;height:70%}
+.loading-bar:nth-child(3){animation-delay:.2s;height:100%}
+.loading-bar:nth-child(4){animation-delay:.3s;height:60%}
+.loading-bar:nth-child(5){animation-delay:.4s;height:80%}
+.loading-bar:nth-child(6){animation-delay:.5s;height:45%}
+.loading-bar:nth-child(7){animation-delay:.6s;height:90%}
+@keyframes bar-pulse{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
+.loading-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  color: var(--dim);
+}
+
+/* CATEGORY SECTION */
+.cat-section { margin-bottom: 52px; }
+
+.cat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cat-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  font-weight: 400;
+}
+
+.cat-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: var(--ghost);
+  margin-left: auto;
+}
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+
+/* CARDS */
+.card {
+  background: var(--void);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s;
+  opacity: 0;
+  animation: card-in 0.4s ease forwards;
+  cursor: pointer;
+}
+.card:hover { background: var(--surface); }
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.card:hover::before { transform: scaleX(1); }
+.card[data-cat="science"]::before      { background: var(--cat-science); }
+.card[data-cat="space"]::before        { background: var(--cat-space); }
+.card[data-cat="tech"]::before         { background: var(--cat-tech); }
+.card[data-cat="society"]::before      { background: var(--cat-society); }
+.card[data-cat="investigation"]::before{ background: var(--cat-investigation); }
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* THUMBNAIL — hqdefault for sharp image */
+.thumb-wrap {
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: var(--raised);
+  position: relative;
+}
+.thumb-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.88);
+  transition: filter 0.25s;
+}
+.card:hover .thumb-wrap img { filter: brightness(1); }
+
+.play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  background: rgba(0,0,0,0.25);
+}
+.card:hover .play-overlay { opacity: 1; }
+.play-btn {
+  width: 40px; height: 40px;
+  background: rgba(255,0,0,0.92);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+/* CARD BODY */
+.card-body { padding: 14px 16px 16px; }
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.card-channel {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.card[data-cat="science"] .card-channel      { color: var(--cat-science); }
+.card[data-cat="space"] .card-channel        { color: var(--cat-space); }
+.card[data-cat="tech"] .card-channel         { color: var(--cat-tech); }
+.card[data-cat="society"] .card-channel      { color: var(--cat-society); }
+.card[data-cat="investigation"] .card-channel{ color: var(--cat-investigation); }
+
+.card-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  color: var(--ghost);
+}
+.card-title {
+  font-weight: 600;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  color: var(--ghost);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+  transition: all 0.2s;
+}
+.card-link:hover { color: var(--accent); border-color: var(--accent); }
+
+/* EMPTY */
+.empty-state {
+  padding: 40px;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 20px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+.footer-left {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  color: var(--ghost);
+  line-height: 1.8;
+}
+.footer-right {
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  main { padding: 14px; }
+  .cat-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="logo">SIGNAL</div>
+    <div class="yt-badge">YOUTUBE</div>
+    <div class="live-dot">
+      <div class="dot" id="statusDot"></div>
+      <span id="statusText">INITIALIZING</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="timestamp" id="timestamp">--:--:--</div>
+    <a class="nav-back" href="index.html">← HUB</a>
+    <button class="refresh-btn" id="refreshBtn" onclick="loadFeeds()">
+      <span class="refresh-icon">↻</span> REFRESH
+    </button>
+  </div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat-item"><span class="stat-val" id="statTotal">—</span><span class="stat-label">VIDEOS</span></div>
+  <div class="stat-item"><span class="stat-val" id="statSources">—</span><span class="stat-label">CHANNELS LIVE</span></div>
+  <div class="stat-item"><span class="stat-val" id="statFailed">—</span><span class="stat-label">FAILED</span></div>
+  <div class="stat-item"><span class="stat-val" id="statAge">—</span><span class="stat-label">NEWEST</span></div>
+</div>
+
+<div class="filter-bar">
+  <span class="filter-label">FILTER //</span>
+  <button class="filter-btn active" onclick="setFilter('all',this)">ALL</button>
+  <button class="filter-btn" onclick="setFilter('science',this)" style="color:var(--cat-science)">⬡ SCIENCE</button>
+  <button class="filter-btn" onclick="setFilter('space',this)" style="color:var(--cat-space)">⬡ SPACE</button>
+  <button class="filter-btn" onclick="setFilter('tech',this)" style="color:var(--cat-tech)">⬡ TECHNOLOGY</button>
+  <button class="filter-btn" onclick="setFilter('society',this)" style="color:var(--cat-society)">⬡ SOCIETY</button>
+  <button class="filter-btn" onclick="setFilter('investigation',this)" style="color:var(--cat-investigation)">⬡ INVESTIGATION</button>
+</div>
+
+<main id="main">
+  <div class="loading-state" id="loadingState">
+    <div class="loading-bars">
+      <div class="loading-bar"></div><div class="loading-bar"></div>
+      <div class="loading-bar"></div><div class="loading-bar"></div>
+      <div class="loading-bar"></div><div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+    </div>
+    <div class="loading-text">ACQUIRING SIGNAL</div>
+  </div>
+  <div id="feedContainer"></div>
+</main>
+
+<footer>
+  <div class="footer-left">
+    SIGNAL · YOUTUBE INTELLIGENCE FEED · PWNTECHX<br>
+    SCIENCE · SPACE · TECHNOLOGY · SOCIETY · INVESTIGATION
+  </div>
+  <div class="footer-right">E = 1</div>
+</footer>
+
+<script>
 const CORS = 'https://corsproxy.io/?';
 
 const CHANNELS = [
