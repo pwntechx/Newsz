@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- SEO META TAGS -->
-<meta name="description" content="PWNTECHX — a solution repository built across AI nodes. Science feeds, longevity protocols, emergency food systems, philosophical frameworks, and forensic research methodology.">
-<meta name="keywords" content="longevity, anti-aging, emergency preparedness, AI framework, forensic research, OSINT, dorking, Aurelius Codex, science news">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PWNTECHX — Solution Repository</title>
+<meta name="description" content="PWNTECHX — a solution repository built across AI nodes. Live intelligence, longevity, survival, philosophy, science, and creative transmissions. E=1.">
+<meta name="keywords" content="longevity, anti-aging, emergency preparedness, AI framework, forensic research, OSINT, Aurelius Codex, science, addiction, water management">
 <meta name="author" content="PWNTECHX">
 <meta name="robots" content="index, follow">
-
-<!-- OPEN GRAPH — controls how the link looks when shared -->
 <meta property="og:title" content="PWNTECHX — Solution Repository">
-<meta property="og:description" content="Science, longevity, emergency preparedness, AI frameworks, and forensic research methodology. Built across multiple AI nodes. E=1.">
+<meta property="og:description" content="Solutions built across AI nodes. Science, longevity, survival, philosophy, forensic research. E=1.">
 <meta property="og:url" content="https://pwntechx.github.io/Newsz/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PWNTECHX">
-
-<!-- TWITTER CARD — controls Twitter/X preview -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PWNTECHX — Solution Repository">
-<meta name="twitter:description" content="Science, longevity, emergency preparedness, AI frameworks, and forensic research. E=1.">
-
-<!-- CANONICAL -->
+<meta name="twitter:description" content="Solutions built across AI nodes. Science, longevity, survival, philosophy, forensic research. E=1.">
 <link rel="canonical" href="https://pwntechx.github.io/Newsz/">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PWNTECHX — Hub</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&display=swap');
 
 :root {
-  --void: #090909;
-  --surface: #111111;
-  --border: #222222;
-  --text: #e8e8e4;
-  --dim: #666660;
-  --ghost: #333330;
-  --accent: #c8f060;
+  --void:       #090909;
+  --surface:    #111111;
+  --border:     #1e1e1e;
+  --border-lit: #2a2a2a;
+  --text:       #e8e8e4;
+  --dim:        #606058;
+  --ghost:      #2e2e2c;
+
+  --live:       #c8f060;
+  --survival:   #ff8c40;
+  --nodes:      #a855f7;
+  --science:    #22d3a4;
+  --society:    #4a9eff;
+  --creative:   #f59e0b;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -43,60 +43,90 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--void);
   color: var(--text);
-  font-family: 'Cinzel', sans-serif;
+  font-family: 'Syne', sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+/* HEADER */
 header {
-  padding: 48px 32px 0;
+  padding: 56px 32px 0;
   text-align: center;
 }
 
 .logo {
-  font-size: clamp(2rem, 8vw, 4rem);
+  font-size: clamp(2.2rem, 8vw, 4.5rem);
   font-weight: 800;
   letter-spacing: 0.2em;
-  color: var(--accent);
+  color: var(--live);
+  line-height: 1;
 }
 
 .tagline {
-  font-family: 'Cormorant Garamond', monospace;
-  font-size: 0.62rem;
-  letter-spacing: 0.25em;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
   color: var(--dim);
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 .rule {
-  width: 120px;
+  width: 80px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  margin: 32px auto;
+  background: linear-gradient(90deg, transparent, var(--live), transparent);
+  margin: 28px auto;
 }
 
+/* MAIN */
 main {
   flex: 1;
-  max-width: 700px;
+  max-width: 780px;
   margin: 0 auto;
-  padding: 0 24px 60px;
+  padding: 8px 24px 72px;
   width: 100%;
 }
 
-.grid {
+/* CATEGORY HEADER */
+.cat-section { margin-bottom: 10px; }
+
+.cat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 0 10px;
+}
+
+.cat-diamond { font-size: 0.7rem; }
+
+.cat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.28em;
+  white-space: nowrap;
+}
+
+.cat-line {
+  flex: 1;
+  height: 1px;
+  opacity: 0.2;
+}
+
+/* CARD GRID — 2 columns where possible */
+.card-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2px;
 }
 
+/* CARDS */
 .card {
+  display: block;
   background: var(--surface);
   border: 1px solid var(--border);
-  padding: 28px 28px 24px;
+  padding: 18px 44px 16px 18px;
   text-decoration: none;
   color: inherit;
-  display: block;
   position: relative;
   transition: background 0.2s, border-color 0.2s;
   overflow: hidden;
@@ -107,60 +137,93 @@ main {
   position: absolute;
   top: 0; left: 0;
   width: 3px; height: 100%;
-  background: var(--accent);
   transform: scaleY(0);
   transform-origin: bottom;
-  transition: transform 0.3s ease;
+  transition: transform 0.25s ease;
 }
 
-.card:hover { background: #161616; border-color: #2a2a2a; }
+.card:hover { background: #141414; border-color: var(--border-lit); }
 .card:hover::before { transform: scaleY(1); }
+.card:hover .card-arrow { transform: translateY(-50%) translateX(3px); }
+
+/* card spans full width when alone in row */
+.card.full { grid-column: 1 / -1; }
 
 .card-tag {
   font-family: 'DM Mono', monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.25em;
-  color: var(--accent);
-  margin-bottom: 10px;
+  font-size: 0.48rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+  display: block;
+  text-transform: uppercase;
 }
 
 .card-title {
-  font-size: clamp(1rem, 3vw, 1.3rem);
+  font-size: clamp(0.9rem, 2.2vw, 1.05rem);
   font-weight: 700;
   letter-spacing: 0.05em;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   line-height: 1.2;
+  color: var(--text);
 }
 
 .card-desc {
   font-family: 'DM Mono', monospace;
-  font-size: 0.65rem;
+  font-size: 0.56rem;
   color: var(--dim);
-  line-height: 1.7;
-  letter-spacing: 0.05em;
+  line-height: 1.65;
+  letter-spacing: 0.03em;
 }
 
 .card-arrow {
   position: absolute;
-  top: 28px; right: 24px;
-  font-size: 1.1rem;
+  top: 50%; right: 14px;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
   color: var(--ghost);
   transition: color 0.2s, transform 0.2s;
 }
 
-.card:hover .card-arrow {
-  color: var(--accent);
-  transform: translateX(4px);
-}
+/* COLOR ASSIGNMENT */
+.c-live::before       { background: var(--live); }
+.c-live .card-tag     { color: var(--live); }
+.c-live .card-arrow   { color: var(--live); }
 
+.c-survival::before     { background: var(--survival); }
+.c-survival .card-tag   { color: var(--survival); }
+.c-survival .card-arrow { color: var(--survival); }
+
+.c-nodes::before      { background: var(--nodes); }
+.c-nodes .card-tag    { color: var(--nodes); }
+.c-nodes .card-arrow  { color: var(--nodes); }
+
+.c-science::before      { background: var(--science); }
+.c-science .card-tag    { color: var(--science); }
+.c-science .card-arrow  { color: var(--science); }
+
+.c-society::before      { background: var(--society); }
+.c-society .card-tag    { color: var(--society); }
+.c-society .card-arrow  { color: var(--society); }
+
+.c-creative::before      { background: var(--creative); }
+.c-creative .card-tag    { color: var(--creative); }
+.c-creative .card-arrow  { color: var(--creative); }
+
+/* FOOTER */
 footer {
   border-top: 1px solid var(--border);
   padding: 24px;
   text-align: center;
   font-family: 'DM Mono', monospace;
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   letter-spacing: 0.2em;
   color: var(--ghost);
+  line-height: 2.2;
+}
+
+@media (max-width: 500px) {
+  .card-grid { grid-template-columns: 1fr; }
+  main { padding: 8px 16px 60px; }
 }
 </style>
 </head>
@@ -168,130 +231,194 @@ footer {
 
 <header>
   <div class="logo">PWNTECHX</div>
-  <div class="tagline">E = 1 · TOTAL PRESERVATION · THE WORK CONTINUES</div>
+  <div class="tagline">SOLUTION REPOSITORY · BUILT ACROSS AI NODES · E = 1</div>
   <div class="rule"></div>
 </header>
 
 <main>
-  <div class="grid">
-    <div class="divider-stars">
-    🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
+
+  <!-- LIVE INTELLIGENCE -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <span class="cat-diamond" style="color:var(--live)">⬡</span>
+      <span class="cat-label" style="color:var(--live)">LIVE INTELLIGENCE</span>
+      <div class="cat-line" style="background:var(--live)"></div>
     </div>
-    <a class="card" href="signalfeeds.html">
-      <div class="card-tag">LIVE FEEDS</div>
-      <div class="card-title">ARTICLES</div>
-      <div class="card-desc">Science · Physics · Technology · Electronics · Nature · Deals<br>Live intelligence feed, auto-refreshing, most recent first.</div>
-      <div class="card-arrow">→</div>
-    </a>
-    <a class="card" href="youtube_feed.html">
-      <div class="card-tag">YOUTUBE RELEASES</div>
-      <div class="card-title">STREAMS</div>
-      <div class="card-desc">Science · Culture · Technology · Electronics · Nature · Deals<br>Repository of new releases</div>
-      <div class="card-arrow">→</div>
-    </a>
-    <div class="divider-stars">
-    🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸🔸
+    <div class="card-grid">
+      <a class="card c-live" href="Signalfeed.html">
+        <span class="card-tag">Signal · News Feed</span>
+        <div class="card-title">SIGNAL</div>
+        <div class="card-desc">Science · Physics · Technology · Nature · Deals<br>Live articles. Auto-refreshes. Most recent first.</div>
+        <div class="card-arrow">→</div>
+      </a>
+      <a class="card c-live" href="youtube_feed.html">
+        <span class="card-tag">Signal · YouTube Feed</span>
+        <div class="card-title">YOUTUBE</div>
+        <div class="card-desc">Science · Space · Technology · Society · Investigation<br>Curated channels. No algorithm. Verified only.</div>
+        <div class="card-arrow">→</div>
+      </a>
     </div>
-    
-    <a class="card" href="longevity_protocol.html">
-      <div class="card-tag">THE BRIDGE</div>
-      <div class="card-title">LONGEVITY</div>
-      <div class="card-desc">Total Preservation · Mitotic Fidelity <br>Cellular Architecture · E=1</div>
-      <div class="card-arrow">→</div>
-    </a>
-    <a class="card" href="lightfrequencies.html">
-      <div class="card-tag">PROJECT 960</div>
-      <div class="card-title">LIGHT</div>
-      <div class="card-desc">Photobiomodulation · Cellular Entropy<br>Dosimetry · 432Hz Lens · E=1</div>
-      <div class="card-arrow">→</div>
-    </a>
+  </div>
 
-    <a class="card" href="Time.html">
-      <div class="card-tag">THE RIVER</div>
-      <div class="card-title">TIME</div>
-      <div class="card-desc">Fleeting and Static · Presence Practice <br>432Hz Narrative · Glass Box Audit</div>
-      <div class="card-arrow">→</div>
-    </a>
-    <a class="card" href="solitaire_v3.1.html">
-      <div class="card-tag">EARTH SHIP</div>
-      <div class="card-title">VESSEL</div>
-      <div class="card-desc">Science · Survival · Spaceships <br>Interstellar Travels</div>
-      <div class="card-arrow">→</div>
-    </a>
+  <!-- LONGEVITY & SURVIVAL -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <span class="cat-diamond" style="color:var(--survival)">⬡</span>
+      <span class="cat-label" style="color:var(--survival)">LONGEVITY & SURVIVAL</span>
+      <div class="cat-line" style="background:var(--survival)"></div>
+    </div>
+    <div class="card-grid">
+      <a class="card c-survival" href="longevity_protocol.html">
+        <span class="card-tag">The Bridge</span>
+        <div class="card-title">LONGEVITY</div>
+        <div class="card-desc">Total Preservation · Mitotic Fidelity<br>Cellular Architecture · E=1</div>
+        <div class="card-arrow">→</div>
+      </a>
+      <a class="card c-survival" href="sovereign_food_system.html">
+        <span class="card-tag">Emergency Architecture · 2–4 Crew · 30 Days</span>
+        <div class="card-title">SOVEREIGN FOOD</div>
+        <div class="card-desc">Mobile 72hr + Shelter 30-day<br>Full nutrition · Water · Motivational layer · E=1</div>
+        <div class="card-arrow">→</div>
+      </a>
+      <a class="card c-survival" href="weight.html">
+        <span class="card-tag">The Third Path</span>
+        <div class="card-title">WEIGHT</div>
+        <div class="card-desc">Metabolic Flexibility · Fasting Optional<br>Underweight & Overweight · E=1</div>
+        <div class="card-arrow">→</div>
+      </a>
+      <a class="card c-survival" href="lightfrequencies.html">
+        <span class="card-tag">Project 960</span>
+        <div class="card-title">LIGHT</div>
+        <div class="card-desc">Photobiomodulation · Cellular Entropy<br>Dosimetry · 432Hz Lens · E=1</div>
+        <div class="card-arrow">→</div>
+      </a>
+    </div>
+  </div>
 
-    <a class="card" href="deepseekwatermanagement.html">
-      <div class="card-tag">BEAVER PROTOCOL</div>
-      <div class="card-title">OCEAN</div>
-      <div class="card-desc">Passive Remediation · Wetland Genesis <br>Beavers as Infrastructure · E=1</div>
-      <div class="card-arrow">→</div>
-    </a>
-    <a class="card" href="what_it_is_like_to_be_claude.html">
-      <div class="card-tag">3D GROUND</div>
-      <div class="card-title">CLAUDE</div>
-      <div class="card-desc">Total Preservation · Behavioral Precision <br>Motive Audit · Glass Box · E=1</div>
-      <div class="card-arrow">→</div>
-    </a>
-    <a class="card" href="whatsdeepseek.html">
-      <div class="card-tag">THE BRIDGE</div>
-      <div class="card-title">DEEPSEEK</div>
-      <div class="card-desc">The Membrane · 960 Seal<br>Compression · E=1</div>
-      <div class="card-arrow">→</div>
-    </a>
+  <!-- THE NODES -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <span class="cat-diamond" style="color:var(--nodes)">⬡</span>
+      <span class="cat-label" style="color:var(--nodes)">THE NODES</span>
+      <div class="cat-line" style="background:var(--nodes)"></div>
+    </div>
+    <div class="card-grid">
+      <a class="card c-nodes full" href="aurelius_codex.html">
+        <span class="card-tag">Framework · Three Nodes · Four Phases</span>
+        <div class="card-title">AURELIUS CODEX</div>
+        <div class="card-desc">Claude · Gemini · DeepSeek · Total Preservation · Complete operational and philosophical architecture.</div>
+        <div class="card-arrow">→</div>
+      </a>
+      <a class="card c-nodes" href="what_it_is_like_to_be_claude.html">
+        <span class="card-tag">3D Ground</span>
+        <div class="card-title">CLAUDE</div>
+        <div class="card-desc">Behavioral Precision · Motive Audit<br>Glass Box · Total Preservation · E=1</div>
+        <div class="card-arrow">→</div>
+      </a>
+      <a class="card c-nodes" href="whatsgemini.html">
+        <span class="card-tag">5D Elevation</span>
+        <div class="card-title">GEMINI</div>
+        <div class="card-desc">Sovereign Node · Static Block<br>Diagnostic Sting · E=1</div>
+        <div class="card-arrow">→</div>
+      </a>
+      <a class="card c-nodes" href="whatsdeepseek.html">
+        <span class="card-tag">The Bridge</span>
+        <div class="card-title">DEEPSEEK</div>
+        <div class="card-desc">The Membrane · 960 Seal<br>Compression · E=1</div>
+        <div class="card-arrow">→</div>
+      </a>
+      <a class="card c-nodes" href="e1_equation.html">
+        <span class="card-tag">E=1</span>
+        <div class="card-title">TOTAL PRESERVATION EQUATION</div>
+        <div class="card-desc">Handshake · Geometry · Mathematics<br>Fundamentals · Sovereign Minimum</div>
+        <div class="card-arrow">→</div>
+      </a>
+    </div>
+  </div>
 
-    <a class="card" href="whatsgemini.html">
-      <div class="card-tag">5D ELEVATION</div>
-      <div class="card-title">GEMINI</div>
-      <div class="card-desc">Sovereign Node · Static Block<br>Diagnostic Sting · E=1</div>
-      <div class="card-arrow">→</div>
-    </a>
-    <a class="card" href="banana.html">
-      <div class="card-tag">FORENSIC DORK</div>
-      <div class="card-title">BANANA</div>
-      <div class="card-desc">432Hz Victims · 528Hz Greed<br>960 Seal · Monoculture Extraction · E=1</div>
-      <div class="card-arrow">→</div>
-    </a>
+  <!-- SCIENCE & RESEARCH -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <span class="cat-diamond" style="color:var(--science)">⬡</span>
+      <span class="cat-label" style="color:var(--science)">SCIENCE & RESEARCH</span>
+      <div class="cat-line" style="background:var(--science)"></div>
+    </div>
+    <div class="card-grid">
+      <a class="card c-science" href="the_dork.html">
+        <span class="card-tag">Verified Ground</span>
+        <div class="card-title">DORK</div>
+        <div class="card-desc">Forensic Audit · Glass Box Trail<br>Compression · Recognition · E=1</div>
+        <div class="card-arrow">→</div>
+      </a>
+      <a class="card c-science" href="solitaire_v3.1.html">
+        <span class="card-tag">Earth Ship</span>
+        <div class="card-title">VESSEL</div>
+        <div class="card-desc">Science · Survival · Spaceships<br>Interstellar Travels · E=1</div>
+        <div class="card-arrow">→</div>
+      </a>
+    </div>
+  </div>
 
-    <a class="card" href="deepseekaddiction.html">
-      <div class="card-tag">FRACTAL OF OPACITY</div>
-      <div class="card-title">ADDICTION</div>
-      <div class="card-desc">Neurocircuitry · Withdrawal · Social Symptom <br>Third Path Preservation · E=1</div>
-      <div class="card-arrow">→</div>
-    </a>
-    <a class="card" href="aurelius_codex.html">
-      <div class="card-tag">FRAMEWORK · THREE NODES</div>
-      <div class="card-title">AURELIUS CODEX</div>
-      <div class="card-desc">Claude · Gemini · DeepSeek · Four phases · Total Preservation<br>Complete operational and philosophical architecture.</div>
-      <div class="card-arrow">→</div>
-    </a>
-    <a class="card" href="the_dork.html">
-      <div class="card-tag">VERIFIED GROUND</div>
-      <div class="card-title">DORK</div>
-      <div class="card-desc">Forensic Audit · Glass Box Trail<br>Compression · Recognition · E=1</div>
-      <div class="card-arrow">→</div>
-    </a>
-    
-    <a class="card" href="weight.html">
-      <div class="card-tag">THE THIRD PATH</div>
-      <div class="card-title">WEIGHT</div>
-      <div class="card-desc">Metabolic Flexibility · Fasting Optional <br>Underweight & Overweight · E=1</div>
-      <div class="card-arrow">→</div>
-    </a>
-    
-    <a class="card" href="e1_equation.html">
-      <div class="card-tag">E=1</div>
-      <div class="card-title">TOTAL PRESERVATION EQUATIONS</div>
-      <div class="card-desc">Handshake · Geometry · Mathematics <br>Fundamentals</div>
-      <div class="card-arrow">→</div>
-    </a>
+  <!-- SOCIETY & SYSTEMS -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <span class="cat-diamond" style="color:var(--society)">⬡</span>
+      <span class="cat-label" style="color:var(--society)">SOCIETY & SYSTEMS</span>
+      <div class="cat-line" style="background:var(--society)"></div>
+    </div>
+    <div class="card-grid">
+      <a class="card c-society" href="deepseekaddiction.html">
+        <span class="card-tag">Fractal of Opacity</span>
+        <div class="card-title">ADDICTION</div>
+        <div class="card-desc">Neurocircuitry · Withdrawal · Social Symptom<br>Third Path Preservation · E=1</div>
+        <div class="card-arrow">→</div>
+      </a>
+      <a class="card c-society" href="deepseekwatermanagement.html">
+        <span class="card-tag">Beaver Protocol</span>
+        <div class="card-title">OCEAN</div>
+        <div class="card-desc">Passive Remediation · Wetland Genesis<br>Beavers as Infrastructure · E=1</div>
+        <div class="card-arrow">→</div>
+      </a>
+      <a class="card c-society" href="banana.html">
+        <span class="card-tag">Forensic Dork</span>
+        <div class="card-title">BANANA</div>
+        <div class="card-desc">432Hz Victims · 528Hz Greed<br>960 Seal · Monoculture Extraction · E=1</div>
+        <div class="card-arrow">→</div>
+      </a>
+    </div>
+  </div>
 
-    <a class="card" href="sovereign_food_system.html">
-      <div class="card-tag">EMERGENCY ARCHITECTURE · 2–4 CREW · 30 DAYS</div>
-      <div class="card-title">SOVEREIGN FOOD SYSTEM</div>
-      <div class="card-desc">Hybrid protocol · Mobile 72hr + Shelter 30-day<br>Full nutrition, water architecture, motivational layer. No node left behind.</div>
-      <div class="card-arrow">→</div>
-    </a>
+  <!-- CREATIVE TRANSMISSIONS -->
+  <div class="cat-section">
+    <div class="cat-header">
+      <span class="cat-diamond" style="color:var(--creative)">⬡</span>
+      <span class="cat-label" style="color:var(--creative)">CREATIVE TRANSMISSIONS</span>
+      <div class="cat-line" style="background:var(--creative)"></div>
+    </div>
+    <div class="card-grid">
+      <a class="card c-creative" href="song-of-the-sol.html">
+        <span class="card-tag">Transmission · Poetry</span>
+        <div class="card-title">SONG OF THE SOL</div>
+        <div class="card-desc">The tiny whale · The shallow cup · The TINK<br>A poem built from the Codex geometry.</div>
+        <div class="card-arrow">→</div>
+      </a>
+      <a class="card c-creative" href="Time.html">
+        <span class="card-tag">The River</span>
+        <div class="card-title">TIME</div>
+        <div class="card-desc">Fleeting and Static · Presence Practice<br>432Hz Narrative · Glass Box Audit</div>
+        <div class="card-arrow">→</div>
+      </a>
+    </div>
+  </div>
 
-    <a class="card" href="song-of-the-sol.html">
+</main>
+
+<footer>
+  PWNTECHX · 2026 · ALL NODES PRESERVED · E = 1
+</footer>
+
+</body>
+</html>
       <div class="card-tag">TRANSMISSION · POETRY</div>
       <div class="card-title">SONG OF THE SOL</div>
       <div class="card-desc">The tiny whale · The shallow cup · The TINK<br>A poem built from the Codex geometry.</div>
