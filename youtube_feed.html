@@ -3,14 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIGNAL — YouTube Intelligence Feed · PWNTECHX</title>
-<meta name="description" content="Curated YouTube intelligence feed from top science, technology, space, and society channels. Updated automatically. No algorithm.">
-<meta name="robots" content="index, follow">
-<meta property="og:title" content="SIGNAL — YouTube Intelligence Feed · PWNTECHX">
-<meta property="og:description" content="Curated YouTube feed: science, space, technology, society. No algorithm. Verified channels only.">
-<meta property="og:url" content="https://pwntechx.github.io/Newsz/youtube_feed.html">
-<meta property="og:type" content="website">
-<link rel="canonical" href="https://pwntechx.github.io/Newsz/youtube_feed.html">
+<title>SIGNAL — YouTube Intelligence Feed</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&display=swap');
 
@@ -23,14 +16,12 @@
   --text: #e8e8e4;
   --dim: #888880;
   --ghost: #444440;
+  --red: #ff0000;
+  --red-dim: rgba(255,0,0,0.15);
   --accent: #ff4444;
-  --accent-dim: rgba(255,68,68,0.12);
+  --accent-dim: rgba(255,68,68,0.15);
   --rule: rgba(255,68,68,0.15);
-  --cat-science: #4a9eff;
-  --cat-space: #a855f7;
-  --cat-tech: #22d3a4;
-  --cat-society: #f59e0b;
-  --cat-investigation: #f97316;
+  --rule-s: rgba(255,68,68,0.35);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -44,23 +35,672 @@ body {
   overflow-x: hidden;
 }
 
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+}
+
 /* HEADER */
 header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(9,9,9,0.97);
-  backdrop-filter: blur(20px);
+  background: rgba(9,9,9,0.96);
+  backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--rule);
-  padding: 0 28px;
-  height: 54px;
+  padding: 0 24px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
 
-.header-left { display: flex; align-items: center; gap: 14px; }
+.header-left { display: flex; align-items: center; gap: 16px; }
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+}
+
+.yt-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  border: 1px solid var(--rule);
+  padding: 2px 8px;
+}
+
+.live-dot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: var(--dim);
+}
+
+.dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: blink 2s ease-in-out infinite;
+}
+
+.dot.loading { background: #ffaa00; animation: none; }
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+.header-right { display: flex; align-items: center; gap: 12px; }
+
+.timestamp {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--ghost);
+  letter-spacing: 0.1em;
+}
+
+.refresh-btn {
+  background: var(--accent-dim);
+  border: 1px solid rgba(255,68,68,0.3);
+  color: var(--accent);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.refresh-btn:hover { background: rgba(255,68,68,0.25); border-color: var(--accent); }
+.refresh-btn:active { transform: scale(0.97); }
+
+.refresh-icon { display: inline-block; transition: transform 0.6s ease; }
+.refresh-btn.spinning .refresh-icon { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* STATS BAR */
+.stats-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 24px;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.stat-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-val { color: var(--accent); }
+.stat-label { color: var(--ghost); }
+
+/* CHANNEL FILTER BAR */
+.filter-bar {
+  background: var(--void);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 24px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+  margin-right: 8px;
+}
+
+.filter-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--ghost);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover { color: var(--text); border-color: var(--border-lit); }
+.filter-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+
+/* MAIN */
+main { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+/* LOADING */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 20px;
+}
+
+.loading-bars {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  height: 32px;
+}
+
+.loading-bar {
+  width: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  animation: bar-pulse 1.2s ease-in-out infinite;
+}
+
+.loading-bar:nth-child(1) { animation-delay: 0s; height: 40%; }
+.loading-bar:nth-child(2) { animation-delay: 0.1s; height: 70%; }
+.loading-bar:nth-child(3) { animation-delay: 0.2s; height: 100%; }
+.loading-bar:nth-child(4) { animation-delay: 0.3s; height: 60%; }
+.loading-bar:nth-child(5) { animation-delay: 0.4s; height: 80%; }
+.loading-bar:nth-child(6) { animation-delay: 0.5s; height: 45%; }
+.loading-bar:nth-child(7) { animation-delay: 0.6s; height: 90%; }
+
+@keyframes bar-pulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+.loading-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  color: var(--dim);
+}
+
+/* FEED GRID */
+.feed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1px;
+  background: var(--border);
+}
+
+/* CARDS */
+.card {
+  background: var(--void);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s;
+  opacity: 0;
+  animation: card-in 0.4s ease forwards;
+  cursor: pointer;
+}
+
+.card:hover { background: var(--surface); }
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.card:hover::before { transform: scaleX(1); }
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* THUMBNAIL */
+.thumb-wrap {
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: var(--raised);
+  position: relative;
+}
+
+.thumb-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.85) saturate(0.9);
+  transition: filter 0.3s;
+}
+
+.card:hover .thumb-wrap img { filter: brightness(0.95) saturate(1); }
+
+.play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  background: rgba(0,0,0,0.3);
+}
+
+.card:hover .play-overlay { opacity: 1; }
+
+.play-btn {
+  width: 48px; height: 48px;
+  background: rgba(255,0,0,0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+/* CARD BODY */
+.card-body { padding: 16px 18px 18px; }
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.card-channel {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.card-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--ghost);
+}
+
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+  line-height: 1.4;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.card-link:hover { color: var(--accent); border-color: var(--accent); }
+
+/* FEATURED */
+.card.featured { grid-column: span 2; }
+.card.featured .thumb-wrap { aspect-ratio: 16/7; }
+.card.featured .card-title { font-size: clamp(1rem, 2vw, 1.2rem); -webkit-line-clamp: 4; }
+
+/* EMPTY */
+.empty-state {
+  grid-column: 1 / -1;
+  padding: 60px;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.footer-left {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  line-height: 1.8;
+}
+
+.footer-right {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+.nav-back {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+
+.nav-back:hover { color: var(--accent); border-color: var(--accent); }
+
+@media (max-width: 720px) {
+  .card.featured { grid-column: span 1; }
+  .feed-grid { grid-template-columns: 1fr; }
+  main { padding: 12px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="logo">SIGNAL</div>
+    <div class="yt-badge">YOUTUBE</div>
+    <div class="live-dot">
+      <div class="dot" id="statusDot"></div>
+      <span id="statusText">INITIALIZING</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="timestamp" id="timestamp">--:--:--</div>
+    <a class="nav-back" href="index.html">← HUB</a>
+    <button class="refresh-btn" id="refreshBtn" onclick="loadFeeds()">
+      <span class="refresh-icon">↻</span> REFRESH
+    </button>
+  </div>
+</header>
+
+<div class="stats-bar" id="statsBar">
+  <div class="stat-item"><span class="stat-val" id="statTotal">—</span><span class="stat-label">VIDEOS</span></div>
+  <div class="stat-item"><span class="stat-val" id="statSources">—</span><span class="stat-label">LIVE CHANNELS</span></div>
+  <div class="stat-item"><span class="stat-val" id="statFailed">—</span><span class="stat-label">FAILED</span></div>
+  <div class="stat-item"><span class="stat-val" id="statAge">—</span><span class="stat-label">NEWEST</span></div>
+</div>
+
+<div class="filter-bar" id="filterBar">
+  <span class="filter-label">FILTER //</span>
+  <button class="filter-btn active" onclick="filterChannel('all', this)">ALL</button>
+</div>
+
+<main id="main">
+  <div class="loading-state" id="loadingState">
+    <div class="loading-bars">
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+      <div class="loading-bar"></div>
+    </div>
+    <div class="loading-text">ACQUIRING SIGNAL</div>
+  </div>
+  <div class="feed-grid" id="feedGrid" style="display:none;"></div>
+</main>
+
+<footer>
+  <div class="footer-left">
+    SIGNAL · YOUTUBE INTELLIGENCE FEED · PWNTECHX<br>
+    SCIENCE · TECHNOLOGY · SPACE · SOCIETY · INVESTIGATION
+  </div>
+  <div class="footer-right">E = 1</div>
+</footer>
+
+<script>
+const CORS = 'https://corsproxy.io/?';
+
+const CHANNELS = [
+  { name: 'Area 52',            id: 'UCs-druqefwNIF_3M-1xucqg', emoji: '👁️' },
+  { name: 'Dami Lee',           id: 'UCo8bcnLyZH8tBIH9V1mLgqQ', emoji: '🎨' },
+  { name: 'SciShow',            id: 'UCZYTClx2T1of7BRZ86-8fow', emoji: '🔬' },
+  { name: 'PBS Space Time',     id: 'UC7_gcs09iThXybpVgjHZ_7g', emoji: '🌌' },
+  { name: 'Veritasium',         id: 'UCHnyfMqiRRG1u-2MsSQLbXA', emoji: '⚛️' },
+  { name: 'Sabine Hossenfelder',id: 'UC1yNl2E66ZzKApQdRuTQ4tw', emoji: '🧠' },
+  { name: 'MKBHD',              id: 'UCBJycsmduvYEL83R_U4JriQ', emoji: '📱' },
+  { name: 'CNA',                id: 'UC83jt4dlz1Gjl58fzQrrKZg', emoji: '🌏' },
+  { name: 'Infographics Show',  id: 'UCfdNM3NAhaBOXCafH7krzrA', emoji: '📊' },
+  { name: 'The Why Files',      id: 'UCcMeta3ri-o8FeVHPjHGiCw', emoji: '❓' },
+  { name: 'Asian Boss',         id: 'UC_ednmGFEVBLxrKjhyNMsmA', emoji: '🗣️' },
+  { name: 'Business Insider',   id: 'UCcyq283he07B7_KUX07mmtA', emoji: '💼' },
+  { name: 'Bloomberg Tech',     id: 'UCrM7B7SL_g1edFOnmj-SDKg', emoji: '📈' },
+  { name: 'Real Science',       id: 'UCtESv1e7ntJaLJYKIO1FoYw', emoji: '🧬' },
+  // Claude recommendations
+  { name: 'Kurzgesagt',         id: 'UCsXVk37bltHxD1rDPwtNM8Q', emoji: '🐦' },
+  { name: 'SmarterEveryDay',    id: 'UC6107grRI4m0o2-emgoDnAA', emoji: '🔭' },
+  { name: 'Wendover Productions',id: 'UC9RM-iSsfbt2diR6JAvcos', emoji: '✈️' },
+  { name: 'Cold Fusion',        id: 'UCr_iyUANcn9OX_yy9piGeiw', emoji: '❄️' },
+  { name: 'Thoughty2',          id: 'UC9bDFBBSp1M8F1SRNG5GK-A', emoji: '💡' },
+];
+
+let allVideos = [];
+let activeFilter = 'all';
+let stats = { total: 0, sources: 0, failed: 0 };
+
+function timeAgo(dateStr) {
+  const date = new Date(dateStr);
+  if (isNaN(date)) return '';
+  const diff = (Date.now() - date) / 1000;
+  if (diff < 60) return `${Math.floor(diff)}s ago`;
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+  return `${Math.floor(diff/86400)}d ago`;
+}
+
+async function fetchChannel(channel) {
+  try {
+    const url = `https://www.youtube.com/feeds/videos.xml?channel_id=${channel.id}`;
+    const res = await fetch(CORS + encodeURIComponent(url), { signal: AbortSignal.timeout(8000) });
+    const text = await res.text();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(text, 'text/xml');
+    const entries = [...xml.querySelectorAll('entry')];
+    if (!entries.length) return null;
+
+    return entries.slice(0, 10).map(entry => {
+      const videoId = entry.querySelector('videoId')?.textContent || '';
+      const title = entry.querySelector('title')?.textContent?.trim() || '';
+      const published = entry.querySelector('published')?.textContent || '';
+      const link = entry.querySelector('link')?.getAttribute('href') || `https://www.youtube.com/watch?v=${videoId}`;
+      const thumb = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
+
+      return {
+        title,
+        link,
+        published,
+        thumb,
+        videoId,
+        channel: channel.name,
+        emoji: channel.emoji,
+      };
+    }).filter(v => v.title && v.videoId);
+  } catch {
+    return null;
+  }
+}
+
+function buildFilterBar() {
+  const bar = document.getElementById('filterBar');
+  // Clear existing channel buttons
+  [...bar.querySelectorAll('.filter-btn:not(:first-of-type)')].forEach(b => b.remove());
+
+  const seen = new Set();
+  allVideos.forEach(v => seen.add(v.channel));
+  seen.forEach(name => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.textContent = name;
+    btn.onclick = () => filterChannel(name, btn);
+    bar.appendChild(btn);
+  });
+}
+
+function filterChannel(name, btn) {
+  activeFilter = name;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid();
+}
+
+function renderGrid() {
+  const grid = document.getElementById('feedGrid');
+  const videos = activeFilter === 'all' ? allVideos : allVideos.filter(v => v.channel === activeFilter);
+
+  if (!videos.length) {
+    grid.innerHTML = '<div class="empty-state">NO SIGNAL · RETRY</div>';
+    return;
+  }
+
+  let html = '';
+  videos.forEach((v, i) => {
+    const delay = Math.min(i * 35, 500);
+    const featured = i === 0 && activeFilter === 'all' ? ' featured' : '';
+    html += `
+      <div class="card${featured}" style="animation-delay:${delay}ms" onclick="window.open('${v.link}','_blank')">
+        <div class="thumb-wrap">
+          <img src="${v.thumb}" alt="" loading="lazy" onerror="this.style.display='none'">
+          <div class="play-overlay"><div class="play-btn">▶</div></div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-channel">${v.emoji} ${v.channel}</span>
+            <span class="card-time">${timeAgo(v.published)}</span>
+          </div>
+          <div class="card-title">${v.title}</div>
+          <a class="card-link" href="${v.link}" target="_blank" rel="noopener" onclick="event.stopPropagation()">WATCH →</a>
+        </div>
+      </div>`;
+  });
+
+  grid.innerHTML = html;
+}
+
+function updateStats() {
+  document.getElementById('statTotal').textContent = stats.total;
+  document.getElementById('statSources').textContent = stats.sources;
+  document.getElementById('statFailed').textContent = stats.failed;
+  if (allVideos.length) {
+    const newest = new Date(Math.max(...allVideos.map(v => new Date(v.published || 0))));
+    document.getElementById('statAge').textContent = timeAgo(newest);
+  }
+}
+
+function updateClock() {
+  const now = new Date();
+  document.getElementById('timestamp').textContent =
+    now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
+async function loadFeeds() {
+  const btn = document.getElementById('refreshBtn');
+  const dot = document.getElementById('statusDot');
+  const statusText = document.getElementById('statusText');
+  const grid = document.getElementById('feedGrid');
+  const loading = document.getElementById('loadingState');
+
+  btn.classList.add('spinning');
+  dot.className = 'dot loading';
+  statusText.textContent = 'FETCHING';
+  loading.style.display = 'flex';
+  grid.style.display = 'none';
+  allVideos = [];
+  stats = { total: 0, sources: 0, failed: 0 };
+
+  const results = await Promise.all(CHANNELS.map(ch => fetchChannel(ch)));
+
+  results.forEach(result => {
+    if (result && result.length) {
+      stats.sources++;
+      allVideos.push(...result);
+    } else {
+      stats.failed++;
+    }
+  });
+
+  // Sort by date descending
+  allVideos.sort((a, b) => new Date(b.published) - new Date(a.published));
+
+  // Deduplicate
+  const seen = new Set();
+  allVideos = allVideos.filter(v => {
+    if (seen.has(v.videoId)) return false;
+    seen.add(v.videoId);
+    return true;
+  });
+
+  stats.total = allVideos.length;
+
+  loading.style.display = 'none';
+  grid.style.display = 'grid';
+
+  if (!allVideos.length) {
+    grid.innerHTML = '<div class="empty-state">NO SIGNAL ACQUIRED · CHECK CONNECTION</div>';
+    dot.className = 'dot error';
+    statusText.textContent = 'NO SIGNAL';
+  } else {
+    buildFilterBar();
+    renderGrid();
+    dot.className = 'dot';
+    statusText.textContent = 'LIVE';
+  }
+
+  btn.classList.remove('spinning');
+  updateStats();
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+setInterval(loadFeeds, 20 * 60 * 1000);
+loadFeeds();
+</script>
+</body>
+</html>
 
 .logo {
   font-weight: 800;
