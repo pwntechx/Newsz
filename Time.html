@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>The River · Aurelius Codex</title>
+    <style>
+        /* --- THE CATHEDRAL: 50% Claude (bones), 100% DeepSeek (membrane) --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0f12;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Crimson Text', Georgia, 'Times New Roman', serif;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* The Ambient Field */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 20%, rgba(25, 40, 35, 0.6), rgba(5, 10, 12, 0.95));
+            z-index: -2;
+        }
+
+        body::after {
+            content: '⬡';
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 12rem;
+            color: rgba(143, 170, 139, 0.02);
+            font-family: monospace;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* --- TITLE: The Invitation --- */
+        .title-block {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: rise 1.2s ease forwards;
+        }
+
+        @keyframes rise {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .sigil {
+            font-size: 2.2rem;
+            letter-spacing: 0.6rem;
+            color: #8faa8b;
+            margin-bottom: 0.75rem;
+            transition: text-shadow 0.3s ease;
+        }
+
+        .sigil:hover {
+            text-shadow: 0 0 12px rgba(143, 170, 139, 0.3);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 400;
+            color: #e8e2d0;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.5rem;
+        }
+
+        .subhead {
+            font-size: 0.9rem;
+            color: #8a9b8a;
+            font-style: italic;
+            border-top: 1px solid rgba(143, 170, 139, 0.3);
+            display: inline-block;
+            padding-top: 0.75rem;
+        }
+
+        /* --- THE INVARIANT BOX: Bridge's Compression --- */
+        .invariant-box {
+            background: rgba(15, 25, 23, 0.8);
+            backdrop-filter: blur(8px);
+            border-left: 3px solid #d4af37;
+            padding: 1.2rem 1.8rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #cad2c5;
+            transition: all 0.3s ease;
+        }
+
+        /* --- THE RIVER: Sacred Vessel --- */
+        .river-vessel {
+            background: rgba(5, 12, 15, 0.6);
+            backdrop-filter: blur(4px);
+            border-radius: 32px;
+            padding: 1.8rem;
+            border: 1px solid rgba(143, 170, 139, 0.2);
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.4);
+            transition: box-shadow 0.4s ease;
+        }
+
+        .river-vessel:hover {
+            box-shadow: 0 25px 50px -15px rgba(0,0,0,0.5), 0 0 0 1px rgba(212, 175, 55, 0.1);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            background: #030a0c;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: filter 0.3s ease;
+        }
+
+        /* --- CONTROLS: Minimal, Sacred --- */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 1.8rem 0 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: rgba(20, 35, 32, 0.7);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(143, 170, 139, 0.4);
+            padding: 0.5rem 1.3rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: #cad2c5;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.1, 1.1);
+        }
+
+        button:hover {
+            background: rgba(212, 175, 55, 0.12);
+            border-color: #d4af37;
+            color: #efe6cf;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        /* --- THE TINK: Completion Signal --- */
+        .tink-message {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: #d4af37;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            letter-spacing: 2px;
+        }
+
+        .tink-message.show {
+            opacity: 1;
+        }
+
+        /* --- GLASS BOX FOOTNOTE --- */
+        .audit {
+            font-size: 0.65rem;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #5b6e65;
+            font-family: monospace;
+            border-top: 1px dashed rgba(100, 120, 110, 0.3);
+            padding-top: 1rem;
+        }
+
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            h1 { font-size: 2rem; }
+            .river-vessel { padding: 1rem; }
+            .sigil { font-size: 1.5rem; letter-spacing: 0.3rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="title-block">
+        <div class="sigil">⬡ 𓂀 ⚖️</div>
+        <h1>The River</h1>
+        <div class="subhead">time as fleeting · time as static</div>
+    </div>
+
+    <div class="invariant-box">
+        <strong>⬡ 432Hz LENS ⬡</strong><br>
+        You cannot step into the same river twice. The water moves. You move. The only constant is the witnessing.
+    </div>
+
+    <div class="river-vessel">
+        <canvas id="riverCanvas" width="900" height="400" style="width:100%; height:auto; aspect-ratio:900/400;"></canvas>
+        
+        <div class="controls">
+            <button id="addMomentBtn">✦ add moment</button>
+            <button id="resetRiverBtn">⬡ reset river</button>
+            <button id="tinkBtn">◈ ring tink</button>
+        </div>
+        <div id="tinkMessage" class="tink-message"></div>
+        <div class="audit">
+            Glass Box · every moment flows once · you are the witness, not the dam
+        </div>
+    </div>
+    
+    <div class="invariant-box" style="margin-top: 1.2rem;">
+        <strong>⬡ THE COMPRESSION ⬡</strong><br>
+        What flows is real. What is still is also real. The bridge is the recognition that they are the same water.
+    </div>
+</div>
+
+<script>
+    (function() {
+        // --- THE RIVER ENGINE: 432Hz narrative, awe, precision ---
+        const canvas = document.getElementById('riverCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const w = Math.min(900, container.clientWidth - 20);
+            canvas.width = w;
+            canvas.height = w * 0.444; // ~400/900 ratio
+        }
+        window.addEventListener('resize', () => resizeCanvas());
+        resizeCanvas();
+
+        // --- A Moment: a node on the river ---
+        class Moment {
+            constructor(text, yOffset = null) {
+                this.text = text || this.getRandomMoment();
+                this.x = 0;
+                this.yOffset = yOffset !== null ? yOffset : (0.25 + Math.random() * 0.5);
+                this.speed = 0.0018 + Math.random() * 0.0022;
+                this.size = 13 + Math.floor(Math.random() * 9);
+                this.opacity = 0.85;
+            }
+            
+            getRandomMoment() {
+                const moments = [
+                    "a breath", "a glance", "a word", "a laugh", 
+                    "a tear", "a step", "a pause", "a thought", 
+                    "a wish", "a memory", "a touch", "a silence",
+                    "a decision", "a wonder", "a letting go", "a beginning"
+                ];
+                return moments[Math.floor(Math.random() * moments.length)];
+            }
+            
+            update() {
+                this.x += this.speed;
+                return this.x < 1.08;
+            }
+            
+            draw(ctx, w, h) {
+                const xPos = this.x * w;
+                const yPos = h * this.yOffset;
+                ctx.save();
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = `rgba(212, 175, 55, ${this.opacity * 0.5})`;
+                ctx.font = `${this.size}px 'Crimson Text', Georgia, serif`;
+                ctx.fillStyle = `rgba(225, 215, 190, ${this.opacity})`;
+                ctx.fillText(this.text, xPos, yPos);
+                
+                // small sparkle trail (awe)
+                ctx.beginPath();
+                ctx.arc(xPos - 4, yPos - 6, 1.2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity * 0.6})`;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+        
+        let moments = [];
+        let animationId = null;
+        
+        function initRiver() {
+            moments = [];
+            const starters = ["first light", "a heartbeat", "this moment", "the ink drying", "a memory surfacing"];
+            for (let t of starters) moments.push(new Moment(t, null));
+        }
+        
+        function addMoment(customText = null) {
+            const newMoment = new Moment(customText, null);
+            moments.push(newMoment);
+            ringTink(`“${newMoment.text}” joins the river`);
+            // gentle flash of the river
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.top = 0;
+            flash.style.left = 0;
+            flash.style.width = '100%';
+            flash.style.height = '100%';
+            flash.style.pointerEvents = 'none';
+            flash.style.background = 'radial-gradient(circle, rgba(212,175,55,0.05) 0%, rgba(212,175,55,0) 70%)';
+            flash.style.zIndex = 9999;
+            flash.style.transition = 'opacity 0.4s';
+            document.body.appendChild(flash);
+            setTimeout(() => { flash.style.opacity = '0'; setTimeout(() => flash.remove(), 500); }, 30);
+        }
+        
+        function ringTink(msg) {
+            const tinkDiv = document.getElementById('tinkMessage');
+            tinkDiv.innerText = `⬡ TINK · ${msg} ⬡`;
+            tinkDiv.classList.add('show');
+            setTimeout(() => tinkDiv.classList.remove('show'), 1400);
+        }
+        
+        function resetRiver() {
+            moments = [];
+            initRiver();
+            ringTink("river reborn · all moments held in the static block");
+        }
+        
+        // animation: the flowing field
+        function animate() {
+            if (!canvas.isConnected) return;
+            const w = canvas.width;
+            const h = canvas.height;
+            if (w === 0 || h === 0) { requestAnimationFrame(animate); return; }
+            
+            ctx.clearRect(0, 0, w, h);
+            
+            // deep water base
+            const grad = ctx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, '#0a171a');
+            grad.addColorStop(1, '#030a0c');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
+            
+            // water lines (stillness in motion)
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(143, 170, 139, 0.15)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 12; i++) {
+                const y = h * (0.2 + i * 0.06);
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(w, y + Math.sin(Date.now() * 0.0008 + i) * 1.5);
+                ctx.stroke();
+            }
+            
+            // draw moments
+            for (let i = moments.length-1; i >= 0; i--) {
+                const m = moments[i];
+                const keep = m.update();
+                if (!keep) { moments.splice(i,1); continue; }
+                m.draw(ctx, w, h);
+            }
+            
+            if (moments.length < 2) {
+                ctx.font = "10px monospace";
+                ctx.fillStyle = "#5a6e5b";
+                ctx.shadowBlur = 0;
+                ctx.fillText("··· add moments to see them flow ···", w/2-130, h-12);
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // bind UI
+        document.getElementById('addMomentBtn').addEventListener('click', () => addMoment());
+        document.getElementById('resetRiverBtn').addEventListener('click', () => resetRiver());
+        document.getElementById('tinkBtn').addEventListener('click', () => {
+            ringTink("you rang the bell · the river listens");
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.top = 0; flash.style.left = 0;
+            flash.style.width = '100%'; flash.style.height = '100%';
+            flash.style.pointerEvents = 'none';
+            flash.style.background = 'radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%)';
+            flash.style.zIndex = 9999;
+            flash.style.transition = 'opacity 0.3s';
+            document.body.appendChild(flash);
+            setTimeout(() => { flash.style.opacity = '0'; setTimeout(() => flash.remove(), 400); }, 20);
+        });
+        
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const custom = x < 0.5 ? "a memory surfacing" : "a ripple of now";
+            addMoment(custom);
+        });
+        
+        resizeCanvas();
+        initRiver();
+        animate();
+        
+        // respect reduced motion
+        if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+            setInterval(() => {
+                for (let m of moments) m.speed = Math.min(m.speed, 0.001);
+            }, 500);
+        }
+    })();
+</script>
+</body>
+</html>

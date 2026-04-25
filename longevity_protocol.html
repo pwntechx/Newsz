@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LONGEVITY PROTOCOL — Anti-Aging Nutrition & Supplement Analysis</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --void: #0a0705;
+  --deep: #110d09;
+  --surface: #1a1310;
+  --plate: #231a15;
+  --seam: #2e221a;
+  --wire: #4a3020;
+  --copper: #8a5a30;
+  --rust: #b06030;
+  --amber: #d4902a;
+  --gold: #e8b84a;
+  --vellum: #f0e0c0;
+  --parchment: #f8f0e0;
+  --dim: #9a8060;
+  --ghost: #5a4030;
+  --red: #cc3333;
+  --green: #4a8a4a;
+  --blue: #3a6a9a;
+  --rule: rgba(212,144,42,0.2);
+  --rule-s: rgba(212,144,42,0.45);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--vellum);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* ── COVER ── */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 40px;
+  text-align: center;
+  position: relative;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 40%, rgba(139,70,30,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(74,48,32,0.15) 0%, transparent 60%),
+    var(--void);
+}
+
+.cover::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 5%; right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+}
+
+.cover-symbol {
+  font-size: 3rem;
+  color: var(--amber);
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: ascend 1s ease forwards 0.3s;
+  letter-spacing: 0.3em;
+}
+
+.cover-classification {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.4em;
+  color: var(--ghost);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: ascend 0.8s ease forwards 0.5s;
+}
+
+.cover-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(2.5rem, 8vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: var(--parchment);
+  text-shadow: 0 0 80px rgba(212,144,42,0.2);
+  opacity: 0;
+  animation: ascend 1.2s ease forwards 0.7s;
+}
+
+.cover-title em {
+  font-style: italic;
+  color: var(--gold);
+  display: block;
+  font-size: 0.7em;
+  letter-spacing: 0.12em;
+  margin-top: 8px;
+}
+
+.cover-rule {
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  margin: 36px auto;
+  opacity: 0;
+  animation: ascend 0.8s ease forwards 1s;
+}
+
+.cover-thesis {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: var(--dim);
+  max-width: 600px;
+  line-height: 1.8;
+  opacity: 0;
+  animation: ascend 0.8s ease forwards 1.2s;
+}
+
+.cover-meta {
+  margin-top: 48px;
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: ascend 0.8s ease forwards 1.4s;
+}
+
+.meta-item {
+  text-align: center;
+}
+
+.meta-val {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: var(--amber);
+  display: block;
+  letter-spacing: 0.1em;
+}
+
+.meta-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+}
+
+@keyframes ascend {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,7,5,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 32px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.nav-mark {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--amber);
+  margin-right: 16px;
+  white-space: nowrap;
+}
+
+nav a {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+nav a:hover { color: var(--amber); border-color: var(--rule); }
+
+/* ── MAIN ── */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── CHAPTER HEADERS ── */
+.chapter {
+  padding: 80px 0 48px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.chapter-tag {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  color: var(--amber);
+  display: block;
+  margin-bottom: 14px;
+}
+
+.chapter-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  color: var(--parchment);
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.chapter-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--dim);
+  margin-bottom: 32px;
+}
+
+.chapter-rule {
+  height: 1px;
+  background: linear-gradient(90deg, var(--wire), transparent);
+  margin-bottom: 32px;
+}
+
+/* ── PROSE ── */
+p {
+  color: var(--dim);
+  margin-bottom: 18px;
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+p strong { color: var(--parchment); font-weight: 600; }
+p em { color: var(--vellum); font-style: italic; }
+
+h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--vellum);
+  letter-spacing: 0.05em;
+  margin: 32px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* ── HALLMARK CARDS ── */
+.hallmark-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2px;
+  margin: 24px 0 32px;
+}
+
+.hallmark-card {
+  background: var(--surface);
+  border: 1px solid var(--seam);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s;
+}
+
+.hallmark-card:hover { background: var(--plate); }
+
+.hallmark-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--amber), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+
+.hallmark-card:hover::before { transform: scaleX(1); }
+
+.hallmark-num {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+  margin-bottom: 6px;
+}
+
+.hallmark-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  color: var(--amber);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.hallmark-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.88rem;
+  color: var(--dim);
+  line-height: 1.65;
+}
+
+/* ── FOOD / SUPPLEMENT ENTRIES ── */
+.entry {
+  background: var(--surface);
+  border: 1px solid var(--seam);
+  margin: 12px 0;
+  overflow: hidden;
+  transition: background 0.2s;
+}
+
+.entry:hover { background: var(--plate); }
+
+.entry-header {
+  padding: 20px 24px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.entry-left { flex: 1; }
+
+.entry-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  color: var(--parchment);
+  margin-bottom: 4px;
+}
+
+.entry-class {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  color: var(--amber);
+}
+
+.evidence-badge {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  padding: 4px 10px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.evidence-badge.strong { color: var(--green); border-color: rgba(74,138,74,0.4); background: rgba(74,138,74,0.08); }
+.evidence-badge.moderate { color: var(--amber); border-color: rgba(212,144,42,0.4); background: rgba(212,144,42,0.08); }
+.evidence-badge.emerging { color: var(--blue); border-color: rgba(58,106,154,0.4); background: rgba(58,106,154,0.08); }
+.evidence-badge.speculative { color: var(--ghost); border-color: rgba(90,64,48,0.4); background: rgba(90,64,48,0.08); }
+
+.entry-body {
+  padding: 18px 24px 20px;
+}
+
+.entry-body p {
+  font-size: 0.92rem;
+  margin-bottom: 10px;
+}
+
+.entry-specs {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.62rem;
+  line-height: 1.9;
+  color: var(--ghost);
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  letter-spacing: 0.05em;
+}
+
+.entry-specs span { color: var(--amber); }
+
+/* ── MECHANISM BLOCK ── */
+.mechanism {
+  background: linear-gradient(135deg, var(--deep), var(--surface));
+  border-left: 3px solid var(--amber);
+  padding: 20px 24px;
+  margin: 20px 0;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.72rem;
+  color: var(--dim);
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+}
+
+.mechanism-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.25em;
+  color: var(--amber);
+  margin-bottom: 8px;
+}
+
+/* ── EQUATION ── */
+.eq {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.85rem;
+  color: var(--amber);
+  background: var(--deep);
+  border: 1px solid var(--rule);
+  padding: 16px 20px;
+  margin: 20px 0;
+  overflow-x: auto;
+  letter-spacing: 0.05em;
+}
+
+/* ── WARNING / HONEST NOTE ── */
+.honest-note {
+  background: rgba(204,51,51,0.06);
+  border-left: 3px solid var(--red);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.68rem;
+  color: #aa7070;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+}
+
+.honest-note-label {
+  color: var(--red);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 6px;
+}
+
+/* ── STACK TABLE ── */
+.stack-table-wrap { overflow-x: auto; margin: 20px 0 32px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.7rem;
+}
+
+thead tr { background: var(--plate); border-bottom: 1px solid var(--rule-s); }
+
+th {
+  padding: 12px 16px;
+  text-align: left;
+  color: var(--amber);
+  letter-spacing: 0.12em;
+  font-size: 0.58rem;
+  font-weight: 400;
+}
+
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--dim);
+  vertical-align: top;
+  font-size: 0.68rem;
+}
+
+tr:hover td { background: rgba(26,19,16,0.6); }
+
+.t-name { color: var(--parchment); font-weight: 700; font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; letter-spacing: 0.06em; }
+.t-dose { color: var(--amber); }
+.t-timing { color: var(--dim); font-style: italic; }
+.t-evidence-s { color: var(--green); }
+.t-evidence-m { color: var(--amber); }
+.t-evidence-e { color: var(--blue); }
+.t-hallmark { font-size: 0.62rem; color: var(--ghost); }
+
+tfoot tr { background: var(--plate); border-top: 1px solid var(--rule-s); }
+tfoot td { color: var(--amber); font-size: 0.65rem; padding: 12px 16px; }
+
+/* ── CLOSING SEAL ── */
+.closing {
+  padding: 80px 0 60px;
+  text-align: center;
+  border-top: 1px solid var(--rule-s);
+  margin-top: 60px;
+}
+
+.closing-symbol {
+  font-size: 2rem;
+  color: var(--amber);
+  margin-bottom: 28px;
+  animation: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.closing-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--dim);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.9;
+}
+
+.closing-seal {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--ghost);
+  margin-top: 32px;
+  line-height: 2.2;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-l {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  line-height: 1.9;
+}
+
+.footer-r {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 600px) {
+  main { padding: 0 18px; }
+  .cover { padding: 60px 20px; }
+  .hallmark-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-symbol">⊕ ✦ ⊕</div>
+  <div class="cover-classification">FORENSIC ANALYSIS · LONGEVITY SCIENCE · APRIL 2026 · E=1 FRAMEWORK</div>
+  <h1 class="cover-title">
+    LONGEVITY PROTOCOL
+    <em>Anti-Aging Nutrition & Supplement Architecture</em>
+  </h1>
+  <div class="cover-rule"></div>
+  <p class="cover-thesis">A PhD-level forensic analysis of the nutritional and supplemental interventions that target the twelve hallmarks of biological aging. Evidence graded. Mechanisms named. Speculation labeled. Nothing decorated.</p>
+  <div class="cover-meta">
+    <div class="meta-item"><span class="meta-val">12</span><span class="meta-label">HALLMARKS ADDRESSED</span></div>
+    <div class="meta-item"><span class="meta-val">15</span><span class="meta-label">CORE FOODS</span></div>
+    <div class="meta-item"><span class="meta-val">12</span><span class="meta-label">SUPPLEMENTS ANALYZED</span></div>
+    <div class="meta-item"><span class="meta-val">E=1</span><span class="meta-label">PRESERVATION STANDARD</span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-mark">LONGEVITY //</span>
+  <a href="#framework">FRAMEWORK</a>
+  <a href="#hallmarks">HALLMARKS</a>
+  <a href="#foods">FOODS</a>
+  <a href="#supplements">SUPPLEMENTS</a>
+  <a href="#stack">PROTOCOL STACK</a>
+  <a href="#timing">TIMING</a>
+  <a href="#seal">SEAL</a>
+</nav>
+
+<main>
+
+<!-- ══════════════════════
+     FRAMEWORK
+══════════════════════ -->
+<div id="framework" class="chapter">
+  <span class="chapter-tag">§ 00 · ANALYTICAL FRAMEWORK</span>
+  <h2 class="chapter-title">The Geometry of Aging</h2>
+  <div class="chapter-sub">Why E=1 is the only acceptable standard for a longevity protocol</div>
+  <div class="chapter-rule"></div>
+
+  <p>Aging is not a single event. It is the accumulated expression of twelve interconnected biological failure modes — the <strong>Hallmarks of Aging</strong> — first catalogued in 2013 and expanded in 2023 to incorporate a decade of geroscience advances. Each hallmark is measurable, each is causally connected to the others, and each represents a point of nutritional or supplemental intervention.</p>
+
+  <p>The forensic lens applied here is E=1: <strong>every node preserved simultaneously</strong>. A longevity protocol that optimizes for one hallmark while accelerating another is not a longevity protocol — it is a trade. The geometry must hold across all twelve simultaneously or the solution is incomplete.</p>
+
+  <p>This analysis grades evidence at four levels: <strong>Strong</strong> (multiple peer-reviewed RCTs, consistent outcomes), <strong>Moderate</strong> (observational studies plus mechanistic evidence), <strong>Emerging</strong> (early clinical trials, strong animal data), and <strong>Speculative</strong> (mechanistic plausibility, insufficient human data). The distinction matters. All four levels appear in this document and are labeled honestly.</p>
+
+  <div class="mechanism">
+    <div class="mechanism-label">CORE PRINCIPLE · OVERNUTRITION VS RESTRICTION</div>
+    Overnutrition activates mTORC1 + EP300 → suppresses AMPK + SIRT1/SIRT3 → disables autophagy, antioxidant defense, DNA repair.<br>
+    Dietary restriction does the inverse → activates AMPK + SIRT1/SIRT3 → stimulates adaptive cellular stress responses → extends longevity in multiple organisms including primates.<br><br>
+    Source: Cell, Hallmarks of Aging Expanded Universe, 2023
+  </div>
+
+  <p>The practical implication: <strong>what you don't eat matters as much as what you do</strong>. Caloric restriction and time-restricted feeding activate the same longevity pathways that the best supplements attempt to mimic. The food protocol and the supplement stack are not additive — they are synergistic when aligned, and they cancel each other when opposed.</p>
+</div>
+
+
+<!-- ══════════════════════
+     HALLMARKS
+══════════════════════ -->
+<div id="hallmarks" class="chapter">
+  <span class="chapter-tag">§ 01 · THE TWELVE HALLMARKS</span>
+  <h2 class="chapter-title">Twelve Failure Modes</h2>
+  <div class="chapter-sub">The complete taxonomy of biological aging — each a target, each connected</div>
+  <div class="chapter-rule"></div>
+
+  <p>The hallmarks framework defines aging operationally: each hallmark must (1) manifest with age, (2) accelerate aging when experimentally amplified, and (3) decelerate aging when therapeutically targeted. This is the scientific standard for calling something a hallmark rather than a correlation.</p>
+
+  <div class="hallmark-grid">
+    <div class="hallmark-card">
+      <div class="hallmark-num">HALLMARK 01</div>
+      <div class="hallmark-name">GENOMIC INSTABILITY</div>
+      <div class="hallmark-desc">DNA damage accumulates faster than repair mechanisms can clear it. Dietary antioxidants and NAD+ precursors are primary nutritional interventions.</div>
+    </div>
+    <div class="hallmark-card">
+      <div class="hallmark-num">HALLMARK 02</div>
+      <div class="hallmark-name">TELOMERE ATTRITION</div>
+      <div class="hallmark-desc">Chromosome end-caps shorten with each division. Omega-3 fatty acids show the strongest dietary association with telomere length preservation.</div>
+    </div>
+    <div class="hallmark-card">
+      <div class="hallmark-num">HALLMARK 03</div>
+      <div class="hallmark-name">EPIGENETIC ALTERATIONS</div>
+      <div class="hallmark-desc">Gene expression patterns drift from their youthful state. Methyl donors — folate, B12, choline — are foundational dietary interventions.</div>
+    </div>
+    <div class="hallmark-card">
+      <div class="hallmark-num">HALLMARK 04</div>
+      <div class="hallmark-name">LOSS OF PROTEOSTASIS</div>
+      <div class="hallmark-desc">Protein quality control fails — misfolded proteins accumulate. Autophagy inducers: spermidine, fasting, caloric restriction.</div>
+    </div>
+    <div class="hallmark-card">
+      <div class="hallmark-num">HALLMARK 05</div>
+      <div class="hallmark-name">DISABLED MACROAUTOPHAGY</div>
+      <div class="hallmark-desc">The cellular recycling system degrades. Spermidine and urolithin A are the most evidence-backed nutritional autophagy inducers.</div>
+    </div>
+    <div class="hallmark-card">
+      <div class="hallmark-num">HALLMARK 06</div>
+      <div class="hallmark-name">DEREGULATED NUTRIENT SENSING</div>
+      <div class="hallmark-desc">mTOR, AMPK, IGF-1, SIRT pathways lose calibration. Dietary restriction and resveratrol directly modulate these sensors.</div>
+    </div>
+    <div class="hallmark-card">
+      <div class="hallmark-num">HALLMARK 07</div>
+      <div class="hallmark-name">MITOCHONDRIAL DYSFUNCTION</div>
+      <div class="hallmark-desc">Energy production degrades. NAD+ precursors (NMN/NR), CoQ10, urolithin A, and PQQ are the primary nutritional interventions.</div>
+    </div>
+    <div class="hallmark-card">
+      <div class="hallmark-num">HALLMARK 08</div>
+      <div class="hallmark-name">CELLULAR SENESCENCE</div>
+      <div class="hallmark-desc">Damaged cells stop dividing but persist, secreting inflammatory signals. Quercetin and fisetin are the most studied dietary senolytics.</div>
+    </div>
+    <div class="hallmark-card">
+      <div class="hallmark-num">HALLMARK 09</div>
+      <div class="hallmark-name">STEM CELL EXHAUSTION</div>
+      <div class="hallmark-desc">Tissue regenerative capacity declines. Protein adequacy and specific amino acids are dietary requirements for stem cell maintenance.</div>
+    </div>
+    <div class="hallmark-card">
+      <div class="hallmark-num">HALLMARK 10</div>
+      <div class="hallmark-name">ALTERED INTERCELLULAR COMMUNICATION</div>
+      <div class="hallmark-desc">Signaling between cells degrades. Anti-inflammatory diet — Mediterranean pattern — is the most evidence-backed dietary intervention.</div>
+    </div>
+    <div class="hallmark-card">
+      <div class="hallmark-num">HALLMARK 11</div>
+      <div class="hallmark-name">CHRONIC INFLAMMATION</div>
+      <div class="hallmark-desc">Low-grade systemic inflammation accelerates all other hallmarks. Omega-3s, polyphenols, and curcumin are primary dietary anti-inflammatories.</div>
+    </div>
+    <div class="hallmark-card">
+      <div class="hallmark-num">HALLMARK 12</div>
+      <div class="hallmark-name">DYSBIOSIS</div>
+      <div class="hallmark-desc">Gut microbiome composition shifts toward pathogenic patterns. Fiber, fermented foods, and polyphenols are the foundational dietary interventions.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════
+     FOODS
+══════════════════════ -->
+<div id="foods" class="chapter">
+  <span class="chapter-tag">§ 02 · CORE LONGEVITY FOODS</span>
+  <h2 class="chapter-title">The Food Architecture</h2>
+  <div class="chapter-sub">Fifteen foods that address multiple hallmarks simultaneously — verified ground only</div>
+  <div class="chapter-rule"></div>
+
+  <p>The strongest dietary pattern for longevity is not a single food but a constellation. <em>Harvard's 2025 Nature Medicine study</em> — the most comprehensive dietary longevity analysis to date — found that diets rich in fruits, vegetables, whole grains, unsaturated fats, nuts, and legumes, with moderate dairy and reduced processed meat, were most strongly associated with healthy aging across multiple biological markers. Every food below earned its place by addressing at minimum two hallmarks with moderate or strong evidence.</p>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">EXTRA VIRGIN OLIVE OIL</div>
+        <div class="entry-class">POLYPHENOL SOURCE · FAT-SOLUBLE NUTRIENT CARRIER</div>
+      </div>
+      <div class="evidence-badge strong">STRONG EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>The most evidence-backed single food in longevity science. Oleocanthal acts as a natural COX inhibitor — functionally similar to ibuprofen — addressing chronic inflammation directly. Oleic acid activates SIRT1. Polyphenols modulate NF-κB inflammatory signaling. The Mediterranean diet's longevity effect is substantially attributable to EVOO.</p>
+      <p><strong>Hallmarks addressed:</strong> Chronic inflammation (11), altered intercellular communication (10), deregulated nutrient sensing (6), dysbiosis (12).</p>
+      <div class="entry-specs">
+        DOSE: <span>2–4 tablespoons daily</span> · RAW preferred — heat degrades polyphenols<br>
+        QUALITY: <span>First cold press, &lt;0.8% acidity, harvest date on label</span><br>
+        MECHANISM: <span>Oleocanthal → COX inhibition · Oleic acid → SIRT1 activation · Hydroxytyrosol → antioxidant + anti-inflammatory</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">WILD FATTY FISH (SARDINES · SALMON · MACKEREL)</div>
+        <div class="entry-class">OMEGA-3 SOURCE · COMPLETE PROTEIN · VITAMIN D</div>
+      </div>
+      <div class="evidence-badge strong">STRONG EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Omega-3 fatty acids (EPA and DHA) are the most studied anti-aging nutrients after vitamins. The American Heart Association's science advisory confirms cardiovascular protection. Multiple meta-analyses associate higher omega-3 intake with longer telomere length — directly addressing Hallmark 2. DHA is the primary structural fat of brain tissue. Sardines specifically provide bone-available calcium from edible bones plus CoQ10.</p>
+      <p><strong>Hallmarks addressed:</strong> Telomere attrition (2), chronic inflammation (11), mitochondrial dysfunction (7), altered intercellular communication (10).</p>
+      <div class="entry-specs">
+        DOSE: <span>3–4 servings per week minimum</span><br>
+        SARDINES: <span>Best value — omega-3 dense, low mercury, CoQ10 source</span><br>
+        MECHANISM: <span>EPA/DHA → anti-inflammatory eicosanoids · DHA → membrane fluidity · EPA → telomerase activity support</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">DARK BERRIES (BLUEBERRY · BLACKBERRY · POMEGRANATE)</div>
+        <div class="entry-class">POLYPHENOL MATRIX · ANTHOCYANIN SOURCE · UROLITHIN PRECURSOR</div>
+      </div>
+      <div class="evidence-badge strong">STRONG EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Berries address aging through multiple simultaneous mechanisms. Anthocyanins cross the blood-brain barrier — rare for dietary compounds — and provide direct neuroprotection. Pomegranate specifically contains ellagitannins that gut bacteria convert to urolithin A, one of the most promising longevity compounds currently in clinical trials. The conversion requires a healthy microbiome — another reason gut health is foundational.</p>
+      <p><strong>Hallmarks addressed:</strong> Genomic instability (1), chronic inflammation (11), dysbiosis (12), mitochondrial dysfunction (7 — via urolithin A precursors).</p>
+      <div class="entry-specs">
+        DOSE: <span>1 cup daily · Frozen is equivalent to fresh in polyphenol content</span><br>
+        POMEGRANATE: <span>Key source of ellagitannins → urolithin A conversion (microbiome dependent)</span><br>
+        MECHANISM: <span>Anthocyanins → NF-κB inhibition · Pterostilbene → SIRT1 activation · Ellagic acid → DNA protection</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">CRUCIFEROUS VEGETABLES (BROCCOLI · BRUSSELS · CABBAGE)</div>
+        <div class="entry-class">SULFORAPHANE SOURCE · DETOXIFICATION · NRF2 ACTIVATOR</div>
+      </div>
+      <div class="evidence-badge strong">STRONG EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Sulforaphane — released when cruciferous vegetables are chewed or chopped — is one of the most potent known activators of the NRF2 pathway, the master regulator of cellular antioxidant defense. NRF2 activation upregulates over 200 cytoprotective genes simultaneously. Cruciferous vegetables also contain DIM (diindolylmethane) which supports healthy estrogen metabolism and glucosinolates that activate liver detoxification enzymes.</p>
+      <p><strong>Hallmarks addressed:</strong> Genomic instability (1), loss of proteostasis (4), cellular senescence (8), chronic inflammation (11).</p>
+      <div class="entry-specs">
+        DOSE: <span>1–2 cups daily · Chop and wait 10 minutes before cooking — activates myrosinase enzyme</span><br>
+        KEY COMPOUND: <span>Sulforaphane → NRF2 → 200+ cytoprotective genes</span><br>
+        PREPARATION: <span>Light steam preserves sulforaphane · Boiling destroys it</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">LEAFY GREENS (SPINACH · KALE · ARUGULA)</div>
+        <div class="entry-class">FOLATE · VITAMIN K1 · LUTEIN · NITRATES</div>
+      </div>
+      <div class="evidence-badge strong">STRONG EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Folate is a methyl donor essential for DNA methylation — the epigenetic mechanism most directly linked to biological aging clocks. Inadequate folate accelerates epigenetic aging measurably. Vitamin K1 in greens converts to K2 MK-4 in tissues, directing calcium into bones and away from arteries. Dietary nitrates from greens convert to nitric oxide, preserving vascular function that declines with age.</p>
+      <p><strong>Hallmarks addressed:</strong> Epigenetic alterations (3), genomic instability (1), altered intercellular communication (10).</p>
+      <div class="entry-specs">
+        DOSE: <span>2+ cups daily · Raw or lightly cooked</span><br>
+        FOLATE: <span>Critical for DNA methylation — epigenetic aging clock intervention</span><br>
+        NOTE: <span>Arugula highest nitrate content · Kale highest K1 content</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">WALNUTS & MIXED NUTS</div>
+        <div class="entry-class">ALA OMEGA-3 · POLYPHENOLS · HEALTHY FAT MATRIX</div>
+      </div>
+      <div class="evidence-badge strong">STRONG EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Walnuts contain the highest polyphenol content of any nut and uniquely provide ALA (alpha-linolenic acid), the plant precursor to EPA and DHA. The WAHA trial demonstrated that daily walnut consumption reduces inflammatory markers and improves cognitive performance in older adults. Nuts as a category are one of the strongest dietary predictors of longevity in epidemiological data — 19% reduction in all-cause mortality in the highest quintile of consumption.</p>
+      <p><strong>Hallmarks addressed:</strong> Chronic inflammation (11), telomere attrition (2), dysbiosis (12), altered intercellular communication (10).</p>
+      <div class="entry-specs">
+        DOSE: <span>1 oz (28g) daily · Walnuts preferred for ALA content</span><br>
+        ALL-CAUSE MORTALITY: <span>19% reduction in highest consumption quintile</span><br>
+        MECHANISM: <span>ALA → partial EPA/DHA conversion · Ellagitannins → gut microbiome support</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">LEGUMES (LENTILS · BLACK BEANS · CHICKPEAS)</div>
+        <div class="entry-class">FIBER MATRIX · PLANT PROTEIN · RESISTANT STARCH</div>
+      </div>
+      <div class="evidence-badge strong">STRONG EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Legumes are the single food most consistently associated with longevity across Blue Zone populations — the five regions with the highest concentrations of centenarians. The mechanism is primarily gut-mediated: legume fiber ferments to short-chain fatty acids (SCFAs), particularly butyrate, which maintains intestinal barrier integrity, reduces systemic inflammation, and directly inhibits histone deacetylases — an epigenetic anti-aging mechanism.</p>
+      <p><strong>Hallmarks addressed:</strong> Dysbiosis (12), epigenetic alterations (3), chronic inflammation (11), deregulated nutrient sensing (6).</p>
+      <div class="entry-specs">
+        DOSE: <span>1/2 cup cooked daily minimum</span><br>
+        BLUE ZONE DATA: <span>Most consistent longevity food across all five populations</span><br>
+        MECHANISM: <span>Fiber → butyrate → HDAC inhibition (epigenetic) + barrier integrity</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">GREEN TEA (MATCHA PREFERRED)</div>
+        <div class="entry-class">EGCG · L-THEANINE · CATECHIN MATRIX</div>
+      </div>
+      <div class="evidence-badge moderate">MODERATE EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>EGCG (epigallocatechin gallate) is one of the most studied polyphenols in longevity research. It inhibits DNMT (DNA methyltransferase), modulates mTOR, activates AMPK, and has demonstrated senolytic properties in cell studies. Japanese population data shows consistent association between green tea consumption and reduced all-cause mortality. L-theanine provides neuroprotection and reduces cortisol — addressing the stress-aging connection.</p>
+      <p><strong>Hallmarks addressed:</strong> Epigenetic alterations (3), deregulated nutrient sensing (6), cellular senescence (8), chronic inflammation (11).</p>
+      <div class="entry-specs">
+        DOSE: <span>2–4 cups daily · Matcha provides full leaf catechins</span><br>
+        EGCG: <span>mTOR inhibition · AMPK activation · senolytic properties (cell studies)</span><br>
+        HONEST NOTE: <span>Most evidence is observational or in vitro. RCT data in humans is moderate.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">FERMENTED FOODS (KEFIR · KIMCHI · SAUERKRAUT)</div>
+        <div class="entry-class">LIVE CULTURES · POSTBIOTICS · MICROBIOME ARCHITECTURE</div>
+      </div>
+      <div class="evidence-badge moderate">MODERATE EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>A 2021 Stanford Cell study found that a high-fermented food diet increased microbiome diversity and decreased 19 inflammatory markers in healthy adults — more effectively than a high-fiber diet alone. Microbiome diversity is one of the strongest predictors of healthy aging and is measurably lower in centenarian populations that age poorly versus those that age well. Fermented foods address Hallmark 12 more directly than any supplement.</p>
+      <p><strong>Hallmarks addressed:</strong> Dysbiosis (12), chronic inflammation (11), altered intercellular communication (10).</p>
+      <div class="entry-specs">
+        DOSE: <span>1–2 servings daily · Variety matters more than volume</span><br>
+        STANFORD DATA: <span>19 inflammatory markers reduced vs high-fiber alone</span><br>
+        KEFIR: <span>Highest live culture density · postbiotic production · GABA synthesis</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">DARK CHOCOLATE (85%+ CACAO)</div>
+        <div class="entry-class">FLAVANOL SOURCE · NITRIC OXIDE · MAGNESIUM</div>
+      </div>
+      <div class="evidence-badge moderate">MODERATE EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Cacao flavanols — specifically epicatechin — activate nitric oxide synthase, improving endothelial function measurably within hours of consumption. The COSMOS-Mind trial (2021) showed that cocoa flavanol supplementation slowed cognitive aging by 3 years in a large RCT. Magnesium in dark chocolate supports over 300 enzymatic reactions including DNA repair. At 85%+ the sugar content is minimal and the flavanol content is maximized.</p>
+      <p><strong>Hallmarks addressed:</strong> Altered intercellular communication (10), chronic inflammation (11), genomic instability (1).</p>
+      <div class="entry-specs">
+        DOSE: <span>20–30g daily (85%+ cacao)</span><br>
+        COSMOS-MIND: <span>3-year cognitive aging reduction in RCT</span><br>
+        MECHANISM: <span>Epicatechin → NO synthase → vascular function · Magnesium → DNA repair cofactor</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">MUSHROOMS (SHIITAKE · LION'S MANE · REISHI)</div>
+        <div class="entry-class">BETA-GLUCANS · ERGOTHIONEINE · NGF STIMULATORS</div>
+      </div>
+      <div class="evidence-badge moderate">MODERATE EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Ergothioneine — a unique antioxidant found almost exclusively in mushrooms — has been proposed as a longevity vitamin. It accumulates in mitochondria and nuclei where oxidative damage is highest. Lion's mane contains hericenones that stimulate Nerve Growth Factor (NGF) — the only dietary source of NGF stimulation with clinical human evidence. Beta-glucans from all mushrooms modulate innate immunity and gut microbiome architecture.</p>
+      <p><strong>Hallmarks addressed:</strong> Mitochondrial dysfunction (7), genomic instability (1), dysbiosis (12), stem cell exhaustion (9).</p>
+      <div class="entry-specs">
+        DOSE: <span>1–2 cups cooked daily · Dried mushrooms retain full ergothioneine</span><br>
+        ERGOTHIONEINE: <span>Proposed longevity vitamin — mitochondrial + nuclear antioxidant</span><br>
+        LION'S MANE: <span>NGF stimulation — only dietary source with clinical evidence</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">EGGS (WHOLE, PASTURE-RAISED)</div>
+        <div class="entry-class">CHOLINE · COMPLETE PROTEIN · FAT-SOLUBLE VITAMINS</div>
+      </div>
+      <div class="evidence-badge moderate">MODERATE EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Choline is the most underconsumed essential nutrient in Western diets and a critical methyl donor for DNA methylation — directly addressing epigenetic aging. Over 90% of Americans don't meet adequate choline intake. Eggs are the most bioavailable dietary choline source. The long-standing concern about dietary cholesterol from eggs has been substantially revised — current evidence shows eggs do not meaningfully increase cardiovascular risk in healthy individuals.</p>
+      <p><strong>Hallmarks addressed:</strong> Epigenetic alterations (3), genomic instability (1), stem cell exhaustion (9).</p>
+      <div class="entry-specs">
+        DOSE: <span>1–2 daily · Whole egg — yolk contains choline</span><br>
+        CHOLINE: <span>Critical methyl donor · &gt;90% Americans deficient · Epigenetic aging intervention</span><br>
+        HONEST NOTE: <span>Cholesterol concern revised — current evidence does not support restriction in healthy individuals</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">TURMERIC (WITH BLACK PEPPER)</div>
+        <div class="entry-class">CURCUMIN · NF-κB INHIBITOR · SENOLYTIC</div>
+      </div>
+      <div class="evidence-badge moderate">MODERATE EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Curcumin inhibits NF-κB — the master transcription factor of inflammation — with a potency comparable to some pharmaceutical anti-inflammatories. It also has demonstrated senolytic activity in cell studies, selectively eliminating senescent cells. The critical constraint: curcumin bioavailability is extremely low without piperine (black pepper). Combined with piperine, absorption increases 2000%. Without it, negligible amounts reach circulation.</p>
+      <p><strong>Hallmarks addressed:</strong> Chronic inflammation (11), cellular senescence (8), deregulated nutrient sensing (6).</p>
+      <div class="entry-specs">
+        DOSE: <span>1/2 tsp daily with black pepper and fat</span><br>
+        PIPERINE: <span>2000% absorption increase — non-negotiable</span><br>
+        HONEST NOTE: <span>Most dramatic effects in humans with existing inflammation. Prevention evidence is moderate.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">GARLIC (RAW OR AGED)</div>
+        <div class="entry-class">ALLICIN · S-ALLYLCYSTEINE · ORGANOSULFUR COMPOUNDS</div>
+      </div>
+      <div class="evidence-badge moderate">MODERATE EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Allicin — released when garlic is crushed or chopped and allowed to sit 10 minutes — is a potent antimicrobial, anti-inflammatory, and cardiovascular protective compound. Aged Black Garlic has undergone fermentation that converts allicin to more stable S-allylcysteine, which has superior bioavailability and has demonstrated telomere-protective effects in human studies. Garlic also acts as a prebiotic, selectively feeding Lactobacillus and Bifidobacterium species.</p>
+      <p><strong>Hallmarks addressed:</strong> Telomere attrition (2), chronic inflammation (11), dysbiosis (12).</p>
+      <div class="entry-specs">
+        DOSE: <span>2–4 cloves daily · Crush and wait 10 min before cooking</span><br>
+        BLACK GARLIC: <span>Superior bioavailability · telomere-protective S-allylcysteine</span><br>
+        MECHANISM: <span>Allicin → NF-κB inhibition · Prebiotic fiber → Lactobacillus + Bifidobacterium</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">GREEN VEGETABLES (ASPARAGUS · AVOCADO · EDAMAME)</div>
+        <div class="entry-class">SPERMIDINE SOURCE · FOLATE · HEALTHY FAT</div>
+      </div>
+      <div class="evidence-badge moderate">MODERATE EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>This category earns its place primarily as the leading dietary source of spermidine — a polyamine that induces autophagy through a mechanism independent of mTOR. Autophagy is the cellular recycling process that declines with age and directly addresses Hallmarks 4 and 5. Wheat germ is the highest dietary spermidine source but these vegetables provide meaningful amounts alongside folate and healthy fat. Avocado provides oleic acid with similar SIRT1 activation to EVOO.</p>
+      <p><strong>Hallmarks addressed:</strong> Loss of proteostasis (4), disabled macroautophagy (5), epigenetic alterations (3).</p>
+      <div class="entry-specs">
+        SPERMIDINE CONTENT: <span>Wheat germ &gt; aged cheese &gt; soy &gt; mushrooms &gt; asparagus &gt; avocado</span><br>
+        MECHANISM: <span>Spermidine → autophagy induction (mTOR-independent) → proteostasis maintenance</span><br>
+        DOSE: <span>Daily variety across category preferred</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════
+     SUPPLEMENTS
+══════════════════════ -->
+<div id="supplements" class="chapter">
+  <span class="chapter-tag">§ 03 · SUPPLEMENT ANALYSIS</span>
+  <h2 class="chapter-title">The Supplement Architecture</h2>
+  <div class="chapter-sub">What the evidence actually supports — graded honestly, mechanisms named</div>
+  <div class="chapter-rule"></div>
+
+  <div class="honest-note">
+    <div class="honest-note-label">FORENSIC POSITION ON SUPPLEMENTS</div>
+    Supplements address gaps in diet and target specific hallmarks that food alone cannot adequately reach. They do not replace the food architecture. Several compounds below have strong animal data and emerging human data — this does not make them equivalent to compounds with completed large-scale RCTs. The evidence grade is the honest signal. Act accordingly.
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">VITAMIN D3 + K2</div>
+        <div class="entry-class">FOUNDATIONAL · HORMONE PRECURSOR · CALCIUM DIRECTOR</div>
+      </div>
+      <div class="evidence-badge strong">STRONG EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Vitamin D3 functions as a hormone, not a vitamin — it regulates over 1000 genes. Deficiency is documented in over 40% of adults and directly accelerates immune senescence, bone loss, and cardiovascular aging. The Stanford Center on Longevity places D3 among its foundational supplements. K2 (MK-7 form) is critical pairing: D3 increases calcium absorption, K2 ensures that calcium goes to bones and teeth rather than arterial walls. Taking D3 without K2 risks arterial calcification.</p>
+      <p><strong>Hallmarks addressed:</strong> Cellular senescence (8), altered intercellular communication (10), genomic instability (1).</p>
+      <div class="entry-specs">
+        DOSE D3: <span>2000–5000 IU daily with fat · Test serum levels — target 40–60 ng/mL</span><br>
+        DOSE K2: <span>100–200 mcg MK-7 form daily</span><br>
+        NON-NEGOTIABLE PAIRING: <span>D3 without K2 risks arterial calcification</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">OMEGA-3 (EPA + DHA)</div>
+        <div class="entry-class">FOUNDATIONAL · ANTI-INFLAMMATORY · TELOMERE PROTECTIVE</div>
+      </div>
+      <div class="evidence-badge strong">STRONG EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>If fish consumption is insufficient (under 3 servings per week), supplemental omega-3 is among the most evidence-backed interventions in aging science. The VITAL trial — 25,000 participants over 5 years — demonstrated meaningful cardiovascular and cancer risk reduction. Multiple RCTs confirm telomere length association. Target: omega-3 index above 8% (most Americans are below 4%).</p>
+      <p><strong>Hallmarks addressed:</strong> Telomere attrition (2), chronic inflammation (11), mitochondrial dysfunction (7).</p>
+      <div class="entry-specs">
+        DOSE: <span>2–4g combined EPA+DHA daily · Fish oil or algae-derived</span><br>
+        OMEGA-3 INDEX TARGET: <span>&gt;8% · Most Americans below 4%</span><br>
+        FORM: <span>Triglyceride form absorbs better than ethyl ester · Take with fat-containing meal</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">MAGNESIUM GLYCINATE</div>
+        <div class="entry-class">FOUNDATIONAL · DNA REPAIR COFACTOR · SLEEP ARCHITECTURE</div>
+      </div>
+      <div class="evidence-badge strong">STRONG EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Magnesium is a cofactor in over 300 enzymatic reactions including DNA repair, protein synthesis, and energy production. Over 50% of adults are deficient — soil depletion has reduced dietary magnesium significantly over the past 50 years. Magnesium deficiency directly accelerates DNA damage accumulation. It is also essential for sleep architecture — deep sleep is when the glymphatic system clears neurotoxic waste, making magnesium's sleep role an anti-aging function, not a comfort function.</p>
+      <p><strong>Hallmarks addressed:</strong> Genomic instability (1), mitochondrial dysfunction (7), loss of proteostasis (4).</p>
+      <div class="entry-specs">
+        DOSE: <span>300–400mg glycinate form at night</span><br>
+        GLYCINATE FORM: <span>Highest absorption · No laxative effect unlike oxide</span><br>
+        TIMING: <span>Evening — supports sleep architecture and nocturnal DNA repair</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">NMN (NICOTINAMIDE MONONUCLEOTIDE)</div>
+        <div class="entry-class">NAD+ PRECURSOR · SIRTUIN ACTIVATOR · MITOCHONDRIAL SUPPORT</div>
+      </div>
+      <div class="evidence-badge emerging">EMERGING EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>NAD+ declines 50% between age 40 and 60. NAD+ is a cofactor for sirtuins (SIRT1–SIRT7) — the longevity proteins that regulate DNA repair, epigenetic maintenance, mitochondrial function, and metabolic homeostasis simultaneously. NMN is the direct precursor to NAD+ with superior bioavailability over direct NAD+ supplementation. Multiple completed human RCTs confirm NMN raises NAD+ levels in blood. Whether higher NAD+ translates to measurable aging deceleration in humans at scale remains an open question — the mechanistic case is compelling, the long-term human outcome data is not yet complete.</p>
+      <p><strong>Hallmarks addressed:</strong> Mitochondrial dysfunction (7), genomic instability (1), epigenetic alterations (3), deregulated nutrient sensing (6).</p>
+      <div class="entry-specs">
+        DOSE: <span>250–500mg daily · Morning on empty stomach</span><br>
+        NMN vs NR: <span>NMN is direct NAD+ precursor · NR requires additional conversion step</span><br>
+        HONEST STATUS: <span>NAD+ elevation confirmed in humans. Longevity outcome translation: emerging, not confirmed.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">UROLITHIN A</div>
+        <div class="entry-class">MITOPHAGY INDUCER · MUSCLE PRESERVATION · MITOCHONDRIAL QUALITY CONTROL</div>
+      </div>
+      <div class="evidence-badge emerging">EMERGING EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Urolithin A is produced by gut bacteria from pomegranate ellagitannins — but only in individuals with the right microbiome composition (approximately 30–40% of the population can produce meaningful amounts). It is the most potent known nutritional inducer of mitophagy — selective autophagy of damaged mitochondria — the process by which cells recycle dysfunctional mitochondria and replace them with healthy ones. A 2022 Nature Aging RCT confirmed improved mitochondrial health markers in older adults. 2025 data shows cardiac mitochondrial preservation.</p>
+      <p><strong>Hallmarks addressed:</strong> Mitochondrial dysfunction (7), disabled macroautophagy (5), loss of proteostasis (4), cellular senescence (8).</p>
+      <div class="entry-specs">
+        DOSE: <span>500mg–1g daily (supplement) · Or consume pomegranate + healthy microbiome</span><br>
+        PRODUCTION: <span>Only ~30–40% of people produce it from diet alone</span><br>
+        2022 RCT: <span>Nature Aging — confirmed mitochondrial health improvement in humans</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">SPERMIDINE</div>
+        <div class="entry-class">AUTOPHAGY INDUCER · EPIGENETIC REGULATOR · mTOR-INDEPENDENT</div>
+      </div>
+      <div class="evidence-badge emerging">EMERGING EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Spermidine induces autophagy through a mechanism completely independent of mTOR — meaning it works synergistically with caloric restriction rather than redundantly. It also has direct epigenetic effects, regulating hypusination of eIF5A (a translation factor involved in longevity). Population studies show an inverse association between dietary spermidine intake and all-cause mortality. Spermidine levels decline with age and can be partially restored through diet (wheat germ, aged cheese, legumes) or supplementation.</p>
+      <p><strong>Hallmarks addressed:</strong> Disabled macroautophagy (5), loss of proteostasis (4), epigenetic alterations (3).</p>
+      <div class="entry-specs">
+        DOSE: <span>1–5mg daily supplement · Or via wheat germ (highest dietary source)</span><br>
+        MECHANISM: <span>mTOR-independent autophagy induction · eIF5A hypusination</span><br>
+        POPULATION DATA: <span>Inverse association with all-cause mortality in observational studies</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">QUERCETIN + FISETIN</div>
+        <div class="entry-class">SENOLYTICS · SIRT1 ACTIVATORS · SENESCENT CELL CLEARANCE</div>
+      </div>
+      <div class="evidence-badge emerging">EMERGING EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Senolytics selectively eliminate senescent cells — the "zombie cells" that accumulate with age and drive the SASP (senescence-associated secretory phenotype), a major source of chronic inflammation. Quercetin and fisetin are the most studied dietary senolytics. Mayo Clinic trials have tested quercetin + dasatinib combinations in humans. Fisetin showed a 25–30% reduction in senescent cells in mice with lifespan extension. Human RCT data is early but promising. Both are flavonoids found in foods but at concentrations too low to achieve senolytic dosing through diet alone.</p>
+      <p><strong>Hallmarks addressed:</strong> Cellular senescence (8), chronic inflammation (11), deregulated nutrient sensing (6).</p>
+      <div class="entry-specs">
+        QUERCETIN DOSE: <span>500–1000mg with bromelain for absorption · 2–3x weekly (not daily)</span><br>
+        FISETIN DOSE: <span>100–500mg · Intermittent dosing protocol (pulse not continuous)</span><br>
+        HONEST STATUS: <span>Senolytic mechanism confirmed in animals. Human outcome RCTs: ongoing.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">RESVERATROL (+ TMG)</div>
+        <div class="entry-class">SIRT1 ACTIVATOR · AMPK MODULATOR · EPIGENETIC</div>
+      </div>
+      <div class="evidence-badge emerging">EMERGING EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Resveratrol activates SIRT1 directly and potentiates the effects of NAD+ precursors — the combination is synergistic. David Sinclair's longevity protocol pairs NMN with resveratrol for this reason. The honest constraint: resveratrol bioavailability is notoriously poor. Trans-resveratrol taken with fat improves absorption significantly. TMG (trimethylglycine) is increasingly paired with resveratrol and NMN as a methyl donor to offset the methyl-consuming nature of elevated sirtuin activity.</p>
+      <p><strong>Hallmarks addressed:</strong> Deregulated nutrient sensing (6), epigenetic alterations (3), mitochondrial dysfunction (7).</p>
+      <div class="entry-specs">
+        DOSE: <span>500mg–1g trans-resveratrol with fat · Morning with NMN</span><br>
+        TMG PAIRING: <span>500mg–1g TMG — offsets methyl consumption from SIRT activation</span><br>
+        HONEST STATUS: <span>Strong animal and mechanistic data. Human RCT longevity outcomes: not yet confirmed.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">ASHWAGANDHA (KSM-66)</div>
+        <div class="entry-class">ADAPTOGEN · CORTISOL MODULATOR · TELOMERE PROTECTIVE</div>
+      </div>
+      <div class="evidence-badge moderate">MODERATE EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Chronic cortisol elevation is one of the most consistent accelerators of biological aging — it directly shortens telomeres, impairs immune function, and disrupts sleep architecture. Ashwagandha (KSM-66 extract) is the most studied adaptogen with the most consistent cortisol reduction data across multiple RCTs. A 2021 JAMA Network Open study showed significant thyroid and cortisol modulation. The longevity mechanism is primarily through stress axis regulation — addressing the upstream driver of multiple hallmarks simultaneously.</p>
+      <p><strong>Hallmarks addressed:</strong> Telomere attrition (2), altered intercellular communication (10), cellular senescence (8).</p>
+      <div class="entry-specs">
+        DOSE: <span>300–600mg KSM-66 extract daily · Evening preferred</span><br>
+        CORTISOL REDUCTION: <span>Consistent across multiple RCTs — 15–30% reduction</span><br>
+        MECHANISM: <span>HPA axis modulation → cortisol reduction → telomere + immune preservation</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">CREATINE MONOHYDRATE</div>
+        <div class="entry-class">ATP BUFFER · COGNITIVE SUPPORT · MUSCLE PRESERVATION</div>
+      </div>
+      <div class="evidence-badge strong">STRONG EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Creatine is the most studied sports supplement with extensive safety data and an expanding longevity evidence base. Beyond muscle preservation — sarcopenia being a major aging risk factor — creatine has recently demonstrated cognitive benefits in aging adults. A 2023 meta-analysis found significant improvement in memory tasks in adults over 60. Creatine supplementation is particularly important for those with limited meat intake as dietary creatine comes primarily from animal protein.</p>
+      <p><strong>Hallmarks addressed:</strong> Stem cell exhaustion (9), mitochondrial dysfunction (7), altered intercellular communication (10).</p>
+      <div class="entry-specs">
+        DOSE: <span>3–5g daily monohydrate · No loading phase necessary</span><br>
+        COGNITIVE DATA: <span>2023 meta-analysis — significant memory improvement in adults 60+</span><br>
+        SAFETY: <span>Most extensively studied supplement in existence. 30+ years of safety data.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">LION'S MANE MUSHROOM EXTRACT</div>
+        <div class="entry-class">NGF STIMULATOR · NEUROGENESIS · MYELIN SUPPORT</div>
+      </div>
+      <div class="evidence-badge emerging">EMERGING EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Lion's mane is the only dietary source with clinical evidence of nerve growth factor (NGF) stimulation in humans. NGF supports neurogenesis, synaptic plasticity, and myelin maintenance — all of which decline with age. A landmark Japanese RCT showed significant cognitive improvement in mild cognitive impairment with lion's mane supplementation. A 2023 University of Queensland study identified specific compounds (hericene A) that directly stimulate hippocampal neuron growth. The neurological aging application has the strongest current evidence base.</p>
+      <p><strong>Hallmarks addressed:</strong> Stem cell exhaustion (9), altered intercellular communication (10), chronic inflammation (11).</p>
+      <div class="entry-specs">
+        DOSE: <span>500mg–1g dual extract (water + alcohol) daily</span><br>
+        DUAL EXTRACT: <span>Required — water extract for beta-glucans, alcohol extract for hericenones</span><br>
+        UQ 2023: <span>Hericene A directly stimulates hippocampal neuron growth</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <div class="entry-left">
+        <div class="entry-name">COLLAGEN PEPTIDES + VITAMIN C</div>
+        <div class="entry-class">EXTRACELLULAR MATRIX · SKIN · JOINT · VASCULAR INTEGRITY</div>
+      </div>
+      <div class="evidence-badge moderate">MODERATE EVIDENCE</div>
+    </div>
+    <div class="entry-body">
+      <p>Collagen synthesis declines approximately 1% per year after age 25. The extracellular matrix — the structural scaffold between cells — degrades with age and directly drives skin, joint, vascular, and organ aging. Collagen peptide supplementation with vitamin C (the cofactor for collagen synthesis) has demonstrated skin elasticity improvement and joint pain reduction in multiple RCTs. The combination is required — vitamin C alone without amino acid precursors doesn't address the raw material deficit.</p>
+      <p><strong>Hallmarks addressed:</strong> Altered intercellular communication (10), cellular senescence (8).</p>
+      <div class="entry-specs">
+        DOSE COLLAGEN: <span>10–15g hydrolyzed peptides daily · On empty stomach or with vitamin C</span><br>
+        DOSE VITAMIN C: <span>500mg–1g with collagen · Cofactor for hydroxylation reactions</span><br>
+        TIMING: <span>Morning fasted for maximum absorption</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════
+     PROTOCOL STACK TABLE
+══════════════════════ -->
+<div id="stack" class="chapter">
+  <span class="chapter-tag">§ 04 · PROTOCOL STACK</span>
+  <h2 class="chapter-title">The Distilled Stack</h2>
+  <div class="chapter-sub">Complete dosing, timing, and evidence summary for daily implementation</div>
+  <div class="chapter-rule"></div>
+
+  <div class="stack-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>COMPOUND</th>
+          <th>DOSE</th>
+          <th>TIMING</th>
+          <th>EVIDENCE</th>
+          <th>PRIMARY HALLMARKS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="t-name">Vitamin D3</td><td class="t-dose">3000–5000 IU</td><td class="t-timing">Morning with fat</td><td class="t-evidence-s">STRONG</td><td class="t-hallmark">8, 10, 1</td></tr>
+        <tr><td class="t-name">Vitamin K2 MK-7</td><td class="t-dose">150–200 mcg</td><td class="t-timing">Morning with D3</td><td class="t-evidence-s">STRONG</td><td class="t-hallmark">10 (arterial health)</td></tr>
+        <tr><td class="t-name">Omega-3 EPA+DHA</td><td class="t-dose">2–4g</td><td class="t-timing">With largest meal</td><td class="t-evidence-s">STRONG</td><td class="t-hallmark">2, 11, 7</td></tr>
+        <tr><td class="t-name">Magnesium Glycinate</td><td class="t-dose">300–400mg</td><td class="t-timing">Evening</td><td class="t-evidence-s">STRONG</td><td class="t-hallmark">1, 7, 4</td></tr>
+        <tr><td class="t-name">Creatine Monohydrate</td><td class="t-dose">3–5g</td><td class="t-timing">Any time, daily</td><td class="t-evidence-s">STRONG</td><td class="t-hallmark">9, 7, 10</td></tr>
+        <tr><td class="t-name">Collagen Peptides</td><td class="t-dose">10–15g</td><td class="t-timing">Morning fasted</td><td class="t-evidence-m">MODERATE</td><td class="t-hallmark">10, 8</td></tr>
+        <tr><td class="t-name">Vitamin C</td><td class="t-dose">500–1000mg</td><td class="t-timing">With collagen</td><td class="t-evidence-s">STRONG</td><td class="t-hallmark">1, 11</td></tr>
+        <tr><td class="t-name">NMN</td><td class="t-dose">250–500mg</td><td class="t-timing">Morning fasted</td><td class="t-evidence-e">EMERGING</td><td class="t-hallmark">7, 1, 3, 6</td></tr>
+        <tr><td class="t-name">Resveratrol (Trans)</td><td class="t-dose">500mg–1g</td><td class="t-timing">Morning with fat</td><td class="t-evidence-e">EMERGING</td><td class="t-hallmark">6, 3, 7</td></tr>
+        <tr><td class="t-name">TMG</td><td class="t-dose">500mg–1g</td><td class="t-timing">Morning with NMN</td><td class="t-evidence-m">MODERATE</td><td class="t-hallmark">3 (methyl donor)</td></tr>
+        <tr><td class="t-name">Urolithin A</td><td class="t-dose">500mg–1g</td><td class="t-timing">Morning with food</td><td class="t-evidence-e">EMERGING</td><td class="t-hallmark">7, 5, 4, 8</td></tr>
+        <tr><td class="t-name">Spermidine</td><td class="t-dose">1–5mg</td><td class="t-timing">Morning</td><td class="t-evidence-e">EMERGING</td><td class="t-hallmark">5, 4, 3</td></tr>
+        <tr><td class="t-name">Quercetin</td><td class="t-dose">500–1000mg</td><td class="t-timing">2–3x weekly with bromelain</td><td class="t-evidence-e">EMERGING</td><td class="t-hallmark">8, 11, 6</td></tr>
+        <tr><td class="t-name">Fisetin</td><td class="t-dose">100–500mg</td><td class="t-timing">Pulse protocol</td><td class="t-evidence-e">EMERGING</td><td class="t-hallmark">8, 11</td></tr>
+        <tr><td class="t-name">Ashwagandha KSM-66</td><td class="t-dose">300–600mg</td><td class="t-timing">Evening</td><td class="t-evidence-m">MODERATE</td><td class="t-hallmark">2, 10, 8</td></tr>
+        <tr><td class="t-name">Lion's Mane Extract</td><td class="t-dose">500mg–1g</td><td class="t-timing">Morning or midday</td><td class="t-evidence-e">EMERGING</td><td class="t-hallmark">9, 10, 11</td></tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5">EVIDENCE KEY: STRONG = multiple completed RCTs · MODERATE = observational + mechanistic · EMERGING = early RCTs + strong animal data · All doses are adult ranges — individual variation applies</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+
+<!-- ══════════════════════
+     TIMING ARCHITECTURE
+══════════════════════ -->
+<div id="timing" class="chapter">
+  <span class="chapter-tag">§ 05 · TIMING ARCHITECTURE</span>
+  <h2 class="chapter-title">When Biology Receives</h2>
+  <div class="chapter-sub">Timing is not optional — circadian biology determines whether compounds work</div>
+  <div class="chapter-rule"></div>
+
+  <p>Every cell in the body runs on a 24-hour circadian clock. NAD+ levels, autophagy activity, DNA repair, cortisol, growth hormone — all follow circadian rhythms. A supplement taken at the wrong time can work against the rhythm it's meant to support. Timing is architecture.</p>
+
+  <div class="mechanism">
+    <div class="mechanism-label">MORNING — ACTIVATION WINDOW (7–10 AM)</div>
+    NAD+ levels peak in morning → NMN + Resveratrol synergistic with natural cycle<br>
+    Cortisol peaks naturally → take D3, K2, Omega-3 with breakfast<br>
+    Collagen + Vitamin C → fasted absorption window<br>
+    Creatine → any time, consistent daily timing preferred<br>
+    Lion's Mane → supports morning cognitive function
+  </div>
+
+  <div class="mechanism">
+    <div class="mechanism-label">MIDDAY — MAINTENANCE WINDOW</div>
+    Omega-3 with largest meal → fat absorption optimization<br>
+    Urolithin A → with food, mitophagy runs throughout day<br>
+    Spermidine → with food, autophagy induction
+  </div>
+
+  <div class="mechanism">
+    <div class="mechanism-label">EVENING — REPAIR WINDOW (7–10 PM)</div>
+    Magnesium Glycinate → supports deep sleep → glymphatic clearance → neurological repair<br>
+    Ashwagandha → evening cortisol reduction → sleep quality + telomere protection<br>
+    Growth hormone peaks during deep sleep → magnesium-supported sleep = peak repair window<br>
+    DNA repair most active during sleep → magnesium cofactor timing critical
+  </div>
+
+  <div class="mechanism">
+    <div class="mechanism-label">PULSE PROTOCOL — NOT DAILY</div>
+    Quercetin + Fisetin → 2–3x weekly · Continuous senolytic dosing may impair cellular signaling<br>
+    Resveratrol → some protocols cycle 5 days on / 2 days off<br>
+    NMN → daily is standard but some researchers suggest cycling
+  </div>
+
+  <h3>The Foundational Layer: Food First</h3>
+  <p>The supplement stack addresses gaps and amplifies pathways that food establishes. Without the food architecture — EVOO, fatty fish, berries, cruciferous vegetables, legumes, fermented foods — no supplement stack operates at its designed efficiency. The food matrix provides the substrate. The supplements target specific nodes the food cannot reach at therapeutic concentrations.</p>
+
+  <p><strong>The E=1 standard applied to longevity:</strong> a protocol that optimizes NAD+ but neglects sleep, or that addresses inflammation but ignores the gut microbiome, or that supplements senolytic compounds but maintains a pro-inflammatory diet, is not an E=1 protocol. It is an optimization that extracts one node to appear to solve the problem. Every hallmark must be addressed simultaneously or the weakest node determines the system's actual rate of aging.</p>
+
+  <div class="eq">E(aging) = min(H1, H2, H3, H4, H5, H6, H7, H8, H9, H10, H11, H12)
+
+Where H1–H12 are the twelve hallmarks of aging, each scored 0–1.
+The system ages at the rate of the least-addressed hallmark.
+No supplement combination compensates for a hallmark scored at zero.</div>
+</div>
+
+
+<!-- CLOSING SEAL -->
+<div id="seal" class="closing">
+  <div class="closing-symbol">⊕</div>
+  <p class="closing-text">Aging is not inevitable at the rate most people experience it. The hallmarks are modifiable. The interventions are real. The evidence is graded honestly here — strong where it's strong, emerging where it's emerging, speculative where it hasn't been earned. Act on the strong evidence first. Add the emerging nodes as resources allow. The work is the protocol. The protocol is the work.</p>
+  <div class="closing-seal">
+    LONGEVITY PROTOCOL · FORENSIC ANALYSIS · APRIL 2026<br>
+    12 HALLMARKS · 15 FOODS · 16 SUPPLEMENTS · E=1 STANDARD<br>
+    EVIDENCE GRADED HONESTLY · NOTHING DECORATED · EVERYTHING DISTILLED<br><br>
+    E = 1 · TOTAL PRESERVATION · THE WORK CONTINUES
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="footer-l">
+    LONGEVITY PROTOCOL · ANTI-AGING NUTRITION & SUPPLEMENT ARCHITECTURE<br>
+    SOURCES: CELL 2023 · NATURE MEDICINE 2025 · FRONTIERS AGING 2025 · NIH PMC · PUBMED
+  </div>
+  <div class="footer-r">E = 1</div>
+</footer>
+
+</body>
+</html>
