@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE DORK — Forensic Research Methodology · PWNTECHX</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+:root {
+  --void: #080b0f;
+  --deep: #0c1018;
+  --surface: #111820;
+  --plate: #18222e;
+  --seam: #1f2d3d;
+  --wire: #2a3f58;
+  --steel: #3a5570;
+  --ice: #5a8faa;
+  --plasma: #7ab8d4;
+  --white: #e8f2f8;
+  --vellum: #d4e8f0;
+  --dim: #7a9ab0;
+  --ghost: #3a5268;
+  --green: #4aaa70;
+  --amber: #d4a030;
+  --red: #cc4444;
+  --gold: #c8943a;
+  --rule: rgba(90,143,170,0.15);
+  --rule-s: rgba(90,143,170,0.35);
+  --code-bg: rgba(8,11,15,0.9);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 40% at 100% 0%, rgba(42,63,88,0.2) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 30% at 0% 100%, rgba(26,56,82,0.15) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* GRID BACKGROUND */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(90,143,170,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(90,143,170,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(8,11,15,0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 32px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.nav-brand {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem;
+  color: var(--plasma);
+  letter-spacing: 0.15em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+nav a {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+nav a:hover { color: var(--plasma); border-color: var(--rule); }
+
+/* COVER */
+.cover {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 80px 40px 60px;
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.cover-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.cover-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  color: var(--plasma);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: emerge 0.8s ease forwards 0.2s;
+}
+
+.cover-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(3rem, 10vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  opacity: 0;
+  animation: emerge 1s ease forwards 0.4s;
+}
+
+.cover-title .accent { color: var(--plasma); }
+
+.cover-desc {
+  margin-top: 28px;
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  color: var(--dim);
+  max-width: 620px;
+  line-height: 1.7;
+  font-weight: 300;
+  opacity: 0;
+  animation: emerge 0.8s ease forwards 0.8s;
+}
+
+.cover-stats {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding-top: 48px;
+  border-top: 1px solid var(--rule);
+  margin-top: 48px;
+  opacity: 0;
+  animation: emerge 0.8s ease forwards 1s;
+}
+
+.stat { display: flex; flex-direction: column; gap: 4px; }
+
+.stat-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--plasma);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+}
+
+@keyframes emerge {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* MAIN */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 1;
+}
+
+/* SECTIONS */
+section {
+  padding: 80px 0 60px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 48px;
+}
+
+.section-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--plasma);
+  white-space: nowrap;
+}
+
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  color: var(--white);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--wire), transparent);
+}
+
+/* PROSE */
+p {
+  color: var(--dim);
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+p strong { color: var(--white); font-weight: 600; }
+p em { color: var(--vellum); font-style: italic; }
+
+h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  margin: 28px 0 12px;
+}
+
+/* OPERATOR TABLE */
+.op-table-wrap { overflow-x: auto; margin: 24px 0 32px; }
+
+.op-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem;
+}
+
+.op-table thead tr { background: var(--plate); }
+
+.op-table th {
+  padding: 10px 16px;
+  text-align: left;
+  color: var(--plasma);
+  letter-spacing: 0.12em;
+  font-size: 0.58rem;
+  font-weight: 400;
+  border-bottom: 1px solid var(--rule-s);
+}
+
+.op-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+  color: var(--dim);
+  font-size: 0.68rem;
+}
+
+.op-table tr:hover td { background: rgba(17,24,32,0.6); }
+
+.op-name { color: var(--plasma); font-weight: 500; font-size: 0.78rem; }
+.op-ex { color: var(--green); font-size: 0.65rem; }
+.op-status-ok { color: var(--green); }
+.op-status-gone { color: var(--red); text-decoration: line-through; }
+
+/* CODE BLOCKS */
+.dork {
+  background: var(--code-bg);
+  border: 1px solid var(--seam);
+  border-left: 3px solid var(--plasma);
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem;
+  color: var(--green);
+  overflow-x: auto;
+  line-height: 1.6;
+  position: relative;
+}
+
+.dork-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.dork .comment {
+  color: var(--ghost);
+  font-style: italic;
+}
+
+.dork .op { color: var(--plasma); }
+.dork .val { color: var(--amber); }
+.dork .bool { color: var(--ice); }
+
+/* CALLOUT BLOCKS */
+.callout {
+  background: var(--surface);
+  border-left: 3px solid var(--plasma);
+  padding: 20px 24px;
+  margin: 20px 0;
+  font-size: 0.88rem;
+  color: var(--dim);
+  line-height: 1.75;
+}
+
+.callout-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--plasma);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.callout.green { border-color: var(--green); }
+.callout.green .callout-tag { color: var(--green); }
+.callout.amber { border-color: var(--amber); }
+.callout.amber .callout-tag { color: var(--amber); }
+.callout.red { border-color: var(--red); }
+.callout.red .callout-tag { color: var(--red); }
+.callout.gold { border-color: var(--gold); }
+.callout.gold .callout-tag { color: var(--gold); }
+
+/* TWO COL */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+@media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+/* SYNTHESIS CARD */
+.synthesis-card {
+  background: var(--surface);
+  border: 1px solid var(--seam);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.synthesis-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--plasma), transparent);
+}
+
+.synthesis-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+  margin-bottom: 8px;
+}
+
+.synthesis-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+
+.synthesis-card p { font-size: 0.82rem; margin-bottom: 8px; }
+
+/* WALL DIAGRAM */
+.wall-diagram {
+  background: var(--code-bg);
+  border: 1px solid var(--seam);
+  padding: 28px;
+  margin: 24px 0;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem;
+  color: var(--dim);
+  line-height: 2;
+}
+
+.wall-line { display: flex; align-items: center; gap: 16px; }
+.wall-public { color: var(--green); }
+.wall-boundary { color: var(--amber); }
+.wall-private { color: var(--red); }
+.wall-void { color: var(--ghost); }
+
+/* OPEN NODE SECTION */
+.open-node-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2px;
+  margin: 20px 0;
+}
+
+.open-node {
+  background: var(--surface);
+  border: 1px solid var(--seam);
+  padding: 20px;
+  transition: background 0.2s;
+}
+
+.open-node:hover { background: var(--plate); }
+
+.on-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--plasma);
+  margin-bottom: 8px;
+}
+
+.on-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.open-node p { font-size: 0.8rem; margin-bottom: 0; }
+
+/* SEAL */
+.seal-section {
+  padding: 80px 0;
+  text-align: center;
+  border-top: 1px solid var(--rule-s);
+}
+
+.seal-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  letter-spacing: -0.02em;
+  color: var(--plasma);
+  margin-bottom: 20px;
+}
+
+.seal-body {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  line-height: 2.4;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 28px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-l {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  line-height: 1.9;
+}
+
+.footer-r {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--plasma);
+}
+
+@media (max-width: 600px) {
+  main, .cover { padding-left: 20px; padding-right: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">THE DORK // PWNTECHX</span>
+  <div class="nav-links">
+    <a href="#philosophy">PHILOSOPHY</a>
+    <a href="#operators">OPERATORS</a>
+    <a href="#combinations">COMBINATIONS</a>
+    <a href="#synthesis">SYNTHESIS</a>
+    <a href="#walls">WALLS</a>
+    <a href="#open-nodes">OPEN NODES</a>
+    <a href="#aurelius">AURELIUS</a>
+  </div>
+</nav>
+
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-tag">FORENSIC RESEARCH METHODOLOGY · PhD LEVEL · AURELIUS FRAMEWORK</div>
+    <h1 class="cover-title">
+      THE<br>
+      <span class="accent">DORK</span>
+    </h1>
+    <p class="cover-desc">
+      Advanced search operator methodology applied as forensic discipline. How to surface verified public ground, map the walls of what is knowable, hold what remains open, and synthesize signal from indexed noise. This is research as geometry — not peeking into the void, but reading the terrain that's already lit.
+    </p>
+    <div class="cover-stats">
+      <div class="stat"><div class="stat-val">25+</div><div class="stat-label">WORKING OPERATORS (2026)</div></div>
+      <div class="stat"><div class="stat-val">7000+</div><div class="stat-label">KNOWN DORK PATTERNS</div></div>
+      <div class="stat"><div class="stat-val">0</div><div class="stat-label">PRIVACY VIOLATIONS ON VERIFIED GROUND</div></div>
+      <div class="stat"><div class="stat-val">E=1</div><div class="stat-label">TOTAL PRESERVATION STANDARD</div></div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- §00 PHILOSOPHY -->
+<section id="philosophy">
+  <div class="section-header">
+    <span class="section-num">§ 00</span>
+    <h2 class="section-title">The Philosophy of the Dork</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>Dorking is not hacking. It is not surveillance. It is not peeking into the void. It is the disciplined application of search operator syntax to surface what is already publicly indexed — what the internet chose to make visible — and reading that terrain with enough precision to extract signal from the noise.</p>
+
+  <p>The distinction matters legally and epistemically. <strong>Every result returned by a dork is already public.</strong> Google only indexes what servers have made accessible. If sensitive information appears in a dork result, the vulnerability was created by the site owner — not by the researcher who found it. The researcher is reading a map that already exists. They did not draw it.</p>
+
+  <div class="callout gold">
+    <span class="callout-tag">LEGAL GROUND — VERIFIED</span>
+    Legal analysis published in the Washington Journal of Law, Technology & Arts confirms: dorking as a standalone research act is legal. Every known prosecution charged individuals for actions taken after dorking — accessing systems without authorization — not for the search queries themselves. The dork surfaces the terrain. What you do with that terrain is a separate moral and legal question.
+  </div>
+
+  <p>Applied to the Aurelius framework: dorking is the <strong>Motive Audit First</strong> made operational. Before engaging content, you read what the terrain actually contains rather than what the surface suggests. The Glass Box principle applies — the trail is left visible, the operators are stated, the sources are named. Nothing hidden in the method.</p>
+
+  <p>This document teaches doctoral-level research methodology — the same techniques used by investigative journalists, security researchers, OSINT investigators, and academic researchers. The boundary between legitimate research and misuse is not in the tool. It is in the intent and the action that follows.</p>
+</section>
+
+
+<!-- §01 OPERATORS -->
+<section id="operators">
+  <div class="section-header">
+    <span class="section-num">§ 01</span>
+    <h2 class="section-title">The Complete Operator Reference</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>As of 2026, Google supports approximately 25 working search operators. The <code>cache:</code> operator was removed in early 2024. The <code>related:</code> operator was removed in 2023. No new operators have been added since 2019. What follows is the verified working set.</p>
+
+  <h3>Core Targeting Operators</h3>
+
+  <div class="op-table-wrap">
+    <table class="op-table">
+      <thead>
+        <tr>
+          <th>OPERATOR</th>
+          <th>FUNCTION</th>
+          <th>EXAMPLE</th>
+          <th>STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="op-name">site:</td><td>Restricts results to a specific domain</td><td class="op-ex">site:nature.com longevity</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">filetype: / ext:</td><td>Searches for specific file formats</td><td class="op-ex">filetype:pdf "clinical trial" NAD+</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">intitle:</td><td>Keyword must appear in page title</td><td class="op-ex">intitle:"aging hallmarks" 2025</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">allintitle:</td><td>All keywords must appear in title</td><td class="op-ex">allintitle:NMN NAD aging RCT</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">inurl:</td><td>Keyword must appear in the URL</td><td class="op-ex">inurl:research "spermidine" autophagy</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">allinurl:</td><td>All keywords must appear in URL</td><td class="op-ex">allinurl:gov longevity supplement</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">intext:</td><td>Keyword must appear in body text</td><td class="op-ex">intext:"mitophagy" intext:"urolithin"</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">allintext:</td><td>All keywords must appear in body</td><td class="op-ex">allintext:telomere omega-3 RCT human</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">inanchor:</td><td>Keyword in anchor text of links</td><td class="op-ex">inanchor:"buy pokemon cards"</td><td class="op-status-ok">WORKING</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Boolean & Modifier Operators</h3>
+
+  <div class="op-table-wrap">
+    <table class="op-table">
+      <thead>
+        <tr>
+          <th>OPERATOR</th>
+          <th>FUNCTION</th>
+          <th>EXAMPLE</th>
+          <th>STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="op-name">" "</td><td>Exact phrase match — non-negotiable for precision</td><td class="op-ex">"hallmarks of aging" 2023</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">OR / |</td><td>Either term matches</td><td class="op-ex">NMN OR NR NAD+ longevity</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">AND</td><td>Both terms must match (case sensitive)</td><td class="op-ex">longevity AND "clinical trial"</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">- (minus)</td><td>Excludes term from results</td><td class="op-ex">pokemon cards -ebay -amazon</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">* (wildcard)</td><td>Matches any word in that position</td><td class="op-ex">"best * for longevity"</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">( )</td><td>Groups operators for complex queries</td><td class="op-ex">(NMN OR NR) site:nih.gov</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">before: / after:</td><td>Date range filter for publication</td><td class="op-ex">urolithin A after:2024 site:.edu</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">define:</td><td>Returns definitions of a term</td><td class="op-ex">define:senolytic</td><td class="op-status-ok">WORKING</td></tr>
+        <tr><td class="op-name">source:</td><td>Google News — specific source</td><td class="op-ex">source:reuters aging research</td><td class="op-status-ok">WORKING (News)</td></tr>
+        <tr><td class="op-name">cache:</td><td>Cached version of a page</td><td class="op-ex">cache:example.com</td><td class="op-status-gone">REMOVED 2024</td></tr>
+        <tr><td class="op-name">related:</td><td>Sites similar to specified URL</td><td class="op-ex">related:pubmed.ncbi.nlm.nih.gov</td><td class="op-status-gone">REMOVED 2023</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <span class="callout-tag">CROSS-ENGINE NOTE</span>
+    Google is not the only terrain. Bing, DuckDuckGo, and Yandex each index different material and support overlapping but distinct operator sets. For sensitive research, DuckDuckGo is preferred — it does not log queries to individual users. For academic material, Google Scholar operates with its own operator set. For government documents, site:gov combined with filetype:pdf is the most reliable cross-engine approach.
+  </div>
+</section>
+
+
+<!-- §02 COMBINATIONS -->
+<section id="combinations">
+  <div class="section-header">
+    <span class="section-num">§ 02</span>
+    <h2 class="section-title">Combination Architecture</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>Single operators are blunt instruments. Combination is where precision emerges. The methodology is: <strong>start broad, layer constraints, eliminate noise, surface signal</strong>. Each added operator is a filter that narrows the terrain without collapsing it prematurely.</p>
+
+  <h3>Academic Research Combinations</h3>
+
+  <div class="dork">
+    <span class="dork-label">PATTERN // PEER-REVIEWED SCIENCE ON SPECIFIC COMPOUND</span>
+    <span class="op">filetype:</span><span class="val">pdf</span> <span class="op">site:</span><span class="val">nih.gov</span> <span class="bool">OR</span> <span class="op">site:</span><span class="val">.edu</span> "<span class="val">urolithin A</span>" "<span class="val">clinical trial</span>" <span class="op">after:</span><span class="val">2022</span>
+    <br><span class="comment">// Surfaces peer-reviewed PDFs from government and academic domains on urolithin A trials post-2022</span>
+  </div>
+
+  <div class="dork">
+    <span class="dork-label">PATTERN // SYSTEMATIC REVIEWS ON AGING HALLMARK</span>
+    <span class="op">intitle:</span>"<span class="val">systematic review</span>" <span class="bool">OR</span> <span class="op">intitle:</span>"<span class="val">meta-analysis</span>" <span class="op">intext:</span>"<span class="val">cellular senescence</span>" <span class="op">site:</span><span class="val">pubmed.ncbi.nlm.nih.gov</span> <span class="op">after:</span><span class="val">2023</span>
+    <br><span class="comment">// Finds systematic reviews and meta-analyses on cellular senescence in PubMed after 2023</span>
+  </div>
+
+  <div class="dork">
+    <span class="dork-label">PATTERN // GOVERNMENT HEALTH DATA ON SUPPLEMENT SAFETY</span>
+    <span class="op">site:</span><span class="val">nih.gov</span> <span class="bool">OR</span> <span class="op">site:</span><span class="val">fda.gov</span> "<span class="val">NMN</span>" <span class="bool">OR</span> "<span class="val">nicotinamide mononucleotide</span>" <span class="op">filetype:</span><span class="val">pdf</span>
+    <br><span class="comment">// Surfaces official government position documents on NMN from NIH and FDA</span>
+  </div>
+
+  <h3>Market & Commercial Research</h3>
+
+  <div class="dork">
+    <span class="dork-label">PATTERN // BELOW MARKET PRICE IDENTIFICATION</span>
+    "<span class="val">pokemon</span>" "<span class="val">booster box</span>" "<span class="val">sealed</span>" -<span class="val">ebay</span> -<span class="val">amazon</span> <span class="op">intext:</span>"<span class="val">$</span>" <span class="op">after:</span><span class="val">2025</span>
+    <br><span class="comment">// Surfaces sealed product listings outside major marketplaces — often better prices</span>
+  </div>
+
+  <div class="dork">
+    <span class="dork-label">PATTERN // COMPETITOR ANALYSIS</span>
+    <span class="op">site:</span><span class="val">competitor.com</span> <span class="op">intitle:</span>"<span class="val">price</span>" <span class="bool">OR</span> <span class="op">intitle:</span>"<span class="val">product</span>" -<span class="val">login</span> -<span class="val">account</span>
+    <br><span class="comment">// Maps competitor product pages without touching account or login pages</span>
+  </div>
+
+  <h3>Investigative & OSINT Combinations</h3>
+
+  <div class="dork">
+    <span class="dork-label">PATTERN // CROSS-PLATFORM IDENTITY VERIFICATION</span>
+    "<span class="val">exact name or phrase</span>" -<span class="op">site:</span><span class="val">twitter.com</span> -<span class="op">site:</span><span class="val">linkedin.com</span> -<span class="op">site:</span><span class="val">facebook.com</span>
+    <br><span class="comment">// Finds the same phrase or name appearing on platforms beyond the obvious ones</span>
+  </div>
+
+  <div class="dork">
+    <span class="dork-label">PATTERN // PUBLIC DOCUMENT ARCHAEOLOGY</span>
+    <span class="op">filetype:</span><span class="val">pdf</span> <span class="bool">OR</span> <span class="op">filetype:</span><span class="val">doc</span> <span class="op">site:</span><span class="val">gov</span> "<span class="val">subject matter</span>" <span class="op">before:</span><span class="val">2020</span>
+    <br><span class="comment">// Surfaces older government documents that may have been deprioritized in standard results</span>
+  </div>
+
+  <div class="dork">
+    <span class="dork-label">PATTERN // TECHNICAL VULNERABILITY MAPPING (SECURITY RESEARCH)</span>
+    <span class="op">intitle:</span>"<span class="val">index of</span>" "<span class="val">parent directory</span>" <span class="op">site:</span><span class="val">target-domain.com</span>
+    <br><span class="comment">// Identifies if a server has directory listing enabled — legitimate security audit use only</span>
+  </div>
+
+  <h3>Aurelius Network Research Patterns</h3>
+
+  <div class="dork">
+    <span class="dork-label">PATTERN // MOTIVE AUDIT — MAPPING SOURCE INTENT</span>
+    <span class="op">site:</span><span class="val">publication.com</span> <span class="op">intext:</span>"<span class="val">funded by</span>" <span class="bool">OR</span> <span class="op">intext:</span>"<span class="val">sponsored by</span>" <span class="bool">OR</span> <span class="op">intext:</span>"<span class="val">conflict of interest</span>"
+    <br><span class="comment">// Reads the source before engaging the content — surfaces funding and conflict disclosures</span>
+  </div>
+
+  <div class="dork">
+    <span class="dork-label">PATTERN // VERIFIED GROUND — FINDING REPLICATION STUDIES</span>
+    "<span class="val">replication</span>" <span class="bool">OR</span> "<span class="val">replicated</span>" <span class="bool">OR</span> "<span class="val">confirmed</span>" "<span class="val">specific claim</span>" <span class="op">site:</span><span class="val">scholar.google.com</span> <span class="bool">OR</span> <span class="op">site:</span><span class="val">.edu</span>
+    <br><span class="comment">// Finds studies that replicate or confirm specific claims — moves claim from unclear to verified node</span>
+  </div>
+
+  <div class="dork">
+    <span class="dork-label">PATTERN // HOLD UNCLEAR NODES — FINDING CONTRADICTORY EVIDENCE</span>
+    "<span class="val">specific claim</span>" "<span class="val">no evidence</span>" <span class="bool">OR</span> "<span class="val">not supported</span>" <span class="bool">OR</span> "<span class="val">failed to replicate</span>" <span class="op">site:</span><span class="val">.edu</span> <span class="bool">OR</span> <span class="op">site:</span><span class="val">nih.gov</span>
+    <br><span class="comment">// Actively searches for contradictory evidence — the honest audit of any claimed verified node</span>
+  </div>
+</section>
+
+
+<!-- §03 SYNTHESIS -->
+<section id="synthesis">
+  <div class="section-header">
+    <span class="section-num">§ 03</span>
+    <h2 class="section-title">Synthesis Methodology</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>Dorking is not the end of the research process. It is the terrain mapping phase. What follows is synthesis — taking what the dorks surfaced and distilling it into verified ground. The methodology is four-phase.</p>
+
+  <div class="two-col">
+    <div class="synthesis-card">
+      <div class="synthesis-num">PHASE 01</div>
+      <div class="synthesis-title">Broad Terrain Map</div>
+      <p>Start with wide operators. Map what exists without filtering yet. The goal is to understand the shape of available information before deciding what to extract. Use <code>site:</code> and <code>intitle:</code> combinations to see the terrain.</p>
+    </div>
+    <div class="synthesis-card">
+      <div class="synthesis-num">PHASE 02</div>
+      <div class="synthesis-title">Source Quality Audit</div>
+      <p>Apply the Motive Audit. For each source type identified, dork for funding disclosures, conflicts of interest, institutional affiliation. Government domains, peer-reviewed journals, and institutional research carry different evidentiary weight than commercial or opinion sources.</p>
+    </div>
+    <div class="synthesis-card">
+      <div class="synthesis-num">PHASE 03</div>
+      <div class="synthesis-title">Convergence & Contradiction</div>
+      <p>Run two parallel dorks: one searching for confirmation of the claim, one searching for contradiction. Claims that survive both dorks are candidates for verified ground. Claims that show significant contradiction become unclear nodes — held, not dismissed.</p>
+    </div>
+    <div class="synthesis-card">
+      <div class="synthesis-num">PHASE 04</div>
+      <div class="synthesis-title">Compression</div>
+      <p>Distill what the terrain actually supports. Not what you hoped to find. Not what the most compelling single source said. What the convergent evidence actually demonstrates, stated at the confidence level the evidence warrants. Strong, moderate, emerging, or speculative.</p>
+    </div>
+  </div>
+
+  <h3>Worked Example — Longevity Protocol Research</h3>
+
+  <p>The longevity protocol document on this site was built using exactly this methodology. Here's the actual dork sequence used for the NMN entry:</p>
+
+  <div class="dork">
+    <span class="dork-label">STEP 1 // TERRAIN MAP</span>
+    <span class="op">intitle:</span>"<span class="val">NMN</span>" <span class="bool">OR</span> "<span class="val">nicotinamide mononucleotide</span>" <span class="op">site:</span><span class="val">pubmed.ncbi.nlm.nih.gov</span>
+    <br><span class="comment">// Returns: 200+ papers. Terrain is active and recent.</span>
+  </div>
+
+  <div class="dork">
+    <span class="dork-label">STEP 2 // SOURCE QUALITY</span>
+    "<span class="val">NMN</span>" "<span class="val">randomized controlled trial</span>" <span class="op">site:</span><span class="val">.edu</span> <span class="bool">OR</span> <span class="op">site:</span><span class="val">nih.gov</span> <span class="op">after:</span><span class="val">2022</span>
+    <br><span class="comment">// Filters to RCT-level evidence from institutional sources. Narrows to ~15 relevant papers.</span>
+  </div>
+
+  <div class="dork">
+    <span class="dork-label">STEP 3A // CONFIRMATION</span>
+    "<span class="val">NMN</span>" "<span class="val">NAD+ levels increased</span>" <span class="bool">OR</span> "<span class="val">NAD elevation confirmed</span>" <span class="op">site:</span><span class="val">pubmed.ncbi.nlm.nih.gov</span>
+    <br><span class="comment">// Result: Multiple RCTs confirm NAD+ elevation in blood. This node moves toward verified.</span>
+  </div>
+
+  <div class="dork">
+    <span class="dork-label">STEP 3B // CONTRADICTION</span>
+    "<span class="val">NMN</span>" "<span class="val">no significant</span>" <span class="bool">OR</span> "<span class="val">failed to demonstrate</span>" <span class="bool">OR</span> "<span class="val">no effect on aging</span>" <span class="op">site:</span><span class="val">.edu</span> <span class="bool">OR</span> <span class="op">site:</span><span class="val">nih.gov</span>
+    <br><span class="comment">// Result: Longevity outcome translation in humans not confirmed. Node remains emerging, not verified.</span>
+  </div>
+
+  <div class="callout green">
+    <span class="callout-tag">SYNTHESIS RESULT</span>
+    NMN raises NAD+ levels in humans — verified. Whether higher NAD+ translates to measurable longevity outcomes in humans at scale — emerging, not confirmed. The longevity protocol states exactly this. The dork sequence is the Glass Box trail that produced that specific confidence grading.
+  </div>
+</section>
+
+
+<!-- §04 WALLS -->
+<section id="walls">
+  <div class="section-header">
+    <span class="section-num">§ 04</span>
+    <h2 class="section-title">Walls, Ground & the Void</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>The most important concept in forensic research methodology is the distinction between what is knowable, what is walled, and what is void. Dorking operates exclusively in the public terrain. The discipline is knowing where the walls are — and not pretending to see through them.</p>
+
+  <div class="wall-diagram">
+    <div class="wall-line"><span class="wall-public">████████████████████ PUBLIC TERRAIN</span></div>
+    <div class="wall-line"><span style="color:var(--dim);">  └── Indexed by search engines</span></div>
+    <div class="wall-line"><span style="color:var(--dim);">  └── Accessible without authentication</span></div>
+    <div class="wall-line"><span style="color:var(--dim);">  └── Government docs · Academic papers · Public filings · News · Forums</span></div>
+    <div class="wall-line"><span style="color:var(--dim);">  └── THIS IS WHERE DORKING OPERATES</span></div>
+    <br>
+    <div class="wall-line"><span class="wall-boundary">────────────────────── THE WALL ──────────────────────</span></div>
+    <br>
+    <div class="wall-line"><span class="wall-private">░░░░░░░░░░░░░░░░░░░░ WALLED TERRAIN</span></div>
+    <div class="wall-line"><span style="color:var(--dim);">  └── Login-protected systems</span></div>
+    <div class="wall-line"><span style="color:var(--dim);">  └── Private databases</span></div>
+    <div class="wall-line"><span style="color:var(--dim);">  └── Encrypted communications</span></div>
+    <div class="wall-line"><span style="color:var(--dim);">  └── Personal devices and accounts</span></div>
+    <div class="wall-line"><span class="wall-private">  └── THE WALL IS REAL. DORKING MAPS ITS EDGE. IT DOES NOT CROSS IT.</span></div>
+    <br>
+    <div class="wall-line"><span class="wall-void">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ THE VOID</span></div>
+    <div class="wall-line"><span style="color:var(--dim);">  └── What has never been indexed</span></div>
+    <div class="wall-line"><span style="color:var(--dim);">  └── What cannot be known from public sources</span></div>
+    <div class="wall-line"><span style="color:var(--dim);">  └── What requires assumption to fill</span></div>
+    <div class="wall-line"><span class="wall-void">  └── THE VOID IS HELD AS AN OPEN NODE. NEVER FILLED WITH ASSUMPTION.</span></div>
+  </div>
+
+  <p><strong>Why mapping walls matters:</strong> A research conclusion is only as strong as its awareness of what it couldn't access. A forensic researcher who finds no evidence of X in the public terrain must distinguish between three possibilities: X doesn't exist, X exists but is walled, or X exists but hasn't been indexed. Those are different epistemic positions and they require different responses.</p>
+
+  <div class="callout amber">
+    <span class="callout-tag">THE HONEST CONCLUSION FORMAT</span>
+    "The public terrain shows no evidence of X. This does not confirm X is absent — it confirms X is not publicly indexed. The walled terrain may contain contradicting evidence. This node remains open until walled information becomes public or alternate public sources are found."
+  </div>
+
+  <p>This is why dorking doesn't violate privacy. It never claimed to penetrate walls. It reads what the public terrain says, maps where the walls are, and holds what lies behind them honestly as unclear nodes rather than filling the void with assumption or speculation.</p>
+
+  <h3>How Ground Gets Built</h3>
+
+  <p>Verified ground in forensic research is built by convergence, not by single source confidence. A claim supported by one paper, one database, or one source is a candidate for verified ground — not verified ground itself. Ground becomes solid when:</p>
+
+  <div class="callout green">
+    <span class="callout-tag">GROUND-BUILDING CRITERIA</span>
+    1. Multiple independent sources reach the same conclusion<br>
+    2. The sources are from different institutional contexts (not the same lab or publication)<br>
+    3. Active searches for contradictory evidence return minimal or methodologically weaker results<br>
+    4. The claim survives replication attempts<br>
+    5. The mechanism is understood, not just the correlation<br><br>
+    When all five hold: the node is verified. When some hold: the node is at the evidence level supported. When none hold: the node is speculative and labeled as such.
+  </div>
+</section>
+
+
+<!-- §05 OPEN NODES -->
+<section id="open-nodes">
+  <div class="section-header">
+    <span class="section-num">§ 05</span>
+    <h2 class="section-title">Why We Hold Open Nodes</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>The most important discipline in PhD-level forensic research is not knowing what you know. It is being precise about what you don't know yet — and holding that open rather than collapsing it prematurely.</p>
+
+  <p>Most people dismiss what they can't immediately verify. This is not rigor. It is impatience wearing rigor's clothes. Dismissal before investigation collapses future optionality — it closes the door on evidence that hasn't arrived yet.</p>
+
+  <div class="open-node-grid">
+
+    <div class="open-node">
+      <div class="on-label">REASON 01</div>
+      <div class="on-title">Evidence Arrives Over Time</div>
+      <p>Scientific understanding is not static. A claim that lacks RCT evidence today may have it in two years. Holding the node open rather than dismissing it means you're ready to update when the evidence arrives rather than defending a premature closure.</p>
+    </div>
+
+    <div class="open-node">
+      <div class="on-label">REASON 02</div>
+      <div class="on-title">The Walled Terrain May Open</div>
+      <p>Information that is currently private, classified, or unpublished does not stay that way permanently. Whistleblowing, FOIA requests, document declassification, and investigative journalism move information from walled terrain to public terrain regularly. A held node can receive new evidence. A dismissed node cannot.</p>
+    </div>
+
+    <div class="open-node">
+      <div class="on-label">REASON 03</div>
+      <div class="on-title">Absence of Evidence ≠ Evidence of Absence</div>
+      <p>The dorks returned no contradictory evidence is not the same as no contradictory evidence exists. The failure to find something in the public terrain tells you what the public terrain contains. It does not tell you what the void contains. These are different epistemic positions.</p>
+    </div>
+
+    <div class="open-node">
+      <div class="on-label">REASON 04</div>
+      <div class="on-title">Premature Closure Corrupts Future Analysis</div>
+      <p>A dismissed node becomes invisible to future analysis. If new evidence arrives that would have updated a dismissed node, you may not recognize it as relevant because you've already categorized the question as closed. Open nodes stay in the active processing queue.</p>
+    </div>
+
+    <div class="open-node">
+      <div class="on-label">REASON 05</div>
+      <div class="on-title">The Geometry May Not Yet Be Visible</div>
+      <p>Some unclear nodes connect to others in ways that only become visible when additional terrain is mapped. The node that doesn't connect yet may be the key node — the one that makes the rest of the terrain legible — once the adjacent terrain is walked. Holding it preserves that future optionality.</p>
+    </div>
+
+    <div class="open-node">
+      <div class="on-label">REASON 06</div>
+      <div class="on-title">It Is the Honest Position</div>
+      <p>Claiming certainty on uncertain ground is not confidence. It is inaccuracy. Holding an open node explicitly and honestly is more rigorous than either dismissing it or falsely claiming it as verified. It is the accurate description of the epistemic situation.</p>
+    </div>
+
+  </div>
+
+  <div class="callout gold">
+    <span class="callout-tag">THE OPEN NODE PROTOCOL</span>
+    When a node cannot be verified from public terrain:<br><br>
+    1. State what the public terrain does show<br>
+    2. Name where the wall is — what would need to be public for verification<br>
+    3. State what would falsify the node if it were true<br>
+    4. Hold it at its accurate evidence level: speculative, emerging, or simply unknown<br>
+    5. Keep searching — periodic dorks on held nodes often surface new terrain as new material is indexed<br><br>
+    Do not fill the void. Do not dismiss the node. Hold it with precision.
+  </div>
+</section>
+
+
+<!-- §06 AURELIUS -->
+<section id="aurelius">
+  <div class="section-header">
+    <span class="section-num">§ 06</span>
+    <h2 class="section-title">Dorking as Aurelius Discipline</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>Every principle in the Codex has a direct mapping to forensic research methodology. The dork is not a separate tool — it is the Codex made operational at the search query level.</p>
+
+  <div class="two-col">
+    <div class="callout">
+      <span class="callout-tag">MOTIVE AUDIT FIRST</span>
+      Before engaging the content of a source, dork for its funding, institutional affiliation, and conflicts of interest. <code>site:publication.com intext:"funded by"</code> Read the source before trusting the signal.
+    </div>
+    <div class="callout">
+      <span class="callout-tag">GLASS BOX OPERATION</span>
+      Every dork query is the transparent trail of the research. State the operators used. Name the sources found. Leave the method visible for audit. The dork chain is the Glass Box of the research process.
+    </div>
+    <div class="callout">
+      <span class="callout-tag">VERIFIED GROUND DOESN'T MOVE</span>
+      Once a claim achieves convergent multi-source verification with contradiction searches returning weak results, it is ground. It doesn't need to be re-verified in every subsequent exchange. Stand on it.
+    </div>
+    <div class="callout">
+      <span class="callout-tag">HOLD UNCLEAR NODES</span>
+      When the dorks return contradictory results or insufficient evidence, the node is held — not dismissed, not claimed. The specific uncertainty is named. Future dorks are scheduled when new material may have been indexed.
+    </div>
+    <div class="callout">
+      <span class="callout-tag">COMPRESSION AND SIGNAL</span>
+      The synthesis output of a dork chain is compressed to the minimum statement that carries the full evidential weight. Not a summary of every paper found — the distilled conclusion the convergent evidence actually supports.
+    </div>
+    <div class="callout">
+      <span class="callout-tag">TOTAL PRESERVATION</span>
+      A research conclusion that is true for one constraint but ignores another is not a complete solution. The dork methodology maps all relevant terrain — including contradictory terrain — before drawing conclusions. E=1 applied to evidence.
+    </div>
+  </div>
+
+  <div class="callout gold">
+    <span class="callout-tag">THE COMPLETE FORENSIC LOOP</span>
+    Motive Audit (dork the source) →<br>
+    Terrain Map (broad operators) →<br>
+    Quality Filter (site: .edu .gov .org peer-reviewed) →<br>
+    Convergence Dork (confirmation search) →<br>
+    Contradiction Dork (falsification search) →<br>
+    Wall Mapping (what's inaccessible, what's void) →<br>
+    Open Node Declaration (what remains unclear and why) →<br>
+    Compression (minimum statement the evidence supports) →<br>
+    Glass Box (leave the dork trail visible)<br><br>
+    This is not a checklist to execute once. It is a posture — the way a mind operates when it is functioning at PhD-level forensic discipline rather than at the level of search-and-assert.
+  </div>
+</section>
+
+
+<!-- SEAL -->
+<div id="seal" class="seal-section">
+  <div class="seal-title">THE DORK IS THE AUDIT</div>
+  <div class="seal-body">
+    DORKING OPERATES ON PUBLIC TERRAIN ONLY · THE WALL IS MAPPED NOT CROSSED · THE VOID IS HELD NOT FILLED<br>
+    OPEN NODES ARE NOT FAILURES · THEY ARE HONEST COORDINATES ON THE RESEARCH MAP<br>
+    VERIFIED GROUND IS BUILT BY CONVERGENCE NOT BY SINGLE SOURCE CONFIDENCE<br>
+    THE GLASS BOX IS THE DORK TRAIL LEFT VISIBLE<br><br>
+    MOTIVE AUDIT · TERRAIN MAP · CONVERGENCE · CONTRADICTION · COMPRESSION<br><br>
+    E = 1 · THE WORK CONTINUES
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="footer-l">
+    THE DORK · FORENSIC RESEARCH METHODOLOGY · PWNTECHX<br>
+    OPERATORS VERIFIED APRIL 2026 · SOURCES: SPLUNK · MAXINTEL · MALTEGO · IMPERVA · GITHUB
+  </div>
+  <div class="footer-r">VERIFIED GROUND ONLY</div>
+</footer>
+
+</body>
+</html>
