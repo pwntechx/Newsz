@@ -443,10 +443,99 @@
     color: var(--plasma);
   }
 
-  @media (max-width: 600px) {
-    main, .cover { padding-left: 20px; padding-right: 20px; }
-    .cover { padding-top: 60px; }
-  }
+  /* POLYCULTURE DEMONSTRATION */
+.polyculture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 2px;
+  margin: 24px 0;
+}
+
+.poly-item {
+  background: var(--deep);
+  border: 1px solid var(--seam);
+  padding: 20px 16px;
+  text-align: center;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.poly-item:hover {
+  background: var(--surface);
+  border-color: var(--wire);
+}
+
+.poly-icon {
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.poly-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: var(--plasma);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.poly-desc {
+  font-size: 0.72rem;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+/* REVENUE TABLE */
+.revenue-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+}
+
+.revenue-table th {
+  padding: 12px 16px;
+  text-align: left;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  font-size: 0.6rem;
+  font-weight: 400;
+  border-bottom: 1px solid var(--rule-s);
+  background: var(--deep);
+}
+
+.revenue-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--dim);
+  vertical-align: top;
+  font-size: 0.68rem;
+  line-height: 1.6;
+}
+
+.revenue-table tr:hover td { background: rgba(8,31,48,0.5); }
+
+.rev-source { color: var(--white); font-weight: 500; }
+.rev-frequency { color: var(--plasma); }
+.rev-type { color: var(--green); }
+
+/* NATURE RESERVE CALLOUT */
+.reserve-callout {
+  background: linear-gradient(135deg, var(--deep), var(--surface));
+  border: 1px solid var(--green);
+  border-left: 3px solid var(--green);
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.reserve-callout .callout-label { color: var(--green); }
+
+@media (max-width: 600px) {
+  main, .cover { padding-left: 20px; padding-right: 20px; }
+  .cover { padding-top: 60px; }
+  .polyculture-grid { grid-template-columns: repeat(2, 1fr); }
+}
 </style>
 </head>
 <body>
@@ -652,7 +741,127 @@
     Wave + solar + bivalves + kelp + reef has not been deployed as a single integrated unit cell. Every pairwise integration is verified. The full five-function compression exists architecturally but not yet as an operational prototype.
   </div>
 </div>
+<!-- V. POLYCULTURE DEMONSTRATION -->
+<div id="polyculture" class="chapter">
+  <span class="chapter-tag">§ 05 · POLYCULTURE YIELD</span>
+  <h2 class="chapter-title">One Site · Multiple Goods · Zero Extraction</h2>
+  <div class="chapter-sub">The architecture doesn't produce one commodity. It produces simultaneous yields from the same water column. This is the demonstration that makes the nature reserve investable.</div>
 
+  <div class="polyculture-grid">
+    <div class="poly-item">
+      <span class="poly-icon">⚡</span>
+      <span class="poly-label">WAVE ENERGY</span>
+      <span class="poly-desc">Continuous baseload from buoy motion + piezoelectric tethers</span>
+    </div>
+    <div class="poly-item">
+      <span class="poly-icon">☀️</span>
+      <span class="poly-label">SOLAR ENERGY</span>
+      <span class="poly-desc">Thin-film PV sheets between buoys; peak load supplement</span>
+    </div>
+    <div class="poly-item">
+      <span class="poly-icon">🦪</span>
+      <span class="poly-label">BIVALVES</span>
+      <span class="poly-desc">Mussels + oysters on buoy hulls; surplus harvested when at capacity</span>
+    </div>
+    <div class="poly-item">
+      <span class="poly-icon">🌿</span>
+      <span class="poly-label">KELP & ALGAE</span>
+      <span class="poly-desc">Food, alginate, biofuel feedstock; wave attenuation co-function</span>
+    </div>
+    <div class="poly-item">
+      <span class="poly-icon">🦞</span>
+      <span class="poly-label">CRUSTACEANS</span>
+      <span class="poly-desc">Lobster + crab in anchor reef modules; spillover to surrounding waters</span>
+    </div>
+    <div class="poly-item">
+      <span class="poly-icon">🐟</span>
+      <span class="poly-label">REEF FISH</span>
+      <span class="poly-desc">Species diversity emerges from structure; no stocking required</span>
+    </div>
+    <div class="poly-item">
+      <span class="poly-icon">🔬</span>
+      <span class="poly-label">RESEARCH</span>
+      <span class="poly-desc">Longitudinal ecological data; marine science destination</span>
+    </div>
+    <div class="poly-item">
+      <span class="poly-icon">🤿</span>
+      <span class="poly-label">ECO-TOURISM</span>
+      <span class="poly-desc">Scuba diving, educational visits; site value appreciates over time</span>
+    </div>
+    <div class="poly-item">
+      <span class="poly-icon">💧</span>
+      <span class="poly-label">WATER PURIFICATION</span>
+      <span class="poly-desc">Bivalve filtration + kelp nutrient absorption; cleaner outflow than inflow</span>
+    </div>
+    <div class="poly-item">
+      <span class="poly-icon">🏛️</span>
+      <span class="poly-label">PRESERVATION</span>
+      <span class="poly-desc">De facto marine protected area; legal recognition through demonstrated benefit</span>
+    </div>
+  </div>
+
+  <h3>Revenue Architecture — How the Site Pays for Itself</h3>
+
+  <table class="revenue-table">
+    <thead>
+      <tr>
+        <th>REVENUE SOURCE</th>
+        <th>FREQUENCY</th>
+        <th>TYPE</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="rev-source">Wave Energy Sale (PPA)</td>
+        <td class="rev-frequency">Continuous — monthly grid payment</td>
+        <td class="rev-type">STEADY</td>
+      </tr>
+      <tr>
+        <td class="rev-source">Solar Energy Sale</td>
+        <td class="rev-frequency">Diurnal peak — supplements wave baseload</td>
+        <td class="rev-type">STEADY</td>
+      </tr>
+      <tr>
+        <td class="rev-source">Bivalve Surplus Harvest</td>
+        <td class="rev-frequency">Intermittent — when population reaches carrying capacity</td>
+        <td class="rev-type">SURGE</td>
+      </tr>
+      <tr>
+        <td class="rev-source">Kelp Harvest</td>
+        <td class="rev-frequency">Seasonal — sustainable cutting cycle</td>
+        <td class="rev-type">SEASONAL</td>
+      </tr>
+      <tr>
+        <td class="rev-source">Research Grants & Data Licensing</td>
+        <td class="rev-frequency">Annual — longitudinal datasets have compounding scientific value</td>
+        <td class="rev-type">RECURRING</td>
+      </tr>
+      <tr>
+        <td class="rev-source">Eco-Tourism Operations</td>
+        <td class="rev-frequency">Seasonal — diving, educational visits, guided tours</td>
+        <td class="rev-type">SEASONAL</td>
+      </tr>
+      <tr>
+        <td class="rev-source">Conservation Credits / Blue Carbon</td>
+        <td class="rev-frequency">Annual — verified ecological uplift generates tradable credits</td>
+        <td class="rev-type">RECURRING</td>
+      </tr>
+      <tr>
+        <td class="rev-source">Site Value Appreciation</td>
+        <td class="rev-frequency">Long-term — the site becomes more productive ecologically over time</td>
+        <td class="rev-type">GROWTH</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="reserve-callout">
+    <div class="callout-label">THE NATURE RESERVE IS THE BUSINESS MODEL</div>
+    <p style="color: var(--dim); margin-top: 12px;">This is not an industrial installation seeking permits. It is a <strong style="color: var(--white);">demonstrated polyculture preserve</strong> that generates energy, food, knowledge, and ecological uplift as simultaneous outputs. The blueprint becomes the lobbying artifact — proof that the conservation area pays for itself through diversified yield rather than extraction. Regulators aren't asked to permit a factory. They're asked to <strong style="color: var(--green);">recognize a preserve</strong> that also happens to power coastal communities.</p>
+  </div>
+</div>
+
+<!-- SEAL -->
+<div id="seal" class="seal-section">
 <!-- SEAL -->
 <div id="seal" class="seal-section">
   <div class="seal-title">E = 1 · A SEAVOLTAIC ECOSYSTEM</div>
