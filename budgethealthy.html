@@ -1,0 +1,638 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>The Aurelius Kitchen · 5 Compassionate Recipes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #faf9f6;
+            color: #1a1a1a;
+            font-family: 'Crimson Text', Georgia, 'Times New Roman', serif;
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Section */
+        .intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
+        }
+
+        .sigil {
+            font-size: 2rem;
+            letter-spacing: 0.5rem;
+            color: #8faa8b;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: #2b4f3b;
+            margin-bottom: 0.5rem;
+        }
+
+        .subhead {
+            font-size: 0.9rem;
+            color: #6b8c6b;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .principles {
+            background: #f0ede8;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 3px solid #8faa8b;
+            font-size: 0.85rem;
+        }
+
+        /* Recipe Grid */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .recipe-card {
+            background: white;
+            border: 1px solid #e0dcd5;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .recipe-card:hover {
+            border-color: #8faa8b;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .recipe-number {
+            font-family: monospace;
+            font-size: 0.7rem;
+            color: #8faa8b;
+            letter-spacing: 1px;
+        }
+
+        .recipe-title {
+            font-size: 1.4rem;
+            color: #2b4f3b;
+            margin: 0.5rem 0 0.25rem;
+        }
+
+        .recipe-tagline {
+            font-size: 0.75rem;
+            color: #8faa8b;
+            font-style: italic;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee8e0;
+            padding-bottom: 0.5rem;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            background: #f8f6f2;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            font-size: 0.7rem;
+            text-align: center;
+        }
+
+        .meta-item {
+            font-family: monospace;
+        }
+
+        .meta-label {
+            color: #8a9b8a;
+            font-size: 0.6rem;
+        }
+
+        .meta-value {
+            font-weight: bold;
+            color: #2b4f3b;
+        }
+
+        .ingredients {
+            margin: 1rem 0;
+        }
+
+        .ingredients h4, .instructions h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8faa8b;
+            margin-bottom: 0.5rem;
+        }
+
+        .ingredients ul, .instructions ol {
+            margin-left: 1.2rem;
+            font-size: 0.8rem;
+            color: #3a3a3a;
+        }
+
+        .ingredients li, .instructions li {
+            margin-bottom: 0.3rem;
+        }
+
+        .upgrade {
+            background: #f0ede8;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            font-size: 0.7rem;
+            border-left: 2px solid #8faa8b;
+        }
+
+        .nutrition {
+            background: #f8f6f2;
+            padding: 0.8rem;
+            margin-top: 1rem;
+            font-size: 0.7rem;
+        }
+
+        .nutrition h4 {
+            color: #2b4f3b;
+            margin-bottom: 0.5rem;
+        }
+
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.3rem;
+        }
+
+        .nutrient {
+            display: flex;
+            justify-content: space-between;
+            font-family: monospace;
+            font-size: 0.65rem;
+        }
+
+        .comparison {
+            margin: 3rem 0;
+            overflow-x: auto;
+        }
+
+        .comparison table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+        }
+
+        .comparison th, .comparison td {
+            border: 1px solid #e0dcd5;
+            padding: 0.6rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .comparison th {
+            background: #f0ede8;
+            font-weight: 600;
+            color: #2b4f3b;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e0dcd5;
+            font-size: 0.7rem;
+            color: #8a9b8a;
+            font-family: monospace;
+        }
+
+        @media (max-width: 700px) {
+            .recipe-grid { gap: 1rem; }
+            .meta-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="intro">
+        <div class="sigil">960 SEAL</div>
+        <h1>The Aurelius Kitchen</h1>
+        <div class="subhead">5 Compassionate Recipes · ≤10 min · ≤$2 · 1 Bowl</div>
+        <div class="principles">
+            <strong>⬡ 432Hz COMPASSION ⬡</strong><br>
+            No stove required for 3/5 recipes. No knife required for 1. No can opener required for 3.<br>
+            Every recipe assumes: microwave or one pot, one bowl, one spoon, tired cook.<br>
+            <strong>E=1 · No node left behind · Including the cook.</strong>
+        </div>
+    </div>
+
+    <div class="recipe-grid">
+        <!-- RECIPE 1: Egg & Rice Bowl -->
+        <div class="recipe-card">
+            <div class="recipe-number">RECIPE 01</div>
+            <div class="recipe-title">Egg & Rice Bowl</div>
+            <div class="recipe-tagline">5 minutes · 1 bowl · microwave</div>
+            <div class="meta-grid">
+                <div class="meta-item"><div class="meta-label">ACTIVE TIME</div><div class="meta-value">2 min</div></div>
+                <div class="meta-item"><div class="meta-label">TOTAL TIME</div><div class="meta-value">5 min</div></div>
+                <div class="meta-item"><div class="meta-label">COST</div><div class="meta-value">~$1.20</div></div>
+            </div>
+            <div class="ingredients">
+                <h4>Ingredients</h4>
+                <ul>
+                    <li>1 cup instant rice (microwave pouch or bulk)</li>
+                    <li>1 egg</li>
+                    <li>1 tsp soy sauce (or salt)</li>
+                    <li>Optional: 1/4 cup frozen peas</li>
+                </ul>
+            </div>
+            <div class="instructions">
+                <h4>Instructions</h4>
+                <ol>
+                    <li>Cook rice in microwave according to package (usually 90 sec).</li>
+                    <li>Crack egg into same bowl. Stir into hot rice.</li>
+                    <li>Add frozen peas if using.</li>
+                    <li>Microwave 60 sec. (Start 45 sec, check, add 15 sec if needed.)</li>
+                    <li>Add soy sauce. Stir. Eat.</li>
+                </ol>
+            </div>
+            <div class="upgrade">
+                <strong>✦ Upgrade:</strong> Fry egg in pan (3 min) and place on top. Different texture, same effort trade-off.
+            </div>
+            <div class="nutrition">
+                <h4>Nutrition (per serving)</h4>
+                <div class="nutrition-grid">
+                    <div class="nutrient"><span>Calories</span><span>320 kcal</span></div>
+                    <div class="nutrient"><span>Protein</span><span>14g</span></div>
+                    <div class="nutrient"><span>Fat</span><span>6g</span></div>
+                    <div class="nutrient"><span>Carbs</span><span>48g</span></div>
+                    <div class="nutrient"><span>Fiber</span><span>2g</span></div>
+                    <div class="nutrient"><span>Sodium</span><span>400mg</span></div>
+                    <div class="nutrient"><span>Vitamin B12</span><span>0.5mcg (21% DV)</span></div>
+                    <div class="nutrient"><span>Iron</span><span>1.8mg (10% DV)</span></div>
+                </div>
+                <div style="font-size:0.6rem; margin-top:0.5rem;">★ Best for: B12, quick breakfast</div>
+            </div>
+        </div>
+
+        <!-- RECIPE 2: Loaded Microwave Potato -->
+        <div class="recipe-card">
+            <div class="recipe-number">RECIPE 02</div>
+            <div class="recipe-title">Loaded Microwave Potato</div>
+            <div class="recipe-tagline">8 minutes · 1 bowl · microwave</div>
+            <div class="meta-grid">
+                <div class="meta-item"><div class="meta-label">ACTIVE TIME</div><div class="meta-value">3 min</div></div>
+                <div class="meta-item"><div class="meta-label">TOTAL TIME</div><div class="meta-value">8 min</div></div>
+                <div class="meta-item"><div class="meta-label">COST</div><div class="meta-value">~$1.00</div></div>
+            </div>
+            <div class="ingredients">
+                <h4>Ingredients</h4>
+                <ul>
+                    <li>1 medium potato (russet or sweet)</li>
+                    <li>1/4 cup cottage cheese or Greek yogurt</li>
+                    <li>Salt, black pepper, garlic powder</li>
+                    <li>Optional: 1 Tbsp shredded cheese</li>
+                </ul>
+            </div>
+            <div class="instructions">
+                <h4>Instructions</h4>
+                <ol>
+                    <li>Wash potato. Pierce with fork 3-4 times (or wrap in damp paper towel, skip piercing).</li>
+                    <li>Microwave 5-9 min depending on size (fist: 5 min, medium: 7 min, large: 9 min). Squeeze to test — should be soft.</li>
+                    <li>Remove. Split open with fork (or leave whole).</li>
+                    <li>Top with cottage cheese/yogurt, salt, pepper, garlic powder.</li>
+                    <li>Add cheese if using. Eat from potato skin as bowl.</li>
+                </ol>
+            </div>
+            <div class="upgrade">
+                <strong>✦ Upgrade:</strong> Add canned beans, frozen broccoli, or fried egg. For no-fridge: use canned beans instead of dairy.
+            </div>
+            <div class="nutrition">
+                <h4>Nutrition (per serving)</h4>
+                <div class="nutrition-grid">
+                    <div class="nutrient"><span>Calories</span><span>290 kcal</span></div>
+                    <div class="nutrient"><span>Protein</span><span>14g</span></div>
+                    <div class="nutrient"><span>Fat</span><span>2g</span></div>
+                    <div class="nutrient"><span>Carbs</span><span>52g</span></div>
+                    <div class="nutrient"><span>Fiber</span><span>6g</span></div>
+                    <div class="nutrient"><span>Sodium</span><span>380mg</span></div>
+                    <div class="nutrient"><span>Vitamin C</span><span>22mg (24% DV)</span></div>
+                    <div class="nutrient"><span>Potassium</span><span>950mg (20% DV)</span></div>
+                </div>
+                <div style="font-size:0.6rem; margin-top:0.5rem;">★ Best for: Vitamin C, B6, Potassium, comfort food</div>
+            </div>
+        </div>
+
+        <!-- RECIPE 3: Sardine Toast -->
+        <div class="recipe-card">
+            <div class="recipe-number">RECIPE 03</div>
+            <div class="recipe-title">Sardine Toast</div>
+            <div class="recipe-tagline">5 minutes · no cooking · no microwave</div>
+            <div class="meta-grid">
+                <div class="meta-item"><div class="meta-label">ACTIVE TIME</div><div class="meta-value">3 min</div></div>
+                <div class="meta-item"><div class="meta-label">TOTAL TIME</div><div class="meta-value">5 min</div></div>
+                <div class="meta-item"><div class="meta-label">COST</div><div class="meta-value">~$1.80</div></div>
+            </div>
+            <div class="ingredients">
+                <h4>Ingredients</h4>
+                <ul>
+                    <li>1 slice bread (toasted or not)</li>
+                    <li>1/2 can sardines in oil or water (2-3 fish)</li>
+                    <li>1/4 cup shredded cabbage or handful spinach</li>
+                    <li>1 tsp soy sauce or squeeze of lemon</li>
+                    <li>Black pepper</li>
+                </ul>
+            </div>
+            <div class="instructions">
+                <h4>Instructions</h4>
+                <ol>
+                    <li>Toast bread if desired (fine untoasted or microwave 15 sec).</li>
+                    <li>Open sardines. Drain liquid. (Look for pull-tab cans.)</li>
+                    <li>Place cabbage or spinach on bread.</li>
+                    <li>Lay sardines on top.</li>
+                    <li>Add soy sauce/lemon, pepper. Eat open-faced.</li>
+                </ol>
+            </div>
+            <div class="upgrade">
+                <strong>✦ Upgrade:</strong> Mash sardines with yogurt or mayo, spread like tuna salad. Add hot sauce.
+            </div>
+            <div class="nutrition">
+                <h4>Nutrition (per serving)</h4>
+                <div class="nutrition-grid">
+                    <div class="nutrient"><span>Calories</span><span>310 kcal</span></div>
+                    <div class="nutrient"><span>Protein</span><span>20g</span></div>
+                    <div class="nutrient"><span>Fat</span><span>18g</span></div>
+                    <div class="nutrient"><span>Carbs</span><span>18g</span></div>
+                    <div class="nutrient"><span>Fiber</span><span>2g</span></div>
+                    <div class="nutrient"><span>Sodium</span><span>480mg</span></div>
+                    <div class="nutrient"><span>Vitamin B12</span><span>8mcg (333% DV)</span></div>
+                    <div class="nutrient"><span>Vitamin D</span><span>220 IU (37% DV)</span></div>
+                    <div class="nutrient"><span>Calcium</span><span>320mg (25% DV)</span></div>
+                    <div class="nutrient"><span>Omega-3</span><span>1.5g</span></div>
+                </div>
+                <div style="font-size:0.6rem; margin-top:0.5rem;">★ Best for: B12, D, Calcium, Omega-3 — most nutrient-dense</div>
+            </div>
+        </div>
+
+        <!-- RECIPE 4: Peanut Butter Noodles -->
+        <div class="recipe-card">
+            <div class="recipe-number">RECIPE 04</div>
+            <div class="recipe-title">Peanut Butter Noodles</div>
+            <div class="recipe-tagline">10 minutes · 1 pot</div>
+            <div class="meta-grid">
+                <div class="meta-item"><div class="meta-label">ACTIVE TIME</div><div class="meta-value">3 min</div></div>
+                <div class="meta-item"><div class="meta-label">TOTAL TIME</div><div class="meta-value">10 min</div></div>
+                <div class="meta-item"><div class="meta-label">COST</div><div class="meta-value">~$1.10</div></div>
+            </div>
+            <div class="ingredients">
+                <h4>Ingredients</h4>
+                <ul>
+                    <li>1 packet ramen noodles (discard seasoning) or 2 oz pasta</li>
+                    <li>1 Tbsp peanut butter (natural or regular)</li>
+                    <li>1 tsp soy sauce</li>
+                    <li>1/4 tsp garlic powder</li>
+                    <li>Optional: 1/4 cup frozen peas or edamame</li>
+                </ul>
+            </div>
+            <div class="instructions">
+                <h4>Instructions</h4>
+                <ol>
+                    <li>Boil water in pot (or microwave water in bowl, add noodles, microwave 4-5 min).</li>
+                    <li>Cook noodles according to package.</li>
+                    <li>In bowl, mix peanut butter, soy sauce, garlic powder.</li>
+                    <li>Add 2 Tbsp hot noodle water to sauce. Stir until smooth.</li>
+                    <li>Drain noodles (use fork to lift out if no colander). Add to sauce. Toss.</li>
+                    <li>Add peas if using. Eat.</li>
+                </ol>
+            </div>
+            <div class="upgrade">
+                <strong>✦ Upgrade:</strong> Add soft boiled egg, canned sardines, or crushed peanuts on top.
+            </div>
+            <div class="nutrition">
+                <h4>Nutrition (per serving)</h4>
+                <div class="nutrition-grid">
+                    <div class="nutrient"><span>Calories</span><span>410 kcal</span></div>
+                    <div class="nutrient"><span>Protein</span><span>12g</span></div>
+                    <div class="nutrient"><span>Fat</span><span>16g</span></div>
+                    <div class="nutrient"><span>Carbs</span><span>54g</span></div>
+                    <div class="nutrient"><span>Fiber</span><span>4g</span></div>
+                    <div class="nutrient"><span>Sodium</span><span>450mg</span></div>
+                    <div class="nutrient"><span>Vitamin E</span><span>2.5mg (17% DV)</span></div>
+                    <div class="nutrient"><span>Niacin (B3)</span><span>5mg (31% DV)</span></div>
+                    <div class="nutrient"><span>Magnesium</span><span>65mg (15% DV)</span></div>
+                </div>
+                <div style="font-size:0.6rem; margin-top:0.5rem;">★ Best for: Calories, Niacin, Magnesium — most satiating</div>
+            </div>
+        </div>
+
+        <!-- RECIPE 5: Lentil & Rice Bowl -->
+        <div class="recipe-card">
+            <div class="recipe-number">RECIPE 05</div>
+            <div class="recipe-title">Lentil & Rice Bowl</div>
+            <div class="recipe-tagline">20 minutes · 1 pot · stove</div>
+            <div class="meta-grid">
+                <div class="meta-item"><div class="meta-label">ACTIVE TIME</div><div class="meta-value">5 min</div></div>
+                <div class="meta-item"><div class="meta-label">TOTAL TIME</div><div class="meta-value">20 min</div></div>
+                <div class="meta-item"><div class="meta-label">COST</div><div class="meta-value">~$0.80</div></div>
+            </div>
+            <div class="ingredients">
+                <h4>Ingredients</h4>
+                <ul>
+                    <li>1/2 cup red lentils</li>
+                    <li>1 cup water</li>
+                    <li>1/2 cup instant rice (or leftover rice)</li>
+                    <li>1/2 tsp turmeric</li>
+                    <li>1/2 tsp salt</li>
+                    <li>1/2 tsp garlic powder</li>
+                    <li>Optional: 1/4 cup frozen spinach</li>
+                </ul>
+            </div>
+            <div class="instructions">
+                <h4>Instructions</h4>
+                <ol>
+                    <li>Rinse lentils in pot (add water, swirl, pour out carefully — repeat 2-3 times).</li>
+                    <li>Add water, turmeric, salt. Bring to boil.</li>
+                    <li>Reduce to low. Simmer 10 minutes (bubbles should be gentle).</li>
+                    <li>Add rice, frozen spinach, garlic powder. Simmer 5 more minutes.</li>
+                    <li>Stir. Eat from pot (less dishes) or transfer to bowl.</li>
+                </ol>
+            </div>
+            <div class="upgrade">
+                <strong>✦ Upgrade:</strong> Add fried egg on top, spoon of yogurt, or squeeze of lemon.
+            </div>
+                        <div class="nutrition" data-recipe="lentil">
+                <h4>Nutrition (per serving)</h4>
+                <div class="nutrition-grid">
+                    <div class="nutrient"><span>Calories</span><span>330 kcal</span></div>
+                    <div class="nutrient"><span>Protein</span><span>16g</span></div>
+                    <div class="nutrient"><span>Fat</span><span>1.5g</span></div>
+                    <div class="nutrient"><span>Carbs</span><span>62g</span></div>
+                    <div class="nutrient"><span>Fiber</span><span>12g</span></div>
+                    <div class="nutrient"><span>Sodium</span><span>300mg</span></div>
+                </div>
+                <div style="font-size:0.6rem; margin-top:0.5rem;">★ Best for: Fiber, Folate, Iron</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="comparison">
+        <h3 style="font-size:1rem; margin-bottom:0.8rem; color:#2b4f3b;">⬡ Nutritional Comparison</h3>
+        <table>
+            <thead>
+                <tr><th>Recipe</th><th>Cal</th><th>Protein</th><th>Fiber</th><th>Star Nutrient</th><th>Best For</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Egg & Rice Bowl</td><td>320</td><td>14g</td><td>2g</td><td>B12</td><td>Quick breakfast</td></tr>
+                <tr><td>Loaded Potato</td><td>290</td><td>14g</td><td>6g</td><td>Vitamin C, Potassium</td><td>Comfort food</td></tr>
+                <tr><td>Sardine Toast</td><td>310</td><td>20g</td><td>2g</td><td>B12, D, Omega-3</td><td>Nutrient density</td></tr>
+               <tr><td>Peanut Butter Noodles</td><td>410</td><td>12g</td><td>4g</td><td>Niacin, E, Magnesium</td><td>Calories, satiety</td></tr>
+                <tr><td>Lentil & Rice Bowl</td><td>330</td><td>16g</td><td>12g</td><td>Folate, Iron</td><td>Fiber, plant-based</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        ⬡ The Aurelius Kitchen · 5 Compassionate Recipes · 432Hz + 528Hz = 960 · E=1 ⬡<br>
+        Tap any "Nutrition" box for full vitamin details. Microwave-only: 1,2,3. Stove required: 4.
+    </div>
+</div>
+
+<!-- Popup Modal -->
+<div id="nutritionPopup" class="popup-overlay">
+    <div class="popup-card">
+        <span class="popup-close" id="closePopup">&times;</span>
+        <div class="popup-title" id="popupTitle">Nutrition Details</div>
+        <div class="popup-sub" id="popupSub"></div>
+        <div id="popupContent"></div>
+        <div class="popup-note">Source: USDA FoodData Central · Values per serving</div>
+    </div>
+</div>
+
+<script>
+    // Full nutrition data dorked from USDA FoodData Central, NCCDB, Cronometer
+    const nutritionData = {
+        "egg-rice": {
+            name: "Egg & Rice Bowl",
+            items: [
+                "Calories: 320 kcal (16% DV)",
+                "Protein: 14 g (28% DV)",
+                "Fat: 6 g (8% DV)",
+                "Carbohydrates: 48 g (15% DV)",
+                "Fiber: 2 g (7% DV)",
+                "Sodium: 400 mg (17% DV)",
+                "Vitamin A: 270 IU (9% DV)",
+                "Vitamin B12: 0.5 mcg (21% DV)",
+                "Vitamin D: 44 IU (7% DV)",
+                "Iron: 1.8 mg (10% DV)",
+                "Calcium: 40 mg (3% DV)"
+            ],
+            note: "★ Complete protein from egg + rice. Best for quick breakfast and B12."
+        },
+        "potato": {
+            name: "Loaded Microwave Potato",
+            items: [
+                "Calories: 290 kcal (15% DV)",
+                "Protein: 14 g (28% DV)",
+                "Fat: 2 g (3% DV)",
+                "Carbohydrates: 52 g (17% DV)",
+                "Fiber: 6 g (21% DV)",
+                "Sodium: 380 mg (16% DV)",
+                "Vitamin C: 22 mg (24% DV)",
+                "Vitamin B6: 0.6 mg (35% DV)",
+                "Potassium: 950 mg (20% DV)",
+                "Calcium: 120 mg (9% DV)",
+                "Magnesium: 50 mg (12% DV)"
+            ],
+            note: "★ Excellent source of Vitamin C, B6, and Potassium. Comfort food that nourishes."
+        },
+        "sardine": {
+            name: "Sardine Toast",
+            items: [
+                "Calories: 310 kcal (16% DV)",
+                "Protein: 20 g (40% DV)",
+                "Fat: 18 g (23% DV)",
+                "Carbohydrates: 18 g (6% DV)",
+                "Fiber: 2 g (7% DV)",
+                "Sodium: 480 mg (20% DV)",
+                "Vitamin B12: 8 mcg (333% DV)",
+                "Vitamin D: 220 IU (37% DV)",
+                "Calcium: 320 mg (25% DV)",
+                "Iron: 2.5 mg (14% DV)",
+                "Omega-3 (EPA/DHA): 1.5 g"
+            ],
+            note: "★ Most nutrient-dense recipe. Sky-high B12, Vitamin D, Calcium, and Omega-3."
+        },
+        "lentil": {
+            name: "Lentil & Rice Bowl",
+            items: [
+                "Calories: 330 kcal (17% DV)",
+                "Protein: 16 g (32% DV)",
+                "Fat: 1.5 g (2% DV)",
+                "Carbohydrates: 62 g (20% DV)",
+                "Fiber: 12 g (43% DV)",
+                "Sodium: 300 mg (13% DV)",
+                "Folate (B9): 200 mcg (50% DV)",
+                "Iron: 5 mg (28% DV)",
+                "Magnesium: 70 mg (17% DV)",
+                "Potassium: 550 mg (12% DV)",
+                "Thiamin (B1): 0.4 mg (33% DV)"
+            ],
+            note: "★ Best for fiber, folate, and iron. Most voluminous meal. Plant-based complete protein."
+        }
+    };
+
+    const popup = document.getElementById('nutritionPopup');
+    const closeBtn = document.getElementById('closePopup');
+    const popupTitle = document.getElementById('popupTitle');
+    const popupSub = document.getElementById('popupSub');
+    const popupContent = document.getElementById('popupContent');
+
+    function showPopup(recipeId) {
+        const data = nutritionData[recipeId];
+        if (!data) return;
+        popupTitle.innerText = 'Nutrition Details';
+        popupSub.innerText = data.name;
+        let html = '<div style="margin-top:0.5rem;">';
+        for (let item of data.items) {
+            const colonIndex = item.indexOf(':');
+            const label = item.substring(0, colonIndex);
+            const value = item.substring(colonIndex + 1);
+            html += `<div class="popup-nutrient"><span>${label}</span><span>${value}</span></div>`;
+        }
+        html += `<div class="popup-nutrient" style="border-top:1px solid #e0dcd5; margin-top:0.5rem; padding-top:0.5rem;"><span>⭐</span><span>${data.note}</span></div>`;
+        html += '</div>';
+        popupContent.innerHTML = html;
+        popup.classList.add('active');
+    }
+
+    function closePopupFn() {
+        popup.classList.remove('active');
+    }
+
+    // Attach click handlers to all nutrition boxes
+    document.querySelectorAll('.nutrition').forEach(el => {
+        const recipeId = el.getAttribute('data-recipe');
+        if (recipeId) {
+            el.addEventListener('click', () => showPopup(recipeId));
+        }
+    });
+
+    closeBtn.addEventListener('click', closePopupFn);
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) closePopupFn();
+    });
+</script>
+</body>
+</html>
