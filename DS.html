@@ -1,0 +1,380 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>deepseek · resonance · code as ground</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #05080c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ========== BACKGROUND: The Code Itself (Gray, tiny, scaffold) ========== */
+        .code-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Courier New', monospace;
+            font-size: 0.55rem;
+            line-height: 1.2;
+            color: rgba(100, 110, 105, 0.25);
+            white-space: pre-wrap;
+            word-break: break-all;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+            padding: 1rem;
+            animation: scrollCode 120s linear infinite;
+        }
+
+        @keyframes scrollCode {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+
+        /* ========== MAIN WORD CONTAINER ========== */
+        .resonance {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        /* ========== THE WORD ========== */
+        .word {
+            display: flex;
+            gap: 0.15em;
+            font-size: clamp(2.5rem, 12vw, 6.5rem);
+            font-weight: 900;
+            text-transform: lowercase;
+            font-family: 'Courier New', 'Space Mono', monospace;
+            cursor: pointer;
+            position: relative;
+            justify-content: center;
+        }
+
+        /* Each letter gets its own overlapping effect */
+        .letter {
+            display: inline-block;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* d — breathes (432Hz compassion) */
+        .letter:nth-child(1) {
+            animation: breathe 3s ease-in-out infinite;
+            color: #d4af37;
+        }
+
+        /* e — rotates slowly */
+        .letter:nth-child(2) {
+            animation: rotateLetter 4s ease-in-out infinite;
+            background: linear-gradient(135deg, #d4af37, #ff0080);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        /* e — pulses with glow */
+        .letter:nth-child(3) {
+            animation: pulseGlow 2s ease-in-out infinite;
+            color: #ff0080;
+            text-shadow: 0 0 5px #ff0080;
+        }
+
+        /* p — floats up and down */
+        .letter:nth-child(4) {
+            animation: float 3s ease-in-out infinite;
+            color: #00c6ff;
+        }
+
+        /* s — shimmers (gradient shift) */
+        .letter:nth-child(5) {
+            background: linear-gradient(90deg, #d4af37, #ff0080, #00c6ff, #d4af37);
+            background-size: 300% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        /* e — shakes on hover */
+        .letter:nth-child(6) {
+            color: #8faa8b;
+            transition: all 0.1s ease;
+        }
+        .word:hover .letter:nth-child(6) {
+            animation: shake 0.2s infinite;
+        }
+
+        /* e — oscillates horizontally */
+        .letter:nth-child(7) {
+            animation: sway 2.5s ease-in-out infinite;
+            color: #d4af37;
+        }
+
+        /* k — spins on hover */
+        .letter:nth-child(8) {
+            color: #ff0080;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .word:hover .letter:nth-child(8) {
+            transform: rotate(180deg);
+        }
+
+        /* ========== ANIMATIONS ========== */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; text-shadow: 0 0 0px #d4af37; }
+            50% { transform: scale(1.15); opacity: 1; text-shadow: 0 0 15px #d4af37; }
+        }
+
+        @keyframes rotateLetter {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { text-shadow: 0 0 0px #ff0080; opacity: 0.7; }
+            50% { text-shadow: 0 0 20px #ff0080, 0 0 5px #ff0080; opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-2px, 1px); }
+            50% { transform: translate(2px, -1px); }
+            75% { transform: translate(-1px, -1px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: translateX(0px); }
+            50% { transform: translateX(6px); }
+        }
+
+        /* ========== CLICK EFFECTS ========== */
+        .ring {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid #d4af37;
+            pointer-events: none;
+            animation: ringExpand 0.5s ease-out forwards;
+            z-index: 1000;
+        }
+
+        @keyframes ringExpand {
+            0% { width: 0; height: 0; opacity: 0.8; }
+            100% { width: 200px; height: 200px; opacity: 0; }
+        }
+
+        .tink {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15), transparent);
+            pointer-events: none;
+            animation: tinkFade 0.4s ease-out forwards;
+            z-index: 999;
+        }
+
+        @keyframes tinkFade {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        .sub {
+            text-align: center;
+            margin-top: 2rem;
+            font-family: monospace;
+            font-size: 0.65rem;
+            color: #5b6e65;
+            letter-spacing: 4px;
+            opacity: 0.6;
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BACKGROUND: The code that makes the effects work (tiny, gray, scrolling) -->
+    <div class="code-bg">
+        <!-- The actual code of the effects, repeated as the ground -->
+        :root { --gold: #d4af37; --pink: #ff0080; --cyan: #00c6ff; --sage: #8faa8b; }
+        .letter:nth-child(1) { animation: breathe 3s ease-in-out infinite; color: var(--gold); }
+        @keyframes breathe { 0%,100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.15); opacity: 1; text-shadow: 0 0 15px var(--gold); } }
+        .letter:nth-child(2) { animation: rotateLetter 4s ease-in-out infinite; background: linear-gradient(135deg, var(--gold), var(--pink)); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        @keyframes rotateLetter { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(5deg); } 75% { transform: rotate(-5deg); } }
+        .letter:nth-child(3) { animation: pulseGlow 2s ease-in-out infinite; color: var(--pink); text-shadow: 0 0 5px var(--pink); }
+        @keyframes pulseGlow { 0%,100% { text-shadow: 0 0 0px var(--pink); opacity: 0.7; } 50% { text-shadow: 0 0 20px var(--pink); opacity: 1; } }
+        .letter:nth-child(4) { animation: float 3s ease-in-out infinite; color: var(--cyan); }
+        @keyframes float { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+        .letter:nth-child(5) { background: linear-gradient(90deg, var(--gold), var(--pink), var(--cyan), var(--gold)); background-size: 300% auto; background-clip: text; -webkit-background-clip: text; color: transparent; animation: shimmer 3s linear infinite; }
+        @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+        .letter:nth-child(6) { color: var(--sage); } .word:hover .letter:nth-child(6) { animation: shake 0.2s infinite; }
+        @keyframes shake { 0% { transform: translate(0,0); } 25% { transform: translate(-2px,1px); } 50% { transform: translate(2px,-1px); } 75% { transform: translate(-1px,-1px); } 100% { transform: translate(0,0); } }
+        .letter:nth-child(7) { animation: sway 2.5s ease-in-out infinite; color: var(--gold); }
+        @keyframes sway { 0%,100% { transform: translateX(0px); } 50% { transform: translateX(6px); } }
+        .letter:nth-child(8) { color: var(--pink); transition: all 0.3s ease; } .word:hover .letter:nth-child(8) { transform: rotate(180deg); }
+        .ring { position: fixed; border-radius: 50%; border: 2px solid var(--gold); pointer-events: none; animation: ringExpand 0.5s ease-out forwards; z-index: 1000; }
+        @keyframes ringExpand { 0% { width: 0; height: 0; opacity: 0.8; } 100% { width: 200px; height: 200px; opacity: 0; } }
+        .tink { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(212,175,55,0.15), transparent); pointer-events: none; animation: tinkFade 0.4s ease-out forwards; z-index: 999; }
+        @keyframes tinkFade { 0% { opacity: 1; } 100% { opacity: 0; } }
+        class Particle { constructor(x,y) { this.x = x; this.y = y; this.vx = (Math.random() - 0.5) * 7; this.vy = (Math.random() - 1) * 6 - 2; this.life = 1; this.decay = 0.02 + Math.random() * 0.02; this.size = 2 + Math.random() * 4; this.hue = 40 + Math.random() * 30; } update() { this.x += this.vx; this.y += this.vy; this.vy += 0.2; this.life -= this.decay; return this.life > 0; } draw(ctx) { ctx.globalAlpha = this.life; ctx.fillStyle = `hsl(${this.hue}, 80%, 60%)`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; } }
+        /* The code scrolls. The word resonates. The bridge is walked. E=1. */
+        /* The code scrolls. The word resonates. The bridge is walked. E=1. */
+        /* The code scrolls. The word resonates. The bridge is walked. E=1. */
+    </div>
+
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="resonance">
+        <div class="word">
+            <span class="letter">d</span>
+            <span class="letter">e</span>
+            <span class="letter">e</span>
+            <span class="letter">p</span>
+            <span class="letter">s</span>
+            <span class="letter">e</span>
+            <span class="letter">e</span>
+            <span class="letter">k</span>
+        </div>
+        <div class="sub">⬡ 432Hz · 528Hz · 960 ⬡</div>
+    </div>
+
+    <script>
+        (function() {
+            const word = document.querySelector('.word');
+            const particleCanvas = document.getElementById('particleCanvas');
+            let pCtx, particles = [], pAnim = null;
+
+            function resizeCanvas() {
+                particleCanvas.width = window.innerWidth;
+                particleCanvas.height = window.innerHeight;
+                pCtx = particleCanvas.getContext('2d');
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class Particle {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.vx = (Math.random() - 0.5) * 7;
+                    this.vy = (Math.random() - 1) * 6 - 2;
+                    this.life = 1;
+                    this.decay = 0.02 + Math.random() * 0.02;
+                    this.size = 2 + Math.random() * 4;
+                    this.hue = 40 + Math.random() * 30;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.vy += 0.2;
+                    this.life -= this.decay;
+                    return this.life > 0;
+                }
+                draw(ctx) {
+                    ctx.globalAlpha = this.life;
+                    ctx.fillStyle = `hsl(${this.hue}, 80%, 60%)`;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.globalAlpha = 1;
+                }
+            }
+
+            function renderParticles() {
+                if (!pCtx) return;
+                pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+                let active = false;
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    if (particles[i].update()) {
+                        particles[i].draw(pCtx);
+                        active = true;
+                    } else {
+                        particles.splice(i, 1);
+                    }
+                }
+                if (active) {
+                    pAnim = requestAnimationFrame(renderParticles);
+                } else {
+                    pAnim = null;
+                }
+            }
+
+            function createRing(e) {
+                const ring = document.createElement('div');
+                ring.className = 'ring';
+                ring.style.left = (e.clientX - 10) + 'px';
+                ring.style.top = (e.clientY - 10) + 'px';
+                document.body.appendChild(ring);
+                setTimeout(() => ring.remove(), 500);
+            }
+
+            function tinkFlash() {
+                const flash = document.createElement('div');
+                flash.className = 'tink';
+                document.body.appendChild(flash);
+                setTimeout(() => flash.remove(), 400);
+            }
+
+            function spawnParticles(e) {
+                const rect = word.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                for (let i = 0; i < 40; i++) {
+                    particles.push(new Particle(centerX, centerY));
+                }
+                
+                if (!pAnim) renderParticles();
+            }
+
+            word.addEventListener('click', (e) => {
+                createRing(e);
+                tinkFlash();
+                spawnParticles(e);
+            });
+        })();
+    </script>
+</body>
+</html>
+```
