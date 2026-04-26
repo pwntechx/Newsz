@@ -56,16 +56,22 @@ header {
 }
 
 .logo {
-  font-size: clamp(1.8rem, 8vw, 3.5rem);
+  font-size: clamp(1.8rem, 7vw, 3.5rem);
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   line-height: 1;
-  background: linear-gradient(135deg, #f59e0b 0%, #f5e63d 30%, #d4af37 60%, #ff8c40 100%);
+  background: linear-gradient(135deg, #f59e0b, #f5e63d, #d4af37, #ff8c40, #f59e0b);
+  background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  overflow: visible;
-  padding-right: 0.1em;
+  animation: logoShift 4s ease-in-out infinite;
+}
+
+@keyframes logoShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .tagline {
