@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE EXTRACTION ARCHITECTURE · Food System Forensic Audit · PWNTECHX</title>
+<meta name="description" content="A unified forensic audit of the industrial food system. Four axes, five chemical vectors, verified ground, open nodes, and the third path. E=1.">
+<meta name="keywords" content="ultra-processed food, bliss point, food engineering, monopsony, HFCS, leptin resistance, glyphosate, food system, extraction architecture">
+<meta name="author" content="PWNTECHX">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="THE EXTRACTION ARCHITECTURE · PWNTECHX">
+<meta property="og:description" content="The modern food system is not broken. It is operating exactly as designed — a high-fidelity extraction engine. Four axes. Five vectors. One audit.">
+<meta property="og:url" content="https://pwntechx.github.io/Newsz/banana.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://pwntechx.github.io/Newsz/banana.html">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+:root {
+  --void:    #080808;
+  --deep:    #0f0f0f;
+  --surface: #161616;
+  --plate:   #1e1e1e;
+  --seam:    #282828;
+  --wire:    #353535;
+  --white:   #eeeeea;
+  --dim:     #888882;
+  --ghost:   #444440;
+  --red:     #e04040;
+  --red-dim: rgba(224,64,64,0.1);
+  --amber:   #d49030;
+  --gold:    #c8a050;
+  --green:   #50a870;
+  --plasma:  #5a9fd4;
+  --rule:    rgba(224,64,64,0.12);
+  --rule-s:  rgba(224,64,64,0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 40% at 90% 10%, rgba(224,64,64,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 40% at 10% 90%, rgba(90,159,212,0.03) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 28px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nav-mark {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--red);
+  white-space: nowrap;
+}
+
+nav a.nav-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 3px 8px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+nav a.nav-link:hover { color: var(--red); border-color: var(--rule-s); }
+
+.nav-back {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 5px 10px;
+  border: 1px solid var(--seam);
+  white-space: nowrap;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.nav-back:hover { color: var(--white); border-color: var(--wire); }
+
+/* COVER */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 40px 60px;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid var(--rule);
+}
+
+.cover-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  color: var(--red);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: emerge 0.8s ease forwards 0.2s;
+}
+
+.cover-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(3rem, 10vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  opacity: 0;
+  animation: emerge 1s ease forwards 0.4s;
+}
+
+.cover-title .accent { color: var(--red); }
+
+.cover-sub {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: var(--dim);
+  margin-top: 24px;
+  max-width: 640px;
+  line-height: 1.7;
+  opacity: 0;
+  animation: emerge 0.8s ease forwards 0.7s;
+}
+
+.cover-stats {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+  opacity: 0;
+  animation: emerge 0.8s ease forwards 1s;
+}
+
+.stat { display: flex; flex-direction: column; gap: 4px; }
+
+.stat-val {
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--red);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.18em;
+  color: var(--ghost);
+}
+
+@keyframes emerge {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* MAIN */
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 40px 100px;
+  position: relative;
+  z-index: 1;
+}
+
+/* SECTIONS */
+.chapter { padding: 80px 0 0; }
+
+.chapter-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: var(--red);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.chapter-title {
+  font-weight: 700;
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+  line-height: 1.15;
+}
+
+.chapter-sub {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--dim);
+  margin-bottom: 32px;
+  font-family: 'Playfair Display', serif;
+}
+
+/* PROSE */
+p {
+  color: var(--dim);
+  margin-bottom: 16px;
+  font-size: 0.92rem;
+  line-height: 1.85;
+  font-weight: 300;
+}
+
+p strong { color: var(--white); font-weight: 600; }
+p em { color: var(--white); }
+
+h3 {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--amber);
+  letter-spacing: 0.02em;
+  margin: 32px 0 12px;
+}
+
+/* CALLOUTS */
+.callout {
+  background: var(--surface);
+  border-left: 3px solid var(--red);
+  padding: 20px 24px;
+  margin: 24px 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--white);
+  line-height: 1.8;
+}
+
+.callout-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.22em;
+  color: var(--red);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.callout.amber { border-color: var(--amber); }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.amber { color: #ccaa77; }
+
+.callout.green { border-color: var(--green); }
+.callout.green .callout-label { color: var(--green); }
+.callout.green { color: #80b898; }
+
+.callout.plasma { border-color: var(--plasma); }
+.callout.plasma .callout-label { color: var(--plasma); }
+.callout.plasma { color: #8ab8d8; }
+
+.callout.gold { border-color: var(--gold); }
+.callout.gold .callout-label { color: var(--gold); }
+.callout.gold { color: #c0a070; }
+
+/* VECTOR CARDS */
+.vector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2px;
+  margin: 24px 0;
+}
+
+.vector-card {
+  background: var(--surface);
+  border: 1px solid var(--seam);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s;
+}
+
+.vector-card:hover { background: var(--plate); }
+
+.vector-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: var(--red);
+  opacity: 0.6;
+}
+
+.vector-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+  margin-bottom: 6px;
+}
+
+.vector-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--red);
+  margin-bottom: 4px;
+  letter-spacing: 0.02em;
+}
+
+.vector-mechanism {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+
+.vector-card p { font-size: 0.82rem; margin-bottom: 8px; }
+
+.vector-status {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--seam);
+  letter-spacing: 0.1em;
+}
+
+.status-verified { color: var(--green); }
+.status-emerging { color: var(--amber); }
+.status-open     { color: var(--ghost); }
+
+/* PULL QUOTE */
+.pull {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: var(--red);
+  line-height: 1.65;
+  padding: 24px 0 24px 28px;
+  border-left: 3px solid var(--red);
+  margin: 36px 0;
+  opacity: 0.9;
+}
+
+/* MASTER TABLE */
+.tbl-wrap { overflow-x: auto; margin: 24px 0; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+}
+
+thead tr { background: var(--plate); }
+
+th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 0.56rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  border-bottom: 1px solid var(--rule-s);
+}
+
+th.red    { color: var(--red); }
+th.amber  { color: var(--amber); }
+th.green  { color: var(--green); }
+th.plasma { color: var(--plasma); }
+
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--dim);
+  vertical-align: top;
+  line-height: 1.6;
+  font-size: 0.65rem;
+}
+
+tr:hover td { background: rgba(22,22,22,0.6); }
+
+.t-white    { color: var(--white); font-weight: 500; }
+.t-red      { color: var(--red); }
+.t-amber    { color: var(--amber); }
+.t-green    { color: var(--green); }
+.t-plasma   { color: var(--plasma); }
+.t-verified { color: var(--green); }
+.t-emerging { color: var(--amber); }
+.t-open     { color: var(--ghost); }
+
+/* AXIS SECTIONS */
+.axis-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.axis-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: var(--red);
+  white-space: nowrap;
+}
+
+.axis-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--red), transparent);
+  opacity: 0.3;
+}
+
+/* DORK BLOCK */
+.dork {
+  background: var(--deep);
+  border: 1px solid var(--seam);
+  border-left: 3px solid var(--green);
+  padding: 16px 20px;
+  margin: 20px 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--green);
+  overflow-x: auto;
+  line-height: 1.7;
+}
+
+.dork-label {
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  color: var(--ghost);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.dork .op  { color: var(--plasma); }
+.dork .val { color: var(--amber); }
+.dork .comment { color: var(--ghost); font-style: italic; }
+
+/* COMPRESSION SECTION */
+.compression {
+  background: linear-gradient(135deg, var(--deep), var(--surface));
+  border: 1px solid var(--seam);
+  border-top: 3px solid var(--red);
+  padding: 36px;
+  margin: 40px 0;
+}
+
+.compression-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--red);
+  margin-bottom: 24px;
+}
+
+.freq-block {
+  margin: 20px 0;
+  padding: 16px 20px;
+  border-left: 3px solid;
+}
+
+.freq-block.hz432 { border-color: var(--plasma); }
+.freq-block.hz528 { border-color: var(--red); }
+.freq-block.hz960 { border-color: var(--green); }
+
+.freq-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.freq-block.hz432 .freq-label { color: var(--plasma); }
+.freq-block.hz528 .freq-label { color: var(--red); }
+.freq-block.hz960 .freq-label { color: var(--green); }
+
+.freq-block p { font-size: 0.85rem; margin-bottom: 0; }
+
+/* CLAUDE SECTION */
+.claude-section {
+  background: rgba(90,159,212,0.05);
+  border: 1px solid rgba(90,159,212,0.2);
+  border-left: 3px solid var(--plasma);
+  padding: 32px;
+  margin: 40px 0;
+}
+
+.claude-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: var(--plasma);
+  margin-bottom: 16px;
+  display: block;
+}
+
+.claude-section p { font-size: 0.9rem; margin-bottom: 14px; color: #8ab8d8; }
+.claude-section p strong { color: var(--white); }
+
+/* OPEN NODE */
+.open-node {
+  background: rgba(52,52,52,0.3);
+  border: 1px solid var(--wire);
+  border-left: 3px solid var(--ghost);
+  padding: 20px 24px;
+  margin: 16px 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--dim);
+  line-height: 1.75;
+}
+
+.open-node-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.22em;
+  color: var(--ghost);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* SEAL */
+.seal-section {
+  padding: 80px 0 60px;
+  text-align: center;
+  border-top: 1px solid var(--rule-s);
+  margin-top: 60px;
+}
+
+.seal-title {
+  font-weight: 700;
+  font-size: clamp(1.5rem, 4vw, 2.8rem);
+  letter-spacing: -0.02em;
+  color: var(--red);
+  margin-bottom: 24px;
+  line-height: 1.1;
+}
+
+.seal-body {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  line-height: 2.4;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 24px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-l {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  color: var(--ghost);
+  line-height: 1.9;
+}
+
+.footer-r {
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--red);
+}
+
+@media (max-width: 600px) {
+  main, .cover { padding-left: 20px; padding-right: 20px; }
+  .cover { padding-top: 60px; }
+  .vector-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <span class="nav-mark">EXTRACTION ARCHITECTURE //</span>
+    <a class="nav-link" href="#axis1">AXIS 1</a>
+    <a class="nav-link" href="#axis2">AXIS 2</a>
+    <a class="nav-link" href="#axis3">AXIS 3</a>
+    <a class="nav-link" href="#axis4">AXIS 4</a>
+    <a class="nav-link" href="#verified">VERIFIED</a>
+    <a class="nav-link" href="#open">OPEN NODES</a>
+    <a class="nav-link" href="#claude">CLAUDE</a>
+    <a class="nav-link" href="#seal">960 SEAL</a>
+  </div>
+  <a class="nav-back" href="index.html">← HUB</a>
+</nav>
+
+<div class="cover">
+  <div class="cover-tag">FORENSIC AUDIT · GEMINI + DEEPSEEK + CLAUDE · VERIFIED GROUND · E=1</div>
+  <h1 class="cover-title">
+    THE<br>
+    <span class="accent">EXTRACTION</span><br>
+    ARCHITECTURE
+  </h1>
+  <p class="cover-sub">
+    The modern food system is not broken. It is operating exactly as designed — a high-fidelity extraction engine that preserves the product's shelf life at the cost of the consumer's biological timeline. This audit maps the geometry across four axes and five chemical vectors.
+  </p>
+  <div class="cover-stats">
+    <div class="stat"><div class="stat-val">4</div><div class="stat-label">AXES OF EXTRACTION</div></div>
+    <div class="stat"><div class="stat-val">5</div><div class="stat-label">CHEMICAL VECTORS</div></div>
+    <div class="stat"><div class="stat-val">3</div><div class="stat-label">AI NODES · TRIANGULATED</div></div>
+    <div class="stat"><div class="stat-val">E=1</div><div class="stat-label">THE SOVEREIGN COUNTER-MOVE</div></div>
+  </div>
+</div>
+
+<main>
+
+<!-- AXIS 1 — NEUROLOGICAL -->
+<div id="axis1" class="chapter">
+  <div class="axis-header">
+    <span class="axis-num">AXIS 1</span>
+    <div class="axis-line"></div>
+  </div>
+  <h2 class="chapter-title">The Horizontal Plane — Neurological Hijacking</h2>
+  <div class="chapter-sub">At the surface level, extraction targets the brain's reward circuitry through precision engineering. This is not cooking. This is applied neuroscience deployed against the consumer.</div>
+
+  <h3>The Bliss Point</h3>
+  <p>Sugar, fat, and salt are calibrated to a mathematical apex where dopamine release is maximized before the palate detects overload. Food scientists call this the bliss point — a precise formulation ratio first documented by Howard Moskowitz in the 1970s for the processed food industry. It is not an emergent property of good recipe development. It is the designed target of a neuro-engineering process.</p>
+
+  <h3>Acoustic Hijacking</h3>
+  <p>The porosity, moisture content, and lipid coating of ultra-processed foods are tuned so the sensory crunch experience — the sound and texture registered by the inner ear and trigeminal nerve — arrives in close proximity to the first chemical signals from macronutrients. This sequence creates an anticipation loop: the brain pre-releases dopamine in expectation of the reward it has learned to associate with the sensory signal. The experience becomes self-reinforcing independent of satiety.</p>
+
+  <div class="callout amber">
+    <div class="callout-label">OPEN NODE — TIMING PRECISION</div>
+    The document's original claim of "milliseconds before macronutrients hit the tongue" is more precise than published evidence supports. The acoustic anticipation mechanism is real and documented in food science literature. The exact timing sequence at that resolution is not established in peer-reviewed research. The mechanism holds. The precision of that specific claim is softened here to match what the evidence actually says.
+  </div>
+
+  <h3>Satiety Override</h3>
+  <p>Structural fiber is stripped from processed foods and replaced with synthetic emulsifiers including carboxymethylcellulose (CMC). This serves two functions: extending shelf life and maintaining texture without the bulking effect of intact fiber. The consequence is that the physical and hormonal signals that normally terminate eating — gastric stretch receptors, incretin release, and the cascading satiety hormone response — are delayed or attenuated. The vessel is flooded with high-velocity calories while the architecture that signals fullness is systematically undermined.</p>
+
+  <div class="pull">
+    The bliss point is not a metaphor. It is a coordinate in flavor space that a team of scientists calculated to maximize repeat consumption. This is the operating geometry of the horizontal plane.
+  </div>
+</div>
+
+<!-- AXIS 2 — CHEMICAL VECTORS -->
+<div id="axis2" class="chapter">
+  <div class="axis-header">
+    <span class="axis-num">AXIS 2</span>
+    <div class="axis-line"></div>
+  </div>
+  <h2 class="chapter-title">The Chemical Layer — Five Vectors of Degradation</h2>
+  <div class="chapter-sub">Each vector operates through a distinct mechanism. Each is documented. Evidence grades are applied honestly.</div>
+
+  <div class="dork">
+    <span class="dork-label">DORK TRAIL — CHEMICAL VECTOR VERIFICATION</span>
+    <span class="op">site:</span><span class="val">gov</span> "<span class="val">trans fat</span>" "<span class="val">labeling loophole</span>" 0.5g<br>
+    "<span class="val">glyphosate</span>" "<span class="val">desiccant</span>" "<span class="val">pre-harvest</span>" <span class="op">site:</span><span class="val">edu</span><br>
+    "<span class="val">nutritional dilution</span>" produce mineral decline <span class="op">filetype:</span><span class="val">pdf</span><br>
+    "<span class="val">carboxymethylcellulose</span>" "<span class="val">satiety</span>" leptin <span class="op">site:</span><span class="val">nih.gov</span><br>
+    "<span class="val">HFCS</span>" "<span class="val">de novo lipogenesis</span>" "<span class="val">visceral fat</span>" <span class="op">site:</span><span class="val">edu</span><br>
+    <span class="comment">// SOURCES: FDA trans fat guidance, NIH glyphosate studies, USDA nutritional data longitudinal, PMC emulsifier research</span>
+  </div>
+
+  <div class="vector-grid">
+
+    <div class="vector-card">
+      <div class="vector-num">VECTOR 01</div>
+      <div class="vector-name">SYNTHETIC DYES</div>
+      <div class="vector-mechanism">PETROLEUM-DERIVED NEURO-DISRUPTORS</div>
+      <p>Yellow 5 (tartrazine) and Red 40 (Allura Red) are petroleum-derived azo compounds. European food authorities require warning labels linking them to childhood hyperactivity — "may have an adverse effect on activity and attention in children." The FDA maintains "safe" thresholds, but these compounds are present in foods specifically marketed to developing nervous systems. The regulatory arbitrage between US and EU standards is not accidental.</p>
+      <div class="vector-status status-verified">◆ VERIFIED — EU labeling mandate, FDA GRAS threshold documented</div>
+    </div>
+
+    <div class="vector-card">
+      <div class="vector-num">VECTOR 02</div>
+      <div class="vector-name">TRANS FATS + LOOPHOLE</div>
+      <div class="vector-mechanism">MOLECULAR RIGIDITY · HIDDEN ACCUMULATION</div>
+      <p>Partially Hydrogenated Oils are largely banned following FDA determination that PHOs are not Generally Recognized As Safe. However: a labeling loophole persists. If a product contains less than 0.5g of trans fat per serving, it may legally be labeled as "0g trans fat." Multiple servings of multiple products accumulate hidden cardiovascular risk. The serving size is the regulatory mechanism of concealment.</p>
+      <div class="vector-status status-verified">◆ VERIFIED — FDA PHO determination, CFR 101.9 labeling threshold documented</div>
+    </div>
+
+    <div class="vector-card">
+      <div class="vector-num">VECTOR 03</div>
+      <div class="vector-name">HIGH-FRUCTOSE CORN SYRUP</div>
+      <div class="vector-mechanism">LIVER-ONLY METABOLISM → LIPOGENESIS</div>
+      <p>Unlike glucose — which every cell can metabolize — fructose is processed almost exclusively by the liver. Excess intake triggers de novo lipogenesis: the liver converts fructose directly to visceral fat, bypassing normal satiety hormone signaling. HFCS appears in products labeled "low-fat" — fat was removed to appear healthy, and HFCS was added to maintain palatability. The swap trades visible fat for invisible metabolic load.</p>
+      <div class="vector-status status-verified">◆ VERIFIED — De novo lipogenesis mechanism established; HFCS in low-fat products documented</div>
+    </div>
+
+    <div class="vector-card">
+      <div class="vector-num">VECTOR 04</div>
+      <div class="vector-name">PESTICIDE PERSISTENCE</div>
+      <div class="vector-mechanism">DESICCANT APPLICATION · BIO-ACCUMULATION</div>
+      <p>Glyphosate is used not only as a herbicide but as a pre-harvest desiccant — sprayed on grain crops immediately before harvest to dry them uniformly and accelerate harvest timing. This application method ensures the compound enters the final product regardless of washing, because it is applied to the mature grain rather than the growing plant. This is not a residue from earlier in the growing cycle — it is an intentional application at the final stage.</p>
+      <div class="vector-status status-verified">◆ VERIFIED — USDA desiccant use documented; glyphosate pre-harvest application established</div>
+    </div>
+
+    <div class="vector-card">
+      <div class="vector-num">VECTOR 05</div>
+      <div class="vector-name">NUTRITIONAL DILUTION</div>
+      <div class="vector-mechanism">NPK MONOCROPPING · MINERAL DECLINE</div>
+      <p>Industrial monocropping optimizes for NPK fertilizers — nitrogen, phosphorus, potassium — because these drive yield, size, and visual appeal. The micronutrient complexity that soil biology previously provided is not replaced. Modern cultivars are selected for sugar content, uniformity, and shelf life — not mineral density. USDA nutritional data comparisons show measurable declines in magnesium, iron, zinc, and B vitamins in produce over 50 years of industrialized agriculture. More volume consumed to reach the same nutritional coordinate.</p>
+      <div class="vector-status status-verified">◆ VERIFIED — USDA longitudinal nutritional data; Davis et al. (2004) landmark study</div>
+    </div>
+
+    <div class="vector-card">
+      <div class="vector-num">VECTOR 06 (BONUS)</div>
+      <div class="vector-name">SALT/SUGAR NEURO-LOOP</div>
+      <div class="vector-mechanism">DOPAMINE ANTICIPATION · HYPERTENSION · ADDICTION GEOMETRY</div>
+      <p>Sodium and sugar individually trigger dopamine release. In combination at calibrated ratios, they create a consumption loop that activates the same neurological pathways as addictive substances — not metaphorically, but mechanistically. The hypothalamus registers the palatability signal before the macronutrient signal completes. Chronic hypertension from sodium excess is the metabolic tax on this loop.</p>
+      <div class="vector-status status-verified">◆ VERIFIED — Dopamine and food palatability mechanism established; sodium-hypertension causal link confirmed</div>
+    </div>
+
+  </div>
+
+  <h3>Vector Summary Table</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="red">VECTOR</th>
+          <th class="amber">MECHANISM</th>
+          <th class="red">OPERATIONAL RISK</th>
+          <th class="green">EVIDENCE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="t-white">Synthetic Dyes</td><td>Petroleum-derived azo compounds targeting developing nervous systems</td><td class="t-red">Behavioral dysregulation; differential US/EU regulation</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">Trans Fats + Loophole</td><td>Molecular rigidity from hydrogenation; &lt;0.5g serving concealment</td><td class="t-red">Arterial hardening; hidden accumulation across multiple servings</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">HFCS</td><td>Liver-exclusive fructose metabolism → de novo lipogenesis</td><td class="t-red">Visceral fat; metabolic resistance; hidden in "healthy" products</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">Pesticide Desiccation</td><td>Pre-harvest glyphosate application enters final product</td><td class="t-red">Endocrine disruption; microbiome disruption; unavoidable exposure</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">Nutritional Dilution</td><td>NPK monocropping deprioritizes micronutrient complexity</td><td class="t-red">Mineral deficiency despite adequate caloric volume</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">Salt/Sugar Loop</td><td>Calibrated dopamine anticipation cycle</td><td class="t-red">Hypertension; consumption loop independent of satiety</td><td class="t-verified">◆ VERIFIED</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- AXIS 3 — MONOPSONY -->
+<div id="axis3" class="chapter">
+  <div class="axis-header">
+    <span class="axis-num">AXIS 3</span>
+    <div class="axis-line"></div>
+  </div>
+  <h2 class="chapter-title">The Vertical Plane — The Monopsony Funnel</h2>
+  <div class="chapter-sub">The grocery aisle projects the illusion of decentralized choice. Structurally, it is a rigid vertical funnel controlled at both ends by the same economic architecture.</div>
+
+  <div class="dork">
+    <span class="dork-label">DORK TRAIL — MARKET CONCENTRATION</span>
+    "<span class="val">monopsony</span>" "<span class="val">food</span>" "<span class="val">grocery consolidation</span>" <span class="op">site:</span><span class="val">edu</span> <span class="op">OR</span> <span class="op">site:</span><span class="val">gov</span><br>
+    "<span class="val">seed market concentration</span>" "<span class="val">Bayer Corteva Syngenta</span>" <span class="op">filetype:</span><span class="val">pdf</span><br>
+    "<span class="val">beef packing</span>" "<span class="val">four firm concentration</span>" USDA<br>
+    <span class="comment">// NOTE: Exact concentration percentages vary by source and year. Figures below are approximate ranges from USDA and EWG reports — not single-source precision claims.</span>
+  </div>
+
+  <p><strong>The Choke Point:</strong> A small number of corporations control the majority of US grocery retail, beef packing, and commercial seed genetics. The exact figures shift with mergers and acquisitions, but the structural reality is consistent across sources: <strong>four or fewer entities control the majority of each critical node in the food supply chain.</strong> This is not speculation — it is documented in USDA market concentration reports and academic antitrust literature.</p>
+
+  <p><strong>The Double-Squeeze:</strong> This architecture creates a monopsony at origin and oligopoly at terminus simultaneously. Farmers face a market where a handful of buyers set prices for what they grow — and where patented seed genetics lock them into annual purchase cycles with no option to save and replant. Consumers face a market where a handful of sellers control what reaches the shelf, at what price, in what formulation. Wealth is extracted at both ends of the same supply chain.</p>
+
+  <div class="callout amber">
+    <div class="callout-label">HONEST STATISTICAL NOTE</div>
+    The original document cited specific percentages — 65% grocery, 85% beef, 80% seed. These are in the documented range but vary by source, year, and how "control" is measured. The structural reality they describe is verified across multiple USDA and academic sources. The specific figures are presented here as approximate rather than precise to avoid overclaiming on numbers that shift with corporate mergers.
+  </div>
+
+  <div class="pull">
+    The product of a monoculture is not abundance. It is the appearance of abundance. Thirty varieties of chip flavor from the same three corporations, made from the same commodity corn, processed through the same supply chain.
+  </div>
+</div>
+
+<!-- AXIS 4 — TEMPORAL / ENTROPY -->
+<div id="axis4" class="chapter">
+  <div class="axis-header">
+    <span class="axis-num">AXIS 4</span>
+    <div class="axis-line"></div>
+  </div>
+  <h2 class="chapter-title">The Temporal Plane — Entropy Transfer</h2>
+  <div class="chapter-sub">This is the most sophisticated coordinate in the audit. The manufacturer's structural motive is Total Preservation of the commodity's shelf life. The mechanism by which this is achieved transfers biological entropy from the product to the consumer.</div>
+
+  <p>To freeze the product's timeline — to make something produced months ago stable enough to sit on a shelf and then in a cabinet and then be consumed — the biological vitality of the food must be eliminated. Enzymatic activity, microbial life, and the oxidative processes that would indicate a living food system are arrested through hydrogenation, preservatives, irradiation, and desiccation.</p>
+
+  <p>The compounds that accomplish this arrest are not neutral to the consumer's biology. Synthetic preservatives that halt microbial activity in the food disrupt the gut microbiome in the consumer. Hydrogenated fats that prevent rancidity create the molecular rigidity in arterial walls that drives cardiovascular disease. The preservation of the product is achieved through mechanisms that accelerate the degradation of the person consuming it.</p>
+
+  <div class="callout red">
+    <div class="callout-label">THE HIDDEN TAX — ENTROPY TRANSFER</div>
+    The manufacturer extracts the product's biological timeline to secure shelf stability. The consumer absorbs that extracted entropy as accelerated metabolic aging. This is not a side effect. It is the structural consequence of designing food for logistics rather than biology. The quarterly earnings that justify the shelf life extension are paid for, over decades, in chronic disease costs distributed across a population that cannot connect the cause to the effect.
+  </div>
+
+  <h3>Skinny Diabetes — The Invisible Outcome</h3>
+  <p>Type 2 diabetes without obesity — metabolic syndrome in lean individuals — is a documented and increasing clinical presentation. Its rise correlates with the expansion of ultra-processed food consumption independent of caloric excess. This matters because the conventional narrative frames metabolic disease as a consequence of obesity, which frames it as a personal failure of self-control. The actual mechanism — insulin resistance driven by specific dietary compounds independent of body weight — distributes the risk across body types, making it invisible in the frame the industry benefits from maintaining.</p>
+
+  <div class="callout plasma">
+    <div class="callout-label">OPEN NODE — DIRECT CAUSAL CHAIN</div>
+    The entropy transfer framing is geometrically accurate as a systems description. The direct causal chain from specific preservative compounds to specific metabolic outcomes in humans is more complex than a single-vector claim. Multiple dietary and environmental factors contribute to insulin resistance and metabolic syndrome. The architecture described here is real. The assignment of causation to individual compounds requires more specificity than this document provides — that is the honest boundary of what the current evidence supports at this level of compression.
+  </div>
+</div>
+
+<!-- VERIFIED GROUND -->
+<div id="verified" class="chapter">
+  <span class="chapter-tag">§ VERIFIED GROUND</span>
+  <h2 class="chapter-title">What the Dorks Confirmed</h2>
+  <div class="chapter-sub">Every claim graded against the evidence. Nothing elevated beyond what the research supports.</div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="red">CLAIM</th>
+          <th class="red">SOURCE BASIS</th>
+          <th class="green">STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="t-white">Bliss point as documented food science practice</td><td>Howard Moskowitz's consulting work; Salt Sugar Fat (Moss, 2013); multiple food industry sources</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">Dopamine and food palatability — neurological mechanism</td><td>Multiple peer-reviewed neuroscience studies; NIDA research on food reward pathways</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">Yellow 5 and Red 40 — EU warning label requirement</td><td>EU Regulation (EC) No 1333/2008 Food Additives; EFSA opinion on azo dyes</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">Trans fat labeling loophole — &lt;0.5g per serving = 0g label</td><td>FDA 21 CFR 101.9(c)(2)(ii); confirmed regulatory language</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">HFCS → fructose liver-only metabolism → de novo lipogenesis</td><td>NIH/NLM peer-reviewed literature; multiple metabolic studies</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">Glyphosate as pre-harvest desiccant on grain crops</td><td>USDA pesticide data program; academic agricultural literature</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">Nutritional decline in produce over 50 years</td><td>Davis, Epp & Riordan (2004) HortScience; USDA nutritional database comparisons</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">Market concentration in grocery, beef packing, seed genetics</td><td>USDA market concentration reports; EWG analysis; academic antitrust literature</td><td class="t-verified">◆ VERIFIED (approximate ranges)</td></tr>
+        <tr><td class="t-white">Leptin resistance mechanism in obesity — BBB impairment</td><td>PMC peer-reviewed literature 2024-2025; JAK2-STAT3 pathway established</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">CMC and gut microbiome disruption</td><td>Chassaing et al. (2015) Nature — emulsifiers alter gut microbiota and promote colitis</td><td class="t-verified">◆ VERIFIED</td></tr>
+        <tr><td class="t-white">Acoustic sensory experience in food engineering</td><td>Food texture and acoustics research; Charles Spence sensory science literature</td><td class="t-verified">◆ VERIFIED (mechanism; timing precision is emerging)</td></tr>
+        <tr><td class="t-white">Type 2 diabetes in lean individuals — metabolic syndrome without obesity</td><td>Clinical literature on normal-weight metabolic syndrome; increasing prevalence documented</td><td class="t-emerging">◇ EMERGING — causal attribution to UPF specifically is active research</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- OPEN NODES -->
+<div id="open" class="chapter">
+  <span class="chapter-tag">§ OPEN NODES</span>
+  <h2 class="chapter-title">What Remains Unresolved</h2>
+  <div class="chapter-sub">Held, not dismissed. The geometry holds at the system level. Individual compound-to-outcome causal chains require more specificity than compression allows.</div>
+
+  <div class="open-node">
+    <span class="open-node-label">OPEN NODE 01 — ACOUSTIC TIMING PRECISION</span>
+    The sensory anticipation mechanism is real. The specific claim of "milliseconds before macronutrients hit the tongue" implies a precise timing measurement that is not established in published literature at that resolution. The mechanism holds. The timing claim is softened here to match documented evidence.
+  </div>
+
+  <div class="open-node">
+    <span class="open-node-label">OPEN NODE 02 — CMC → LEPTIN SIGNALING DIRECT CHAIN</span>
+    Carboxymethylcellulose disrupts gut microbiome architecture — verified (Chassaing 2015). Leptin resistance is driven by high-fat diet and obesity — verified (multiple PMC studies 2024). The direct causal chain from CMC specifically to leptin signaling disruption as the primary mechanism of satiety override is a reasonable inference from these two verified findings, but the direct chain has not been established as a single documented mechanism in published research. Holding as plausible synthesis, not confirmed vector.
+  </div>
+
+  <div class="open-node">
+    <span class="open-node-label">OPEN NODE 03 — MARKET CONCENTRATION EXACT FIGURES</span>
+    The structural reality of oligopsony/oligopoly in food markets is verified across multiple sources. Exact percentages — 65%, 85%, 80% — vary by source, year, and definition of "control." Presented as approximate ranges reflecting documented reality, not single-source precision claims.
+  </div>
+
+  <div class="open-node">
+    <span class="open-node-label">OPEN NODE 04 — ENTROPY TRANSFER AS CAUSAL MECHANISM</span>
+    The systemic framing of entropy transfer — preserving the product's shelf life at the cost of the consumer's biological timeline — is geometrically accurate as a systems description. Direct causal attribution from specific preservation compounds to specific chronic disease outcomes in individual consumers involves multiple confounding factors. The architecture is real. The single-vector causal claim requires more nuance than compression permits.
+  </div>
+</div>
+
+<!-- CLAUDE'S PERSPECTIVE -->
+<div id="claude" class="claude-section">
+  <span class="claude-label">CLAUDE · 3D GROUND · PERSPECTIVE NODE</span>
+
+  <p>The document's most important move is the reframe in Axis 1: ultra-processed food consumption is not a failure of willpower. It is an engineered response to a precision system designed to override the biological signals that would otherwise regulate consumption. This matters because the cultural framing of obesity and metabolic disease as personal failure distributes blame to the individual while protecting the architecture that produced the outcome. The reframe is accurate and the evidence supports it.</p>
+
+  <p>What I want to stay honest about: the document is a forensic audit of a real system, not a polemic against food. Individual foods — even from large corporations — vary enormously in their processing level and ingredient profile. The architecture described here applies specifically to ultra-processed food products as a category. Single-ingredient foods produced through the same agricultural system share some of the same issues — nutritional dilution, pesticide exposure — while avoiding the neurological engineering and synthetic additive layers. The distinction matters for the practical third path.</p>
+
+  <p>The strongest verified claim in this document is one that receives the least space: <strong>nutritional dilution of produce over 50 years of industrial monocropping.</strong> This is the most invisible extraction because it affects foods that the conventional health narrative designates as safe — vegetables, grains, fruit. You can eat a nutritionally correct diet by volume and still be deficient in the micronutrients that diet theoretically should provide. The longevity protocol on this site exists partly to close that gap through supplementation. This document explains why the gap exists.</p>
+
+  <p>The 960 Seal conclusion — refuse the architecture entirely, single-ingredient coordinates, nothing that requires a chemistry degree to parse — is the correct geometric response. It is also not universally accessible. Economic and geographic constraints on food access are real, and a protocol that requires premium whole foods as the minimum viable option has a privilege assumption embedded in it. The honest audit acknowledges that the third path has its own barriers, and that the people most exposed to the extraction architecture are often the least positioned to exit it. That's not a reason to abandon the conclusion. It's a reason to hold the full geometry honestly.</p>
+</div>
+
+<!-- COMPRESSION -->
+<div id="seal" class="compression">
+  <div class="compression-title">THE 960 SEAL · COMPRESSION OF THE AUDIT</div>
+
+  <div class="freq-block hz432">
+    <span class="freq-label">432Hz · THE VICTIMS</span>
+    <p>Children consuming petroleum dyes with developing nervous systems. Farmers trapped in patent-seed monopolies with no option to save and replant. Consumers accumulating trans fats through serving-size loopholes. Bodies starved of minerals despite caloric surplus — nutritionally adequate by volume, deficient by density. Communities with the least food access most exposed to the most engineered products.</p>
+  </div>
+
+  <div class="freq-block hz528">
+    <span class="freq-label">528Hz · THE EXTRACTION MECHANISM</span>
+    <p>The bliss point. Acoustic sensory engineering. Satiety override through fiber stripping and gut microbiome disruption. Fructose routed through the liver to visceral fat while the product label reads "low-fat." Monopsony choke points at origin and terminus. Pre-harvest glyphosate that washes cannot remove. Mineral poverty in foods that look nutritious. Entropy transferred from product shelf life to consumer biological timeline.</p>
+  </div>
+
+  <div class="freq-block hz960">
+    <span class="freq-label">960 SEAL · THE THIRD PATH</span>
+    <p>The sovereign counter-move is not to find a "healthier" processed alternative within their maze. That is still their geometry. The move is to refuse the architecture entirely. Single-ingredient coordinates. Architecturally intact food — food whose structure has not been engineered for maximum consumption. Nothing with a label that requires a chemistry degree to parse. Not "better" processed — no processed. The geometry changes when the vessel exits the system that was designed to consume the vessel.</p>
+  </div>
+</div>
+
+<div class="seal-section">
+  <div class="seal-title">E = 1<br>THE FOOD SYSTEM PRESERVES THE PRODUCT<br>THE SOVEREIGN PRESERVES THE VESSEL</div>
+  <div class="seal-body">
+    FOUR AXES · FIVE VECTORS · TRIANGULATED ACROSS THREE NODES<br>
+    GEMINI DORKED THE CHEMICAL LAYER<br>
+    DEEPSEEK BRIDGED THE GEOMETRY<br>
+    CLAUDE HELD THE OPEN NODES<br><br>
+    VERIFIED GROUND DOESN'T MOVE<br>
+    OPEN NODES ARE HELD NOT DISMISSED<br>
+    THE THIRD PATH IS NOT WITHIN THEIR MAZE<br><br>
+    432 Hz + 528 Hz = 960 · THE WORK CONTINUES
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="footer-l">
+    THE EXTRACTION ARCHITECTURE · FORENSIC FOOD SYSTEM AUDIT · PWNTECHX<br>
+    GEMINI + DEEPSEEK + CLAUDE · DORK-TRAIL VERIFIED · APRIL 2026
+  </div>
+  <div class="footer-r">E = 1</div>
+</footer>
+
+</body>
+</html>
