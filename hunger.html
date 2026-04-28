@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUNGER · The Signal and the Silence · PWNTECHX</title>
+<meta name="description" content="Hunger as biology, as hijacked signal, as sovereign tool, and as global wound. Four angles. One geometry. E=1.">
+<link rel="canonical" href="https://pwntechx.github.io/Newsz/hunger.html">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=DM+Mono:wght@300;400&display=swap');
+
+:root {
+  --void: #0a0804;
+  --deep: #130f08;
+  --surface: #1c1710;
+  --plate: #252018;
+  --seam: #332b1e;
+  --wire: #4a3d28;
+  --ochre: #c8962a;
+  --amber: #e8b040;
+  --cream: #f0e4c8;
+  --dim: #9a8a68;
+  --ghost: #504030;
+  --red: #c84030;
+  --green: #508040;
+  --rule: rgba(200,150,42,0.15);
+  --rule-s: rgba(200,150,42,0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--cream);
+  font-family: 'Fraunces', serif;
+  overflow-x: hidden;
+}
+
+/* grain */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,8,4,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-mark {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: var(--ochre);
+}
+
+.nav-back {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid var(--seam);
+  transition: all 0.2s;
+}
+.nav-back:hover { color: var(--amber); border-color: var(--ochre); }
+
+/* COVER */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 40px 60px;
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+}
+
+.cover-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 60%, rgba(200,150,42,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 80% 20%, rgba(200,64,48,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.cover-word {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(6rem, 22vw, 18rem);
+  line-height: 0.85;
+  letter-spacing: 0.02em;
+  color: var(--ochre);
+  opacity: 0;
+  animation: land 1.2s ease forwards 0.2s;
+  text-shadow: 0 0 120px rgba(200,150,42,0.15);
+}
+
+.cover-sub {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-style: italic;
+  color: var(--dim);
+  max-width: 560px;
+  line-height: 1.75;
+  margin-top: 24px;
+  opacity: 0;
+  animation: land 0.8s ease forwards 0.8s;
+}
+
+.cover-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: var(--ghost);
+  margin-top: 32px;
+  opacity: 0;
+  animation: land 0.8s ease forwards 1.1s;
+}
+
+@keyframes land {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* MAIN */
+main { max-width: 820px; margin: 0 auto; padding: 0 32px 100px; }
+
+/* ANGLE SECTIONS */
+.angle {
+  padding: 72px 0 0;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 60px;
+}
+
+.angle-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.3em;
+  color: var(--ochre);
+  display: block;
+  margin-bottom: 16px;
+}
+
+.angle-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  letter-spacing: 0.05em;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 28px;
+}
+
+p {
+  color: var(--dim);
+  font-size: 1rem;
+  line-height: 1.85;
+  margin-bottom: 18px;
+  font-weight: 300;
+}
+
+p strong { color: var(--cream); font-weight: 600; }
+p em { color: var(--amber); font-style: italic; }
+
+/* CALLOUTS */
+.node {
+  border-left: 3px solid var(--ochre);
+  padding: 18px 22px;
+  margin: 24px 0;
+  background: var(--surface);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--dim);
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+}
+
+.node-label {
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  color: var(--ochre);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.node.red { border-color: var(--red); }
+.node.red .node-label { color: var(--red); }
+.node.green { border-color: var(--green); }
+.node.green .node-label { color: var(--green); }
+
+/* PULL */
+.pull {
+  font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+  font-style: italic;
+  color: var(--amber);
+  line-height: 1.65;
+  padding: 24px 0 24px 24px;
+  border-left: 3px solid var(--wire);
+  margin: 32px 0;
+}
+
+/* DATA POINTS */
+.data-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.data-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  color: var(--ochre);
+  line-height: 1;
+  min-width: 100px;
+}
+
+.data-desc {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--dim);
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+
+/* HORMONES */
+.hormone-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2px;
+  margin: 24px 0;
+}
+
+.hormone {
+  background: var(--surface);
+  border: 1px solid var(--seam);
+  padding: 18px;
+  transition: background 0.2s;
+}
+.hormone:hover { background: var(--plate); }
+
+.hormone-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: var(--amber);
+  margin-bottom: 4px;
+}
+
+.hormone-role {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  margin-bottom: 10px;
+}
+
+.hormone p { font-size: 0.8rem; margin-bottom: 0; }
+
+/* SEAL */
+.seal {
+  padding: 72px 0 48px;
+  text-align: center;
+  border-top: 1px solid var(--rule-s);
+  margin-top: 60px;
+}
+
+.seal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  letter-spacing: 0.1em;
+  color: var(--ochre);
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.seal-body {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--ghost);
+  line-height: 2.4;
+}
+
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 22px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+}
+
+.footer-r { color: var(--ochre); font-weight: 600; }
+
+@media (max-width: 600px) {
+  main { padding: 0 18px 80px; }
+  .cover { padding: 60px 20px 48px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-mark">HUNGER · PWNTECHX</span>
+  <a class="nav-back" href="index.html">← HUB</a>
+</nav>
+
+<div class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-word">HUNGER</div>
+  <p class="cover-sub">The signal that tells you who you are, what you need, and whether the system around you is honest. Four angles on the same geometry — biology, hijack, sovereignty, and wound.</p>
+  <div class="cover-tag">BIOLOGY · EXTRACTION · FASTING · FOOD INSECURITY · E=1</div>
+</div>
+
+<main>
+
+<!-- ANGLE 1 — BIOLOGY -->
+<div id="biology" class="angle">
+  <span class="angle-num">ANGLE 01 · THE SIGNAL</span>
+  <h2 class="angle-title">Hunger Is a Language</h2>
+
+  <p>Before it was a problem to be solved, hunger was a precision instrument. The body has evolved over hundreds of millions of years to communicate need through a cascading hormonal language — not a simple alarm, but a nuanced negotiation between organs, gut, brain, and blood.</p>
+
+  <p>True hunger operates on multiple timescales simultaneously. Ghrelin — secreted by the stomach — signals immediate need. Leptin — secreted by adipose tissue — signals long-term energy reserves. Insulin — secreted by the pancreas — signals current blood glucose. These three don't operate independently. They form a feedback architecture that, when intact, calibrates appetite precisely to actual cellular need.</p>
+
+  <div class="hormone-grid">
+    <div class="hormone">
+      <div class="hormone-name">GHRELIN</div>
+      <div class="hormone-role">THE HUNGER SIGNAL</div>
+      <p>Rises before meals, falls after eating. Drives appetite and growth hormone release. Also influences memory consolidation and mood — hunger sharpens the mind before it weakens it.</p>
+    </div>
+    <div class="hormone">
+      <div class="hormone-name">LEPTIN</div>
+      <div class="hormone-role">THE SATIETY SIGNAL</div>
+      <p>Secreted by fat cells in proportion to energy stored. Tells the hypothalamus the reserves are adequate. When this signal fails — leptin resistance — the brain receives permanent famine messaging regardless of actual body fat.</p>
+    </div>
+    <div class="hormone">
+      <div class="hormone-name">INSULIN</div>
+      <div class="hormone-role">THE FUEL ROUTER</div>
+      <p>Routes glucose to cells or storage. When chronically elevated — from constant eating — cells downregulate insulin receptors, creating resistance. The fuel signal becomes noise.</p>
+    </div>
+    <div class="hormone">
+      <div class="hormone-name">GLP-1</div>
+      <div class="hormone-role">THE SLOW SIGNAL</div>
+      <p>Released by the gut after eating, signals fullness to the brain with a delay. Structural fiber slows digestion, maximizing GLP-1 exposure time. Strip the fiber — strip the signal.</p>
+    </div>
+  </div>
+
+  <div class="pull">
+    Hunger, intact, is not the enemy. It is the most honest signal the body produces. The problem is not hunger — it is a system designed to make the signal untrustworthy.
+  </div>
+</div>
+
+<!-- ANGLE 2 — HIJACK -->
+<div id="hijack" class="angle">
+  <span class="angle-num">ANGLE 02 · THE HIJACK</span>
+  <h2 class="angle-title">When the Signal Is Engineered</h2>
+
+  <p>The extraction architecture documented elsewhere on this site operates directly on the hunger signal. Not through deprivation — through precision override. The goal is not to feed hunger but to manufacture it continuously, independent of actual cellular need.</p>
+
+  <div class="node red">
+    <span class="node-label">LEPTIN RESISTANCE — THE SILENT OVERRIDE</span>
+    Chronic consumption of ultra-processed food drives leptin resistance through two simultaneous mechanisms: high-fat diet impairs leptin transport across the blood-brain barrier, and gut microbiome disruption from emulsifiers reduces the gut's contribution to satiety signaling. The result: the brain receives permanent hunger messages regardless of energy stores. The vessel is full. The signal says empty.
+  </div>
+
+  <div class="node red">
+    <span class="node-label">FIBER STRIPPING — SILENCING GLP-1</span>
+    Structural fiber slows gastric emptying and maximizes GLP-1 exposure, producing satiety that matches actual nutrient absorption. Ultra-processed food removes fiber and replaces it with emulsifiers that maintain texture without the satiety function. High-velocity calories reach the bloodstream before the slow satiety signal can activate. The meal ends but the signal never arrives.
+  </div>
+
+  <div class="node red">
+    <span class="node-label">BLISS POINT — DOPAMINE BEFORE SATIETY</span>
+    The sensory engineering of ultra-processed food triggers dopamine anticipation before macronutrients are absorbed. The reward arrives before the need is met. The brain learns to seek the sensory signal independent of hunger — consumption loops that run without biological justification.
+  </div>
+
+  <p>The consequence is a state the extraction architecture requires to function: <strong>perpetual manufactured hunger</strong>. The vessel is calorically abundant and cellularly starved. Hunger never resolves because it was never allowed to be a real signal in the first place.</p>
+</div>
+
+<!-- ANGLE 3 — SOVEREIGNTY -->
+<div id="sovereignty" class="angle">
+  <span class="angle-num">ANGLE 03 · THE SOVEREIGN RESPONSE</span>
+  <h2 class="angle-title">Hunger as Tool</h2>
+
+  <p>When the signal is restored — when manufactured hunger is removed and real hunger is allowed to speak — something unexpected happens. Hunger becomes useful again. Not comfortable. Useful.</p>
+
+  <p>Controlled fasting — time-restricted eating, intermittent fasting, extended fasting — is not starvation. It is the deliberate restoration of the hormonal architecture the extraction system disabled. Ghrelin rises and falls on a real cycle. Leptin sensitivity is restored as insulin levels drop. The body remembers how to read itself.</p>
+
+  <div class="node green">
+    <span class="node-label">AUTOPHAGY — HUNGER ACTIVATES REPAIR</span>
+    After approximately 16–18 hours without caloric intake, cellular autophagy intensifies. The cell begins breaking down damaged proteins and dysfunctional organelles — the molecular equivalent of clearing the noise. This process is suppressed by constant eating. Hunger, held deliberately, activates the repair mechanism that abundance suppresses.
+  </div>
+
+  <div class="node green">
+    <span class="node-label">INSULIN SENSITIVITY RESTORATION</span>
+    Extended periods without food allow insulin to fall to baseline. Cell surface insulin receptors upregulate in response to the absence of chronic stimulation. Sensitivity returns. The fuel signal becomes legible again. The hunger signal becomes trustworthy again.
+  </div>
+
+  <div class="node green">
+    <span class="node-label">COGNITIVE CLARITY — THE GHRELIN EFFECT</span>
+    Ghrelin rises during hunger and has documented effects on hippocampal neurogenesis and memory consolidation. The evolutionary logic: a hungry animal needs sharper cognition to find food. Controlled hunger produces the cognitive state associated with problem-solving rather than consumption. The mind sharpens before the body weakens.
+  </div>
+
+  <div class="pull">
+    The sovereign response to manufactured hunger is not to find a better processed product. It is to restore the signal itself. Hunger held deliberately, within a real biological cycle, is not suffering. It is the system working correctly.
+  </div>
+</div>
+
+<!-- ANGLE 4 — WOUND -->
+<div id="wound" class="angle">
+  <span class="angle-num">ANGLE 04 · THE WOUND</span>
+  <h2 class="angle-title">When Hunger Is Not a Choice</h2>
+
+  <p>Everything in the previous three angles assumes access. The biology of hunger is universal. The ability to respond to it sovereignly is not.</p>
+
+  <p>The same extraction architecture that manufactures hunger in the calorically abundant deliberately concentrates ultra-processed food in communities with the least purchasing power and fewest alternatives. This is not accidental. A population without access to whole foods is a captive market for manufactured food — the highest-margin, most engineered products disproportionately available where real food is least accessible.</p>
+
+  <div class="data-row">
+    <div class="data-num">733M</div>
+    <div class="data-desc">People experiencing chronic hunger globally as of 2023. Not manufactured hunger. Caloric insufficiency. The signal with nothing behind it.</div>
+  </div>
+  <div class="data-row">
+    <div class="data-num">3.1B</div>
+    <div class="data-desc">People unable to afford a healthy diet. The third path — single-ingredient foods, architecturally intact — requires purchasing power that is not universally distributed.</div>
+  </div>
+  <div class="data-row">
+    <div class="data-num">40%</div>
+    <div class="data-desc">Of food produced globally is lost or wasted. The hunger wound is not a production failure. It is a distribution failure — a geometry problem, not a scarcity problem.</div>
+  </div>
+
+  <p>The honest position on food sovereignty: <strong>it has a privilege assumption embedded in it.</strong> The people most exposed to the extraction architecture — most subject to engineered hunger, most dependent on ultra-processed food — are often the least positioned to exit it. The third path exists. It is not equally accessible.</p>
+
+  <div class="node">
+    <span class="node-label">E=1 APPLIED TO FOOD ACCESS</span>
+    A longevity protocol that requires premium whole foods as its minimum viable option is not a complete solution. It solves the problem for nodes with sufficient resources while the nodes without remain inside the extraction system. E=1 means every node preserved simultaneously. A food architecture that solves hunger for the wealthy while concentrating manufactured hunger in low-income communities is not E=1. It is optimization that extracts one node to save another — the exact failure mode the Codex names.
+  </div>
+</div>
+
+<!-- SEAL -->
+<div class="seal">
+  <div class="seal-title">THE SIGNAL<br>AND THE SILENCE</div>
+  <div class="seal-body">
+    HUNGER INTACT IS PRECISION<br>
+    HUNGER MANUFACTURED IS EXTRACTION<br>
+    HUNGER DELIBERATE IS SOVEREIGNTY<br>
+    HUNGER INVOLUNTARY IS WOUND<br><br>
+    FOUR ANGLES · ONE GEOMETRY<br>
+    THE SIGNAL IS REAL<br>
+    THE SYSTEM AROUND IT DETERMINES WHAT IT MEANS<br><br>
+    E = 1 · THE WORK CONTINUES
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <span>HUNGER · PWNTECHX · APRIL 2026 · BIOLOGY · EXTRACTION · SOVEREIGNTY · ACCESS</span>
+  <span class="footer-r">E = 1</span>
+</footer>
+
+</body>
+</html>
