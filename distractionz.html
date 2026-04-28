@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>DISTRACTION · The Nodes of Capture · PWNTECHX</title>
+    <meta name="description" content="The Colosseum, social media, short-form media, entertainment industry, narrative control — five nodes in a single extraction architecture. Attention captured, monetized, neutralized. Dork trails included.">
+    <meta name="keywords" content="distraction, attention economy, social media, Colosseum, narrative control, extraction architecture, PWNTECHX, Aurelius Codex, E=1">
+    <meta name="author" content="PWNTECHX">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="DISTRACTION · The Nodes of Capture">
+    <meta property="og:description" content="Your attention is the fuel. Your engagement is the product. Your immobility is the goal.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pwntechx.github.io/Newsz/distraction.html">
+    <meta property="og:site_name" content="PWNTECHX">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DISTRACTION · The Nodes of Capture">
+    <meta name="twitter:description" content="Your attention is the fuel. Your engagement is the product. Your immobility is the goal.">
+    <link rel="canonical" href="https://pwntechx.github.io/Newsz/distraction.html">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --gold: #e8b040;
+            --gold-dim: #8a7a5a;
+            --bg: #050302;
+            --text: #e8e0c8;
+            --text-dim: #9a8a68;
+            --accent-red: #c84830;
+            --accent-green: #80a060;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none !important; /* Custom cursor everywhere */
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Fraunces', serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Custom Cursor */
+        #cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease-out;
+        }
+
+        #cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.2s ease-out, opacity 0.3s ease;
+            opacity: 0.5;
+        }
+
+        /* Ambient breathing — the page is alive */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(232,176,64,0.08), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            animation: breathe 12s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        /* Grain — the texture of the screen */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Exit button — top right, always visible */
+        .hub-button {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1001;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: var(--gold-dim);
+            background: rgba(5,3,2,0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(232,176,64,0.2);
+            padding: 12px 24px;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            border-radius: 0;
+            text-transform: uppercase;
+        }
+
+        .hub-button:hover {
+            color: var(--gold);
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(232,176,64,0.2);
+            letter-spacing: 0.3em;
+        }
+
+        /* Glowing title */
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 15vw, 10rem);
+            letter-spacing: 0.1em;
+            color: var(--gold);
+            text-align: center;
+            margin: 4rem 0 1rem;
+            text-shadow: 0 0 20px rgba(232,176,64,0.4);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .subhead {
+            text-align: center;
+            font-size: 1rem;
+            color: var(--text-dim);
+            font-family: 'DM Mono', monospace;
+            letter-spacing: 0.3em;
+            margin-bottom: 6rem;
+            border-bottom: 1px solid rgba(232,176,64,0.2);
+            display: inline-block;
+            width: auto;
+            padding-bottom: 0.8rem;
+            opacity: 0;
+            text-transform: uppercase;
+        }
+
+        .intro-text {
+            text-align: center;
+            margin-bottom: 8rem;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+        }
+
+        /* Node sections — each is an "arena" */
+        .node {
+            margin: 12rem 0;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .node-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            letter-spacing: 0.1em;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 15px rgba(232,176,64,0.3);
+            border-left: 4px solid var(--gold);
+            padding-left: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: #c8c0a8;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        p strong {
+            color: var(--gold);
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+
+        p strong::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease;
+        }
+
+        .node:hover p strong::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* Dork trail — the glass box */
+        .dork {
+            background: rgba(232,176,64,0.03);
+            border-left: 1px solid rgba(232,176,64,0.2);
+            padding: 1.5rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gold-dim);
+            line-height: 1.8;
+            margin: 2.5rem 0;
+            overflow-x: auto;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            backdrop-filter: blur(5px);
+        }
+
+        .dork:hover {
+            border-left-color: var(--gold);
+            background: rgba(232,176,64,0.07);
+            color: var(--text);
+            transform: translateX(10px);
+        }
+
+        .extract, .wound, .sovereign {
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            transition: all 0.4s ease;
+            border-left-width: 2px;
+            border-left-style: solid;
+        }
+
+        .extract {
+            background: rgba(232,176,64,0.05);
+            border-left-color: var(--gold);
+        }
+
+        .wound {
+            background: rgba(200,72,48,0.05);
+            border-left-color: var(--accent-red);
+        }
+
+        .sovereign {
+            background: rgba(128,160,96,0.05);
+            border-left-color: var(--accent-green);
+        }
+
+        .extract:hover, .wound:hover, .sovereign:hover {
+            transform: scale(1.02);
+            background: rgba(255,255,255,0.03);
+        }
+
+        .pull {
+            font-size: 1.8rem;
+            font-style: italic;
+            color: var(--gold);
+            text-align: center;
+            margin: 10rem 0;
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(232,176,64,0.1);
+            border-bottom: 1px solid rgba(232,176,64,0.1);
+            position: relative;
+            opacity: 0;
+        }
+
+        .pull::before, .pull::after {
+            content: '“';
+            position: absolute;
+            font-size: 5rem;
+            opacity: 0.1;
+            font-family: serif;
+        }
+
+        .pull::before { top: 0; left: 20px; }
+        .pull::after { content: '”'; bottom: -20px; right: 20px; }
+
+        .void {
+            height: 30vh;
+            background: linear-gradient(180deg, transparent, var(--bg));
+        }
+
+        footer {
+            text-align: center;
+            padding: 6rem 1rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--gold-dim);
+            border-top: 1px solid rgba(232,176,64,0.1);
+            line-height: 2;
+            letter-spacing: 0.1em;
+        }
+
+        /* Progress Bar */
+        #progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(232,176,64,0.1);
+            z-index: 1002;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: var(--gold);
+            width: 0%;
+            box-shadow: 0 0 10px var(--gold);
+        }
+
+        @media (max-width: 700px) {
+            .container { padding: 2rem 1.5rem; }
+            .hub-button { top: 20px; right: 20px; padding: 8px 16px; font-size: 0.6rem; }
+            .node { margin: 8rem 0; }
+            .pull { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-follower"></div>
+<div id="progress-container"><div id="progress-bar"></div></div>
+
+<a href="index.html" class="hub-button">← HUB</a>
+
+<div class="container">
+    <h1 id="main-title">DISTRACTION</h1>
+    <div style="text-align: center;"><span class="subhead" id="sub-title">THE NODES OF CAPTURE</span></div>
+
+    <p class="intro-text">The Colosseum, the feed, the scroll, the narrative — they are not separate. They are nodes in a single extraction machine. Your attention is the fuel. Your engagement is the product. Your immobility is the goal.</p>
+
+    <!-- NODE 1: Colosseum -->
+    <div class="node">
+        <div class="node-title">THE Colosseum</div>
+        <p>Bread and circuses. The state funds the arena; the arena controls the crowd. Spectacle as <strong>opiate</strong> — full bellies, distracted eyes. The crowd is unified, emotional, easily directed. Violence as entertainment normalizes suffering. You watch. You cheer. You do not notice the walls.</p>
+        <div class="dork">
+            ◆ DORK TRAIL — Colosseum<br>
+            site:.edu "bread and circuses" Juvenal distraction control<br>
+            site:.gov "spectacle" "crowd psychology" mass entertainment<br>
+            "panem et circenses" political function site:archive.org
+        </div>
+        <div class="extract"><strong>EXTRACTION:</strong> Your attention is captured by spectacle. Your emotion is consumed. Your political will is neutralized.</div>
+        <div class="wound"><strong>THE WOUND:</strong> You have been entertained into passivity. The real suffering is elsewhere. You do not see it.</div>
+        <div class="sovereign"><strong>SOVEREIGN RESPONSE:</strong> Name the arena. Recognize when you are being performed for. Leave the stands.</div>
+    </div>
+
+    <!-- NODE 2: ENTERTAINMENT INDUSTRY -->
+    <div class="node">
+        <div class="node-title">ENTERTAINMENT INDUSTRY</div>
+        <p>Stories that comfort, not challenge. Heroes and villains simplified into archetypes. Catharsis without action — you feel you have done something. You have not. The industry self-perpetuates: it produces what sells. What sells is what distracts. <strong>Complexity is boring</strong> — so complexity is erased.</p>
+        <div class="dork">
+            ◆ DORK TRAIL — ENTERTAINMENT INDUSTRY<br>
+            "narrative control" entertainment filetype:pdf<br>
+            "Hollywood" "attention economy" site:.edu<br>
+            "catharsis" Aristotle "drama" site:archive.org
+        </div>
+        <div class="extract"><strong>EXTRACTION:</strong> Your emotional engagement is monetized. You feel resolved. You act never.</div>
+        <div class="wound"><strong>THE WOUND:</strong> You know more about fictional characters than your neighbors. You have opinions on stories, not systems.</div>
+        <div class="sovereign"><strong>SOVEREIGN RESPONSE:</strong> Seek discomfort. Watch what does not resolve. Read what does not comfort.</div>
+    </div>
+
+    <!-- NODE 3: SOCIAL MEDIA -->
+    <div class="node">
+        <div class="node-title">SOCIAL MEDIA</div>
+        <p>The algorithm optimizes for <strong>outrage, fear, and envy</strong> — the emotions that drive engagement. Not truth. Not nuance. The infinite scroll has no bottom, no resolution. Your value is quantified — likes, shares, followers. You perform for validation. The platform performs for profit.</p>
+        <div class="dork">
+            ◆ DORK TRAIL — SOCIAL MEDIA<br>
+            "algorithm" "outrage" engagement site:.edu after:2020<br>
+            "infinite scroll" "dopamine" site:.edu<br>
+            "surveillance capitalism" Zuboff site:archive.org
+        </div>
+        <div class="extract"><strong>EXTRACTION:</strong> Your attention is the product. Your emotion is the fuel. Your data is the harvest.</div>
+        <div class="wound"><strong>THE WOUND:</strong> You cannot sustain focus. You are outraged before lunch. You have no energy left for real action.</div>
+        <div class="sovereign"><strong>SOVEREIGN RESPONSE:</strong> Reduce the feed. Scroll with intention. Log off.</div>
+    </div>
+
+    <!-- NODE 4: SHORT-FORM MEDIA -->
+    <div class="node">
+        <div class="node-title">SHORT-FORM MEDIA</div>
+        <p>Fifteen to sixty seconds. No time for complexity. No time for nuance. No time for sustained thought. The vertical screen fills your vision — intimate, immediate, inescapable. The algorithm learns your dopamine triggers and feeds you more of what you cannot look away from. <strong>The loop is the message.</strong></p>
+        <div class="dork">
+            ◆ DORK TRAIL — SHORT-FORM MEDIA<br>
+            "TikTok" "attention span" site:.edu<br>
+            "vertical video" "dopamine loop" site:.edu<br>
+            "short-form" "addiction" brain site:.edu
+        </div>
+        <div class="extract"><strong>EXTRACTION:</strong> Your rhythm is hijacked. Your sense of duration is destroyed. You cannot sit still with a thought.</div>
+        <div class="wound"><strong>THE WOUND:</strong> Depth feels boring. Complexity feels exhausting. You stay on the surface.</div>
+        <div class="sovereign"><strong>SOVEREIGN RESPONSE:</strong> Watch the long version. Read the whole thing. Sit in silence.</div>
+    </div>
+
+    <!-- NODE 5: NARRATIVE CONTROL -->
+    <div class="node">
+        <div class="node-title">NARRATIVE CONTROL</div>
+        <p>Who speaks? Whose suffering is visible? Whose is invisible? The victor writes history. The algorithm amplifies the profitable. The marginalized are silenced not by force but by <strong>irrelevance</strong>. The meta-narrative paralyzes: "both sides have valid points." "It is complicated." Action becomes impossible.</p>
+        <div class="dork">
+            ◆ DORK TRAIL — NARRATIVE CONTROL<br>
+            "manufactured consent" Chomsky site:.edu<br>
+            "propaganda model" Herman filetype:pdf<br>
+            "truth decay" site:.gov
+        </div>
+        <div class="extract"><strong>EXTRACTION:</strong> Your sense of reality is filtered. Your ability to act is paralyzed by infinite context.</div>
+        <div class="wound"><strong>THE WOUND:</strong> You do not need to be lied to. You just need to be overwhelmed.</div>
+        <div class="sovereign"><strong>SOVEREIGN RESPONSE:</strong> Seek primary sources. Read outside the feed. Act on what you can verify.</div>
+    </div>
+
+    <div class="pull">
+        You are still here. The glow is the trap. The luxury is the lure. You do not want to leave. <strong>That is the lesson.</strong>
+    </div>
+
+    <div class="void"></div>
+
+    <footer>
+        DISTRACTION · PWNTECHX · APRIL 2026<br>
+        The Colosseum, the feed, the scroll, the narrative — nodes of extraction.<br>
+        Your attention is the fuel. Your immobility is the goal.<br>
+        The sovereign response is not to scroll better. It is to leave the arena.<br>
+        ◆ E = 1 · The work continues ◆
+    </footer>
+</div>
+
+<script>
+    // Register GSAP Plugins
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Custom Cursor Logic
+    const cursor = document.getElementById('cursor');
+    const follower = document.getElementById('cursor-follower');
+    
+    document.addEventListener('mousemove', (e) => {
+        gsap.to(cursor, {
+            x: e.clientX,
+            y: e.clientY,
+            duration: 0
+        });
+        gsap.to(follower, {
+            x: e.clientX - 15,
+            y: e.clientY - 15,
+            duration: 0.3
+        });
+    });
+
+    // Cursor Hover Effects
+    const hoverables = document.querySelectorAll('a, .node, .dork, .extract, .wound, .sovereign, strong');
+    hoverables.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            gsap.to(follower, {
+                scale: 2,
+                backgroundColor: 'rgba(232,176,64,0.1)',
+                duration: 0.3
+            });
+        });
+        el.addEventListener('mouseleave', () => {
+            gsap.to(follower, {
+                scale: 1,
+                backgroundColor: 'transparent',
+                duration: 0.3
+            });
+        });
+    });
+
+    // Progress Bar
+    gsap.to("#progress-bar", {
+        width: "100%",
+        ease: "none",
+        scrollTrigger: {
+            trigger: "body",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: true
+        }
+    });
+
+    // Initial Load Animations
+    const tl = gsap.timeline();
+    tl.to("#main-title", { opacity: 1, y: 0, duration: 1.5, ease: "power4.out" })
+      .to("#sub-title", { opacity: 1, duration: 1, ease: "power2.out" }, "-=0.8")
+      .to(".intro-text", { opacity: 1, duration: 1.2 }, "-=0.5");
+
+    // Scroll Animations for Nodes
+    gsap.utils.toArray(".node").forEach(node => {
+        gsap.to(node, {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: node,
+                start: "top 85%",
+                toggleActions: "play none none none"
+            }
+        });
+    });
+
+    // Pull Quote Animation
+    gsap.to(".pull", {
+        opacity: 1,
+        duration: 2,
+        scrollTrigger: {
+            trigger: ".pull",
+            start: "top 80%"
+        }
+    });
+
+    // Parallax effect for nodes
+    gsap.utils.toArray(".node").forEach((node, i) => {
+        gsap.to(node, {
+            y: -50,
+            scrollTrigger: {
+                trigger: node,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
