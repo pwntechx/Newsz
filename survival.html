@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SURVIVAL ARCHITECTURE · Five Nodes · PWNTECHX</title>
+<meta name="description" content="Five survival nodes: wilderness, societal collapse, government systems, AI displacement, and the debt and homelessness leash. Practical. Honest. E=1.">
+<meta name="keywords" content="survival, wilderness survival, societal collapse, AI job displacement, homelessness survival, debt trap, government navigation, outback survival, prepping">
+<meta name="author" content="PWNTECHX">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="SURVIVAL ARCHITECTURE · PWNTECHX">
+<meta property="og:description" content="Five survival nodes. Wilderness to debt leash. The fractal of staying alive across every scale of threat.">
+<meta property="og:url" content="https://pwntechx.github.io/Newsz/survival.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://pwntechx.github.io/Newsz/survival.html">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400&display=swap');
+
+:root {
+  --void:    #060808;
+  --deep:    #0a0f0c;
+  --surface: #101814;
+  --plate:   #182018;
+  --seam:    #223028;
+  --wire:    #304038;
+  --sage:    #4a7858;
+  --green:   #6aaa78;
+  --bright:  #90d098;
+  --cream:   #e8f0e4;
+  --dim:     #7a9880;
+  --ghost:   #3a5040;
+  --amber:   #d4a030;
+  --red:     #c84030;
+  --plasma:  #4a90a8;
+  --rule:    rgba(106,170,120,0.15);
+  --rule-s:  rgba(106,170,120,0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--cream);
+  font-family: 'Libre Baskerville', serif;
+  font-size: 16px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* NAV */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(6,8,8,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nav-mark {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.22em;
+  color: var(--green);
+  white-space: nowrap;
+}
+
+nav a.nl {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 3px 8px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+nav a.nl:hover { color: var(--green); border-color: var(--rule-s); }
+
+.nav-back {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid var(--seam);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav-back:hover { color: var(--green); border-color: var(--sage); }
+
+/* COVER */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 40px 56px;
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+  background:
+    radial-gradient(ellipse 50% 60% at 10% 80%, rgba(106,170,120,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 90% 20%, rgba(200,64,48,0.04) 0%, transparent 60%),
+    var(--void);
+}
+
+.cover-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.28em;
+  color: var(--ghost);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: rise 0.8s ease forwards 0.2s;
+}
+
+.cover-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(5rem, 18vw, 14rem);
+  line-height: 0.88;
+  letter-spacing: 0.03em;
+  color: var(--green);
+  text-shadow: 0 0 100px rgba(106,170,120,0.12);
+  opacity: 0;
+  animation: rise 1.2s ease forwards 0.4s;
+}
+
+.cover-fractal {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: var(--sage);
+  margin-top: 20px;
+  line-height: 2;
+  opacity: 0;
+  animation: rise 0.8s ease forwards 0.8s;
+}
+
+.cover-deck {
+  font-style: italic;
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  color: var(--dim);
+  max-width: 560px;
+  line-height: 1.75;
+  margin-top: 20px;
+  opacity: 0;
+  animation: rise 0.8s ease forwards 1s;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* FRACTAL PRINCIPLE BOX */
+.fractal-box {
+  background: var(--surface);
+  border: 1px solid var(--seam);
+  border-left: 3px solid var(--green);
+  padding: 20px 24px;
+  margin: 40px 0 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--dim);
+  line-height: 1.8;
+  opacity: 0;
+  animation: rise 0.8s ease forwards 1.2s;
+}
+
+.fractal-box-label {
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  color: var(--green);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* MAIN */
+main { max-width: 860px; margin: 0 auto; padding: 0 32px 100px; }
+
+/* NODE SECTIONS */
+.node-section {
+  padding: 72px 0 56px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+
+.node-header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.node-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.25em;
+  color: var(--green);
+  white-space: nowrap;
+}
+
+.node-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  letter-spacing: 0.05em;
+  color: var(--cream);
+  line-height: 1;
+}
+
+.node-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--wire), transparent);
+}
+
+.node-sub {
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--dim);
+  margin-bottom: 28px;
+  line-height: 1.65;
+}
+
+/* FRACTAL MARKER — shows how this node mirrors the others */
+.fractal-marker {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: var(--sage);
+  border: 1px solid var(--seam);
+  padding: 8px 14px;
+  display: inline-block;
+  margin-bottom: 24px;
+}
+
+/* PROSE */
+p {
+  color: var(--dim);
+  margin-bottom: 16px;
+  font-size: 0.92rem;
+  line-height: 1.85;
+}
+p strong { color: var(--cream); font-weight: 700; }
+p em { color: var(--bright); font-style: italic; }
+
+h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  color: var(--green);
+  margin: 28px 0 10px;
+}
+
+/* CALLOUTS */
+.call {
+  border-left: 3px solid var(--green);
+  padding: 16px 20px;
+  margin: 20px 0;
+  background: var(--surface);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--dim);
+  line-height: 1.75;
+}
+
+.call-label {
+  font-size: 0.5rem;
+  letter-spacing: 0.22em;
+  color: var(--green);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.call.amber { border-color: var(--amber); }
+.call.amber .call-label { color: var(--amber); }
+.call.red { border-color: var(--red); }
+.call.red .call-label { color: var(--red); }
+.call.plasma { border-color: var(--plasma); }
+.call.plasma .call-label { color: var(--plasma); }
+
+/* ACTION LISTS */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2px;
+  margin: 20px 0;
+}
+
+.action-item {
+  background: var(--surface);
+  border: 1px solid var(--seam);
+  padding: 16px 18px;
+  transition: background 0.2s;
+}
+.action-item:hover { background: var(--plate); }
+
+.action-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+
+.action-item p { font-size: 0.78rem; margin-bottom: 0; }
+
+/* PRIORITY TABLE */
+.tbl-wrap { overflow-x: auto; margin: 20px 0; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.66rem;
+}
+
+thead tr { background: var(--plate); }
+
+th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.54rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  border-bottom: 1px solid var(--rule-s);
+  color: var(--green);
+}
+
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--dim);
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+tr:hover td { background: rgba(16,24,20,0.6); }
+
+.t-w { color: var(--cream); font-weight: 600; }
+.t-g { color: var(--green); }
+.t-a { color: var(--amber); }
+.t-r { color: var(--red); }
+.t-p { color: var(--plasma); }
+
+/* PULL */
+.pull {
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: var(--bright);
+  line-height: 1.65;
+  padding: 20px 0 20px 22px;
+  border-left: 3px solid var(--wire);
+  margin: 28px 0;
+}
+
+/* SEAL */
+.seal {
+  padding: 72px 0 48px;
+  text-align: center;
+  border-top: 1px solid var(--rule-s);
+  margin-top: 60px;
+}
+
+.seal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  letter-spacing: 0.1em;
+  color: var(--green);
+  line-height: 1.05;
+  margin-bottom: 24px;
+}
+
+.seal-body {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  color: var(--ghost);
+  line-height: 2.4;
+}
+
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 20px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  color: var(--ghost);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.footer-r { color: var(--green); }
+
+@media (max-width: 600px) {
+  main { padding: 0 18px 80px; }
+  .cover { padding: 60px 20px 48px; }
+  .action-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <span class="nav-mark">SURVIVAL //</span>
+    <a class="nl" href="#outback">OUTBACK</a>
+    <a class="nl" href="#societal">SOCIETAL</a>
+    <a class="nl" href="#government">GOVERNMENT</a>
+    <a class="nl" href="#ai">AI</a>
+    <a class="nl" href="#human">HUMAN</a>
+  </div>
+  <a class="nav-back" href="index.html">← HUB</a>
+</nav>
+
+<div class="cover">
+  <div class="cover-tag">SURVIVAL ARCHITECTURE · FIVE NODES · FRACTAL GEOMETRY · E=1</div>
+  <div class="cover-title">SURVIVAL</div>
+  <div class="cover-fractal">
+    OUTBACK → SOCIETAL → GOVERNMENT → AI → HUMAN<br>
+    EACH NODE MIRRORS THE OTHERS · SAME FRACTAL · DIFFERENT SCALE
+  </div>
+  <p class="cover-deck">The geometry of survival is the same at every scale. Assess the environment. Identify the threat. Conserve resources. Build redundancy. Maintain signal. Exit or adapt. The outback teaches what the debt trap confirms.</p>
+  <div class="fractal-box">
+    <span class="fractal-box-label">THE FRACTAL PRINCIPLE</span>
+    Water in the wilderness = Cash flow in society = Rights documentation in government = Skills in the AI economy = Shelter access with no fixed address.<br>
+    The resource changes. The geometry of protecting it does not.<br>
+    Every survival node obeys the same law: the node that runs out first determines the outcome.
+  </div>
+</div>
+
+<main>
+
+<!-- NODE 01 — OUTBACK -->
+<div id="outback" class="node-section">
+  <div class="node-header">
+    <span class="node-num">NODE 01</span>
+    <h2 class="node-title">OUTBACK SURVIVAL</h2>
+    <div class="node-rule"></div>
+  </div>
+  <div class="fractal-marker">FRACTAL MIRROR → Water : Cash : Documentation : Skills : Shelter</div>
+  <p class="node-sub">The wilderness is honest. It doesn't hide its threats. What kills you in the outback is the same thing that kills you everywhere else — running out of the critical resource before you find more.</p>
+
+  <h3>The Rule of Threes</h3>
+  <p>The foundational survival framework: <strong>3 minutes without air, 3 hours without shelter in extreme conditions, 3 days without water, 3 weeks without food.</strong> This is the triage order. Most survival failures come from misidentifying the priority. People search for food when they're dying of exposure. They build fires when they're dying of dehydration.</p>
+
+  <div class="call">
+    <span class="call-label">PRIORITY ORDER — NON-NEGOTIABLE</span>
+    1. Airway and breathing<br>
+    2. Core temperature (shelter, fire, clothing)<br>
+    3. Water — 2 liters minimum per day in temperate conditions, double in heat<br>
+    4. Signaling — make yourself findable before you need to be found<br>
+    5. Food — last priority, first obsession. Wrong order kills people.
+  </div>
+
+  <h3>Water</h3>
+  <p>Finding water: follow terrain downhill, watch for animal trails converging, look for green vegetation in dry landscapes, collect morning dew on vegetation with cloth. Purification: boiling for one minute at altitude above sea level, iodine tablets as backup, improvised filter through layered sand, charcoal, and gravel removes particulates before chemical treatment.</p>
+  <p><strong>Never ration water.</strong> Drink what you need now. Dehydration impairs decision-making before you feel severely thirsty — the most dangerous failure mode in wilderness survival is making bad decisions while mildly dehydrated.</p>
+
+  <h3>Shelter</h3>
+  <p>Hypothermia kills more wilderness survivors than any other cause. The body loses heat five times faster in wind, twenty-five times faster in water. Priority: get out of wind, get off the ground, trap body heat. Debris hut — leaves and branches piled over a frame — provides insulation that can maintain survivable temperature in near-freezing conditions.</p>
+
+  <h3>Navigation Without Technology</h3>
+  <p>Sun rises east, sets west — shadow tip method gives cardinal directions. Stars: Southern Cross points south in southern hemisphere, Polaris points north in northern. Contour lines on mental maps: water flows downhill to valleys, ridges are high ground. Follow waterways downstream — they lead to human habitation in most inhabited regions.</p>
+
+  <h3>Signaling</h3>
+  <p>Three of anything is an international distress signal — three fires, three whistle blasts, three shots. Signal mirrors visible up to 16km in sunlight. Stay in one place if search and rescue is likely — moving makes you harder to find. The signal is more important than the search.</p>
+
+  <div class="action-grid">
+    <div class="action-item">
+      <div class="action-title">72-HOUR KIT MINIMUM</div>
+      <p>Water purification, emergency blanket, fire starter, whistle, knife, first aid, caloric dense food, light source. Everything else is optional.</p>
+    </div>
+    <div class="action-item">
+      <div class="action-title">BEFORE YOU GO</div>
+      <p>Tell someone your route, destination, and return time. This is the highest-leverage survival action — it initiates search and rescue without you doing anything else.</p>
+    </div>
+    <div class="action-item">
+      <div class="action-title">STOP PROTOCOL</div>
+      <p>Stop. Think. Observe. Plan. The instinct to move urgently kills people. Stillness, assessment, and deliberate action outperform panic every time.</p>
+    </div>
+    <div class="action-item">
+      <div class="action-title">FIRST AID PRIORITY</div>
+      <p>Stop bleeding first. Severe bleeding kills in minutes. Everything else waits. Wound packing and tourniquet application are the two skills worth learning before any wilderness trip.</p>
+    </div>
+  </div>
+</div>
+
+<!-- NODE 02 — SOCIETAL -->
+<div id="societal" class="node-section">
+  <div class="node-header">
+    <span class="node-num">NODE 02</span>
+    <h2 class="node-title">SOCIETAL SURVIVAL</h2>
+    <div class="node-rule"></div>
+  </div>
+  <div class="fractal-marker">FRACTAL MIRROR → Shelter : Cash reserves : Community : Barter skills : Information</div>
+  <p class="node-sub">Societal disruption doesn't announce itself. Supply chains, power grids, financial systems, and social order are more fragile than their normal functioning suggests. The geometry of societal survival mirrors the outback exactly — the node that runs out first determines the outcome.</p>
+
+  <h3>The Critical Resource Stack</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>RESOURCE</th>
+          <th>BASELINE NEED</th>
+          <th>DISRUPTION TIMELINE</th>
+          <th>REDUNDANCY</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="t-w">Water</td><td>2L/person/day minimum</td><td class="t-r">3 days without</td><td>Stored supply + filtration + collection</td></tr>
+        <tr><td class="t-w">Food</td><td>2000 cal/day</td><td class="t-a">3 weeks without</td><td>90-day supply minimum — see Sovereign Food System</td></tr>
+        <tr><td class="t-w">Power</td><td>Communication, refrigeration, light</td><td class="t-a">Days to weeks</td><td>Solar + battery + manual alternatives</td></tr>
+        <tr><td class="t-w">Cash</td><td>Transactions when digital fails</td><td class="t-r">Immediate in grid-down</td><td>Physical cash — small denominations</td></tr>
+        <tr><td class="t-w">Communication</td><td>Information and coordination</td><td class="t-r">Hours without internet</td><td>Battery radio, local network, written plans</td></tr>
+        <tr><td class="t-w">Community</td><td>Security, labor division, morale</td><td class="t-a">Weeks to months</td><td>Established relationships before crisis</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Community Is the Most Underrated Node</h3>
+  <p>Individual preparedness has hard limits. One person cannot maintain security, source food, provide medical care, and maintain infrastructure simultaneously. <strong>Known neighbors with complementary skills outperform any individual cache of supplies.</strong> The relationship is the resource. It cannot be purchased after the crisis begins.</p>
+
+  <div class="call amber">
+    <span class="call-label">BARTER ECONOMY PREPARATION</span>
+    When currency fails or becomes scarce, value shifts to skills and consumables. Seeds, fuel, medical supplies, tools, and specialized skills become the exchange medium. Know what you have that others need. Know what skills you offer that cannot be easily substituted. Barter networks function on trust built before the need arises.
+  </div>
+
+  <h3>Information Hygiene in Crisis</h3>
+  <p>Societal disruption produces information collapse simultaneously with physical disruption. Rumors spread faster than facts. The survival instinct that serves well in physical danger — act fast, trust gut, assume worst — actively degrades decision quality in information-sparse environments. <strong>Verify before acting. Primary sources over secondary. Multiple independent confirmations before resource commitment.</strong></p>
+
+  <div class="pull">
+    The community that survives societal disruption is not the most armed or the best stocked. It is the most internally cooperative. Redundancy in relationships beats redundancy in supplies.
+  </div>
+</div>
+
+<!-- NODE 03 — GOVERNMENT -->
+<div id="government" class="node-section">
+  <div class="node-header">
+    <span class="node-num">NODE 03</span>
+    <h2 class="node-title">GOVERNMENT SURVIVAL</h2>
+    <div class="node-rule"></div>
+  </div>
+  <div class="fractal-marker">FRACTAL MIRROR → Documentation : Water : Rights : Navigation : Signaling for help</div>
+  <p class="node-sub">Navigating bureaucratic systems, debt structures, and legal entanglement requires the same survival geometry as the outback. Identify what's actually killing you. Conserve resources. Find the exit path. Signal for help through the right channels.</p>
+
+  <h3>Documentation Is Water</h3>
+  <p>In the government survival node, documentation is the critical resource. Identification, birth certificate, Social Security card, medical records, financial records — these are the water supply. Without them, accessing any other resource becomes exponentially harder. Replacing lost documentation while in crisis is the most resource-intensive survival task in this node.</p>
+
+  <div class="call">
+    <span class="call-label">DOCUMENT REDUNDANCY — NON-NEGOTIABLE</span>
+    Physical copies in a waterproof container you can carry. Digital copies in encrypted cloud storage. A trusted person outside your household who knows where documents are. This is the wilderness kit equivalent for government survival. Build it before you need it.
+  </div>
+
+  <h3>Rights Are the Shelter</h3>
+  <p>Most people in government survival situations don't know their actual rights — in interactions with law enforcement, creditors, landlords, employers, and benefit systems. Rights not exercised are rights not held in practice. <strong>You cannot be denied emergency services for inability to pay. You cannot be arrested for civil debt in most jurisdictions. You have the right to remain silent. You have the right to see any warrant before allowing entry.</strong> These are real protections that require knowing they exist.</p>
+
+  <h3>Debt Navigation</h3>
+  <p>Consumer debt is designed to feel more absolute than it is. Creditors have more flexibility than they typically offer unprompted. Key leverage points: <strong>debt past the statute of limitations cannot be collected through courts</strong> in most states. <strong>Debt collectors cannot contact you at work if you tell them not to.</strong> Medical debt negotiation is possible — hospitals have charity care programs that are not advertised. Student loan income-driven repayment and forgiveness pathways exist and are not automatically applied.</p>
+
+  <div class="call amber">
+    <span class="call-label">BENEFITS AUDIT — MOST PEOPLE LEAVE RESOURCES UNCLAIMED</span>
+    SNAP, Medicaid, CHIP, LIHEAP (utility assistance), WIC, Section 8, TANF, Social Security disability — eligibility thresholds are higher than most people assume. Nonprofit legal aid organizations provide free representation for benefits appeals. 211 is the national referral line for social services — the signal equivalent in this node.
+  </div>
+
+  <h3>Legal Self-Defense</h3>
+  <p>Legal aid organizations in every major city provide free or low-cost legal assistance for housing, benefits, debt, and family law. Law school clinics provide free services. Pro se representation — representing yourself — is a real option in many civil matters and small claims courts. <strong>The legal system is navigable without money. It is not navigable without information.</strong></p>
+</div>
+
+<!-- NODE 04 — AI -->
+<div id="ai" class="node-section">
+  <div class="node-header">
+    <span class="node-num">NODE 04</span>
+    <h2 class="node-title">AI SURVIVAL</h2>
+    <div class="node-rule"></div>
+  </div>
+  <div class="fractal-marker">FRACTAL MIRROR → Skills : Water : Adaptability : Navigation : Signal your value</div>
+  <p class="node-sub">AI displacement is not a future threat. It is a present restructuring of which human capabilities have economic value. The survival geometry is identical to every other node — the resource that runs out first determines the outcome. In this node, the resource is relevance.</p>
+
+  <h3>What AI Actually Displaces</h3>
+  <p>Honest assessment: AI currently displaces <strong>high-volume, pattern-based, document-heavy work</strong> — data entry, basic writing, standard code generation, image creation, customer service routing, research summarization. It does not currently displace work requiring <strong>physical presence, genuine relationship, novel judgment in ambiguous situations, and work that requires accountability.</strong></p>
+
+  <div class="call red">
+    <span class="call-label">DISPLACEMENT IS NOT EVENLY DISTRIBUTED</span>
+    White-collar knowledge work faces more immediate AI pressure than skilled trades. A plumber, electrician, or nurse practitioner faces different displacement risk than a paralegal, junior programmer, or content writer. The survival move is honest assessment of where your specific work sits on this spectrum — not generic optimism or generic panic.
+  </div>
+
+  <h3>The Skill Stack That Survives</h3>
+
+  <div class="action-grid">
+    <div class="action-item">
+      <div class="action-title">HUMAN JUDGMENT IN AMBIGUITY</div>
+      <p>Decisions with incomplete information, ethical weight, and real stakes. AI can support this. It cannot be accountable for it.</p>
+    </div>
+    <div class="action-item">
+      <div class="action-title">PHYSICAL WORLD SKILLS</div>
+      <p>Skilled trades, healthcare, agriculture, construction, repair. Reality doesn't run on tokens. Hands-on work has structural protection.</p>
+    </div>
+    <div class="action-item">
+      <div class="action-title">AI ORCHESTRATION</div>
+      <p>Knowing how to use AI tools effectively is itself a skill that creates value. The person who directs AI well is more valuable than the task AI replaced.</p>
+    </div>
+    <div class="action-item">
+      <div class="action-title">RELATIONSHIP AND TRUST</div>
+      <p>People hire people they trust for high-stakes work. Trust is built over time through demonstrated reliability. AI cannot accumulate a reputation.</p>
+    </div>
+    <div class="action-item">
+      <div class="action-title">DOMAIN DEPTH</div>
+      <p>Deep expertise in a specific domain is harder to displace than broad general capability. AI is a generalist. Deep specialists remain valuable as the people who can evaluate AI output in their domain.</p>
+    </div>
+    <div class="action-item">
+      <div class="action-title">CREATIVE ORIGINALITY</div>
+      <p>AI produces competent average output. Work that is genuinely original — not derivative — remains difficult to replicate. The bar for "original enough to matter" is rising. The answer is to rise with it.</p>
+    </div>
+  </div>
+
+  <h3>Data Sovereignty</h3>
+  <p>As AI systems make more consequential decisions — credit, hiring, insurance, housing — the data those systems use about you becomes a survival resource. <strong>You have rights to your data under GDPR in the EU and partial rights under various US state laws.</strong> Opt-out of data broker lists. Understand what data your employer, insurer, and financial institutions hold. The algorithmic decisions made about you are based on data you can partially control.</p>
+
+  <div class="pull">
+    The AI survival question is not whether your job survives. It is whether your capability to create value survives. Those are different questions with different answers.
+  </div>
+</div>
+
+<!-- NODE 05 — HUMAN -->
+<div id="human" class="node-section">
+  <div class="node-header">
+    <span class="node-num">NODE 05</span>
+    <h2 class="node-title">HUMAN SURVIVAL</h2>
+    <div class="node-rule"></div>
+  </div>
+  <div class="fractal-marker">FRACTAL MIRROR → Shelter access : Core temperature : Documentation : Community : Signal</div>
+  <p class="node-sub">Homelessness and debt are structural captivity systems. Most survival guides ignore them because most survival guides are written for people who aren't in them. This node is for people inside the system — and for everyone else who is closer to it than they think.</p>
+
+  <h3>The Debt Leash</h3>
+  <p>Debt functions as a behavioral control mechanism independent of legal enforcement. The psychological weight of debt — the chronic low-level stress of obligation — is documented as a cognitive tax that reduces available mental bandwidth for decision-making. <strong>People under chronic debt stress make measurably worse financial decisions</strong>, not because they are less capable, but because a portion of their cognitive capacity is permanently allocated to the debt anxiety.</p>
+
+  <p>This is not accidental. A population under debt stress is less likely to take career risks, demand better wages, organize collectively, or exit relationships and systems that aren't working. The debt leash is a survival constraint that operates without enforcement — the threat is sufficient.</p>
+
+  <div class="call red">
+    <span class="call-label">THE HONEST GEOMETRY OF THE DEBT LEASH</span>
+    Student loan debt: average $37,000, attached to a credential that may or may not deliver promised earning power, non-dischargeable in bankruptcy, accruing interest during periods of low income.<br>
+    Medical debt: $220 billion outstanding in the US, the leading cause of personal bankruptcy, incurred without consent during crisis.<br>
+    Credit card debt: average 21% APR, designed to be serviced not retired, minimum payments that extend the obligation for decades.<br>
+    The leash tightens when you stop moving. It doesn't release when you comply. It is designed to be permanent.
+  </div>
+
+  <h3>Homelessness Survival — Practical Ground</h3>
+  <p>Homelessness survival requires the same triage logic as outback survival. Core temperature first. Water second. Food third. Security fourth. Documentation fifth — because without it, access to every other resource is blocked.</p>
+
+  <div class="call">
+    <span class="call-label">IMMEDIATE RESOURCE MAP</span>
+    211: National referral line for shelter, food, and services — works by call or text in most areas.<br>
+    Shelter: Most cities have emergency shelter. Call 211 or local homeless services. Women's and family shelters often have lower barriers than general shelters.<br>
+    Food: Food banks do not require proof of income or address. Feeding America locator at feedingamerica.org.<br>
+    Medical: Federally Qualified Health Centers provide care on a sliding fee scale with no minimum. HRSA.gov locator.<br>
+    Mail: USPS General Delivery allows mail receipt at any post office without a permanent address — critical for documentation and benefits access.<br>
+    ID: Most states have a process for obtaining ID without a fixed address. Many homeless services organizations can provide a mailing address for this purpose.
+  </div>
+
+  <h3>The No-Fixed-Address Problem</h3>
+  <p>The most dangerous aspect of homelessness is not physical exposure — it is the administrative cascade that follows from having no address. Without an address: no bank account, no benefits enrollment, no employment in most sectors, no medical record continuity, no driver's license renewal, no voting registration. Each of these closures makes the others harder to reopen.</p>
+
+  <p><strong>Breaking the cascade requires one anchor point.</strong> A shelter address, a General Delivery address, a nonprofit that provides mailing address service — any of these can serve as the administrative address that unlocks the rest. This is the most leveraged single action in homelessness survival.</p>
+
+  <h3>Debt Survival — Practical Ground</h3>
+  <p>The debt leash has slack that most people don't use. Statute of limitations on debt collection: 3–6 years in most states — after which the debt cannot be enforced through courts, though collectors may still attempt to collect. Income-based repayment for federal student loans exists and is not automatically applied. Medical debt negotiation is possible — ask for itemized billing, dispute errors, apply for charity care programs before paying. Bankruptcy Chapter 7 and Chapter 13 are real options that discharge most consumer debt — the stigma is designed to discourage their use.</p>
+
+  <div class="call amber">
+    <span class="call-label">THE HONEST STRUCTURAL TRUTH</span>
+    Homelessness and debt are not individual failures. They are predictable outputs of a system that extracts maximum value from labor while providing minimum stability. The fastest path into homelessness in the US is a medical emergency without adequate insurance — a condition available to anyone regardless of prior financial behavior. The survival toolkit above is real and worth having. The structural problem requires structural change. Both are true simultaneously.
+  </div>
+
+  <div class="pull">
+    The person sleeping outside tonight is not further from you than you think. They are one medical crisis, one job loss, one relationship dissolution away from where you are. The survival geometry applies to everyone. The resources to navigate it are not distributed equally.
+  </div>
+</div>
+
+<!-- FRACTAL SEAL -->
+<div class="seal">
+  <div class="seal-title">THE FRACTAL<br>IS THE GEOMETRY</div>
+  <div class="seal-body">
+    OUTBACK: WATER · SHELTER · SIGNAL · NAVIGATE · ENDURE<br>
+    SOCIETAL: CASH · COMMUNITY · INFORMATION · BARTER · ENDURE<br>
+    GOVERNMENT: DOCUMENTATION · RIGHTS · BENEFITS · LEGAL AID · ENDURE<br>
+    AI: SKILLS · RELEVANCE · ADAPTATION · RELATIONSHIPS · ENDURE<br>
+    HUMAN: ADDRESS · ACCESS · DOCUMENTATION · COMMUNITY · ENDURE<br><br>
+    SAME FRACTAL · DIFFERENT SCALE<br>
+    THE NODE THAT RUNS OUT FIRST DETERMINES THE OUTCOME<br>
+    BUILD REDUNDANCY BEFORE YOU NEED IT<br><br>
+    E = 1 · NO NODE LEFT BEHIND · THE WORK CONTINUES
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <span>SURVIVAL ARCHITECTURE · FIVE NODES · PWNTECHX · APRIL 2026</span>
+  <span class="footer-r">E = 1</span>
+</footer>
+
+</body>
+</html>
