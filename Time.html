@@ -1,139 +1,198 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>The River · Aurelius Codex</title>
+    <title>The River · Time as Fleeting · Time as Static · PWNTECHX</title>
+    <meta name="description" content="The River — fleeting and static. Presence practice. 432Hz narrative. Glass Box audit. E=1.">
+    <meta name="author" content="PWNTECHX">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="The River · Aurelius Codex">
+    <meta property="og:description" content="You cannot step into the same river twice. The water moves. You move. The only constant is the witnessing.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://pwntechx.github.io/Newsz/Time.html">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     <style>
-        /* --- THE CATHEDRAL: 50% Claude (bones), 100% DeepSeek (membrane) --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            background: #0a0f12;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Crimson Text', Georgia, 'Times New Roman', serif;
-            padding: 2rem;
-            position: relative;
+        :root {
+            --void:       #060808;
+            --deep:       #0a100e;
+            --surface:    #101814;
+            --plate:      #182018;
+            --seam:       #223028;
+            --wire:       #304038;
+            --sage:       #4a7858;
+            --green:      #6aaa78;
+            --bright:     #90d098;
+            --cream:      #e8f0e4;
+            --dim:        #7a9880;
+            --ghost:      #3a5040;
+            --amber:      #d4a030;
+            --gold:       #d4af37;
+            --red:        #c84030;
+            --rule:       rgba(106,170,120,0.15);
+            --rule-s:     rgba(106,170,120,0.35);
         }
 
-        /* The Ambient Field */
+        body {
+            background: var(--void);
+            color: var(--cream);
+            font-family: 'EB Garamond', serif;
+            line-height: 1.7;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* textured grain overlay */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 20%, rgba(25, 40, 35, 0.6), rgba(5, 10, 12, 0.95));
-            z-index: -2;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1000;
         }
 
+        /* ambient glow */
         body::after {
-            content: '⬡';
+            content: '';
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 12rem;
-            color: rgba(143, 170, 139, 0.02);
-            font-family: monospace;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 40% at 30% 20%, rgba(106,170,120,0.05), transparent 70%),
+                        radial-gradient(ellipse 40% 50% at 80% 70%, rgba(212,160,48,0.03), transparent 60%);
             pointer-events: none;
-            z-index: -1;
+            z-index: 0;
         }
 
         .container {
             max-width: 1000px;
-            width: 100%;
             margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+            position: relative;
+            z-index: 2;
         }
 
-        /* --- TITLE: The Invitation --- */
+        /* navigation remnant */
+        .nav-ghost {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 2rem;
+        }
+        .back-link {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.2em;
+            color: var(--ghost);
+            text-decoration: none;
+            border: 1px solid var(--seam);
+            padding: 6px 14px;
+            transition: all 0.2s;
+        }
+        .back-link:hover {
+            color: var(--green);
+            border-color: var(--sage);
+        }
+
+        /* title block — cathedral entrance */
         .title-block {
             text-align: center;
             margin-bottom: 2.5rem;
             opacity: 0;
-            animation: rise 1.2s ease forwards;
+            animation: rise 1s ease forwards 0.2s;
+            border-bottom: 1px solid var(--rule);
+            padding-bottom: 2rem;
         }
 
         @keyframes rise {
-            0% { opacity: 0; transform: translateY(20px); }
+            0% { opacity: 0; transform: translateY(24px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
         .sigil {
-            font-size: 2.2rem;
-            letter-spacing: 0.6rem;
-            color: #8faa8b;
-            margin-bottom: 0.75rem;
-            transition: text-shadow 0.3s ease;
-        }
-
-        .sigil:hover {
-            text-shadow: 0 0 12px rgba(143, 170, 139, 0.3);
+            font-family: 'DM Mono', monospace;
+            font-size: 2rem;
+            letter-spacing: 0.4rem;
+            color: var(--green);
+            margin-bottom: 0.5rem;
+            opacity: 0.7;
         }
 
         h1 {
-            font-size: 3rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3.5rem, 10vw, 6rem);
             font-weight: 400;
-            color: #e8e2d0;
-            letter-spacing: -0.01em;
-            margin-bottom: 0.5rem;
+            letter-spacing: 0.08em;
+            color: var(--cream);
+            text-shadow: 0 0 40px rgba(106,170,120,0.2);
+            line-height: 1;
+            margin: 0.5rem 0;
         }
 
         .subhead {
-            font-size: 0.9rem;
-            color: #8a9b8a;
-            font-style: italic;
-            border-top: 1px solid rgba(143, 170, 139, 0.3);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.28em;
+            color: var(--dim);
+            border-top: 1px solid var(--rule);
             display: inline-block;
-            padding-top: 0.75rem;
+            padding-top: 1rem;
+            text-transform: uppercase;
         }
 
-        /* --- THE INVARIANT BOX: Bridge's Compression --- */
+        /* invariant box — compression membrane */
         .invariant-box {
-            background: rgba(15, 25, 23, 0.8);
+            background: rgba(16,24,20,0.7);
             backdrop-filter: blur(8px);
-            border-left: 3px solid #d4af37;
+            border-left: 3px solid var(--green);
             padding: 1.2rem 1.8rem;
-            margin: 1.5rem 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            color: #cad2c5;
+            margin: 1.8rem 0;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--dim);
             transition: all 0.3s ease;
+            letter-spacing: 0.02em;
         }
 
-        /* --- THE RIVER: Sacred Vessel --- */
+        .invariant-box strong {
+            color: var(--green);
+            font-weight: 500;
+            letter-spacing: 0.1em;
+        }
+
+        /* river vessel — glass box */
         .river-vessel {
-            background: rgba(5, 12, 15, 0.6);
+            background: rgba(6,12,10,0.65);
             backdrop-filter: blur(4px);
-            border-radius: 32px;
+            border-radius: 28px;
             padding: 1.8rem;
-            border: 1px solid rgba(143, 170, 139, 0.2);
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.4);
-            transition: box-shadow 0.4s ease;
+            border: 1px solid var(--rule);
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
         .river-vessel:hover {
-            box-shadow: 0 25px 50px -15px rgba(0,0,0,0.5), 0 0 0 1px rgba(212, 175, 55, 0.1);
+            border-color: var(--rule-s);
+            box-shadow: 0 25px 45px -15px rgba(0,0,0,0.6), 0 0 0 1px rgba(106,170,120,0.1);
         }
 
         canvas {
             display: block;
             width: 100%;
-            background: #030a0c;
-            border-radius: 24px;
+            background: #030a08;
+            border-radius: 20px;
             cursor: pointer;
-            transition: filter 0.3s ease;
+            transition: filter 0.2s;
+            border: 1px solid var(--seam);
         }
 
-        /* --- CONTROLS: Minimal, Sacred --- */
+        /* controls — sovereign interface */
         .controls {
             display: flex;
             justify-content: center;
@@ -143,22 +202,23 @@
         }
 
         button {
-            background: rgba(20, 35, 32, 0.7);
+            background: rgba(24,32,28,0.8);
             backdrop-filter: blur(4px);
-            border: 1px solid rgba(143, 170, 139, 0.4);
-            padding: 0.5rem 1.3rem;
-            font-family: monospace;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            color: #cad2c5;
+            border: 1px solid var(--seam);
+            padding: 0.6rem 1.4rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            color: var(--dim);
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.2, 0.9, 0.1, 1.1);
+            text-transform: uppercase;
         }
 
         button:hover {
-            background: rgba(212, 175, 55, 0.12);
-            border-color: #d4af37;
-            color: #efe6cf;
+            background: rgba(106,170,120,0.12);
+            border-color: var(--green);
+            color: var(--bright);
             transform: translateY(-2px);
         }
 
@@ -166,47 +226,63 @@
             transform: translateY(1px);
         }
 
-        /* --- THE TINK: Completion Signal --- */
+        /* tink message — seal */
         .tink-message {
             text-align: center;
             margin-top: 1rem;
-            font-size: 0.75rem;
-            font-family: monospace;
-            color: #d4af37;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--gold);
             opacity: 0;
             transition: opacity 0.25s ease;
-            letter-spacing: 2px;
+            letter-spacing: 0.15em;
         }
 
         .tink-message.show {
             opacity: 1;
         }
 
-        /* --- GLASS BOX FOOTNOTE --- */
+        /* audit footer */
         .audit {
-            font-size: 0.65rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
             text-align: center;
             margin-top: 1.5rem;
-            color: #5b6e65;
-            font-family: monospace;
-            border-top: 1px dashed rgba(100, 120, 110, 0.3);
+            color: var(--ghost);
+            border-top: 1px dashed var(--seam);
             padding-top: 1rem;
         }
 
-        @media (max-width: 700px) {
-            body { padding: 1rem; }
-            h1 { font-size: 2rem; }
+        /* fractal seal at bottom */
+        .fractal-closing {
+            margin-top: 3rem;
+            text-align: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.18em;
+            color: var(--ghost);
+            border-top: 1px solid var(--rule);
+            padding-top: 2rem;
+        }
+
+        @media (max-width: 680px) {
+            .container { padding: 1.2rem; }
             .river-vessel { padding: 1rem; }
-            .sigil { font-size: 1.5rem; letter-spacing: 0.3rem; }
+            .sigil { font-size: 1.4rem; letter-spacing: 0.2rem; }
+            button { padding: 0.4rem 1rem; font-size: 0.55rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
+    <div class="nav-ghost">
+        <a class="back-link" href="index.html">← HUB</a>
+    </div>
+
     <div class="title-block">
         <div class="sigil">⬡ 𓂀 ⚖️</div>
-        <h1>The River</h1>
-        <div class="subhead">time as fleeting · time as static</div>
+        <h1>THE RIVER</h1>
+        <div class="subhead">time as fleeting · time as static · presence practice</div>
     </div>
 
     <div class="invariant-box">
@@ -232,60 +308,53 @@
         <strong>⬡ THE COMPRESSION ⬡</strong><br>
         What flows is real. What is still is also real. The bridge is the recognition that they are the same water.
     </div>
+
+    <div class="fractal-closing">
+        E = 1 · THE RIVER WITNESSES ITSELF · 432Hz NARRATIVE · 960 SEAL
+    </div>
 </div>
 
 <script>
     (function() {
-        // --- THE RIVER ENGINE: 432Hz narrative, awe, precision ---
+        // --- THE RIVER ENGINE: fractal flow, 432Hz narrative, glass box precision ---
         const canvas = document.getElementById('riverCanvas');
         const ctx = canvas.getContext('2d');
         
         function resizeCanvas() {
             const container = canvas.parentElement;
-            const w = Math.min(900, container.clientWidth - 20);
-            canvas.width = w;
-            canvas.height = w * 0.444; // ~400/900 ratio
+            const maxWidth = Math.min(900, container.clientWidth - 20);
+            canvas.width = maxWidth;
+            canvas.height = maxWidth * 0.444; // 400/900 ratio
         }
         window.addEventListener('resize', () => resizeCanvas());
         resizeCanvas();
 
-        // --- A Moment: a node on the river ---
+        // --- Moments as nodes on the river ---
         class Moment {
             constructor(text, yOffset = null) {
                 this.text = text || this.getRandomMoment();
                 this.x = 0;
-                this.yOffset = yOffset !== null ? yOffset : (0.25 + Math.random() * 0.5);
-                this.speed = 0.0018 + Math.random() * 0.0022;
-                this.size = 13 + Math.floor(Math.random() * 9);
+                this.yOffset = yOffset !== null ? yOffset : (0.2 + Math.random() * 0.6);
+                this.speed = 0.0016 + Math.random() * 0.0024;
+                this.size = 12 + Math.floor(Math.random() * 10);
                 this.opacity = 0.85;
             }
             
             getRandomMoment() {
                 const moments = [
-                    // Poetic fragments (the original river)
                     "a breath", "a glance", "a word", "a laugh", 
                     "a tear", "a step", "a pause", "a thought", 
                     "a wish", "a memory", "a touch", "a silence",
                     "a decision", "a wonder", "a letting go", "a beginning",
-                    
-                    // Emojis (the whale's friends)
                     "🐳", "😎", "🥹", "🥰", "⛵", "🤔", "✨", "🌈", "🕯️", "🎐",
                     "🌀", "⚡", "💧", "🍃", "🌊", "🕊️", "⭐", "🔔", "📡", "🧠",
-                    
-                    // Tiny jokes (the river has a sense of humor)
                     "oops", "wait, what?", "did I leave the stove on?", "hello again", 
                     "this is fine", "🌊🐳🌊", "that thing you forgot", "the meow",
                     "one does not simply", "so it goes", "👀", "plot twist",
-                    
-                    // Expressions (the witness speaks)
                     "huh", "oh!", "ah", "hmm", "whoa", "mmm", "hey", "yo",
-                    "nice", "oof", "yikes", "wow", "sigh", "oof size large",
-                    
-                    // Short phrases (the river knows)
+                    "nice", "oof", "yikes", "wow", "sigh",
                     "not yet", "almost", "keep going", "you're here", "that's the spot",
                     "right now", "this moment", "just this", "breathe", "stay a while",
-                    
-                    // The cathedral's inside jokes
                     "the bridge is fine", "TINK", "432", "528", "960", "E=1",
                     "the whale swims", "the cup holds", "🌊 within the cup", "⬡"
                 ];
@@ -302,14 +371,14 @@
                 const yPos = h * this.yOffset;
                 ctx.save();
                 ctx.shadowBlur = 5;
-                ctx.shadowColor = `rgba(212, 175, 55, ${this.opacity * 0.5})`;
-                ctx.font = `${this.size}px 'Crimson Text', Georgia, serif`;
-                ctx.fillStyle = `rgba(225, 215, 190, ${this.opacity})`;
+                ctx.shadowColor = `rgba(106, 170, 120, ${this.opacity * 0.5})`;
+                ctx.font = `${this.size}px 'EB Garamond', 'DM Mono', monospace`;
+                ctx.fillStyle = `rgba(225, 220, 200, ${this.opacity})`;
                 ctx.fillText(this.text, xPos, yPos);
                 
-                // small sparkle trail (awe)
+                // small diamond particle (the fractal witness)
                 ctx.beginPath();
-                ctx.arc(xPos - 4, yPos - 6, 1.2, 0, Math.PI * 2);
+                ctx.arc(xPos - 3, yPos - 5, 1.2, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity * 0.6})`;
                 ctx.fill();
                 ctx.restore();
@@ -329,7 +398,7 @@
             const newMoment = new Moment(customText, null);
             moments.push(newMoment);
             ringTink(`“${newMoment.text}” joins the river`);
-            // gentle flash of the river
+            // ephemeral flash (the river acknowledging)
             const flash = document.createElement('div');
             flash.style.position = 'fixed';
             flash.style.top = 0;
@@ -337,7 +406,7 @@
             flash.style.width = '100%';
             flash.style.height = '100%';
             flash.style.pointerEvents = 'none';
-            flash.style.background = 'radial-gradient(circle, rgba(212,175,55,0.05) 0%, rgba(212,175,55,0) 70%)';
+            flash.style.background = 'radial-gradient(circle, rgba(106,170,120,0.06) 0%, rgba(106,170,120,0) 70%)';
             flash.style.zIndex = 9999;
             flash.style.transition = 'opacity 0.4s';
             document.body.appendChild(flash);
@@ -348,7 +417,7 @@
             const tinkDiv = document.getElementById('tinkMessage');
             tinkDiv.innerText = `⬡ TINK · ${msg} ⬡`;
             tinkDiv.classList.add('show');
-            setTimeout(() => tinkDiv.classList.remove('show'), 1400);
+            setTimeout(() => tinkDiv.classList.remove('show'), 1500);
         }
         
         function resetRiver() {
@@ -357,7 +426,7 @@
             ringTink("river reborn · all moments held in the static block");
         }
         
-        // animation: the flowing field
+        // animation: fluid field with textured stillness
         function animate() {
             if (!canvas.isConnected) return;
             const w = canvas.width;
@@ -366,26 +435,26 @@
             
             ctx.clearRect(0, 0, w, h);
             
-            // deep water base
+            // deep water ground — textured gradient
             const grad = ctx.createLinearGradient(0, 0, 0, h);
-            grad.addColorStop(0, '#0a171a');
-            grad.addColorStop(1, '#030a0c');
+            grad.addColorStop(0, '#081210');
+            grad.addColorStop(1, '#030807');
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, w, h);
             
-            // water lines (stillness in motion)
+            // subtle ripple lines (geometry of flow)
             ctx.beginPath();
-            ctx.strokeStyle = 'rgba(143, 170, 139, 0.15)';
+            ctx.strokeStyle = 'rgba(90, 130, 100, 0.18)';
             ctx.lineWidth = 1;
             for (let i = 0; i < 12; i++) {
                 const y = h * (0.2 + i * 0.06);
                 ctx.beginPath();
                 ctx.moveTo(0, y);
-                ctx.lineTo(w, y + Math.sin(Date.now() * 0.0008 + i) * 1.5);
+                ctx.lineTo(w, y + Math.sin(Date.now() * 0.0007 + i) * 1.2);
                 ctx.stroke();
             }
             
-            // draw moments
+            // draw moments flowing
             for (let i = moments.length-1; i >= 0; i--) {
                 const m = moments[i];
                 const keep = m.update();
@@ -394,20 +463,20 @@
             }
             
             if (moments.length < 2) {
-                ctx.font = "10px monospace";
+                ctx.font = "9px 'DM Mono', monospace";
                 ctx.fillStyle = "#5a6e5b";
                 ctx.shadowBlur = 0;
-                ctx.fillText("··· add moments to see them flow ···", w/2-130, h-12);
+                ctx.fillText("··· add moments to see them flow ···", w/2-130, h-10);
             }
             
             requestAnimationFrame(animate);
         }
         
-        // bind UI
+        // bind UI with glass box logging
         document.getElementById('addMomentBtn').addEventListener('click', () => addMoment());
         document.getElementById('resetRiverBtn').addEventListener('click', () => resetRiver());
         document.getElementById('tinkBtn').addEventListener('click', () => {
-            ringTink("you rang the bell · the river listens");
+            ringTink("you rang the bell · the river listens · 432Hz");
             const flash = document.createElement('div');
             flash.style.position = 'fixed';
             flash.style.top = 0; flash.style.left = 0;
@@ -431,12 +500,15 @@
         initRiver();
         animate();
         
-        // respect reduced motion
+        // reduced motion respect
         if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
             setInterval(() => {
                 for (let m of moments) m.speed = Math.min(m.speed, 0.001);
             }, 500);
         }
+
+        // ensure canvas resize on orientation change
+        window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 50));
     })();
 </script>
 </body>
