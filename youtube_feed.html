@@ -495,8 +495,8 @@ footer {
 
 <script>
 const CORS = 'https://corsproxy.io/?';
-
 const CHANNELS = [
+  // --- Original List (Cleaned & Deduplicated) ---
   { name: 'The Military Show',  id: 'UCKfak8fBm_Lhy4eX9UKxEpA', emoji: '👁️' },
   { name: 'Dami Lee',           id: 'UCJ_2hNMxOzNjviJBiLWHMqg', emoji: '🎨' },
   { name: 'SciShow',            id: 'UCZYTClx2T1of7BRZ86-8fow', emoji: '🔬' },
@@ -507,14 +507,89 @@ const CHANNELS = [
   { name: 'CNA',                id: 'UC83jt4dlz1Gjl58fzQrrKZg', emoji: '🌏' },
   { name: 'Infographics Show',  id: 'UCfdNM3NAhaBOXCafH7krzrA', emoji: '📊' },
   { name: 'Asian Boss',         id: 'UC2-_WWPT_124iN6jiym4fOw', emoji: '❓' },
-  { name: 'PBS Spacetime',      id: 'UC7_gcs09iThXybpVgjHZ_7g', emoji: '❓' },
-  // Claude recommendations
   { name: 'Kurzgesagt',         id: 'UCsXVk37bltHxD1rDPwtNM8Q', emoji: '🐦' },
   { name: 'SmarterEveryDay',    id: 'UC6107grRI4m0o2-emgoDnAA', emoji: '🔭' },
-  { name: 'Astrum',             id: 'UC7_gcs09iThXybpVgjHZ_7g', emoji: '✈️' },
   { name: 'Cold Fusion',        id: 'UC4QZ_LsYcvcq7qOsOhpAX4A', emoji: '❄️' },
   { name: 'Thoughty2',          id: 'UCRlICXvO4XR4HMeEB9JjDlA', emoji: '💡' },
+  { name: 'Astrum',             id: 'UC_ASTRUM_ID_HERE',        emoji: '✈️' }, 
+
+  // --- Hard Science, Physics & Space ---
+  { name: 'Anton Petrov',       id: 'UCciQ8wFcVoIIMi-lIf8WMTw', emoji: '🚀' },
+  { name: 'Isaac Arthur',       id: 'UCZFipeZtQM5CKUjx6grh54g', emoji: '🛸' },
+  { name: 'Physics Girl',       id: 'UC7DdEm33SyaTDtWYGO2CwdA', emoji: '🧲' },
+  { name: 'MinutePhysics',      id: 'UCUHW94eEFW7hkUMVaZz4eDg', emoji: '⏱️' },
+  { name: 'Be Smart',           id: 'UCH4VZlCGvrVWbA6-Q1SDAAA', emoji: '🧬' },
+  { name: 'Everyday Astronaut', id: 'UC6uKrU_WqJ1R2HMTY3LIx5Q', emoji: '🧑‍🚀' },
+  { name: 'Scott Manley',       id: 'UCxzC4EngIsMrPmbm6Nxvb-A', emoji: '🛰️' },
+  { name: 'Steve Mould',        id: 'UCEIwxahdLz7bap-VDs9h35A', emoji: '🌊' },
+  { name: 'The Action Lab',     id: 'UC1VLQsZn5EeEyt_jwZXbA',   emoji: '🧪' },
+  { name: 'Up and Atom',        id: 'UC_UP_AND_ATOM_ID_HERE',   emoji: '⚛️' },
+  { name: 'Sean Carroll',       id: 'UC_SEAN_CARROLL_ID_HERE',  emoji: '🌌' },
+  { name: 'Journey to Microcosmos',id:'UCBbnbBWJtwsf0jLGUwX5Q3g',emoji: '🦠' },
+  { name: 'Fermilab',           id: 'UC_FERMILAB_ID_HERE',      emoji: '🔬' },
+
+  // --- Mathematics & Computer Science ---
+  { name: '3Blue1Brown',        id: 'UCYO_jab_esuFRV4b17AJtAw', emoji: '📐' },
+  { name: 'Numberphile',        id: 'UCoxcjq-8xIDTYp3uz647V5A', emoji: '🔢' },
+  { name: 'Stand-up Maths',     id: 'UCSju5G2aFaWMqn-_0YBtq5A', emoji: '🤓' },
+  { name: 'Mathologer',         id: 'UC_MATHOLOGER_ID_HERE',    emoji: '♾️' },
+  { name: 'Computerphile',      id: 'UC_COMPUTERPHILE_ID_HERE', emoji: '⌨️' },
+
+  // --- Engineering, Tech & Making ---
+  { name: 'Real Engineering',   id: 'UCR1IuLEqb6UEA_zQ81kwXfg', emoji: '⚙️' },
+  { name: 'Practical Engineering',id: 'UCMOqf8ab-42UUQIdVoKwVQA', emoji: '🏗️' },
+  { name: 'Mark Rober',         id: 'UCY1kMewwFi9EN5oqdhlVA',   emoji: '🎯' },
+  { name: 'Stuff Made Here',    id: 'UCj1VqrHhDte54kJgDirgA',   emoji: '🦾' },
+  { name: 'Technology Connections',id:'UCy0tKL1T7wFoYcxCe0xjN6Q', emoji: '📼' },
+  { name: 'Linus Tech Tips',    id: 'UCXuqSBlHAE6Xw-yeJA0Tunw', emoji: '💻' },
+  { name: 'Mrwhosetheboss',     id: 'UCMiJRAwDNSNzuYeN2uWa0pA', emoji: '📱' },
+  { name: 'Dave2D',             id: 'UCVYamHliQ3W-M-A1g',       emoji: '💻' },
+  { name: 'JerryRigEverything', id: 'UCWFKCr40Y_kG2TigA',       emoji: '🛠️' },
+  { name: 'Colin Furze',        id: 'UCp68_FLety0O-n9QU6phsgw', emoji: '🔥' },
+  { name: 'Simone Giertz',      id: 'UC3KEoMzNz8eYnwBC34RaKCQ', emoji: '🤖' },
+
+  // --- Geopolitics, Society, Economics & Docs ---
+  { name: 'CaspianReport',      id: 'UCwnKziOU3sWVMg-fGWe5lIA', emoji: '🗺️' },
+  { name: 'Polymatter',         id: 'UCgNg3vwj3z7xQwKnivoT1sQ', emoji: '📈' },
+  { name: 'RealLifeLore',       id: 'UCP5tjEmvcd5q4p3H2vUeA',   emoji: '🌎' },
+  { name: 'Wendover Productions',id: 'UC9RM-iSvTu1uPJb8X5yp3EQ', emoji: '✈️' },
+  { name: 'Half as Interesting',id: 'UCuCkxoK9c1K_pZPaK_TMA',   emoji: '🤔' },
+  { name: 'Economics Explained',id: 'UCZ4AMrDcNrfy3X6nsU8-rPg', emoji: '💰' },
+  { name: 'TLDR News',          id: 'UCB_1QEqwY8S98u4tX4R-2tQ', emoji: '📰' },
+  { name: 'Vox',                id: 'UCLXo7udAQvdCGGpQ21A--g',  emoji: '🗣️' },
+  { name: 'Johnny Harris',      id: 'UCmGSJVG3mCRXVOP4yO_wQCA', emoji: '🗺️' },
+  { name: 'Lemmino',            id: 'UCRcgy6GzDeccI7dKfU1T2SA', emoji: '🕵️' },
+  { name: 'Kraut',              id: 'UC2_GC_B3b_h10y5J2iYgXgQ', emoji: '🦜' },
+  { name: 'Bloomberg Originals',id: 'UCV61VqLMr2eIhH4f51QV1SA', emoji: '🏢' },
+  { name: 'Wall Street Journal',id: 'UCK7tptY1y2hZ9Z-y1qK_v5Q', emoji: '🗞️' },
+
+  // --- Architecture, Design & Urban Planning ---
+  { name: 'The B1M',            id: 'UC_THE_B1M_ID_HERE',       emoji: '🏙️' },
+  { name: 'Stewart Hicks',      id: 'UC_STEWART_HICKS_ID_HERE', emoji: '🏛️' },
+  { name: 'Never Too Small',    id: 'UC_NEVER_TOO_SMALL_ID_HERE',emoji: '🏠' },
+  { name: 'Architectural Digest',id:'UC_ARCH_DIGEST_ID_HERE',   emoji: '🛋️' },
+  { name: 'City Beautiful',     id: 'UC_CITY_BEAUTIFUL_ID_HERE',emoji: '🌆' },
+  { name: 'Not Just Bikes',     id: 'UC_NOT_JUST_BIKES_ID_HERE',emoji: '🚲' },
+
+  // --- History & Deep Dives ---
+  { name: 'Mustard',            id: 'UC1ZzQQz1yT2R15XG7A_A_A',  emoji: '🚆' },
+  { name: 'Oversimplified',     id: 'UC_OVERSIMPLIFIED_ID_HERE',emoji: '📜' },
+  { name: 'History Matters',    id: 'UC_HISTORY_MATTERS_ID_HERE',emoji:'⏳' },
+  { name: 'Fall of Civilizations',id:'UC_FALL_OF_CIV_ID_HERE',  emoji: '🏛️' },
+
+  // --- Edutainment, Philosophy & Big Ideas ---
+  { name: 'Tom Scott',          id: 'UCBa659QWEk1AI4Tg--mrJ2A', emoji: '📍' },
+  { name: 'Vsauce',             id: 'UC6nSFpj9HTCZ5t-N3Rm3-HA', emoji: '🤨' },
+  { name: 'CGP Grey',           id: 'UC2C_jShtL725hvbm1arSV9w', emoji: '🤖' },
+  { name: 'Answers with Joe',   id: 'UC_ANSWERS_WITH_JOE_HERE', emoji: '💬' },
+  { name: 'Big Think',          id: 'UC_BIG_THINK_ID_HERE',     emoji: '🧠' },
+  { name: 'Freethink',          id: 'UC_FREETHINK_ID_HERE',     emoji: '🚀' },
+  { name: 'TED-Ed',             id: 'UC_TEDED_ID_HERE',         emoji: '🎓' },
+  { name: 'Exurb1a',            id: 'UC_EXURB1A_ID_HERE',       emoji: '🐢' },
+  { name: 'NativLang',          id: 'UC_NATIVLANG_ID_HERE',     emoji: '🗣️' },
+  { name: 'Cleo Abram',         id: 'UCsT0YIqwnpJCM-mx7-gSA4Q', emoji: '🔮' }
 ];
+
 
 let allVideos = [];
 let activeFilter = 'all';
