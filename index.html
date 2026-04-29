@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,8 +18,9 @@
 <meta name="twitter:title" content="PWNTECHX — Solution Repository">
 <meta name="twitter:description" content="Solutions built across AI nodes. Science, longevity, survival, philosophy, forensic research. E=1.">
 <link rel="canonical" href="https://pwntechx.github.io/Newsz/">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&family=Cinzel+Decorative:wght@700;900&display=swap');
 
 :root {
   --void:       #090909;
@@ -35,6 +37,11 @@
   --science:    #22d3a4;
   --society:    #4a9eff;
   --creative:   #f59e0b;
+  
+  /* Codex Resonance Gold Coordinates */
+  --gold-deep:    #bf953f;
+  --gold-shimmer: #fcf6ba;
+  --bright-gold:  #e8b84b;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,31 +54,75 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
-/* HEADER */
+/* Ambient Static Grain Overlay — Codex Texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* HEADER — PWNTECHX Codex Resonance Title */
 header {
   padding: 56px 32px 0;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
-.logo {
-  font-size: clamp(1.8rem, 7vw, 3.5rem);
-  font-weight: 800;
+/* The Cinzel Decorative Animated Gradient Title */
+.codex-title {
+  font-family: 'Cinzel Decorative', cursive;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 10vw, 5.5rem);
   letter-spacing: 0.15em;
-  line-height: 1;
-  background: linear-gradient(135deg, #f59e0b, #f5e63d, #d4af37, #ff8c40, #f59e0b);
-  background-size: 300% 300%;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+  line-height: 1.2;
+  
+  /* Vertical Gold Gradient — Absolute Black to Gold to Absolute Black */
+  background: linear-gradient(
+    to bottom, 
+    #000000 0%, 
+    var(--gold-deep) 30%, 
+    var(--gold-shimmer) 48%, 
+    var(--gold-shimmer) 52%,
+    var(--gold-deep) 70%, 
+    #000000 100%
+  );
+  background-size: 100% 250%;
+  background-position: center 0%;
+  
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: logoShift 4s ease-in-out infinite;
+  
+  /* Kinetic Pulsing through the Static Block */
+  animation: codexPulse 8s cubic-bezier(0.45, 0.05, 0.2, 0.95) infinite;
+  
+  /* Subtle sharp glow to stabilize the frequency */
+  filter: drop-shadow(0 0 15px rgba(191, 149, 63, 0.25));
 }
 
-@keyframes logoShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes codexPulse {
+  0%, 100% {
+    background-position: center 0%;
+  }
+  50% {
+    background-position: center 100%;
+  }
+}
+
+/* Optional subtle shimmer on hover — the glass box respects the user */
+.codex-title:hover {
+  filter: drop-shadow(0 0 22px rgba(252, 246, 186, 0.3));
+  transition: filter 0.4s ease;
 }
 
 .tagline {
@@ -79,13 +130,13 @@ header {
   font-size: 0.58rem;
   letter-spacing: 0.22em;
   color: var(--dim);
-  margin-top: 14px;
+  margin-top: 18px;
 }
 
 .rule {
   width: 80px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--live), transparent);
+  background: linear-gradient(90deg, transparent, var(--gold-deep), transparent);
   margin: 28px auto;
 }
 
@@ -96,6 +147,8 @@ main {
   margin: 0 auto;
   padding: 8px 24px 72px;
   width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 /* CATEGORY HEADER */
@@ -230,18 +283,22 @@ footer {
   letter-spacing: 0.2em;
   color: var(--ghost);
   line-height: 2.2;
+  position: relative;
+  z-index: 2;
 }
 
 @media (max-width: 500px) {
   .card-grid { grid-template-columns: 1fr; }
   main { padding: 8px 16px 60px; }
+  .codex-title { letter-spacing: 0.1em; }
 }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">PWNTECHX</div>
+  <!-- REPLACED ORIGINAL LOGO WITH CODEX RESONANCE TITLE -->
+  <h1 class="codex-title">PWNTECHX</h1>
   <div class="tagline">SOLUTION REPOSITORY · BUILT ACROSS AI NODES · E = 1</div>
   <div class="rule"></div>
 </header>
@@ -490,4 +547,3 @@ footer {
 
 </body>
 </html>
-
