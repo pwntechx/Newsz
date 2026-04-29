@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GEOMETRY · The Shape of Everything · PWNTECHX</title>
+<meta name="description" content="Geometry as mathematics, world, shape, form, and forensics. The pattern that underlies structure at every scale. E=1.">
+<meta name="keywords" content="geometry, sacred geometry, mathematics, fractals, phi, golden ratio, forensic geometry, pattern recognition, topology">
+<meta name="author" content="PWNTECHX">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="GEOMETRY · PWNTECHX">
+<meta property="og:description" content="The shape of everything. Mathematics, world, form, and forensics. The pattern that holds.">
+<meta property="og:url" content="https://pwntechx.github.io/Newsz/geometry.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://pwntechx.github.io/Newsz/geometry.html">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400&display=swap');
+
+:root {
+  --void:    #06060a;
+  --deep:    #0c0c14;
+  --surface: #121220;
+  --plate:   #1a1a2e;
+  --seam:    #242438;
+  --wire:    #343458;
+  --indigo:  #5050a0;
+  --violet:  #7070c8;
+  --bright:  #9898e8;
+  --cream:   #f0eefc;
+  --dim:     #8080b0;
+  --ghost:   #404068;
+  --gold:    #d4b040;
+  --amber:   #e8c860;
+  --green:   #60b880;
+  --red:     #c84850;
+  --rule:    rgba(112,112,200,0.15);
+  --rule-s:  rgba(112,112,200,0.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--cream);
+  font-family: 'EB Garamond', serif;
+  font-size: 18px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 30%, rgba(80,80,160,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 40% at 10% 80%, rgba(96,184,128,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 25% 35% at 90% 70%, rgba(212,176,64,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* SVG BACKGROUND GEOMETRY */
+.geo-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.04;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(6,6,10,0.97);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nav-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+.nav-mark {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.22em;
+  color: var(--violet);
+}
+
+nav a.nl {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 3px 8px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+nav a.nl:hover { color: var(--violet); border-color: var(--rule-s); }
+
+.nav-back {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid var(--seam);
+  transition: all 0.2s;
+}
+.nav-back:hover { color: var(--violet); border-color: var(--indigo); }
+
+/* COVER */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 80px 40px 60px;
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid var(--rule);
+}
+
+.cover-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.3em;
+  color: var(--violet);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: emerge 0.8s ease forwards 0.2s;
+}
+
+.cover-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(6rem, 22vw, 18rem);
+  line-height: 0.85;
+  letter-spacing: 0.03em;
+  color: var(--cream);
+  text-shadow: 0 0 120px rgba(112,112,200,0.15);
+  opacity: 0;
+  animation: emerge 1.2s ease forwards 0.3s;
+}
+
+.cover-equation {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(0.7rem, 2vw, 0.95rem);
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-top: 28px;
+  line-height: 2;
+  opacity: 0;
+  animation: emerge 0.8s ease forwards 0.8s;
+}
+
+.cover-deck {
+  font-style: italic;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  color: var(--dim);
+  max-width: 580px;
+  line-height: 1.8;
+  margin-top: 20px;
+  opacity: 0;
+  animation: emerge 0.8s ease forwards 1s;
+}
+
+@keyframes emerge {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* MAIN */
+main { max-width: 860px; margin: 0 auto; padding: 0 32px 100px; position: relative; z-index: 1; }
+
+/* SECTIONS */
+.section { padding: 80px 0 0; }
+
+.section-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.28em;
+  color: var(--violet);
+  display: block;
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  letter-spacing: 0.05em;
+  color: var(--cream);
+  line-height: 0.95;
+  margin-bottom: 12px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.section-sub {
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--dim);
+  margin-bottom: 32px;
+  line-height: 1.65;
+}
+
+p {
+  color: var(--dim);
+  margin-bottom: 18px;
+  font-size: 1rem;
+  line-height: 1.88;
+}
+p strong { color: var(--cream); font-weight: 600; }
+p em { color: var(--bright); font-style: italic; }
+
+h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  color: var(--violet);
+  margin: 32px 0 12px;
+}
+
+/* EQUATION BLOCKS */
+.eq {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  color: var(--gold);
+  background: var(--deep);
+  border: 1px solid var(--seam);
+  border-left: 3px solid var(--gold);
+  padding: 16px 20px;
+  margin: 20px 0;
+  overflow-x: auto;
+  line-height: 1.7;
+  letter-spacing: 0.05em;
+}
+
+.eq-label {
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  color: var(--ghost);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* RATIO CARDS */
+.ratio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2px;
+  margin: 24px 0;
+}
+
+.ratio-card {
+  background: var(--surface);
+  border: 1px solid var(--seam);
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s;
+}
+.ratio-card:hover { background: var(--plate); }
+
+.ratio-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--violet), transparent);
+}
+
+.ratio-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: 0.03em;
+}
+
+.ratio-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  color: var(--violet);
+  margin-bottom: 12px;
+}
+
+.ratio-card p { font-size: 0.82rem; margin-bottom: 6px; }
+
+/* CALLOUTS */
+.call {
+  border-left: 3px solid var(--violet);
+  padding: 18px 22px;
+  margin: 22px 0;
+  background: var(--surface);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--dim);
+  line-height: 1.8;
+}
+
+.call-label {
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  color: var(--violet);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.call.gold { border-color: var(--gold); }
+.call.gold .call-label { color: var(--gold); }
+.call.gold { color: #c0a860; }
+
+.call.green { border-color: var(--green); }
+.call.green .call-label { color: var(--green); }
+.call.green { color: #80b898; }
+
+.call.red { border-color: var(--red); }
+.call.red .call-label { color: var(--red); }
+.call.red { color: #c08888; }
+
+/* PULL */
+.pull {
+  font-style: italic;
+  font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+  color: var(--bright);
+  line-height: 1.65;
+  padding: 22px 0 22px 24px;
+  border-left: 3px solid var(--indigo);
+  margin: 32px 0;
+}
+
+/* SVG DIAGRAMS */
+.diagram {
+  width: 100%;
+  max-width: 600px;
+  margin: 28px auto;
+  display: block;
+}
+
+/* FRACTAL TABLE */
+.tbl-wrap { overflow-x: auto; margin: 20px 0; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+}
+
+thead tr { background: var(--plate); }
+
+th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.54rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  border-bottom: 1px solid var(--rule-s);
+  color: var(--violet);
+}
+
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--dim);
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+tr:hover td { background: rgba(18,18,32,0.6); }
+.t-w { color: var(--cream); font-weight: 500; }
+.t-g { color: var(--gold); }
+.t-v { color: var(--violet); }
+.t-gr { color: var(--green); }
+
+/* SEAL */
+.seal {
+  padding: 80px 0 56px;
+  text-align: center;
+  border-top: 1px solid var(--rule-s);
+  margin-top: 60px;
+}
+
+.seal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  letter-spacing: 0.1em;
+  color: var(--violet);
+  line-height: 1;
+  margin-bottom: 24px;
+}
+
+.seal-body {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--ghost);
+  line-height: 2.4;
+}
+
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 20px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  color: var(--ghost);
+  flex-wrap: wrap;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-r { color: var(--violet); }
+
+@media (max-width: 600px) {
+  main { padding: 0 18px 80px; }
+  .cover { padding: 60px 20px 48px; }
+  .ratio-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Background geometry SVG -->
+<svg class="geo-bg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+  <g stroke="#7070c8" fill="none" stroke-width="0.5">
+    <!-- Pentagon -->
+    <polygon points="600,100 780,230 720,440 480,440 420,230" />
+    <!-- Golden spiral approximation -->
+    <rect x="360" y="200" width="240" height="240" />
+    <rect x="360" y="200" width="148" height="148" />
+    <rect x="452" y="292" width="92" height="92" />
+    <!-- Vesica piscis -->
+    <circle cx="500" cy="400" r="150" />
+    <circle cx="650" cy="400" r="150" />
+    <!-- Triangle -->
+    <polygon points="200,700 400,350 600,700" />
+    <!-- Fibonacci spiral boxes -->
+    <rect x="700" y="500" width="200" height="200" />
+    <rect x="700" y="500" width="124" height="124" />
+    <rect x="700" y="500" width="76" height="76" />
+  </g>
+</svg>
+
+<nav>
+  <div class="nav-left">
+    <span class="nav-mark">GEOMETRY //</span>
+    <a class="nl" href="#math">MATH</a>
+    <a class="nl" href="#world">WORLD</a>
+    <a class="nl" href="#shape">SHAPE</a>
+    <a class="nl" href="#form">FORM</a>
+    <a class="nl" href="#forensics">FORENSICS</a>
+  </div>
+  <a class="nav-back" href="index.html">← HUB</a>
+</nav>
+
+<div class="cover">
+  <div class="cover-tag">MATHEMATICS · WORLD · SHAPE · FORM · FORENSICS · E=1</div>
+  <div class="cover-title">GEOMETRY</div>
+  <div class="cover-equation">
+    φ = (1 + √5) / 2 = 1.6180339887...<br>
+    π = C / d = 3.14159265358...<br>
+    e = lim(1 + 1/n)ⁿ = 2.71828182845...<br>
+    E(S) = min(n₁, n₂, ... nₖ)
+  </div>
+  <p class="cover-deck">The same pattern at every scale. The spiral in the shell and the spiral in the galaxy. The ratio in the leaf and the ratio in the face. Geometry is not a branch of mathematics — it is the language mathematics is written in.</p>
+</div>
+
+<main>
+
+<!-- THE MATH -->
+<div id="math" class="section">
+  <span class="section-tag">§ 01 · THE MATH</span>
+  <h2 class="section-title">THE NUMBERS THAT HOLD</h2>
+  <p class="section-sub">Not all numbers are equal. A small set of mathematical constants appear at the foundations of structure across every domain of reality. These are not arbitrary — they are the attractors that geometry converges toward.</p>
+
+  <div class="ratio-grid">
+    <div class="ratio-card">
+      <div class="ratio-num">φ 1.618</div>
+      <div class="ratio-name">THE GOLDEN RATIO</div>
+      <p>The only ratio where the whole is to the larger part as the larger is to the smaller. Appears in the Fibonacci sequence, plant phyllotaxis, nautilus shells, galactic spiral arms, human body proportions, and the architecture of DNA's double helix width-to-length ratio.</p>
+      <p>It is not imposed on nature. It emerges from the mathematics of optimal packing and efficient growth.</p>
+    </div>
+    <div class="ratio-card">
+      <div class="ratio-num">π 3.14159</div>
+      <div class="ratio-name">PI — THE CIRCLE CONSTANT</div>
+      <p>The ratio of circumference to diameter in any circle, regardless of size. Appears in wave equations, probability distributions, quantum mechanics, and the period of a pendulum. It is transcendental — it cannot be expressed as a fraction of integers. The circle is the geometry that contains it.</p>
+    </div>
+    <div class="ratio-card">
+      <div class="ratio-num">√2 1.41421</div>
+      <div class="ratio-name">THE DIAGONAL</div>
+      <p>The ratio of a square's diagonal to its side. The first number proven irrational by the ancient Greeks — a discovery so destabilizing to Pythagorean philosophy that legend says the mathematician who proved it was drowned. The irrational is structural, not exceptional.</p>
+    </div>
+    <div class="ratio-card">
+      <div class="ratio-num">e 2.71828</div>
+      <div class="ratio-name">EULER'S NUMBER</div>
+      <p>The base of natural logarithms. The rate of continuous growth and decay. Appears in compound interest, population dynamics, radioactive decay, and the shape of a hanging chain. It is the mathematics of things that grow or diminish at a rate proportional to their current state.</p>
+    </div>
+  </div>
+
+  <h3>The Fibonacci Sequence</h3>
+  <p>0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89... Each number is the sum of the two before it. The ratio of consecutive Fibonacci numbers converges to φ. This sequence is not a mathematical curiosity — it is the growth algorithm that plants, shells, and populations follow because it represents the most efficient way to pack structures in space while maintaining self-similarity at every scale.</p>
+
+  <div class="eq">
+    <span class="eq-label">FIBONACCI CONVERGENCE TO PHI</span>
+    F(n) / F(n-1) → φ as n → ∞<br><br>
+    8/5 = 1.600<br>
+    13/8 = 1.625<br>
+    21/13 = 1.615<br>
+    34/21 = 1.619<br>
+    55/34 = 1.6176...<br>
+    → φ = 1.6180339887...
+  </div>
+
+  <h3>Euler's Identity — The Most Beautiful Equation</h3>
+  <div class="eq">
+    <span class="eq-label">EULER'S IDENTITY — FIVE FUNDAMENTAL CONSTANTS IN ONE EQUATION</span>
+    e^(iπ) + 1 = 0<br><br>
+    e = natural growth<br>
+    i = imaginary unit (√-1)<br>
+    π = circle constant<br>
+    1 = multiplicative identity<br>
+    0 = additive identity<br><br>
+    Five of the most important numbers in mathematics, connected by one equation.
+  </div>
+
+  <div class="pull">
+    Mathematics did not invent these relationships. It discovered them. The golden ratio was in the nautilus shell before anyone calculated it. π was in every circle before anyone measured circumference. The numbers are not the geometry — they are how we read it.
+  </div>
+</div>
+
+<!-- THE WORLD -->
+<div id="world" class="section">
+  <span class="section-tag">§ 02 · THE WORLD</span>
+  <h2 class="section-title">GEOMETRY IN NATURE</h2>
+  <p class="section-sub">The natural world is not randomly shaped. It converges on specific geometries because those geometries solve physical problems optimally. Every recurring pattern in nature is an answer to a question about efficiency, strength, or growth.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>PATTERN</th>
+          <th>WHERE IT APPEARS</th>
+          <th>WHY THIS GEOMETRY</th>
+          <th>MATHEMATICAL BASIS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="t-w">Hexagon</td>
+          <td>Honeycomb, basalt columns, snowflakes, compound eyes, graphene</td>
+          <td>Maximum area enclosed with minimum perimeter material — most efficient tiling of a plane</td>
+          <td class="t-v">Isoperimetric inequality — proved 1999 by Hales</td>
+        </tr>
+        <tr>
+          <td class="t-w">Spiral (logarithmic)</td>
+          <td>Nautilus shell, sunflower seeds, galaxies, hurricanes, DNA, elephant tusks</td>
+          <td>Self-similar growth — the organism grows without changing shape. Same geometry at every scale.</td>
+          <td class="t-v">r = ae^(bθ) — growth rate proportional to current size</td>
+        </tr>
+        <tr>
+          <td class="t-w">Branching (fractal)</td>
+          <td>Trees, rivers, lungs, blood vessels, lightning, neural networks, coastlines</td>
+          <td>Maximum surface area contact within minimum volume — efficient distribution networks</td>
+          <td class="t-v">Fractal dimension D between 1 and 2 — more complex than a line, less than a plane</td>
+        </tr>
+        <tr>
+          <td class="t-w">Sphere</td>
+          <td>Bubbles, planets, eyes, cells, water droplets, atomic electron clouds</td>
+          <td>Minimum surface area for a given volume — soap bubbles find this solution through surface tension</td>
+          <td class="t-v">Isoperimetric theorem in 3D — sphere maximizes volume per unit surface</td>
+        </tr>
+        <tr>
+          <td class="t-w">Fibonacci phyllotaxis</td>
+          <td>Sunflower seeds, pine cone scales, leaf arrangements, pineapple scales</td>
+          <td>Irrational angle of rotation (137.5° — the golden angle) prevents any row from ever exactly overlapping</td>
+          <td class="t-v">137.5° = 360° × (1 - 1/φ) — most irrational angle, maximizes packing</td>
+        </tr>
+        <tr>
+          <td class="t-w">Catenary curve</td>
+          <td>Hanging chain, spider web strands, St. Louis Arch, power lines</td>
+          <td>The shape a chain assumes when hanging freely under gravity — distributes tension uniformly</td>
+          <td class="t-v">y = a·cosh(x/a) — hyperbolic cosine function</td>
+        </tr>
+        <tr>
+          <td class="t-w">Voronoi tessellation</td>
+          <td>Giraffe markings, dragonfly wings, cell division patterns, geographic territories</td>
+          <td>Each region contains all points closest to its seed — the geometry of nearest-neighbor relationships</td>
+          <td class="t-v">Computational geometry — dual of the Delaunay triangulation</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Why Nature Converges on These Patterns</h3>
+  <p>Nature does not plan. It selects. Structures that solve physical problems efficiently survive — whether the selection pressure is evolution, physics, or thermodynamics. The hexagonal honeycomb survives because bees that built hexagonal cells used less wax for the same storage volume. The spiral shell survives because it allows growth without structural reorganization. <strong>Geometry is not decoration in nature — it is the solution.</strong></p>
+
+  <div class="call gold">
+    <span class="call-label">THE SCALING LAW</span>
+    Kleiber's Law: metabolic rate scales as body mass to the power of 3/4 across all animals — from mice to whales. This 3/4 power law emerges from the fractal geometry of circulatory networks. The geometry of how nutrients are distributed determines the metabolism of the organism. Structure determines function at every scale.
+  </div>
+</div>
+
+<!-- THE SHAPE -->
+<div id="shape" class="section">
+  <span class="section-tag">§ 03 · THE SHAPE</span>
+  <h2 class="section-title">THE PLATONIC SOLIDS</h2>
+  <p class="section-sub">There are exactly five convex regular polyhedra — shapes where every face is the same regular polygon and every vertex is identical. Not approximately five. Exactly five. This was proven by Euclid and has not changed. The universe has a finite number of perfect three-dimensional shapes.</p>
+
+  <!-- SVG Platonic solids diagram -->
+  <svg class="diagram" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#7070c8" fill="none" stroke-width="1" opacity="0.7">
+      <!-- Tetrahedron -->
+      <polygon points="60,160 100,80 140,160" />
+      <line x1="60" y1="160" x2="100" y2="110" />
+      <line x1="100" y1="80" x2="140" y2="160" />
+      <text x="100" y="180" text-anchor="middle" fill="#d4b040" font-family="DM Mono" font-size="9" letter-spacing="1">TETRA</text>
+
+      <!-- Cube -->
+      <rect x="185" y="90" width="70" height="70" />
+      <rect x="200" y="75" width="70" height="70" />
+      <line x1="185" y1="90" x2="200" y2="75" />
+      <line x1="255" y1="90" x2="270" y2="75" />
+      <line x1="185" y1="160" x2="200" y2="145" />
+      <line x1="255" y1="160" x2="270" y2="145" />
+      <text x="227" y="180" text-anchor="middle" fill="#d4b040" font-family="DM Mono" font-size="9" letter-spacing="1">CUBE</text>
+
+      <!-- Octahedron -->
+      <polygon points="330,80 370,120 330,160 290,120" />
+      <line x1="290" y1="120" x2="370" y2="120" />
+      <text x="330" y="180" text-anchor="middle" fill="#d4b040" font-family="DM Mono" font-size="9" letter-spacing="1">OCTA</text>
+
+      <!-- Dodecahedron simplified -->
+      <polygon points="430,90 460,75 490,90 500,120 490,150 460,165 430,150 420,120" />
+      <line x1="440" y1="100" x2="480" y2="100" />
+      <line x1="440" y1="140" x2="480" y2="140" />
+      <text x="460" y="180" text-anchor="middle" fill="#d4b040" font-family="DM Mono" font-size="9" letter-spacing="1">DODECA</text>
+
+      <!-- Icosahedron simplified -->
+      <polygon points="545,80 575,100 575,140 545,160 515,140 515,100" />
+      <line x1="545" y1="80" x2="545" y2="160" />
+      <line x1="515" y1="100" x2="575" y2="140" />
+      <line x1="575" y1="100" x2="515" y2="140" />
+      <text x="545" y="180" text-anchor="middle" fill="#d4b040" font-family="DM Mono" font-size="9" letter-spacing="1">ICOSA</text>
+    </g>
+  </svg>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>SOLID</th>
+          <th>FACES</th>
+          <th>VERTICES</th>
+          <th>EDGES</th>
+          <th>CLASSICAL ELEMENT</th>
+          <th>MODERN APPEARANCE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="t-w">Tetrahedron</td><td>4 triangles</td><td>4</td><td>6</td><td class="t-g">Fire</td><td>Carbon molecule geometry, silicate tetrahedra in minerals</td></tr>
+        <tr><td class="t-w">Cube (Hexahedron)</td><td>6 squares</td><td>8</td><td>12</td><td class="t-g">Earth</td><td>Crystal lattice structures, NaCl crystalline form</td></tr>
+        <tr><td class="t-w">Octahedron</td><td>8 triangles</td><td>6</td><td>12</td><td class="t-g">Air</td><td>Diamond crystal structure, fluorite mineral</td></tr>
+        <tr><td class="t-w">Dodecahedron</td><td>12 pentagons</td><td>20</td><td>30</td><td class="t-g">Cosmos/Ether</td><td>Quasicrystals, some viral capsid structures</td></tr>
+        <tr><td class="t-w">Icosahedron</td><td>20 triangles</td><td>12</td><td>30</td><td class="t-g">Water</td><td>Viral capsid geometry — most efficient spherical shell from flat faces</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="call">
+    <span class="call-label">EULER'S FORMULA — THE TOPOLOGY OF SOLIDS</span>
+    For any convex polyhedron: V - E + F = 2<br>
+    Vertices minus Edges plus Faces always equals 2.<br><br>
+    Tetrahedron: 4 - 6 + 4 = 2 ✓<br>
+    Cube: 8 - 12 + 6 = 2 ✓<br>
+    Icosahedron: 12 - 30 + 20 = 2 ✓<br><br>
+    This relationship holds for all convex polyhedra regardless of complexity. It is a topological invariant — it survives any continuous deformation of the shape.
+  </div>
+
+  <h3>Why Viruses Are Icosahedral</h3>
+  <p>The icosahedron is the most efficient way to enclose maximum volume with minimum surface area using identical flat subunits. A virus cannot afford to dedicate most of its genetic information to encoding a complex protein shell — so it uses the geometry that requires the fewest different protein types. <strong>The icosahedron is the architectural solution to the problem of building a sphere from flat pieces with minimal genetic cost.</strong> Nature didn't choose it. Physics required it.</p>
+</div>
+
+<!-- THE FORM -->
+<div id="form" class="section">
+  <span class="section-tag">§ 04 · THE FORM</span>
+  <h2 class="section-title">HUMAN GEOMETRY</h2>
+  <p class="section-sub">Architecture, art, music, and the human body share geometric proportions not because humans imposed them, but because they are the proportions that function — structurally, aesthetically, and acoustically.</p>
+
+  <h3>The Vitruvian Proportion</h3>
+  <p>Leonardo da Vinci's Vitruvian Man encodes a geometric observation first made by the Roman architect Vitruvius: the human body is proportioned according to specific ratios. <strong>Navel-to-floor divided by total height approximates φ in most humans.</strong> The ratio of finger joint lengths follows Fibonacci. The face, hand, and arm all contain golden ratio proportions. These are documented measurements, not mystical claims.</p>
+
+  <div class="call gold">
+    <span class="call-label">DOCUMENTED PHI PROPORTIONS IN HUMAN ANATOMY</span>
+    Hand: length of finger to palm · palm to wrist = φ<br>
+    Face: width of mouth to width of nose ≈ φ<br>
+    Teeth: width of front two teeth to height ≈ φ<br>
+    Body: navel height to total height ≈ φ<br>
+    DNA: width of minor groove to major groove ≈ φ<br>
+    Heartbeat: systole to diastole ratio ≈ φ in healthy hearts<br><br>
+    These are averages and approximations — the body is not a perfect geometric instrument. But the convergence is real and documented.
+  </div>
+
+  <h3>Architecture as Frozen Geometry</h3>
+  <p>The Parthenon's facade fits a golden rectangle. The Great Pyramid's slope angle encodes π/4 in its rise-to-run ratio. Gothic cathedrals use pointed arches because the catenary curve distributes weight optimally, and the pointed arch approximates it while allowing height. <strong>These geometries were not ornamental — they were structural solutions that also happened to be beautiful because efficiency and beauty converge at the same proportions.</strong></p>
+
+  <h3>Music as Time Geometry</h3>
+  <p>Musical harmony is geometric. A perfect fifth — the most consonant interval after the octave — is a frequency ratio of 3:2. A perfect fourth is 4:3. An octave is 2:1. The ear recognizes these ratios as consonant because the waveforms align at simple integer intervals, reducing interference. Dissonance is geometric complexity. Harmony is geometric simplicity. <strong>Music is geometry moving through time.</strong></p>
+
+  <div class="pull">
+    The architect, the composer, and the biologist are all reading the same geometry. The medium is different — stone, sound, protein. The proportions are not.
+  </div>
+</div>
+
+<!-- THE FORENSICS -->
+<div id="forensics" class="section">
+  <span class="section-tag">§ 05 · THE FORENSICS</span>
+  <h2 class="section-title">GEOMETRY AS EVIDENCE</h2>
+  <p class="section-sub">Forensic geometry is the application of geometric analysis to extract truth from evidence. The shape of a wound, the trajectory of a projectile, the spread of a fire, the pattern of blood, the layout of a crime scene — all are geometric problems with geometric solutions.</p>
+
+  <h3>Bloodstain Pattern Analysis</h3>
+  <p>Blood droplets follow the physics of fluid dynamics. A circular stain indicates a vertical fall. An elliptical stain encodes the angle of impact in its geometry — the more elongated the ellipse, the more oblique the angle. The point of convergence of multiple stains' long axes indicates the area of origin. <strong>The geometry of the stain is a record of the physics that produced it.</strong></p>
+
+  <div class="eq">
+    <span class="eq-label">IMPACT ANGLE FROM STAIN GEOMETRY</span>
+    sin(α) = width / length<br><br>
+    α = impact angle (degrees from surface)<br>
+    width = minor axis of elliptical stain<br>
+    length = major axis of elliptical stain<br><br>
+    A circular stain (width = length) → sin(α) = 1 → α = 90° (vertical drop)<br>
+    A narrow ellipse (width &lt;&lt; length) → small α → shallow impact angle
+  </div>
+
+  <h3>Trajectory Analysis</h3>
+  <p>Bullet trajectories follow ballistic geometry. Given entry and exit wounds — or entry wound and bullet lodgment — the trajectory line can be extended backward in three-dimensional space to locate the firing position. Two trajectory lines from separate shots intersect at or near the shooter's position. This is not inference — it is geometry applied to physics.</p>
+
+  <h3>Fire Pattern Geometry</h3>
+  <p>Fire burns upward and outward in characteristic cone shapes. The char pattern on floors, walls, and ceilings encodes the fire's origin point and spread direction. A V-pattern on a wall points downward to the fire's origin. Multiple V-patterns indicate multiple ignition points — a signature of arson. <strong>The geometry of destruction is a record of how the destruction began.</strong></p>
+
+  <h3>Geometric Deception Detection</h3>
+  <p>Benford's Law states that in naturally occurring datasets, the leading digit is 1 approximately 30% of the time, 2 about 17%, 3 about 12%, decreasing to 9 appearing as the first digit less than 5% of the time. Fabricated financial data tends toward uniform distribution of leading digits — because humans don't intuitively generate Benford-distributed numbers. This geometric property of natural data is used to detect financial fraud, falsified scientific data, and manipulated election results.</p>
+
+  <div class="eq">
+    <span class="eq-label">BENFORD'S LAW — THE GEOMETRY OF AUTHENTIC DATA</span>
+    P(d) = log₁₀(1 + 1/d)<br><br>
+    P(1) = 30.1%<br>
+    P(2) = 17.6%<br>
+    P(3) = 12.5%<br>
+    P(4) = 9.7%<br>
+    P(5) = 7.9%<br>
+    P(6) = 6.7%<br>
+    P(7) = 5.8%<br>
+    P(8) = 5.1%<br>
+    P(9) = 4.6%<br><br>
+    Fabricated data deviates from this distribution. The deviation is the signal.
+  </div>
+
+  <h3>Geometric Pattern Recognition in Intelligence</h3>
+  <p>Satellite imagery analysis uses geometric signatures to identify structures, activities, and patterns of behavior. The geometric footprint of a centrifuge facility differs from a warehouse. The shadow geometry of a structure at a known time of day reveals its height. Vehicle track patterns reveal traffic frequency. <strong>The geometry of human activity leaves a geometric record that persists in imagery.</strong></p>
+
+  <div class="call green">
+    <span class="call-label">THE FORENSIC PRINCIPLE</span>
+    Every physical event leaves a geometric trace. The geometry encodes the physics of what happened. The forensic analyst reads the geometry backward — from the pattern to the process that produced it. This is the same operation as reading a nautilus shell backward to its growth algorithm, or reading a crystal lattice backward to the atomic forces that organized it. Geometry is the record. Forensics is the reading.
+  </div>
+
+  <h3>Geometry Applied to the Codex</h3>
+  <p>The E=1 equation — E(S) = min(n₁, n₂...nₖ) — is a geometric claim about the shape of a solution space. A solution that extracts one node is geometrically incomplete regardless of how well the other nodes score. The minimum function defines the boundary of acceptable solution geometry. This is not metaphor. It is the application of optimization geometry to a philosophical constraint. The shape of an acceptable solution is defined by its weakest node, exactly as the strength of a chain is defined by its weakest link — a geometric property, not a judgment.</p>
+
+  <div class="pull">
+    The forensic analyst, the architect, the biologist, and the philosopher are asking the same question in different languages: what geometry produced this? And: what geometry is required here? The questions are the same. The geometry is the answer.
+  </div>
+</div>
+
+<!-- SEAL -->
+<div class="seal">
+  <div class="seal-title">THE PATTERN<br>THAT HOLDS</div>
+  <div class="seal-body">
+    φ IN THE SHELL AND THE GALAXY<br>
+    π IN THE CIRCLE AND THE WAVE<br>
+    FIBONACCI IN THE SEED AND THE MARKET<br>
+    EULER IN THE CHAIN AND THE COMPOUND<br><br>
+    THE SHAPE IS THE SOLUTION<br>
+    THE FORM IS THE RECORD<br>
+    THE FORENSICS IS THE READING<br><br>
+    GEOMETRY DOES NOT DESCRIBE THE WORLD<br>
+    IT IS THE WORLD DESCRIBING ITSELF<br><br>
+    E = 1 · THE WORK CONTINUES
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <span>GEOMETRY · MATHEMATICS · WORLD · SHAPE · FORM · FORENSICS · PWNTECHX · 2026</span>
+  <span class="footer-r">E = 1</span>
+</footer>
+
+</body>
+</html>
