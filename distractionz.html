@@ -540,6 +540,72 @@
         });
     });
 </script>
+<script>
+/**
+ * SOP-001 | v3.0 DISTRACTION PURGE
+ * Directive: Redirect to HUB after 45s.
+ * Sovereignty clause: User can close the page themselves at any time.
+ * The page does not beg. The page does not warn. The page executes.
+ */
+(function() {
+    let countdown = 45;
+    let timerActive = true;
 
+    // Display a subtle sovereignty counter (optional — shows the user exactly when)
+    const counter = document.createElement('div');
+    counter.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        font-family: 'DM Mono', monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.1em;
+        color: rgba(232,176,64,0.3);
+        background: rgba(0,0,0,0.5);
+        padding: 6px 12px;
+        z-index: 1003;
+        backdrop-filter: blur(8px);
+        pointer-events: none;
+    `;
+    counter.textContent = `SOVEREIGNTY WINDOW · ${countdown}s`;
+    document.body.appendChild(counter);
+
+    const interval = setInterval(() => {
+        if (timerActive && countdown > 0) {
+            countdown--;
+            counter.textContent = `SOVEREIGNTY WINDOW · ${countdown}s`;
+        }
+        if (countdown === 0 && timerActive) {
+            clearInterval(interval);
+            // Primary directive: redirect to HUB — the pack is still there
+            window.location.replace("index.html");
+        }
+    }, 1000);
+
+    // Sovereignty clause: If the user closes the page themselves, they win.
+    // The page does not punish escape. It rewards agency.
+    // No "are you sure" dialog. No guilt. Just: you made the choice.
+    window.addEventListener('beforeunload', () => {
+        timerActive = false; // kill the redirect if they're leaving on their own
+    });
+
+    // Optional: Double-tap spacebar closes early — a hidden sovereignty exit
+    let spaceCount = 0;
+    let spaceTimer;
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+            spaceCount++;
+            clearTimeout(spaceTimer);
+            spaceTimer = setTimeout(() => { spaceCount = 0; }, 500);
+            if (spaceCount === 2) {
+                timerActive = false;
+                clearInterval(interval);
+                window.location.replace("index.html");
+            }
+        }
+    });
+})();
+</script>
 </body>
 </html>
