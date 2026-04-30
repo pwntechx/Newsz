@@ -1,0 +1,402 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>CHAMBERS OF SLEEP · The Atlas of Rest · PWNTECHX</title>
+    <meta name="description" content="Seven chambers of sleep: glymphatic, circadian, homeostatic, architectural, behavioral, parasomniac, restorative. Science, dork trails, and the geometry of rest.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000000;
+            color: #e8eef2;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.55;
+            scroll-behavior: smooth;
+        }
+
+        /* star + moon canvas background */
+        .cosmic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at 30% 40%, #0a0c0e 0%, #000000 100%);
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 15% 30%, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 72% 18%, #f5f5f5, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 42% 85%, #ddd, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 93% 44%, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 5% 63%, #e0e4f0, rgba(0,0,0,0)),
+                radial-gradient(1.2px 1.2px at 48% 11%, #fff, rgba(0,0,0,0)),
+                radial-gradient(0.8px 0.8px at 84% 76%, #eee, rgba(0,0,0,0));
+            background-size: 200px 200px, 300px 300px, 250px 250px, 400px 400px, 180px 180px, 350px 350px, 500px 500px;
+            background-repeat: repeat;
+            opacity: 0.6;
+        }
+
+        .moon-glow {
+            position: absolute;
+            bottom: -15%;
+            right: -10%;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(200,210,220,0.08) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(45px);
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 2rem 1.8rem 4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* navigation */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid rgba(220,230,240,0.15);
+            padding-bottom: 1rem;
+        }
+
+        .hub-btn {
+            background: rgba(20, 24, 28, 0.8);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(150, 170, 180, 0.3);
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: #bac8d0;
+            text-decoration: none;
+            transition: all 0.25s;
+        }
+
+        .hub-btn:hover {
+            border-color: #8aaebf;
+            background: #1a262c;
+            color: #ffffff;
+        }
+
+        .title-section {
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: clamp(2.4rem, 8vw, 4.2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #f0f6fa, #b0c4d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.1;
+        }
+
+        .sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            color: #7e8e96;
+            margin-top: 0.5rem;
+        }
+
+        /* chamber cards */
+        .chamber-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 2.5rem 0 2rem;
+        }
+
+        .chamber {
+            background: rgba(15, 20, 24, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(160, 180, 190, 0.2);
+            border-radius: 28px;
+            transition: 0.2s ease;
+            overflow: hidden;
+        }
+
+        .chamber:hover {
+            border-color: rgba(180, 200, 210, 0.5);
+            background: rgba(20, 28, 32, 0.8);
+        }
+
+        .chamber-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 1.6rem 1.8rem 0.2rem 1.8rem;
+            border-bottom: 1px dashed rgba(120, 150, 160, 0.2);
+        }
+
+        .chamber-name {
+            font-size: 1.7rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            background: linear-gradient(120deg, #dce6ec, #b2c4ce);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .chamber-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: #6c878f;
+            background: rgba(0,0,0,0.35);
+            padding: 0.2rem 0.7rem;
+            border-radius: 40px;
+        }
+
+        .chamber-content {
+            padding: 1rem 1.8rem 1.4rem 1.8rem;
+        }
+
+        .core-invariant {
+            font-size: 0.75rem;
+            font-family: 'Space Mono', monospace;
+            color: #a8cad6;
+            background: rgba(10, 20, 25, 0.7);
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            letter-spacing: 0.3px;
+        }
+
+        .desc-text {
+            color: #ccd6dc;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            margin-bottom: 1.2rem;
+        }
+
+        .node-highlight {
+            background: rgba(0,0,0,0.4);
+            border-left: 3px solid #95bbc9;
+            padding: 0.8rem 1rem;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+            color: #cbdbe2;
+        }
+
+        .dork-trail {
+            margin-top: 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            background: #0b1114;
+            border-radius: 16px;
+            padding: 0.7rem 1rem;
+            color: #68818b;
+            word-break: break-word;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #1e2e34;
+        }
+
+        .dork-trail:hover {
+            background: #121e24;
+            color: #bcdae6;
+            border-color: #528096;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid rgba(130, 160, 170, 0.2);
+            margin: 1.5rem 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.7rem;
+            font-family: 'Space Mono', monospace;
+            color: #4d626a;
+            border-top: 1px solid rgba(130,160,170,0.15);
+            padding-top: 2rem;
+        }
+
+        @media (max-width: 680px) {
+            .container { padding: 1.2rem; }
+            .chamber-header { padding: 1rem 1.2rem 0 1.2rem; }
+            .chamber-content { padding: 0.8rem 1.2rem 1.2rem; }
+            .chamber-name { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="cosmic-bg">
+    <div class="stars"></div>
+    <div class="moon-glow"></div>
+</div>
+
+<div class="container">
+    <div class="top-nav">
+        <div></div>
+        <a href="index.html" class="hub-btn">← HUB</a>
+    </div>
+
+    <div class="title-section">
+        <h1>CHAMBERS OF SLEEP</h1>
+        <div class="sub">THE ATLAS OF REST — SEVEN NODES, ONE GEOMETRY</div>
+    </div>
+
+    <!-- CHAMBER 1 · GLYMPHATIC -->
+    <div class="chamber-grid">
+        <div class="chamber">
+            <div class="chamber-header">
+                <span class="chamber-name">Glymphatic · The Sewer</span>
+                <span class="chamber-num">NODE Ⅰ</span>
+            </div>
+            <div class="chamber-content">
+                <div class="core-invariant">⤞ invariant · clearance ⇝ interstitial space ⇝ SWS depth</div>
+                <div class="desc-text">During slow‑wave sleep, the glymphatic system expands interstitial space by 60%. Cerebrospinal fluid flushes away amyloid‑beta, tau and metabolic waste. Age reduces SWS — the sewer backs up into Alzheimer’s, Parkinson’s, dementia.</div>
+                <div class="node-highlight">⚡ node that runs out first: slow‑wave sleep duration. Not total sleep, not REM — the deep rhythm that pumps the sewers clean.</div>
+                <div class="dork-trail" onclick="copyToClipboard(this)">🔍 DORK: "glymphatic system" sleep filetype:pdf | "slow wave sleep" CSF interstitial | site:nih.gov glymphatic Alzheimer's</div>
+            </div>
+        </div>
+
+        <!-- CHAMBER 2 · CIRCADIAN -->
+        <div class="chamber">
+            <div class="chamber-header">
+                <span class="chamber-name">Circadian · The Clock</span>
+                <span class="chamber-num">NODE Ⅱ</span>
+            </div>
+            <div class="chamber-content">
+                <div class="core-invariant">⤞ invariant · rhythm amplitude ∝ clock gene expression ∝ light timing</div>
+                <div class="desc-text">Every cell has a clock. The SCN master oscillator synchronises peripheral clocks via light. CLOCK-BMAL1 activate PER/CRY; negative feedback loops run every ~24h. Shift work / late screens desynchronize the system, driving metabolic syndrome, depression, cancer risk.</div>
+                <div class="node-highlight">⚡ node that runs out first: light exposure timing. Morning light anchors; evening light extracts the circadian node.</div>
+                <div class="dork-trail" onclick="copyToClipboard(this)">🔍 DORK: "circadian disruption" metabolic syndrome | "light exposure" SCN entrainment | site:nih.gov clock genes neurodegeneration</div>
+            </div>
+        </div>
+
+        <!-- CHAMBER 3 · HOMEOSTATIC -->
+        <div class="chamber">
+            <div class="chamber-header">
+                <span class="chamber-name">Homeostatic · The Pressure</span>
+                <span class="chamber-num">NODE Ⅲ</span>
+            </div>
+            <div class="chamber-content">
+                <div class="core-invariant">⤞ invariant · sleep pressure ∝ adenosine ∝ prior wake time</div>
+                <div class="desc-text">Process S: adenosine accumulates in basal forebrain during wake; caffeine blocks the receptor. Sleep clears adenosine — the longer awake, the deeper the subsequent slow‑wave activity. Homeostat mirrors a fatigue battery that must discharge.</div>
+                <div class="node-highlight">⚡ node that runs out first: wake duration. Push too far → microsleeps, performance collapse; the body will take sleep without permission.</div>
+                <div class="dork-trail" onclick="copyToClipboard(this)">🔍 DORK: "two-process model" Borbély | "sleep homeostasis" adenosine EEG | "Process S" slow wave activity</div>
+            </div>
+        </div>
+
+        <!-- CHAMBER 4 · ARCHITECTURAL -->
+        <div class="chamber">
+            <div class="chamber-header">
+                <span class="chamber-name">Architectural · The Cycle</span>
+                <span class="chamber-num">NODE Ⅳ</span>
+            </div>
+            <div class="chamber-content">
+                <div class="core-invariant">⤞ invariant · ultradian period ⇝ NREM–REM balance</div>
+                <div class="desc-text">Each 90‑min cycle mirrors the fractal of the night: NREM (restoration) → REM (emotional processing, memory). Fragmented sleep extracts the REM node even if total time seems adequate.</div>
+                <div class="node-highlight">⚡ node that runs out first: REM fragmentation. Arousals during REM disturb emotional regulation, memory consolidation, and neural plasticity.</div>
+                <div class="dork-trail" onclick="copyToClipboard(this)">🔍 DORK: "REM fragmentation" emotional regulation | "ultradian rhythm" sleep cycles | site:ncbi.nlm.nih.gov sleep architecture arousal</div>
+            </div>
+        </div>
+
+        <!-- CHAMBER 5 · BEHAVIORAL -->
+        <div class="chamber">
+            <div class="chamber-header">
+                <span class="chamber-name">Behavioral · The Onset</span>
+                <span class="chamber-num">NODE Ⅴ</span>
+            </div>
+            <div class="chamber-content">
+                <div class="core-invariant">⤞ invariant · onset delay ∝ cognitive load / hyperarousal</div>
+                <div class="desc-text">CBT‑I: stimulus control, sleep restriction, relaxation, paradoxical intention, cognitive shuffling. Racing thoughts hold the executive network online; the transition to sleep requires mental disengagement.</div>
+                <div class="node-highlight">⚡ node that runs out first: mental perturbance. Not anxiety itself — the inability to disengage from the loop.</div>
+                <div class="dork-trail" onclick="copyToClipboard(this)">🔍 DORK: "CBT-I" stimulus control sleep restriction | "cognitive shuffle" Beaudoin | "paradoxical intention" insomnia</div>
+            </div>
+        </div>
+
+        <!-- CHAMBER 6 · PARASOMNIAC -->
+        <div class="chamber">
+            <div class="chamber-header">
+                <span class="chamber-name">Parasomniac · The Dissociation</span>
+                <span class="chamber-num">NODE Ⅵ</span>
+            </div>
+            <div class="chamber-content">
+                <div class="core-invariant">⤞ invariant · dissociation ⇝ NREM depth × trigger / arousal threshold</div>
+                <div class="desc-text">Sleepwalking: cingulate motor area activates, prefrontal cortex stays offline. The body moves, the self is absent. Triggers (sleep deprivation, fever, alcohol) lower the arousal threshold, unmasking the dissociated state.</div>
+                <div class="node-highlight">⚡ node that runs out first: arousal threshold. Low threshold + high homeostatic pressure → pathological arousal from deep NREM.</div>
+                <div class="dork-trail" onclick="copyToClipboard(this)">🔍 DORK: "confusional arousal" NREM parasomnia | "cingulate motor area" sleepwalking | site:pubmed.gov somnambulism EEG current density</div>
+            </div>
+        </div>
+
+        <!-- CHAMBER 7 · RESTORATIVE -->
+        <div class="chamber">
+            <div class="chamber-header">
+                <span class="chamber-name">Restorative · The Repair</span>
+                <span class="chamber-num">NODE Ⅶ</span>
+            </div>
+            <div class="chamber-content">
+                <div class="core-invariant">⤞ invariant · repair rate ∝ sleep duration × quality</div>
+                <div class="desc-text">Sleep is active repair: protein synthesis, DNA repair, glymphatic clearance, hormone release (growth hormone, prolactin), immune modulation. Chronic short sleep (<6h) associates with all‑cause mortality, cardiovascular disease, dementia.</div>
+                <div class="node-highlight">⚡ node that runs out first: metabolic clearance. Waste removal fails if sleep is shallow or fragmented; oxidative stress accumulates.</div>
+                <div class="dork-trail" onclick="copyToClipboard(this)">🔍 DORK: "sleep deprivation" cellular repair | "glymphatic waste" clearance | "growth hormone" sleep slow wave</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- closing synthesis -->
+    <hr>
+    <div style="font-family: 'Space Mono', monospace; font-size: 0.7rem; color: #88a2b0; text-align: center; margin-top: 2rem;">
+        ⬡ SEVEN CHAMBERS · ONE BODY ⬡<br>
+        The resource that runs out first is never total sleep time. It is SWS quality, circadian amplitude, arousal threshold, clearance efficiency.<br>
+        Place the geometry (dark, cool, consistent, quiet). Let the biology arrive. Do not extract. Enough.
+    </div>
+
+    <footer>
+        PWNTECHX · CHAMBERS OF SLEEP · DARK LAB · E=1<br>
+        Click any dork trail to copy · HUB returns to index
+    </footer>
+</div>
+
+<script>
+    function copyToClipboard(element) {
+        let rawText = element.innerText;
+        rawText = rawText.replace(/^🔍 DORK: /, '');
+        navigator.clipboard.writeText(rawText).then(() => {
+            const original = element.innerText;
+            element.innerText = '✓ DORK COPIED';
+            setTimeout(() => {
+                element.innerText = original;
+            }, 1100);
+        }).catch(() => {
+            alert('press Ctrl+C to copy');
+        });
+    }
+</script>
+</body>
+</html>
