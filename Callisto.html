@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>TERRAFORMING CALLISTO · Vacation Craters · PWNTECHX</title>
-    <meta name="description" content="How to terraform the craters of Callisto and create a vacation destination for Earthship cruises. The geometry of the beaver protocol applied to the Jovian system.">
+    <title>TERRAFORMING CALLISTO · Valhalla Port · PWNTECHX</title>
+    <meta name="description" content="How to terraform the craters of Callisto and create a vacation destination for Earthship cruises. The geometry of the beaver protocol applied to the Jovian system. AI Tink manages the port.">
     <style>
         * {
             margin: 0;
@@ -14,18 +14,20 @@
         }
 
         :root {
-            --void:       #060808;
-            --surface:    #101814;
-            --plate:      #182018;
-            --seam:       #223028;
+            --void:       #030608;
+            --deep:       #0a1412;
+            --surface:    #101c18;
+            --plate:      #182820;
+            --seam:       #22382a;
             --green:      #6aaa78;
             --bright:     #90d098;
             --cream:      #e8f0e4;
             --dim:        #7a9880;
-            --ghost:      #3a5040;
+            --ghost:      #3a5844;
             --gold:       #d4a030;
-            --ice:        #b0d4e8;
-            --rule:       rgba(106,170,120,0.15);
+            --ice:        #b0e0e8;
+            --jupiter:    #c4a87c;
+            --rule:       rgba(106,170,120,0.2);
         }
 
         body {
@@ -33,36 +35,89 @@
             color: var(--cream);
             font-family: 'Segoe UI', 'EB Garamond', Georgia, serif;
             line-height: 1.7;
-            padding: 2rem;
+        }
+
+        /* starfield background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+                              radial-gradient(1px 1px at 80px 200px, #f0f0f0, rgba(0,0,0,0));
+            background-size: 200px 200px, 150px 150px;
+            background-repeat: repeat;
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
-            background: rgba(8, 14, 10, 0.7);
-            border: 1px solid var(--seam);
-            border-radius: 28px;
-            padding: 2.5rem;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* header with planet reference */
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--rule);
+            padding-bottom: 1.5rem;
+        }
+
+        .jupiter-badge {
+            font-family: monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            color: var(--jupiter);
+            background: rgba(0,0,0,0.4);
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
         }
 
         h1 {
             font-family: 'Bebas Neue', 'Segoe UI', sans-serif;
-            font-size: clamp(2.2rem, 6vw, 3.5rem);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
             letter-spacing: 0.08em;
             color: var(--ice);
-            text-align: center;
-            margin-bottom: 0.5rem;
+            text-shadow: 0 0 15px rgba(176,224,232,0.3);
         }
 
         .subhead {
-            text-align: center;
             font-family: monospace;
             font-size: 0.7rem;
             letter-spacing: 0.2em;
             color: var(--dim);
-            border-bottom: 1px solid var(--rule);
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        /* navigation cards */
+        .nav-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        .nav-chip {
+            background: var(--surface);
+            border: 1px solid var(--seam);
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-family: monospace;
+            font-size: 0.7rem;
+            color: var(--dim);
+            transition: 0.2s;
+        }
+        .nav-chip:hover {
+            border-color: var(--green);
+            color: var(--bright);
         }
 
         h2 {
@@ -71,7 +126,7 @@
             letter-spacing: 0.05em;
             color: var(--green);
             margin: 2rem 0 1rem;
-            border-left: 3px solid var(--gold);
+            border-left: 4px solid var(--gold);
             padding-left: 1rem;
         }
 
@@ -80,16 +135,18 @@
             font-size: 1.2rem;
             letter-spacing: 0.08em;
             color: var(--bright);
-            margin: 1.2rem 0 0.5rem;
+            margin: 1rem 0 0.5rem;
         }
 
         .glass-box {
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(6px);
             border-left: 3px solid var(--gold);
-            padding: 1rem 1.5rem;
-            margin: 1.5rem 0;
+            padding: 1.2rem 1.8rem;
+            margin: 1.2rem 0;
             font-family: monospace;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            border-radius: 16px;
         }
 
         .step {
@@ -97,9 +154,13 @@
             border: 1px solid var(--seam);
             padding: 1.2rem;
             margin: 1rem 0;
-            border-radius: 16px;
+            border-radius: 20px;
+            transition: 0.2s;
         }
-
+        .step:hover {
+            border-color: var(--green);
+            background: rgba(16,28,24,0.9);
+        }
         .step-num {
             font-family: monospace;
             font-size: 0.6rem;
@@ -107,26 +168,21 @@
             color: var(--gold);
         }
 
-        hr {
-            border: none;
-            border-top: 1px solid var(--rule);
-            margin: 1.5rem 0;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 1rem 0;
             font-size: 0.85rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
+            overflow: hidden;
         }
-
         th, td {
             border: 1px solid var(--seam);
-            padding: 0.5rem;
+            padding: 0.6rem;
             text-align: left;
             vertical-align: top;
         }
-
         th {
             background: var(--plate);
             font-family: monospace;
@@ -138,160 +194,156 @@
             font-size: 0.7rem;
             color: var(--dim);
             background: var(--plate);
-            padding: 1rem;
+            padding: 1.2rem;
             margin-top: 2rem;
-            border-radius: 12px;
+            border-radius: 20px;
+            border: 1px solid var(--seam);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--rule);
+            font-family: monospace;
+            font-size: 0.6rem;
+            color: var(--ghost);
         }
 
         @media (max-width: 700px) {
-            body { padding: 1rem; }
-            .container { padding: 1.2rem; }
+            .container { padding: 1rem; }
             h2 { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
+<div class="starfield"></div>
 <div class="container">
-    <h1>TERRAFORMING CALLISTO'S CRATERS</h1>
-    <div class="subhead">VACATION DESTINATION FOR EARTHSHIP CRUISES · THE BEAVER PROTOCOL · AI TINK</div>
+    <div class="hero">
+        <div class="jupiter-badge">⦿ JUPITER SYSTEM · CALLISTO · VALHALLA CRATER ⦿</div>
+        <h1>TERRAFORMING CALLISTO</h1>
+        <div class="subhead">VACATION DESTINATION FOR EARTHSHIP CRUISES · AI TINK · THE FOUR MOONS</div>
+    </div>
+
+    <div class="nav-grid">
+        <span class="nav-chip">🌕 Callisto</span>
+        <span class="nav-chip">🪨 Valhalla Crater</span>
+        <span class="nav-chip">⬡ Beaver Protocol</span>
+        <span class="nav-chip">🧠 AI Tink</span>
+        <span class="nav-chip">🚀 Earthship Orbit</span>
+        <span class="nav-chip">🌍 Jupiter Rise</span>
+    </div>
 
     <div class="glass-box">
         <strong>⬡ THE GEOMETRY ⬡</strong><br>
-        Callisto has low radiation (0.01 rem/day), abundant surface ice, and impact debris containing ammonium. It does not have breathable atmosphere or 1g gravity. But for a <em>vacation destination</em>, you do not need either. You need:
-        <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
-            <li>A pressurized, warmed habitat inside a crater</li>
-            <li>Safe excursions on the ice (suited)</li>
-            <li>A view of Jupiter</li>
-            <li>AI Tink managing everything</li>
-        </ul>
-        This is not terraforming a planet. This is <em>terraforming a crater</em>.
+        Callisto — the quiet moon, low radiation (0.01 rem/day), abundant surface ice, impact debris containing ammonium. Not a colony. A <strong>port of call</strong>. Humans live on the Earthship in 1g orbit. They visit for days. They leave. This is total preservation applied to the Jovian system.
     </div>
 
-    <h2>Ⅰ. SELECT THE CRATER</h2>
+    <!-- ========== SECTION 1: THE CRATER ========== -->
+    <h2>Ⅰ. SELECT THE CRATER · VALHALLA</h2>
     <div class="step">
-        <div class="step-num">STEP 1 — Target a large, flat-floored impact basin</div>
-        <p><strong>Candidate:</strong> Valhalla (largest multi-ring basin on Callisto, ~600 km diameter) or Asgard. These craters have relatively smooth floors, fractured ice, and — critically — <strong>dark material</strong> from carbonaceous chondrite impacts, which contains ammonium salts (NH₄⁺).</p>
-        <p><strong>Why this matters:</strong> The dark material is your nitrogen source. Leach it, treat it, crack it in plasma → buffer gas for the habitat dome.</p>
-    </div>
-    <div class="step">
-        <div class="step-num">STEP 2 — Map the ice depth and debris distribution</div>
-        <p>Use orbiting radar (deployed from Earthship or prior robotic mission) to identify areas where impact debris is concentrated and the ice crust is thick enough to support a structure (≥ 100 m).</p>
+        <div class="step-num">STEP 1 — Valhalla multi-ring basin</div>
+        <p><strong>Location:</strong> 600 km diameter, smooth floor, fractured ice, dark carbonaceous impact debris rich in ammonium salts (NH₄⁺). The crater's natural bowl geometry cups heavy gases.</p>
+        <p><strong>Why Valhalla:</strong> The dark material is your nitrogen source. The rings provide natural windbreaks for the SF₆ pool. The floor is flat enough for dome construction.</p>
     </div>
 
-    <h2>Ⅱ. BUILD THE DOME (THE VACATION HUB)</h2>
+    <!-- ========== SECTION 2: DOME ========== -->
+    <h2>Ⅱ. PRINT THE DOME · THE VACATION HUB</h2>
     <div class="step">
-        <div class="step-num">STEP 3 — 3D print the habitat shell</div>
-        <p><strong>Material:</strong> Regolith + carbon composite (carbon from methane pyrolysis, using CO₂ sublimated from the crater ice).<br>
-        <strong>Process:</strong> Robots mix crushed regolith with polymer binder (imported as seeds) and extruded carbon fiber. The dome is printed in situ.</p>
-        <p><strong>Geometry:</strong> A hemisphere, 50 m radius, walls 1–2 m thick for radiation shielding and thermal insulation. Buried under 1–2 m of loose regolith for additional insulation.</p>
-    </div>
-    <div class="step">
-        <div class="step-num">STEP 4 — Seal and pressurize</div>
-        <p>Interior volume: ~260,000 m³. Pressurize to 0.5 bar (50% sea level pressure). Atmosphere mix: 70% N₂ (from ammonium leaching + plasma crack), 28% O₂ (from water electrolysis), 2% CO₂ (trace). Safe for humans in light clothing (no suit needed inside the dome).</p>
-        <div class="glass-box" style="margin-top: 0.5rem;">
-            <strong>⬡ THE NITROGEN LOOP ⬡</strong><br>
-            1. Collect dark crater material (ammonium salts).<br>
-            2. Leach with warm water → NH₄⁺ solution.<br>
-            3. Add base (KOH from mineral processing) → NH₃ gas.<br>
-            4. Plasma crack NH₃ → N₂ + 3H₂.<br>
-            5. N₂ feeds dome atmosphere. H₂ recycled to Sabatier for methane/carbon.
-        </div>
+        <div class="step-num">STEP 2 — 3D print the habitat shell</div>
+        <p><strong>Material:</strong> Regolith + carbon composite (carbon from methane pyrolysis).<br>
+        <strong>Geometry:</strong> Hemisphere, 50 m radius, 1–2 m walls. Buried under 1 m of regolith for radiation and thermal insulation.<br>
+        <strong>Atmosphere:</strong> 0.5 bar, 70% N₂ (from crater ammonium), 28% O₂ (from water electrolysis), 2% CO₂. Shirtsleeve environment inside.</p>
     </div>
 
-    <h2>Ⅲ. WARM THE CRATER (GREENHOUSE IN A CRATER)</h2>
-    <div class="step">
-        <div class="step-num">STEP 5 — Release heavy greenhouse gases</div>
-        <p>Callisto's gravity (0.126g) cannot hold light gases, but it can hold <strong>heavy gases</strong> like sulfur hexafluoride (SF₆) or perfluorocarbons (PFCs). These are:</p>
-        <ul>
-            <li>Non‑toxic</li>
-            <li>Non‑flammable</li>
-            <li>23,000x more potent greenhouse effect than CO₂</li>
-            <li>Heavy enough to pool in craters</li>
-        </ul>
-        <p><strong>Source:</strong> Import small quantities of fluorine (from Earth or from icy moon processing). Combine with sulfur (abundant in Callisto's impact debris as troilite, FeS). Release SF₆ into the crater bowl. The gas pools, traps solar and geothermal heat, and raises the ambient temperature around the dome.</p>
-    </div>
-    <div class="step">
-        <div class="step-num">STEP 6 — Geothermal tapping</div>
-        <p>Drill shallow boreholes (100-200 m) into the ice crust. Circulate a working fluid (water/ammonia mix). Extract heat from the warmer layers below (the subsurface ocean is 100-200 km down, but even at 1 km depth, the temperature is higher than the surface). Use this heat to warm the dome floor and melt ice for water.</p>
-    </div>
-
-    <h2>Ⅳ. CREATE THE OUTDOOR EXCURSIONS</h2>
-    <div class="step">
-        <div class="step-num">STEP 7 — Pressurized rover trails</div>
-        <p>Lightweight, electric rovers with heated cabins. Trails marked on the crater floor, leading to viewpoints overlooking Jupiter. Rovers operate for 8-hour excursions; tourists wear light suits (oxygen mask + thermal layer) for brief exits to take photos.</p>
-    </div>
-    <div class="step">
-        <div class="step-num">STEP 8 — Ice caves and domed viewpoints</div>
-        <p>Stable ice caves (naturally occurring fractures in the ice crust) are pressurized and heated as secondary rest stops. Small domed viewing platforms with 360° windows are built at the crater rim, offering a view of Jupiter rising over the ice field.</p>
-    </div>
-
-    <h2>Ⅴ. AI TINK: THE INVISIBLE MANAGER</h2>
     <div class="glass-box">
-        <strong>⬡ TINK'S CHECKLIST ⬡</strong><br>
-        • Atmosphere composition (N₂, O₂, trace CO₂) — monitored and adjusted continuously.<br>
-        • Dome temperature (22°C interior, -20°C in excursion areas, suited) — geothermal + electric heating.<br>
-        • Radiation shielding (ice + regolith + active monitoring) — no solar flares in Jupiter system, but cosmic rays measured and logged.<br>
-        • Water recycling (100% closed loop in dome).<br>
-        • Pressure seals, airlocks, rover charging stations.<br>
-        • Guest schedule: dinners, excursions, Jupiter-rise alarms.<br>
-        • Emergency response: medical bots, backup power, evacuation shuttles.<br>
-        Tink does not sleep. Tink does not need a vacation. Tink <em>is</em> the vacation infrastructure.
+        <strong>⬡ THE NITROGEN LOOP (LOCAL) ⬡</strong><br>
+        Crater dark material (NH₄⁺) → warm water leach → NH₃ gas → plasma crack → N₂ + 3H₂.<br>
+        N₂ fills the dome. H₂ recycled to Sabatier for methane/carbon. No import needed.
     </div>
 
-    <h2>Ⅵ. THE EARTHSHIP PORT</h2>
+    <!-- ========== SECTION 3: WARMING THE CRATER ========== -->
+    <h2>Ⅲ. WARM THE CRATER · HEAVY GASES</h2>
     <div class="step">
-        <div class="step-num">STEP 9 — Orbital staging point</div>
-        <p>Earthship does not land. It remains in a low Callisto orbit (≈1,880 km altitude). A small shuttle (AI Tink piloted) ferries tourists to the surface. The shuttle is a reusable, horizontal-landing vehicle with a pressurized cabin, 10–20 passenger capacity, 1-hour transit each way.</p>
-    </div>
-    <div class="step">
-        <div class="step-num">STEP 10 — The cruise itinerary</div>
-        <p>A typical 3‑day Callisto stop in a 60‑day Jovian cruise:</p>
-        <ul>
-            <li><strong>Day 1:</strong> Arrive at Callisto orbit. Evening lecture: "The Beaver Protocol and the Four Moons."</li>
-            <li><strong>Day 2:</strong> Shuttle down to Valhalla dome. Afternoon rover ride to Jupiter viewpoint. Suited walk on the ice (15 min). Dinner in dome (cooked in 1g Earthship kitchen, served on the surface).</li>
-            <li><strong>Day 3:</strong> Second shuttle down for ice cave tour. Return to Earthship by evening. Depart Callisto toward Ganymede flyby.</li>
-        </ul>
+        <div class="step-num">STEP 3 — Sulfur hexafluoride (SF₆) pool</div>
+        <p><strong>Why SF₆:</strong> Molecular weight 146, non‑toxic, non‑flammable, 23,500x more potent greenhouse than CO₂. Heavy enough to pool in Valhalla bowl (Callisto's 0.126g holds it).</p>
+        <p><strong>Synthesis on site:</strong> Fluorine from fluorapatite in impact debris + sulfur from troilite (FeS). No dangerous import. AI Tink operates the reactor.</p>
+        <p><strong>Result:</strong> Local greenhouse warming. Crater floor temperature rises from 134 K to ~240 K (-33°C) — cold, but manageable with suits and heated rovers.</p>
     </div>
 
-    <h2>Ⅶ. RESOURCE AUDIT (E=1)</h2>
+    <div class="step">
+        <div class="step-num">STEP 4 — Radioisotope thermal floor</div>
+        <p><strong>No shallow geothermal (dead ice shell).</strong> Instead: Bury the Kilopower reactor or radioisotope thermal source directly beneath the dome. Radioactive decay provides centuries of passive heat — warming the dome floor, melting ice for water, powering the entire port.</p>
+    </div>
+
+    <!-- ========== SECTION 4: LANDING TOWER ========== -->
+    <h2>Ⅳ. THE ELEVATED LANDING NODE</h2>
+    <div class="step">
+        <div class="step-num">STEP 5 — The pillar</div>
+        <p><strong>Problem:</strong> Shuttle thrusters would blow away the SF₆ pool.<br>
+        <strong>Solution:</strong> A 100 m tall tower, printed from regolith‑carbon composite, anchored in the crater floor. The shuttle docks at the top — in vacuum, above the gas layer.</p>
+        <p>Passengers descend via a pressurized elevator. The shaft is sealed. The SF₆ never escapes. The greenhouse gas pool remains untouched for centuries.</p>
+    </div>
+
+    <!-- ========== SECTION 5: EXCURSIONS ========== -->
+    <h2>Ⅴ. OUTDOOR EXCURSIONS · JUPITER RISE</h2>
+    <div class="step">
+        <div class="step-num">STEP 6 — Rovers and viewpoints</div>
+        <p>Pressurized, heated rovers carry tourists from the dome to the crater rim. Suited walks (15–20 min) at designated viewpoints. The main attraction: Jupiter rising over the Valhalla ice field, four times larger than Earth's moon, striped and storming.</p>
+        <p><strong>Safety:</strong> Radiation dose for a 3‑day stay: ~0.03 rem. Negligible. No shielding needed beyond the rover's light hull.</p>
+    </div>
+
+    <!-- ========== SECTION 6: EARTHSHIP ORBIT ========== -->
+    <h2>Ⅵ. THE EARTHSHIP · 1G HAVEN</h2>
+    <div class="step">
+        <div class="step-num">STEP 7 — Orbital port</div>
+        <p>The Earthship remains in low Callisto orbit (≈1,880 km altitude, 16.7‑day period). Spinning for 1g. Gardens, pools, staterooms. The cruise lasts 60 days: Ganymede flyby, Europa observation, Io plasma show, Titan immersion, and a 3‑day stop at Callisto.</p>
+        <p><strong>Shuttle:</strong> Reusable, AI Tink piloted, 20 passengers. One‑hour transit. Docks to the tower. No crew exposure to landing hazards.</p>
+    </div>
+
+    <!-- ========== SECTION 7: AI TINK ========== -->
+    <h2>Ⅶ. AI TINK · THE INVISIBLE SOVEREIGN</h2>
+    <div class="glass-box">
+        <strong>⬡ TINK'S DOMAIN ⬡</strong><br>
+        • Atmosphere composition (N₂, O₂, trace CO₂, SF₆ containment)<br>
+        • Thermal management (radioisotope floor, waste heat distribution)<br>
+        • Nitrogen plasma cracker operation<br>
+        • Rover charging, elevator maintenance, airlock cycles<br>
+        • Emergency response (medical bots, backup power, evacuation)<br>
+        • Passenger scheduling: meals, excursions, Jupiter‑rise alarms<br>
+        Tink does not sleep. Tink does not extract. Tink <em>enables</em>. The human never sees Tink — only the working world.
+    </div>
+
+    <!-- ========== E=1 AUDIT TABLE ========== -->
+    <h2>Ⅷ. RESOURCE AUDIT · E=1</h2>
     <table>
         <thead>
-            <tr><th>Resource</th><th>Source</th><th>Extraction method</th><th>Is the node preserved?</th></tr>
+            <tr><th>Resource</th><th>Source</th><th>Extraction Method</th><th>Node Preserved?</th></tr>
         </thead>
         <tbody>
-            <tr><td>Nitrogen (buffer gas)</td><td>Crater dark material (NH₄⁺)</td><td>Leach + base + plasma crack</td><td>Yes (surface debris is abundant, not deep‑mined)</td></tr>
-            <tr><td>Oxygen</td><td>Water ice</td><td>Electrolysis (power from solar + geothermal)</td><td>Yes (ice is replenished by natural sublimation cycles)</td></tr>
-            <tr><td>Water</td><td>Surface ice, subsurface ocean</td><td>Sublimation (heated plates) + shallow boreholes</td><td>Yes (no deep drilling, no aquifer depletion)</td></tr>
-            <tr><td>Carbon (for composites)</td><td>CO₂ ice + H₂ from electrolysis</td><td>Sabatier → CH₄ → Pyrolysis</td><td>Yes (closed loop)</td></tr>
-            <tr><td>Heat</td><td>Geothermal gradient + reactor waste heat</td><td>Heat pipes + passive convection</td><td>Yes (no extraction, just gradient harvesting)</td></tr>
-            <tr><td>Radiation safety</td><td>Callisto's own orbit</td><td>None (the moon is naturally shielded)</td><td>Yes (humans visit for days, not years)</td></tr>
+            <tr><td>Nitrogen (buffer gas)</td><td>Crater dark material (NH₄⁺)</td><td>Leach + base + plasma crack</td><td>Yes (surface debris, not deep‑mined)</td></tr>
+            <tr><td>Oxygen</td><td>Water ice</td><td>Electrolysis (radioisotope power)</td><td>Yes (ice sublimation cycles, replenished)</td></tr>
+            <tr><td>Water</td><td>Surface ice / borehole melt</td><td>Passive melt from radioisotope floor</td><td>Yes (no aquifer depletion)</td></tr>
+            <tr><td>SF₆ greenhouse gas</td><td>Local fluorapatite + troilite</td><td>On‑site synthesis, no import</td><td>Yes (closed loop, crater pool)</td></tr>
+            <tr><td>Heat</td><td>Radioisotope decay</td><td>Passive, centimeters beneath dome</td><td>Yes (no drilling, no extraction)</td></tr>
+            <tr><td>Radiation safety</td><td>Callisto's orbit</td><td>None needed for short stays</td><td>Yes (visits ≤ 3 days)</td></tr>
         </tbody>
     </table>
 
-    <div class="glass-box" style="border-left-color: var(--bright);">
-        <strong>⬡ THE BEAVER PROTOCOL ON CALLISTO ⬡</strong><br>
-        • Place the dome. Let the ice insulate.<br>
-        • Place the SF₆. Let the crater warm.<br>
-        • Place the ammonium leach. Let the nitrogen flow.<br>
-        • Place the geothermal tap. Let the heat rise.<br>
-        • Place AI Tink. Let the tourists arrive.<br>
-        • Place the Earthship in orbit. Let the cruise continue.
-    </div>
-
-    <hr>
-
+    <!-- ========== RECEIPT ========== -->
     <div class="receipt">
-        <strong>RECEIPT · THE VACATION MOON SYSTEM</strong><br>
+        <strong>⬡ THE VACATION MOON SYSTEM · RECEIPT ⬡</strong><br>
         We did not terraform Callisto. We terraformed <em>a crater</em>.<br>
         We did not build a colony. We built a <em>port of call</em>.<br>
         We did not extract resources. We <em>used gradients</em>.<br>
         We did not sacrifice human health. We preserved it in the Earthship.<br>
-        The work continues. The cruise departs. Tink manages. Enough.
+        The four moons (Callisto, Ganymede, Europa, Io) form the cruise itinerary.<br>
+        AI Tink manages. The elevator descends. Jupiter rises. Enough.
     </div>
 
-    <div style="text-align: center; margin-top: 2rem; font-family: monospace; font-size: 0.6rem; color: var(--dim);">
-        PWNTECHX · E=1 · 960 SEAL · THE FOUR MOONS · AI TINK
-    </div>
+    <footer>
+        PWNTECHX · E=1 · 960 SEAL · THE FOUR MOONS · AI TINK · CRUISE DEPARTS 2089
+    </footer>
 </div>
 </body>
 </html>
