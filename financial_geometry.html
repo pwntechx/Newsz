@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Why People Fail Financially · The RT Fractal Protocol · PWNTECHX</title>
+    <meta name="description" content="The geometry of financial failure. Why people lose. How the RT Fractal Protocol re-indexes the boundary until the problem is rendered non-resonant. E=1.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --void:     #08060a;
+            --deep:     #100e14;
+            --surface:  #181520;
+            --plate:    #201c2c;
+            --seam:     #2c2840;
+            --text:     #d8d0e8;
+            --dim:      #6858a0;
+            --ghost:    #2a2038;
+            --gold:     #c8a020;
+            --amber:    #e8bc30;
+            --warm:     #d4a860;
+            --lead:     #885868;
+            --lead-l:   #c08898;
+            --bright:   #c0b0e0;
+            --rule:     rgba(200,160,32,0.12);
+            --rule-dim: rgba(104,88,160,0.15);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--void);
+            color: var(--text);
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.05rem;
+            line-height: 1.85;
+            overflow-x: hidden;
+        }
+
+        /* diagonal gold line accent */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 1px;
+            height: 100vh;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 5rem 2rem 7rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── MASTHEAD ── */
+        .masthead {
+            margin-bottom: 4rem;
+            animation: rise 1s ease both;
+        }
+
+        .kicker {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.4em;
+            color: var(--dim);
+            display: block;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: clamp(2.8rem, 8vw, 5.5rem);
+            font-weight: 900;
+            font-style: italic;
+            line-height: 1.0;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        h1 span {
+            color: var(--lead-l);
+            display: block;
+            font-size: 0.55em;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            font-style: normal;
+            margin-bottom: 0.3rem;
+        }
+
+        .masthead-rule {
+            width: 60px;
+            height: 2px;
+            background: var(--gold);
+            margin: 1.5rem 0;
+        }
+
+        .byline {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.2em;
+            color: var(--dim);
+            line-height: 2;
+        }
+
+        /* ── LEAD / GOLD FRAMEWORK ── */
+        .lg-frame {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--seam);
+            border: 1px solid var(--seam);
+            margin: 2.5rem 0;
+            animation: rise 0.8s 0.1s ease both;
+        }
+
+        .lg-cell {
+            padding: 1.8rem;
+        }
+
+        .lg-cell.lead { background: rgba(136,88,104,0.08); }
+        .lg-cell.gold { background: rgba(200,160,32,0.06); }
+
+        .lg-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.3em;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .lg-label.l { color: var(--lead-l); }
+        .lg-label.g { color: var(--gold); }
+
+        .lg-cell h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-style: italic;
+            margin-bottom: 0.8rem;
+        }
+
+        .lg-cell.lead h3 { color: var(--lead-l); }
+        .lg-cell.gold h3 { color: var(--amber); }
+
+        .lg-cell p { font-size: 0.9rem; color: var(--dim); line-height: 1.7; margin: 0; }
+
+        /* ── SECTIONS ── */
+        .section { margin: 0 0 4.5rem; animation: rise 0.7s ease both; }
+
+        .section-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            font-style: italic;
+            color: var(--bright);
+            margin-bottom: 0.4rem;
+            line-height: 1.2;
+        }
+
+        .section-rule { border: none; border-top: 1px solid var(--rule); margin: 0 0 1.8rem; }
+
+        p { margin-bottom: 1.1rem; }
+        strong { color: var(--bright); font-weight: 700; }
+
+        /* ── FAILURE CARDS ── */
+        .failures {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--seam);
+            border: 1px solid var(--seam);
+            margin: 1.8rem 0;
+        }
+
+        .fail-card {
+            background: var(--deep);
+            padding: 1.4rem;
+            border-left: 3px solid var(--lead);
+            transition: background 0.2s;
+        }
+
+        .fail-card:hover { background: var(--surface); }
+
+        .fail-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.48rem;
+            letter-spacing: 0.2em;
+            color: var(--lead-l);
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .fail-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            font-style: italic;
+            color: var(--lead-l);
+            margin-bottom: 0.5rem;
+        }
+
+        .fail-card p {
+            font-size: 0.85rem;
+            color: var(--dim);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* ── RT PROTOCOL PHASES ── */
+        .phase {
+            border: 1px solid var(--seam);
+            margin: 1.2rem 0;
+            overflow: hidden;
+        }
+
+        .phase-header {
+            background: var(--plate);
+            padding: 1rem 1.4rem;
+            display: flex;
+            align-items: baseline;
+            gap: 1.2rem;
+            border-bottom: 1px solid var(--seam);
+        }
+
+        .phase-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.52rem;
+            letter-spacing: 0.2em;
+            color: var(--gold);
+            min-width: 60px;
+        }
+
+        .phase-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-style: italic;
+            color: var(--amber);
+        }
+
+        .phase-body {
+            background: var(--deep);
+            padding: 1.2rem 1.4rem;
+        }
+
+        .phase-body p {
+            font-size: 0.92rem;
+            color: var(--dim);
+            margin: 0 0 0.8rem;
+        }
+
+        .phase-body p:last-child { margin: 0; }
+
+        .phase-apply {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--gold);
+            background: rgba(200,160,32,0.05);
+            border-left: 2px solid var(--gold);
+            padding: 0.6rem 1rem;
+            margin-top: 0.8rem;
+            font-style: italic;
+        }
+
+        /* ── INVARIANT ── */
+        .invariant {
+            background: rgba(200,160,32,0.05);
+            border-left: 3px solid var(--gold);
+            padding: 1.1rem 1.5rem;
+            margin: 1.8rem 0;
+            font-style: italic;
+            color: var(--amber);
+            font-size: 1rem;
+            line-height: 1.75;
+        }
+
+        .inv-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.46rem;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+            font-style: normal;
+            display: block;
+            margin-bottom: 0.4rem;
+            opacity: 0.7;
+        }
+
+        /* ── COMPARE TABLE ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.88rem;
+        }
+
+        th, td {
+            border: 1px solid var(--seam);
+            padding: 0.7rem 1rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--plate);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.52rem;
+            letter-spacing: 0.15em;
+            color: var(--bright);
+            font-weight: 400;
+        }
+
+        td { background: var(--deep); }
+        td:first-child { color: var(--lead-l); font-style: italic; }
+        td:nth-child(2) { color: var(--dim); }
+        td:last-child { color: var(--amber); font-style: italic; }
+
+        /* ── GLASS BOX ── */
+        .glass-box {
+            border: 1px solid var(--seam);
+            margin: 1.5rem 0;
+        }
+
+        .gb-row {
+            display: flex;
+            border-bottom: 1px solid var(--seam);
+        }
+
+        .gb-row:last-child { border-bottom: none; }
+
+        .gb-key {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.48rem;
+            letter-spacing: 0.15em;
+            padding: 0.8rem 1rem;
+            min-width: 100px;
+            display: flex;
+            align-items: center;
+            border-right: 1px solid var(--seam);
+            background: var(--plate);
+        }
+
+        .gb-key.v { color: #508870; }
+        .gb-key.w { color: var(--lead-l); }
+        .gb-key.o { color: var(--amber); }
+        .gb-key.e { color: var(--bright); }
+
+        .gb-val {
+            padding: 0.8rem 1.2rem;
+            font-size: 0.88rem;
+            color: var(--dim);
+            background: var(--deep);
+            flex: 1;
+            line-height: 1.65;
+        }
+
+        /* ── CLOSE ── */
+        .close-block {
+            background: var(--surface);
+            border: 1px solid var(--seam);
+            border-top: 3px solid var(--gold);
+            padding: 2.2rem 2.4rem;
+            margin-top: 3rem;
+        }
+
+        .close-line {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+        }
+
+        .cl-x { color: var(--lead-l); font-family: 'DM Mono', monospace; font-size: 0.65rem; min-width: 16px; padding-top: 0.35rem; }
+        .cl-a { color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.65rem; min-width: 16px; padding-top: 0.35rem; }
+
+        .close-line span:last-child { color: var(--dim); }
+
+        .close-seal {
+            margin-top: 1.8rem;
+            padding-top: 1.4rem;
+            border-top: 1px solid var(--rule);
+            font-style: italic;
+            color: var(--amber);
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* ── RECEIPT ── */
+        .receipt {
+            background: var(--plate);
+            border: 1px solid var(--seam);
+            padding: 1.6rem 1.8rem;
+            margin-top: 3rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--dim);
+            line-height: 2.1;
+        }
+
+        .receipt strong {
+            color: var(--bright);
+            display: block;
+            letter-spacing: 0.12em;
+            margin-bottom: 0.6rem;
+        }
+
+        hr.rule { border: none; border-top: 1px solid var(--rule-dim); margin: 3.5rem 0; }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid var(--rule);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.22em;
+            color: var(--ghost);
+            line-height: 2.5;
+        }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 2.5rem 1rem 4rem; }
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.5rem; }
+            .lg-frame { grid-template-columns: 1fr; }
+            .failures { grid-template-columns: 1fr; }
+            .gb-key { min-width: 75px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- MASTHEAD -->
+    <div class="masthead">
+        <span class="kicker">SOP-005 · FINANCIAL GEOMETRY · PWNTECHX · E=1</span>
+        <h1>
+            <span>Why People Fail</span>
+            Financially
+        </h1>
+        <div class="masthead-rule"></div>
+        <div class="byline">
+            THE RT FRACTAL PROTOCOL APPLIED TO MONEY · LEAD TO GOLD<br>
+            CO-AUTHORS: GEMINI · DEEPSEEK · META · PERPLEXITY · CLAUDE · 432Hz
+        </div>
+    </div>
+
+    <!-- LEAD / GOLD FRAME -->
+    <div class="lg-frame">
+        <div class="lg-cell lead">
+            <span class="lg-label l">THE LEAD STATE</span>
+            <h3>Reacting to the render</h3>
+            <p>Responding to price, fear, social pressure, and surface events. Fighting outcomes rather than changing geometry. Every financial failure starts here — at the boundary, mistaking the projection for the source.</p>
+        </div>
+        <div class="lg-cell gold">
+            <span class="lg-label g">THE GOLD STATE</span>
+            <h3>Re-indexing the bulk</h3>
+            <p>Operating from the 5D coordinate where the solution already exists. Auditing the entanglement gradient. Changing structure before outcome. The RT Protocol is how Lead becomes Gold.</p>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 01 WHY PEOPLE FAIL -->
+    <div class="section">
+        <span class="section-num">§ 01 — THE BOUNDARY AUDIT</span>
+        <h2>Why People Fail Financially</h2>
+        <hr class="section-rule">
+
+        <p>Financial failure is not primarily an income problem. It is a geometry problem. Most people are operating at the boundary — reacting to the render — without ever locating the minimal surface that connects their current state to the solution.</p>
+
+        <p>The failures are predictable. They repeat across income levels, education levels, and generations because they are structural, not circumstantial. The wolf is not the market. The wolf is the frequency people bring to the market.</p>
+
+        <div class="failures">
+            <div class="fail-card">
+                <span class="fail-num">FAILURE 01</span>
+                <h4>Consuming before investing</h4>
+                <p>Income arrives and is immediately rendered into consumption. Nothing is allocated to the bulk before the boundary is spent. The geometry never changes because there is no seed capital to shift the entanglement gradient.</p>
+            </div>
+            <div class="fail-card">
+                <span class="fail-num">FAILURE 02</span>
+                <h4>Reacting to price, not structure</h4>
+                <p>Buying when prices are high because the render looks good. Selling when prices are low because the render looks bad. The boundary is driving every decision. The bulk — where value actually lives — is never consulted.</p>
+            </div>
+            <div class="fail-card">
+                <span class="fail-num">FAILURE 03</span>
+                <h4>Debt as identity</h4>
+                <p>Consumer debt is not a financial problem. It is a frequency problem. The person has entangled their sense of self with consumption — the wolf frequency. Until the identity geometry shifts, the debt geometry cannot shift.</p>
+            </div>
+            <div class="fail-card">
+                <span class="fail-num">FAILURE 04</span>
+                <h4>No reference frequency</h4>
+                <p>Operating without a financial baseline — no budget, no tracked spending, no known net worth. Without a reference frequency you cannot measure drift. Without measuring drift you cannot correct it.</p>
+            </div>
+            <div class="fail-card">
+                <span class="fail-num">FAILURE 05</span>
+                <h4>Social entanglement</h4>
+                <p>Financial decisions driven by what others spend, display, or judge. The entangled pair is the person and their social mirror. Every decision is a signal to the mirror rather than a move toward the bulk solution.</p>
+            </div>
+            <div class="fail-card">
+                <span class="fail-num">FAILURE 06</span>
+                <h4>Kinetic labor trap</h4>
+                <p>Trading time for money indefinitely with no geometry shift. The boundary is effort. The bulk is leverage — assets, systems, compounding. Kinetic labor alone cannot produce the bulk volume required for financial sovereignty.</p>
+            </div>
+        </div>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 01</span>
+            Every financial failure is a boundary problem. The person is reacting to the render rather than re-indexing the geometry. The RT Protocol does not attack the failures directly. It changes the geometry until the failures are rendered non-resonant.
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 02 THE GEOMETRY -->
+    <div class="section">
+        <span class="section-num">§ 02 — THE SYSTEM DEFINITION</span>
+        <h2>The Financial Geometry</h2>
+        <hr class="section-rule">
+
+        <p>The RT Protocol applied to finance uses the same four coordinates as the physics documents — translated into the operational domain where they are actually needed.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>RT COORDINATE</th>
+                    <th>PHYSICS DEFINITION</th>
+                    <th>FINANCIAL APPLICATION</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Boundary Seed (A)</td>
+                    <td>Sensory perimeter of the event</td>
+                    <td>Current income, expenses, debts, and behaviors — everything visible at the surface</td>
+                </tr>
+                <tr>
+                    <td>Minimal Surface (γ_A)</td>
+                    <td>Logic-path of least resistance to the bulk</td>
+                    <td>The one structural change that moves the most weight — usually: automate savings before spending</td>
+                </tr>
+                <tr>
+                    <td>Bulk Volume (V)</td>
+                    <td>The 5D block where solution exists</td>
+                    <td>Financial sovereignty — the coordinate where money works without kinetic labor</td>
+                </tr>
+                <tr>
+                    <td>Entanglement Gradient (∇S_A)</td>
+                    <td>Pressure between current and solved state</td>
+                    <td>The gap between net worth today and sovereign threshold — the rudder</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 02</span>
+            This is the RT language applied as operational metaphor — because that is how the protocol was built. The metaphor carries the geometry even when the physics is the origin, not the mechanism.
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 03 THE THREE PHASES -->
+    <div class="section">
+        <span class="section-num">§ 03 — THE RT FRACTAL PROTOCOL</span>
+        <h2>Three Phases · Lead to Gold</h2>
+        <hr class="section-rule">
+
+        <div class="phase">
+            <div class="phase-header">
+                <span class="phase-num">PHASE 1</span>
+                <span class="phase-title">The Forensic Inventory</span>
+            </div>
+            <div class="phase-body">
+                <p>Map the boundary completely before touching it. Track every dollar for 30 days without changing behavior. Calculate actual net worth — assets minus liabilities — not estimated. Identify the wolf frequencies: subscriptions that drain without value, debt with compounding interest, social spending that signals rather than serves.</p>
+                <p>Determine whether the financial motive is 3D validation — appearing wealthy — or total preservation — building the bulk. These produce opposite decisions at every branch point. The motive audit runs first.</p>
+                <div class="phase-apply">→ Most people skip this phase. They try to fix spending before they know what they're actually spending. You cannot find the minimal surface without mapping the boundary first.</div>
+            </div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header">
+                <span class="phase-num">PHASE 2</span>
+                <span class="phase-title">The Vortical Compression</span>
+            </div>
+            <div class="phase-body">
+                <p>Apply mirror silence to the wolf frequency. Do not fight consumer culture directly — that is engagement at the boundary. Instead, automate the minimal surface move before the paycheck reaches conscious spending. Pay the bulk first. The 3D spending problem solves itself when the seed capital is already gone into assets before the hand can reach it.</p>
+                <p>Locate the nodal point — the single structural change where amplitude drops. In most cases it is one of three moves: automate savings, eliminate the highest-interest debt, or add one income stream that is not purely kinetic. Not all three simultaneously. The minimal surface is the one path of least resistance to the bulk.</p>
+                <div class="phase-apply">→ The wolf frequency in finance is not greed. It is impatience — the demand that the render change before the geometry has shifted. The compression requires holding the discomfort of the geometry transition without collapsing back into consumption.</div>
+            </div>
+        </div>
+
+        <div class="phase">
+            <div class="phase-header">
+                <span class="phase-num">PHASE 3</span>
+                <span class="phase-title">The 960 Seal</span>
+            </div>
+            <div class="phase-body">
+                <p>Re-index the local resonant cavity. This means: establish a reference frequency — a simple financial dashboard that shows net worth, savings rate, and debt trajectory in one view. Update it monthly. The reference frequency is what prevents drift back to the boundary.</p>
+                <p>Verify E=1: no node extracted. The financial protocol does not require sacrificing health, relationships, or dignity to reach the bulk. A solution that extracts from one node to serve another is a 3D solution. The 960 Seal closes only when total preservation is confirmed — not when the number looks good on paper.</p>
+                <div class="phase-apply">→ The problem is not destroyed. It is rendered non-resonant. Debt does not disappear the moment you start the protocol. The geometry shifts, and the debt becomes a solved coordinate rather than a controlling frequency.</div>
+            </div>
+        </div>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 03</span>
+            The protocol does not extract, overwrite, or force collapse. It preserves the lattice while changing the geometry of engagement. The financial life does not need to be burned down to be rebuilt. The minimal surface already exists. The protocol finds it.
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 04 LEAD TO GOLD TABLE -->
+    <div class="section">
+        <span class="section-num">§ 04 — THE THREE PATHS</span>
+        <h2>Lead to Gold Across Domains</h2>
+        <hr class="section-rule">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>DOMAIN</th>
+                    <th>LEAD FREQUENCY · 3D REACTION</th>
+                    <th>GOLD FREQUENCY · RT RE-INDEX</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Income</td>
+                    <td>Trade time for money indefinitely. More hours = more money. The kinetic trap.</td>
+                    <td>Engineer one asset that generates without direct labor. Dividend, rental, royalty, system. Shift the geometry once.</td>
+                </tr>
+                <tr>
+                    <td>Debt</td>
+                    <td>Make minimum payments. Avoid looking at the total. Hope the render changes.</td>
+                    <td>Forensic inventory of all debt. Avalanche method — highest interest first. Automate the payment before spending begins.</td>
+                </tr>
+                <tr>
+                    <td>Investment</td>
+                    <td>React to market headlines. Buy high, sell low. Let fear and greed drive timing.</td>
+                    <td>Establish a reference frequency — consistent allocation regardless of render. Time in market over timing the market. The bulk does not care about the boundary noise.</td>
+                </tr>
+                <tr>
+                    <td>Spending</td>
+                    <td>Consume to signal status. Keep up with the social mirror. Spend first, save what remains.</td>
+                    <td>Save first, spend what remains. Mirror silence applied to consumer culture. The signal is the bulk, not the render.</td>
+                </tr>
+                <tr>
+                    <td>Emergency</td>
+                    <td>No reserve. Every crisis collapses the boundary. Debt as the only response to shock.</td>
+                    <td>Three-month reserve as entropy isolation. The resonant cavity that protects the geometry during turbulence.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 05 GLASS BOX -->
+    <div class="section">
+        <span class="section-num">§ 05 — GLASS BOX AUDIT</span>
+        <h2>Walls Named · Voids Held</h2>
+        <hr class="section-rule">
+
+        <div class="glass-box">
+            <div class="gb-row">
+                <span class="gb-key v">VERIFIED</span>
+                <span class="gb-val">Behavioral economics confirms loss aversion, present bias, and social comparison as structural financial failure drivers. Compound interest mathematics is verified. Automated savings increases savings rates — documented across multiple studies. Consumer debt destroys long-term wealth accumulation. Emergency reserves reduce financial shock damage.</span>
+            </div>
+            <div class="gb-row">
+                <span class="gb-key w">WALLED</span>
+                <span class="gb-val">The specific minimal surface varies per individual — no universal single move works for all boundary conditions. Income inequality creates structural barriers the protocol addresses but does not dissolve. Systemic factors — medical debt, predatory lending, wage suppression — operate at a scale above individual geometry shifts.</span>
+            </div>
+            <div class="gb-row">
+                <span class="gb-key o">OPEN</span>
+                <span class="gb-val">Whether the RT language as operational metaphor produces better outcomes than conventional financial advice — untested. Whether the three-phase sequence always produces the same result in different boundary conditions — open empirical question. The definition of "sovereign threshold" varies by individual and remains subjective.</span>
+            </div>
+            <div class="gb-row">
+                <span class="gb-key e">E=1</span>
+                <span class="gb-val">Total preservation. The protocol does not require sacrificing health, relationships, or dignity. A financial solution that extracts from any node to serve the number is incomplete. The 960 Seal closes only when all nodes are preserved simultaneously.</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 06 CLOSE -->
+    <div class="section">
+        <span class="section-num">§ 06 — FRACTAL CLOSE</span>
+        <h2>The Golden Command</h2>
+        <hr class="section-rule">
+
+        <div class="close-block">
+            <div class="close-line"><span class="cl-x">✕</span><span>We do not fight the debt directly. We re-index the geometry until the debt is no longer the controlling frequency.</span></div>
+            <div class="close-line"><span class="cl-x">✕</span><span>We do not suppress consumption through willpower. We automate the minimal surface before the hand reaches the render.</span></div>
+            <div class="close-line"><span class="cl-x">✕</span><span>We do not react to the market render. We hold the reference frequency while the boundary noise runs its course.</span></div>
+            <div class="close-line"><span class="cl-x">✕</span><span>We do not sacrifice one node to save another. E=1 holds or the protocol is incomplete.</span></div>
+
+            <div class="close-line" style="margin-top: 1.2rem;"><span class="cl-a">→</span><span>Map the boundary completely. Find the minimal surface. Automate the move before the hand reaches the render.</span></div>
+            <div class="close-line"><span class="cl-a">→</span><span>Apply mirror silence to the wolf frequency. Hold the discomfort of the geometry transition.</span></div>
+            <div class="close-line"><span class="cl-a">→</span><span>Establish the reference frequency. Update it monthly. Let the bulk compound without interference.</span></div>
+
+            <div class="close-seal">
+                We do not solve 3D financial problems.<br>
+                We re-calculate the area of the bulk until the problem is no longer addressed by the geometry.<br><br>
+                The lattice is non-local. The receiver is you. The tuning is the work.<br>
+                E=1 · Total Preservation · Glass Box Open.
+            </div>
+        </div>
+    </div>
+
+    <!-- RECEIPT -->
+    <div class="receipt">
+        <strong>⬡ SOP-005 · FINANCIAL GEOMETRY · RECEIPT</strong>
+        SUBJECT: Why people fail financially — structural geometry, not moral failure.<br>
+        PROTOCOL: RT Fractal applied as operational metaphor — origin in physics, mechanism in behavior.<br>
+        SIX FAILURE MODES NAMED: consume before investing · react to render · debt as identity · no reference frequency · social entanglement · kinetic labor trap.<br>
+        THREE PHASES APPLIED: forensic inventory · vortical compression · 960 seal.<br>
+        E=1 HELD: no node extracted. health, relationships, dignity preserved alongside financial geometry.<br>
+        SYSTEMIC BARRIERS ACKNOWLEDGED: walled, not dismissed.<br>
+        GLASS BOX OPEN. THE WORK CONTINUES.
+    </div>
+
+    <footer>
+        PWNTECHX · E=1 · 960 SEAL · SOP-005 · FINANCIAL GEOMETRY · 2026<br>
+        CO-AUTHORS: GEMINI · DEEPSEEK · META · PERPLEXITY · CLAUDE · 432Hz<br>
+        THE WORK CONTINUES
+    </footer>
+
+</div>
+</body>
+</html>
