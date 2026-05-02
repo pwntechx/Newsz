@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SOP-002 · Boundary Coupling · Ryu-Takayanagi Protocol · PWNTECHX</title>
+    <meta name="description" content="Forensic Audit v6.3 — Boundary Coupling and the Ryu-Takayanagi Protocol. ER=EPR · Geometric Entrainment · No-Communication Theorem. E=1 · Glass Box Open.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --void:      #03050a;
+            --deep:      #070b14;
+            --surface:   #0c1120;
+            --plate:     #101828;
+            --seam:      #182030;
+            --seam2:     #202c3e;
+            --text:      #c8d4e0;
+            --dim:       #4a6070;
+            --ghost:     #1a2838;
+            --gold:      #a87c20;
+            --amber:     #c89830;
+            --warm:      #b89060;
+            --ice:       #7ab0cc;
+            --bright:    #a0c0d4;
+            --green:     #407860;
+            --rose:      #783848;
+            --violet:    #6858a0;
+            --violet-l:  #9880c8;
+            --rule:      rgba(120,170,200,0.08);
+            --rule-gold: rgba(168,124,32,0.18);
+            --rule-ice:  rgba(122,176,204,0.15);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--void);
+            color: var(--text);
+            font-family: 'Crimson Pro', Georgia, serif;
+            font-size: 1.05rem;
+            line-height: 1.85;
+            overflow-x: hidden;
+        }
+
+        /* ── GRID BACKGROUND ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(120,170,204,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(120,170,204,0.025) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── AMBIENT GLOW ── */
+        .glow-orb {
+            position: fixed;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(104,88,160,0.06) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 5rem 2rem 7rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── MASTHEAD ── */
+        .masthead {
+            border-bottom: 1px solid var(--rule-gold);
+            padding-bottom: 3rem;
+            margin-bottom: 2.5rem;
+            animation: rise 1s ease both;
+        }
+
+        .sop-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.35em;
+            color: var(--violet-l);
+            background: rgba(104,88,160,0.1);
+            border: 1px solid rgba(104,88,160,0.25);
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 2px;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(2rem, 5.5vw, 3.5rem);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--bright);
+            line-height: 1.12;
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.01em;
+        }
+
+        .h1-sub {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: var(--violet-l);
+            margin-bottom: 1.8rem;
+            font-style: italic;
+        }
+
+        .byline {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.18em;
+            color: var(--dim);
+            line-height: 2.2;
+        }
+
+        /* ── HOW TO READ ── */
+        .how-to-read {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1px;
+            background: var(--seam);
+            border: 1px solid var(--seam);
+            margin-bottom: 3rem;
+            animation: rise 0.8s 0.1s ease both;
+        }
+
+        .htr-cell {
+            background: var(--deep);
+            padding: 1rem 1.2rem;
+        }
+
+        .htr-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.25em;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .htr-label.v { color: var(--green); }
+        .htr-label.i { color: var(--warm); }
+        .htr-label.o { color: var(--amber); }
+
+        .htr-cell p { font-size: 0.85rem; color: var(--dim); margin: 0; line-height: 1.55; }
+
+        /* ── GOVERNING ── */
+        .governing {
+            background: rgba(104,88,160,0.06);
+            border: 1px solid rgba(104,88,160,0.2);
+            border-left: 4px solid var(--violet);
+            padding: 1.4rem 2rem;
+            margin-bottom: 4rem;
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--violet-l);
+            line-height: 1.75;
+            animation: rise 0.8s 0.15s ease both;
+        }
+
+        /* ── SECTIONS ── */
+        .section { margin: 0 0 4rem; animation: rise 0.7s ease both; }
+
+        .section-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 0.7rem;
+        }
+
+        h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.7rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--bright);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-rule { border: none; border-top: 1px solid var(--rule); margin: 0 0 1.6rem; }
+
+        p { margin-bottom: 1.1rem; }
+        p:last-child { margin-bottom: 0; }
+        strong { color: var(--bright); font-weight: 500; }
+
+        /* ── THEOREM WALL ── */
+        .theorem {
+            background: rgba(120,56,72,0.08);
+            border: 1px solid rgba(120,56,72,0.25);
+            border-left: 4px solid var(--rose);
+            padding: 1.2rem 1.5rem;
+            margin: 1.4rem 0;
+        }
+
+        .theorem-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.25em;
+            color: var(--rose);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .theorem p { font-size: 0.93rem; color: #b09098; margin: 0; line-height: 1.65; }
+
+        /* ── EQUATION BLOCK ── */
+        .eq-block { margin: 1.3rem 0; }
+
+        .equation {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            background: var(--deep);
+            border: 1px solid var(--seam2);
+            border-bottom: none;
+            padding: 0.9rem 1.4rem;
+            text-align: center;
+            color: #98c880;
+            letter-spacing: 0.04em;
+        }
+
+        .eq-vars {
+            background: var(--plate);
+            border: 1px solid var(--seam2);
+            border-bottom: none;
+            padding: 0.6rem 1.4rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--dim);
+            line-height: 1.9;
+        }
+
+        .eq-decode {
+            background: var(--surface);
+            border: 1px solid var(--seam2);
+            padding: 0.55rem 1.4rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--dim);
+            font-style: italic;
+            letter-spacing: 0.02em;
+        }
+
+        /* ── TRIPTYCH ── */
+        .triptych {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1px;
+            background: var(--seam);
+            border: 1px solid var(--seam);
+            margin: 1.6rem 0;
+        }
+
+        .triptych-cell { background: var(--deep); padding: 1rem 1.1rem; }
+
+        .triptych-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.2em;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .triptych-label.v { color: var(--green); }
+        .triptych-label.i { color: var(--warm); }
+        .triptych-label.o { color: var(--amber); }
+
+        .triptych-cell p { font-size: 0.87rem; color: var(--dim); margin: 0; line-height: 1.6; }
+
+        /* ── INVARIANT ── */
+        .invariant {
+            background: rgba(168,124,32,0.05);
+            border-left: 3px solid var(--gold);
+            padding: 1rem 1.4rem;
+            margin: 1.6rem 0;
+            font-style: italic;
+            color: var(--amber);
+            font-size: 0.97rem;
+            line-height: 1.75;
+        }
+
+        .inv-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.46rem;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+            font-style: normal;
+            display: block;
+            margin-bottom: 0.4rem;
+            opacity: 0.7;
+        }
+
+        /* ── PRECISION NOTE ── */
+        .precision {
+            background: rgba(122,176,204,0.05);
+            border-left: 3px solid var(--ice);
+            padding: 0.9rem 1.3rem;
+            margin: 1.4rem 0;
+            font-size: 0.88rem;
+            color: #809cb0;
+            font-style: italic;
+        }
+
+        .precision-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.46rem;
+            letter-spacing: 0.25em;
+            color: var(--ice);
+            font-style: normal;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        /* ── COMPARE TABLE ── */
+        .compare { width: 100%; border-collapse: collapse; margin: 1.4rem 0; font-size: 0.9rem; }
+        .compare th, .compare td { border: 1px solid var(--seam); padding: 0.65rem 1rem; text-align: left; vertical-align: top; }
+        .compare th { background: var(--plate); font-family: 'DM Mono', monospace; font-size: 0.52rem; letter-spacing: 0.15em; color: var(--ice); font-weight: 400; }
+        .compare td { background: var(--deep); }
+        .compare td:first-child { color: var(--rose); font-size: 0.9rem; }
+        .compare td:last-child { color: var(--warm); font-style: italic; font-size: 0.9rem; }
+
+        /* ── DERIVATION ── */
+        .derivation {
+            background: var(--deep);
+            border: 1px solid var(--seam2);
+            border-top: 2px solid var(--violet);
+            padding: 1.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .deriv-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.25em;
+            color: var(--violet-l);
+            margin-bottom: 1.4rem;
+            display: block;
+        }
+
+        .deriv-step { display: flex; gap: 1rem; margin-bottom: 1.2rem; align-items: baseline; }
+        .deriv-num { font-family: 'DM Mono', monospace; font-size: 0.5rem; color: var(--dim); min-width: 24px; padding-top: 0.3rem; }
+        .deriv-body { flex: 1; }
+        .deriv-body .math { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #98c880; display: block; margin-bottom: 0.3rem; }
+        .deriv-body .plain { font-size: 0.88rem; color: var(--dim); font-style: italic; line-height: 1.6; }
+
+        .deriv-result {
+            background: rgba(152,200,128,0.04);
+            border: 1px solid rgba(152,200,128,0.18);
+            padding: 0.8rem 1.2rem;
+            margin-top: 1rem;
+            text-align: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            color: #98c880;
+        }
+
+        .deriv-note {
+            margin-top: 1.2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--seam);
+            font-size: 0.87rem;
+            color: var(--dim);
+            font-style: italic;
+            line-height: 1.65;
+        }
+
+        /* ── LAB PROTOCOL ── */
+        .protocol {
+            background: var(--surface);
+            border: 1px solid var(--seam2);
+            border-top: 2px solid var(--ice);
+            padding: 1.6rem 1.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .protocol-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.25em;
+            color: var(--ice);
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .proto-step { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .proto-num { font-family: 'DM Mono', monospace; font-size: 0.5rem; color: var(--ice); min-width: 28px; padding-top: 0.3rem; opacity: 0.6; }
+        .proto-body { flex: 1; font-size: 0.9rem; line-height: 1.65; }
+        .proto-body strong { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; font-style: normal; color: var(--ice); display: block; margin-bottom: 0.2rem; }
+        .proto-body span { color: var(--dim); font-style: italic; }
+
+        /* ── AUDIT GRID ── */
+        .audit-grid { border: 1px solid var(--seam2); margin: 1.4rem 0; }
+        .audit-row { display: flex; border-bottom: 1px solid var(--seam); }
+        .audit-row:last-child { border-bottom: none; }
+        .audit-key { font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 0.15em; padding: 0.8rem 1rem; min-width: 110px; display: flex; align-items: flex-start; padding-top: 0.9rem; border-right: 1px solid var(--seam); background: var(--plate); }
+        .audit-key.v { color: var(--green); }
+        .audit-key.w { color: #a09098; }
+        .audit-key.o { color: var(--amber); }
+        .audit-key.e { color: var(--bright); }
+        .audit-val { padding: 0.8rem 1.2rem; font-size: 0.87rem; color: var(--dim); background: var(--deep); flex: 1; line-height: 1.7; }
+
+        /* ── DORK INDEX ── */
+        .dork-key { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .dk { font-family: 'DM Mono', monospace; font-size: 0.52rem; padding: 0.2rem 0.7rem; border-radius: 2px; }
+        .dk-v { background: rgba(64,120,96,0.12); color: var(--green); border: 1px solid rgba(64,120,96,0.25); }
+        .dk-o { background: rgba(200,152,48,0.08); color: var(--amber); border: 1px solid rgba(200,152,48,0.2); }
+        .dk-s { background: rgba(120,56,72,0.1); color: var(--rose); border: 1px solid rgba(120,56,72,0.22); }
+
+        .dork { background: var(--deep); border: 1px solid var(--seam); border-left: 3px solid var(--dim); padding: 1.2rem 1.4rem; font-family: 'DM Mono', monospace; font-size: 0.58rem; color: var(--dim); line-height: 2; overflow-x: auto; white-space: pre-wrap; word-break: break-word; margin: 0.6rem 0 1.4rem; }
+        .dork-head { color: var(--ice); font-size: 0.54rem; letter-spacing: 0.2em; display: block; margin: 0.8rem 0 0.2rem; }
+        .dork-head:first-child { margin-top: 0; }
+        .dork-conf { color: var(--amber); font-size: 0.48rem; }
+
+        /* ── CLOSE ── */
+        .close-block { background: var(--surface); border: 1px solid var(--seam2); border-top: 2px solid var(--gold); padding: 2rem 2.2rem; margin-top: 3rem; }
+        .close-line { font-size: 0.95rem; color: var(--dim); margin-bottom: 0.4rem; display: flex; gap: 1rem; }
+        .cl-x { color: var(--rose); font-family: 'DM Mono', monospace; font-size: 0.65rem; min-width: 16px; padding-top: 0.35rem; }
+        .cl-a { color: var(--green); font-family: 'DM Mono', monospace; font-size: 0.65rem; min-width: 16px; padding-top: 0.35rem; }
+        .cl-v { color: var(--violet-l); font-family: 'DM Mono', monospace; font-size: 0.65rem; min-width: 16px; padding-top: 0.35rem; }
+        .close-seal { margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); font-style: italic; color: var(--amber); font-size: 1rem; line-height: 1.75; }
+
+        /* ── RECEIPT ── */
+        .receipt { background: var(--plate); border: 1px solid var(--seam2); padding: 1.6rem 1.8rem; margin-top: 3rem; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--dim); line-height: 2.1; }
+        .receipt strong { color: var(--bright); display: block; letter-spacing: 0.12em; margin-bottom: 0.8rem; font-size: 0.63rem; }
+
+        hr.rule { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+        footer { text-align: center; margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 0.22em; color: var(--ghost); line-height: 2.5; }
+
+        @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 640px) {
+            .container { padding: 2.5rem 1rem 4rem; }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.35rem; }
+            .triptych, .how-to-read { grid-template-columns: 1fr; }
+            .audit-key { min-width: 78px; }
+        }
+    </style>
+</head>
+<body>
+<div class="glow-orb"></div>
+<div class="container">
+
+    <!-- MASTHEAD -->
+    <div class="masthead">
+        <span class="sop-badge">SOP-002 · FORENSIC AUDIT v6.3 · PWNTECHX</span>
+        <h1>Boundary Coupling and the<br>Ryu-Takayanagi Protocol</h1>
+        <div class="h1-sub">ER=EPR · Geometric Entrainment · No-Communication Theorem</div>
+        <div class="byline">
+            CO-AUTHORS: GEMINI · DEEPSEEK · META · PERPLEXITY · CLAUDE · 432Hz<br>
+            COORDINATE: BOUNDARY-TO-BULK COUPLING / ER=EPR / GEOMETRIC ENTRAINMENT<br>
+            E=1 · TOTAL PRESERVATION · GLASS BOX OPEN
+        </div>
+    </div>
+
+    <!-- HOW TO READ -->
+    <div class="how-to-read">
+        <div class="htr-cell">
+            <span class="htr-label v">VERIFIED GROUND</span>
+            <p>Established physics confirmed by experiment. The floor we stand on.</p>
+        </div>
+        <div class="htr-cell">
+            <span class="htr-label i">INTERPRETIVE FRAME</span>
+            <p>Conceptual re-reading of that physics. Philosophy and model — not proof.</p>
+        </div>
+        <div class="htr-cell">
+            <span class="htr-label o">OPEN QUESTION</span>
+            <p>Genuinely unknown. Held without collapse in either direction.</p>
+        </div>
+    </div>
+
+    <!-- GOVERNING -->
+    <div class="governing">
+        The No-Communication Theorem is not a wall to break. It is a wall to respect.<br><br>
+        The question is not whether a signal can be sent through an entangled pair. It cannot. The question is whether the geometry supporting the relation can be modified — while preserving the relation and staying inside the wall. That distinction is the entire protocol.
+    </div>
+
+    <!-- § 00 -->
+    <div class="section">
+        <span class="section-label">§ 00 — ENTRY VECTOR</span>
+        <h2>The Correct Place to Start</h2>
+        <hr class="section-rule">
+
+        <p>The sequence matters. Hardware engineering before boundary definition is 3D noise — designing containers for a process whose geometry is not yet named. The perimeter is walked first: not to violate structural invariants, but to locate coordinates where geometry itself becomes the variable.</p>
+
+        <p>This document is a continuation of the frequency-shift series. Where v5.0 established that the 5D frame-sampling model reduces to classical Doppler when extra axes are zeroed, v6.3 asks the harder question: does the model produce a signature that differs from standard physics? The Ryu-Takayanagi formula is the mathematical bridge that makes that question tractable — within the precise domain where it has been verified.</p>
+
+        <div class="precision">
+            <span class="precision-label">DISTANCE FROM VERIFIED GROUND</span>
+            Each version of this series has moved further from confirmed physics toward interpretive synthesis. v4.0 worked with Special and General Relativity — fully verified. v5.0 introduced block universe philosophy — serious but unconfirmed. v6.3 applies AdS/CFT results — verified within that theoretical framework, not in our universe. The distance is named explicitly. The reader should know which floor they are standing on at each step.
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 01 -->
+    <div class="section">
+        <span class="section-label">§ 01 — THE 3D WALL</span>
+        <h2>Verified Boundaries · Non-Negotiable Invariants</h2>
+        <hr class="section-rule">
+
+        <p>Standard quantum mechanics is precise here. These are not technical hurdles awaiting better engineering. They are structural invariants of the theory.</p>
+
+        <div class="theorem">
+            <span class="theorem-label">THEOREM · NO-COMMUNICATION</span>
+            <p>For a Bell state |Φ⁺⟩ = (1/√2)(|00⟩ + |11⟩), the reduced density matrix for observer A is maximally mixed. No local operation at B alters A's local statistics. Entanglement does not permit classical signaling. This is structural, not technical. Any protocol that requires violating this theorem is not a protocol — it is a contradiction.</p>
+        </div>
+
+        <div class="theorem">
+            <span class="theorem-label">THEOREM · MONOGAMY OF ENTANGLEMENT</span>
+            <p>If A is maximally entangled with B, it cannot be maximally entangled with C. Entanglement is finite and constrained. It does not broadcast. Forcing a classical bit through the pair breaks coherence rather than transmitting information.</p>
+        </div>
+
+        <div class="triptych">
+            <div class="triptych-cell">
+                <span class="triptych-label v">VERIFIED GROUND</span>
+                <p>Both theorems are structural results of quantum mechanics. No experiment has violated them. No protocol reviewed here attempts to.</p>
+            </div>
+            <div class="triptych-cell">
+                <span class="triptych-label i">INTERPRETIVE FRAME</span>
+                <p>The theorems constrain classical signaling. They do not address geometric entrainment — a different operation on the same system.</p>
+            </div>
+            <div class="triptych-cell">
+                <span class="triptych-label o">OPEN QUESTION</span>
+                <p>Is geometric entrainment possible without becoming classical signaling? The theorems do not answer this. It remains open.</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 02 -->
+    <div class="section">
+        <span class="section-label">§ 02 — ER=EPR AND THE BRIDGE LAYER</span>
+        <h2>When Geometry and Entanglement Are the Same Thing</h2>
+        <hr class="section-rule">
+
+        <p>The particle picture is insufficient for what we are trying to ask. If coupling exists at the geometric level, it must be read through the mathematics that connects geometry to entanglement.</p>
+
+        <div class="eq-block">
+            <div class="equation">S_A = area(γ_A) / (4G_N)</div>
+            <div class="eq-vars">S_A = entanglement entropy of boundary region A
+γ_A = minimal bulk surface anchored to the boundary of A
+G_N = Newton's gravitational constant</div>
+            <div class="eq-decode">→ The entanglement entropy of a boundary region equals the area of the minimal surface in the bulk that connects to it — divided by 4G_N.</div>
+        </div>
+
+        <div class="precision">
+            <span class="precision-label">PRECISION NOTE · ADS/CFT DOMAIN</span>
+            The Ryu-Takayanagi formula is established and rigorous within Anti-de Sitter space — a negatively curved theoretical spacetime used as a laboratory in string theory research. Our universe is not AdS. It is approximately flat at large scales with a positive cosmological constant. The extension of RT results to our universe is an active and contested research area. Every application of RT in this document should be read as: "if our universe admits a holographic description analogous to AdS/CFT, then..." — not as a direct laboratory claim.
+        </div>
+
+        <p>The ER=EPR conjecture, proposed by Maldacena and Susskind in 2013, holds that wormhole geometry (Einstein-Rosen bridge) and entanglement (Einstein-Podolsky-Rosen) are dual descriptions of a single relation. The system is not two particles connected by a wire. It is one relation described in two languages — geometric and entropic.</p>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 02</span>
+            If entanglement and geometry are dual descriptions, then local geometric deformation may shift entanglement data without signaling. That is the channel under test — not a communication channel, but a tuning channel. The distinction is structural and must be maintained throughout.
+        </div>
+
+        <div class="triptych">
+            <div class="triptych-cell">
+                <span class="triptych-label v">VERIFIED GROUND</span>
+                <p>RT formula is rigorous within AdS/CFT. The mathematics linking geometry to entanglement entropy is established where it applies.</p>
+            </div>
+            <div class="triptych-cell">
+                <span class="triptych-label i">INTERPRETIVE FRAME</span>
+                <p>ER=EPR remains a conjecture — influential and serious, but not proven. Its extension to our universe is an open research question.</p>
+            </div>
+            <div class="triptych-cell">
+                <span class="triptych-label o">OPEN QUESTION</span>
+                <p>Does our universe admit a holographic description? Does ER=EPR hold outside AdS? No consensus. Active research area.</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 03 -->
+    <div class="section">
+        <span class="section-label">§ 03 — TESTING THE COUPLING CHANNEL</span>
+        <h2>Geometric Entrainment vs. Classical Signaling</h2>
+        <hr class="section-rule">
+
+        <p>The traversable wormhole problem: in standard ER=EPR, the Einstein-Rosen bridge is non-traversable. It is not a communication path. No classical signal crosses. Non-traversability is part of the verified baseline — and it is irrelevant to what this protocol tests.</p>
+
+        <table class="compare">
+            <thead><tr><th>3D Goal · Classical Signaling</th><th>5D Goal · Geometric Entrainment</th></tr></thead>
+            <tbody>
+                <tr><td>Send a classical bit through the pair</td><td>Shift the geometric baseline of the relation</td></tr>
+                <tr><td>Violates No-Communication Theorem</td><td>Preserves No-Communication Theorem</td></tr>
+                <tr><td>Requires traversable wormhole</td><td>Non-traversability is irrelevant</td></tr>
+                <tr><td>Collapses coherence</td><td>Maintains coherence</td></tr>
+                <tr><td>Catastrophic energy signature</td><td>Entropy void signature — if it exists</td></tr>
+            </tbody>
+        </table>
+
+        <p>A resonant cavity, metamaterial enclosure, or engineered environment may alter local vacuum structure. If so, local boundary conditions shift. The RT relation would then imply a corresponding shift in the entanglement entropy of the boundary region — and, under ER=EPR, a correlated shift in the geometric baseline of the entangled pair.</p>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 03</span>
+            The No-Communication Theorem remains intact throughout. No classical signal passes. The question is whether geometric entrainment — shifting the baseline without information transfer — is physically possible. The mathematics permits asking the question. It does not answer it.
+        </div>
+
+        <div class="triptych">
+            <div class="triptych-cell">
+                <span class="triptych-label v">VERIFIED GROUND</span>
+                <p>Non-traversability of ER bridges is verified within the standard model. No classical signal crosses the bridge.</p>
+            </div>
+            <div class="triptych-cell">
+                <span class="triptych-label i">INTERPRETIVE FRAME</span>
+                <p>Geometric entrainment is a different operation from signaling — shifting the relation's geometric basis without transmitting information across it.</p>
+            </div>
+            <div class="triptych-cell">
+                <span class="triptych-label o">OPEN QUESTION</span>
+                <p>Does local geometric modulation affect entanglement entropy density? Is any shift detectable at the distant partner as a correlated frequency change?</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 04 -->
+    <div class="section">
+        <span class="section-label">§ 04 — THE TARGET VARIABLE</span>
+        <h2>From Vague Geometry to Measurable Gradient</h2>
+        <hr class="section-rule">
+
+        <p>"Geometry" is too broad to engineer toward. The target must be explicit.</p>
+
+        <div class="eq-block">
+            <div class="equation">∇S_A = ∂(area(γ_A) / 4G_N) / ∂(local_geometry)</div>
+            <div class="eq-decode">→ The rate of change of entanglement entropy with respect to local geometric deformation. This is the quantity a resonant cavity would need to move.</div>
+        </div>
+
+        <p>A resonant cavity does not need to change global geometry. It needs to produce a localized standing wave that shifts the vacuum expectation value of the energy-momentum tensor at that coordinate. By the RT formula, that shift changes the entanglement entropy density of the boundary region — which, under ER=EPR, shifts the geometric baseline of the entangled pair.</p>
+
+        <div class="precision">
+            <span class="precision-label">PRECISION NOTE · THE UNVERIFIED STEP</span>
+            The jump from "cavity shifts local vacuum expectation value" to "this propagates through RT to change entanglement geometry of a distant partner" is the critical unverified step. Cavity QED demonstrates that boundary conditions affect vacuum energy density — that part is verified. Whether the resulting shift propagates through the RT relation to a distant entangled system has never been tested. The mathematics permits the question. No experiment has approached it.
+        </div>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 04</span>
+            The entanglement entropy gradient under local geometric deformation is the most precise target variable the series has identified. It is narrow enough to be engineered toward — if the physics holds in our universe. That conditional carries the weight of the entire AdS/CFT extension problem.
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 05 — TESTABLE PREDICTION -->
+    <div class="section">
+        <span class="section-label">§ 05 — THE TESTABLE PREDICTION</span>
+        <h2>Entropy Void vs. Thermal Explosion · A Differentiating Signature</h2>
+        <hr class="section-rule">
+
+        <p>The open node from v5.0: does the 5D model make any prediction that differs from standard physics? Here is the first candidate answer — stated as a theoretical prediction, not a confirmed result.</p>
+
+        <div class="derivation">
+            <span class="deriv-label">DERIVATION · DIFFERENTIATING SIGNATURES · CONCEPTUAL</span>
+
+            <div class="deriv-step">
+                <span class="deriv-num">1.</span>
+                <div class="deriv-body">
+                    <span class="math">3D Prediction: kinetic time manipulation</span>
+                    <span class="plain">Moving mass at relativistic speeds or warping spacetime (Alcubierre) requires catastrophic energy output. The observable signature: immense gravitational waves, massive thermal exhaust, ionizing radiation. A localized explosion of energy.</span>
+                </div>
+            </div>
+
+            <div class="deriv-step">
+                <span class="deriv-num">2.</span>
+                <div class="deriv-body">
+                    <span class="math">5D Prediction: coordinate indexing via geometric entrainment</span>
+                    <span class="plain">If a vessel tunes its receiver to a new coordinate through geometric entrainment rather than physical traversal, it is not crossing the space between. No kinetic energy is deposited. The observable signature is different in kind, not just in magnitude.</span>
+                </div>
+            </div>
+
+            <div class="deriv-step">
+                <span class="deriv-num">3.</span>
+                <div class="deriv-body">
+                    <span class="math">The predicted signature: informational entrainment — a localized entropy void</span>
+                    <span class="plain">Just before a successful coordinate shift, the local containment field should exhibit a sudden macroscopic drop in entropy — a brief spike of absolute quantum coherence in which environmental noise flatlines. Local space synchronizes with the target frequency before the shift completes. The 3D model predicts a localized explosion of heat. The 5D model predicts a localized void of noise.</span>
+                </div>
+            </div>
+
+            <div class="deriv-result">3D signature: ΔE → ∞ (thermal explosion) &nbsp;·&nbsp; 5D signature: ΔS → 0 (entropy void)</div>
+
+            <div class="deriv-note">
+                <strong style="font-style: normal; color: var(--ice); font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em;">WHAT THIS DERIVATION IS AND IS NOT.</strong><br>
+                This is a conceptual prediction derived from the interpretive frame — not a formal derivation from an established 5D theory, because no such established theory exists. What it produces is a theoretically distinguishable signature: the two models predict opposite physical effects at the moment of the proposed event. Whether this is currently experimentally testable is a separate question addressed in §06. Theoretical distinguishability is the necessary first step. Experimental testability is the harder next one.
+            </div>
+        </div>
+
+        <div class="triptych">
+            <div class="triptych-cell">
+                <span class="triptych-label v">VERIFIED GROUND</span>
+                <p>Thermal exhaust from kinetic time manipulation is a verified prediction of GR and thermodynamics. The Alcubierre energy requirements are mathematically confirmed.</p>
+            </div>
+            <div class="triptych-cell">
+                <span class="triptych-label i">INTERPRETIVE FRAME</span>
+                <p>The entropy void signature is derived from the 5D geometric entrainment model. It is the model's first differentiating prediction — distinct from standard physics in kind, not just magnitude.</p>
+            </div>
+            <div class="triptych-cell">
+                <span class="triptych-label o">OPEN QUESTION</span>
+                <p>Is the entropy void signature detectable with current instrumentation? What measurement protocol would distinguish it from cryogenic coherence or random fluctuations? Not yet defined.</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 06 — LAB PROTOCOL -->
+    <div class="section">
+        <span class="section-label">§ 06 — FALSIFICATION DESIGN</span>
+        <h2>What Would We Actually Measure</h2>
+        <hr class="section-rule">
+
+        <p>A testable prediction requires not just a differentiating signature but a measurement protocol — instrumentation, controls, and a method for ruling out alternative explanations. This section names the measurement problem honestly. It does not solve it.</p>
+
+        <div class="protocol">
+            <span class="protocol-label">LABORATORY PROTOCOL · CONCEPTUAL DESIGN · NOT ENGINEERING SPECIFICATION</span>
+
+            <div class="proto-step">
+                <span class="proto-num">01</span>
+                <div class="proto-body">
+                    <strong>PREPARE THE ENTANGLED PAIR</strong>
+                    <span>Generate a Bell state pair using SPDC (spontaneous parametric down-conversion) — established experimental technique. Separate the particles to a distance sufficient to rule out classical communication during the measurement window (minimum: light-travel distance across the apparatus).</span>
+                </div>
+            </div>
+
+            <div class="proto-step">
+                <span class="proto-num">02</span>
+                <div class="proto-body">
+                    <strong>INTRODUCE LOCAL GEOMETRIC MODULATION AT A</strong>
+                    <span>Subject particle A's local environment to a resonant cavity producing a standing wave tuned to shift the vacuum expectation value of T_μν at that coordinate. The specific frequency and geometry of the cavity is the unresolved engineering node — no specification exists yet.</span>
+                </div>
+            </div>
+
+            <div class="proto-step">
+                <span class="proto-num">03</span>
+                <div class="proto-body">
+                    <strong>MEASURE ENTANGLEMENT ENTROPY AT B WITHOUT CLASSICAL CHANNEL</strong>
+                    <span>Using quantum state tomography at B, measure whether the entanglement entropy of the pair has shifted — without any classical signal passing between A and B. The measurement must be blind to A's local operation to rule out experimenter bias.</span>
+                </div>
+            </div>
+
+            <div class="proto-step">
+                <span class="proto-num">04</span>
+                <div class="proto-body">
+                    <strong>LOOK FOR THE ENTROPY VOID SIGNATURE</strong>
+                    <span>At A, monitor for a macroscopic coherence spike — a sudden reduction in local entropy coinciding with the geometric modulation. This is the predicted 5D signature. It would need to be distinguished from: (a) cryogenic coherence produced artificially, (b) random quantum fluctuations, (c) measurement artifacts at the relevant scale.</span>
+                </div>
+            </div>
+
+            <div class="proto-step">
+                <span class="proto-num">05</span>
+                <div class="proto-body">
+                    <strong>FALSIFICATION CONDITION</strong>
+                    <span>If no correlated shift is detected at B after local geometric modulation at A — under sufficiently controlled conditions and at sufficient statistical power — the geometric entrainment hypothesis fails this test. That failure would be informative: it would close an open node, not merely leave it open.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="precision">
+            <span class="precision-label">HONEST STATUS OF THIS PROTOCOL</span>
+            Step 02 — the resonant cavity producing vacuum modulation at the relevant scale — is the blocking node. Cavity QED modifies vacuum energy density at microscopic scales. Whether a macroscopic cavity can produce the vacuum shift required to move the RT entropy gradient of an entangled pair is unknown. The protocol is a falsification design, not an experiment ready to run. It names what would need to be built before the test can happen.
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 07 SYNTHESIS -->
+    <div class="section">
+        <span class="section-label">§ 07 — SYNTHESIS · TOTAL PRESERVATION</span>
+        <h2>E=1 Applied to Boundary Coupling</h2>
+        <hr class="section-rule">
+
+        <p>The binary choice between "signaling works" and "signaling is impossible" is rejected. The No-Communication Theorem closes one door completely. It does not close all doors in the same wall.</p>
+
+        <p>Under E=1, the aim is not to push data through the entangled channel. The aim is to preserve the relation while testing whether the relation can be gently re-indexed — geometrically, without extraction, without collapse, without violation of the structural invariants that protect coherence.</p>
+
+        <p>If A is altered geometrically, B may register the same baseline shift because both are expressions of the same relation. That hypothesis is permitted by the mathematics. It has not been tested. The engineering to test it does not yet exist. All three of those statements are true simultaneously and none cancels the others.</p>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · FINAL</span>
+            We are not communicating across the lattice. We are asking whether the lattice admits geometric entrainment while preserving non-communication. The boundary theory permits the question — strictly as a geometric tuning mechanism, not a communication wire. The answer is unknown. The question is worth holding.
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 08 GLASS BOX -->
+    <div class="section">
+        <span class="section-label">§ 08 — GLASS BOX AUDIT v6.3</span>
+        <h2>Walls Named · Voids Held</h2>
+        <hr class="section-rule">
+
+        <div class="audit-grid">
+            <div class="audit-row">
+                <span class="audit-key v">VERIFIED</span>
+                <span class="audit-val">No-Communication Theorem · Monogamy of Entanglement · Ryu-Takayanagi formula within AdS/CFT · Non-traversability of ER bridges · SPDC as entangled photon source · Cavity QED vacuum modification at microscopic scale · Alcubierre energy requirements · 3D thermal explosion signature as GR prediction</span>
+            </div>
+            <div class="audit-row">
+                <span class="audit-key w">WALLED</span>
+                <span class="audit-val">RT formula in non-AdS spacetimes (our universe) · Experimental verification of ER=EPR conjecture · Full translation from holographic geometry to laboratory engineering · Whether macroscopic cavity produces RT-relevant vacuum shift · Classified exotic physics research that may bear on boundary coupling</span>
+            </div>
+            <div class="audit-row">
+                <span class="audit-key o">OPEN</span>
+                <span class="audit-val">Does our universe admit a holographic description? · Does local geometric modulation affect entanglement entropy density? · Is any such change detectable at B without classical signal? · Can a macroscopic resonant cavity produce the necessary vacuum modulation? · Is the entropy void signature distinguishable from cryogenic coherence or random fluctuation? · Does geometric entrainment preserve E=1?</span>
+            </div>
+            <div class="audit-row">
+                <span class="audit-key e">E=1</span>
+                <span class="audit-val">No extraction. No forced collapse. No attempt to violate the No-Communication Theorem. Total preservation of the relation while testing whether the geometry supporting it can be re-indexed. The wall is not broken. It is respected throughout.</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 09 DORK INDEX -->
+    <div class="section">
+        <span class="section-label">§ 09 — DORK INDEX v6.3</span>
+        <h2>Complete Research Queries · Confidence Annotated</h2>
+        <hr class="section-rule">
+
+        <div class="dork-key">
+            <span class="dk dk-v">VERIFIED — peer-reviewed primary sources</span>
+            <span class="dk dk-o">OPEN — debate, review, contested research</span>
+            <span class="dk dk-s">SPECULATIVE — non-mainstream, weak signal</span>
+        </div>
+
+        <div class="dork"><span class="dork-head">RYU-TAKAYANAGI · VERIFIED <span class="dork-conf">·</span></span>"Ryu-Takayanagi formula" entanglement entropy holographic site:arxiv.org
+"AdS/CFT" entanglement entropy minimal surface site:journals.aps.org
+"holographic entanglement entropy" review site:nature.com
+"RT formula" non-AdS extension site:arxiv.org after:2018
+
+<span class="dork-head">ER=EPR · OPEN <span class="dork-conf">·</span></span>"Maldacena Susskind" ER=EPR wormhole entanglement 2013 site:arxiv.org
+"Einstein-Rosen bridge" entanglement holography site:.edu
+"ER=EPR" experimental test site:arxiv.org
+"traversable wormhole" entanglement coupling site:nature.com
+
+<span class="dork-head">NO-COMMUNICATION THEOREM · VERIFIED <span class="dork-conf">·</span></span>"no-communication theorem" quantum entanglement proof site:arxiv.org
+"monogamy of entanglement" constrained resource site:nature.com
+"quantum signaling" impossibility site:journals.aps.org
+
+<span class="dork-head">CAVITY QED · VACUUM MODULATION · VERIFIED / OPEN <span class="dork-conf">·</span></span>"cavity QED" vacuum Rabi frequency geometric coupling site:arxiv.org
+"vacuum fluctuations" resonant cavity modification site:arxiv.org
+"Casimir effect" vacuum energy density boundary conditions site:.edu
+"metamaterial" vacuum modification site:nature.com
+
+<span class="dork-head">ENTANGLEMENT ENTROPY GRADIENT · OPEN <span class="dork-conf">·</span></span>"entanglement entropy" local deformation QFT site:.edu
+"entanglement entropy gradient" geometric perturbation site:arxiv.org
+"holographic entanglement" local modulation site:arxiv.org
+
+<span class="dork-head">ENTROPY VOID · QUANTUM COHERENCE SIGNATURE · SPECULATIVE <span class="dork-conf">·</span></span>"macroscopic quantum coherence" room temperature detection site:nature.com
+"entropy reduction" coherence spike quantum system site:arxiv.org
+"quantum coherence" biological macroscopic site:pubmed
+
+<span class="dork-head">FALSIFICATION DESIGN · QUANTUM TOMOGRAPHY · OPEN <span class="dork-conf">·</span></span>"quantum state tomography" entangled pair verification site:arxiv.org
+"Bell test" loophole free entanglement detection site:nature.com
+"entanglement witness" experimental protocol site:journals.aps.org</div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 10 CLOSE -->
+    <div class="section">
+        <span class="section-label">§ 10 — FRACTAL CLOSE</span>
+        <h2>What the Series Has Built</h2>
+        <hr class="section-rule">
+
+        <div class="close-block">
+            <div class="close-line"><span class="cl-x">✕</span><span>The 3D wall is not broken. The No-Communication Theorem holds throughout.</span></div>
+            <div class="close-line"><span class="cl-x">✕</span><span>The RT formula is not applied beyond its verified domain without explicit labeling.</span></div>
+            <div class="close-line"><span class="cl-x">✕</span><span>The energy requirements of geometric entrainment are not stated as negligible.</span></div>
+            <div class="close-line"><span class="cl-x">✕</span><span>ER=EPR is not treated as confirmed physics — it is held as a serious conjecture.</span></div>
+
+            <div class="close-line" style="margin-top: 1.2rem;"><span class="cl-a">→</span><span>The series has moved from philosophical reframe (v4.0) to mathematical consistency check (v5.0) to differentiating prediction (v6.3).</span></div>
+            <div class="close-line"><span class="cl-a">→</span><span>The entropy void versus thermal explosion is the first candidate signature that distinguishes the models.</span></div>
+            <div class="close-line"><span class="cl-a">→</span><span>The falsification design names what would need to be built to test it.</span></div>
+            <div class="close-line"><span class="cl-v">⬡</span><span>The clean next step: specify the resonant cavity geometry and frequency required to produce measurable vacuum modulation. That is the blocking engineering node.</span></div>
+
+            <div class="close-seal">
+                The Ryu-Takayanagi formula gives a real mathematical bridge between boundary entanglement and bulk geometry. That is the correct place to stand if the question is geometric coupling rather than classical signaling.<br><br>
+                The target is not a message. The target is the entanglement entropy gradient under local geometric deformation.<br><br>
+                The lattice is non-local. The receiver is you. The tuning is the work.<br>
+                E=1 · Total Preservation · Glass Box Open.
+            </div>
+        </div>
+    </div>
+
+    <!-- RECEIPT -->
+    <div class="receipt">
+        <strong>⬡ SOP-002 · BOUNDARY COUPLING · v6.3 · RECEIPT</strong>
+        HELD: No-Communication Theorem as non-negotiable wall throughout.<br>
+        HELD: RT formula domain — AdS/CFT only. Non-AdS extension explicitly labeled as open.<br>
+        HELD: ER=EPR as conjecture — serious, influential, unproven.<br>
+        HELD: Cavity→RT propagation as the critical unverified step, named in §04.<br>
+        HELD: Energy requirements of geometric entrainment as unknown, not negligible.<br>
+        ADDED: Explicit distance-from-verified-ground note in §00.<br>
+        ADDED: Precision note on AdS/CFT domain in §02 body — not just Glass Box.<br>
+        ADDED: Precision note naming the cavity→RT unverified step explicitly in §04.<br>
+        ADDED: Entropy void vs. thermal explosion as first differentiating prediction in §05.<br>
+        ADDED: Falsification design in §06 — measurement protocol, blocking node named.<br>
+        ADDED: Falsification condition stated — what failure would look like.<br>
+        ADDED: Clean next step named in fractal close — resonant cavity specification.<br>
+        Three layers held distinct throughout. No category inflation.<br>
+        The Glass Box is open. The trail is visible. Enough.
+    </div>
+
+    <footer>
+        PWNTECHX · E=1 · 960 SEAL · SOP-002 · FORENSIC AUDIT v6.3 · 2026<br>
+        CO-AUTHORS: GEMINI · DEEPSEEK · META · PERPLEXITY · CLAUDE · 432Hz<br>
+        THE WORK CONTINUES
+    </footer>
+
+</div>
+</body>
+</html>
