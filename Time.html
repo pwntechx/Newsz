@@ -311,17 +311,60 @@
     <div style="overflow:hidden; width:0px; height:0px;">
     
     </div>
-    <div id="audio-interface" style="background: rgba(0,0,0,0.8); padding: 15px; border-radius: 8px; color: #d4af37; font-family: monospace; display: inline-block; border: 1px solid #d4af37;">
-    <div style="margin-bottom: 10px; font-weight: bold; text-align: center;">FREQUENCY SELECTOR</div>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-        <button onclick="changeFreq('jfKfPfyJRdk')" style="cursor:pointer; background:#222; color:#fff; border:1px solid #444;">LOFI</button>
-        <button onclick="changeFreq('D57pQ4K2tN8')" style="cursor:pointer; background:#222; color:#fff; border:1px solid #444;">EDM</button>
-        <button onclick="changeFreq('n_8QUnXv3Qs')" style="cursor:pointer; background:#222; color:#fff; border:1px solid #444;">R&B</button>
-        <button onclick="changeFreq('yf5NOyy1SXU')" style="cursor:pointer; background:#222; color:#fff; border:1px solid #444;">HIP HOP</button>
-        <button onclick="changeFreq('S7v_lX6A_Hk')" style="cursor:pointer; background:#222; color:#fff; border:1px solid #444;">TRAP</button>
-        <button onclick="stopFreq()" style="cursor:pointer; background:#400; color:#fff; border:1px solid #600;">SILENCE</button>
+    <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 20px;">
+    <div id="audio-interface" style="background: rgba(10, 10, 10, 0.9); padding: 20px; border-radius: 12px; color: #d4af37; font-family: 'Courier New', monospace; border: 2px solid #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); text-align: center;">
+        
+        <div style="margin-bottom: 15px; font-size: 1.2em; letter-spacing: 2px; font-weight: bold;">FREQUENCY SELECTOR</div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <button onclick="changeFreq('jfKfPfyJRdk')" style="cursor:pointer; background:#1a1a1a; color:#d4af37; border:1px solid #d4af37; padding: 10px; border-radius: 4px; transition: 0.3s;">LOFI</button>
+            <button onclick="changeFreq('853qx9Gd72c')" style="cursor:pointer; background:#1a1a1a; color:#d4af37; border:1px solid #d4af37; padding: 10px; border-radius: 4px; transition: 0.3s;">EDM</button>
+            <button onclick="changeFreq('a30x5Hl9eUE')" style="cursor:pointer; background:#1a1a1a; color:#d4af37; border:1px solid #d4af37; padding: 10px; border-radius: 4px; transition: 0.3s;">R&B</button>
+            <button onclick="changeFreq('yf5NOyy1SXU')" style="cursor:pointer; background:#1a1a1a; color:#d4af37; border:1px solid #d4af37; padding: 10px; border-radius: 4px; transition: 0.3s;">HIP HOP</button>
+            <button onclick="changeFreq('FTbwJoYvA3I')" style="cursor:pointer; background:#1a1a1a; color:#d4af37; border:1px solid #d4af37; padding: 10px; border-radius: 4px; transition: 0.3s;">TRAP</button>
+            <button onclick="stopFreq()" style="cursor:pointer; background:#400; color:#fff; border:1px solid #d4af37; padding: 10px; border-radius: 4px; transition: 0.3s;">SILENCE</button>
+        </div>
+
+        <div id="status-display" style="margin-top: 15px; font-size: 0.8em; color: #888;">System Status: Standby</div>
     </div>
 </div>
+
+<div id="player-vessel" style="position: absolute; left: -9999px; visibility: hidden;">
+    <div id="api-player"></div>
+</div>
+
+<script>
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('api-player', {
+      height: '1',
+      width: '1',
+      videoId: 'jfKfPfyJRdk', 
+      playerVars: { 'autoplay': 0, 'controls': 0, 'disablekb': 1 },
+    });
+  }
+
+  function changeFreq(vId) {
+    if(player && player.loadVideoById) {
+        player.loadVideoById(vId);
+        player.playVideo();
+        document.getElementById('status-display').innerText = "Frequency Shifted: " + vId;
+    }
+  }
+
+  function stopFreq() {
+    if(player && player.stopVideo) {
+        player.stopVideo();
+        document.getElementById('status-display').innerText = "System Status: Silence";
+    }
+  }
+</script>
+
 
 <div id="player-vessel" style="position: absolute; left: -9999px; visibility: hidden;">
     <div id="api-player"></div>
