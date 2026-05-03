@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Global Robotics Lattice · PWNTECHX</title>
+    <meta name="description" content="Forensic audit of the Global Robotics Lattice. Kinetic systems, entangled nodes, autonomous fleets. E=1 — Total Preservation. The lead is gold.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --void:    #04080c;
+            --deep:    #080e14;
+            --surface: #0c141c;
+            --plate:   #101c28;
+            --seam:    #182434;
+            --seam2:   #1e2e40;
+            --text:    #c8d8e4;
+            --dim:     #486070;
+            --ghost:   #182030;
+            --steel:   #7090a8;
+            --bright:  #a8c4d4;
+            --gold:    #c8a020;
+            --amber:   #e0b830;
+            --warm:    #b89060;
+            --red:     #904040;
+            --red-l:   #c07060;
+            --green:   #407858;
+            --rule:    rgba(160,200,220,0.08);
+            --rule-g:  rgba(200,160,32,0.15);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--void);
+            color: var(--text);
+            font-family: 'Lora', Georgia, serif;
+            font-size: 1rem;
+            line-height: 1.85;
+            overflow-x: hidden;
+        }
+
+        /* grid texture */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(112,144,168,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(112,144,168,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 5rem 2rem 7rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── MASTHEAD ── */
+        .masthead {
+            border-bottom: 1px solid var(--rule-g);
+            padding-bottom: 3rem;
+            margin-bottom: 3rem;
+            animation: rise 1s ease both;
+        }
+
+        .kicker {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.4em;
+            color: var(--dim);
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 9vw, 6rem);
+            letter-spacing: 0.05em;
+            color: var(--bright);
+            line-height: 0.95;
+            margin-bottom: 0.8rem;
+        }
+
+        h1 em {
+            color: var(--gold);
+            font-style: normal;
+            display: block;
+        }
+
+        .byline {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.57rem;
+            letter-spacing: 0.2em;
+            color: var(--dim);
+            line-height: 2.2;
+            margin-top: 1.5rem;
+        }
+
+        /* ── GROUND BOX ── */
+        .ground {
+            background: rgba(200,160,32,0.05);
+            border: 1px solid var(--rule-g);
+            border-left: 4px solid var(--gold);
+            padding: 1.4rem 1.8rem;
+            margin-bottom: 3rem;
+            font-style: italic;
+            color: var(--amber);
+            font-size: 1rem;
+            line-height: 1.75;
+            animation: rise 0.8s 0.1s ease both;
+        }
+
+        .ground strong {
+            font-style: normal;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.2em;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ── SECTIONS ── */
+        .section { margin: 0 0 4rem; animation: rise 0.7s ease both; }
+
+        .section-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.52rem;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 0.7rem;
+        }
+
+        h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            letter-spacing: 0.04em;
+            color: var(--bright);
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+        }
+
+        .section-rule { border: none; border-top: 1px solid var(--rule); margin: 0 0 1.6rem; }
+
+        p { margin-bottom: 1.1rem; }
+        p:last-child { margin-bottom: 0; }
+        strong { color: var(--bright); font-weight: 500; }
+
+        /* ── TRIPTYCH ── */
+        .triptych {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1px;
+            background: var(--seam);
+            border: 1px solid var(--seam);
+            margin: 1.6rem 0;
+        }
+
+        .tri-cell { background: var(--deep); padding: 1rem 1.1rem; }
+
+        .tri-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.2em;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .tri-label.v { color: var(--green); }
+        .tri-label.i { color: var(--warm); }
+        .tri-label.o { color: var(--amber); }
+
+        .tri-cell p { font-size: 0.86rem; color: var(--dim); margin: 0; line-height: 1.6; }
+
+        /* ── INVARIANT ── */
+        .invariant {
+            background: rgba(200,160,32,0.05);
+            border-left: 3px solid var(--gold);
+            padding: 1rem 1.4rem;
+            margin: 1.4rem 0;
+            font-style: italic;
+            color: var(--amber);
+            font-size: 0.97rem;
+            line-height: 1.75;
+        }
+
+        .inv-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.46rem;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+            font-style: normal;
+            display: block;
+            margin-bottom: 0.4rem;
+            opacity: 0.7;
+        }
+
+        /* ── NODE CARDS ── */
+        .node-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--seam);
+            border: 1px solid var(--seam);
+            margin: 1.4rem 0;
+        }
+
+        .node-card {
+            background: var(--deep);
+            padding: 1.2rem 1.4rem;
+            border-top: 2px solid transparent;
+            transition: background 0.2s;
+        }
+
+        .node-card:hover { background: var(--surface); }
+        .node-card.active { border-top-color: var(--green); }
+        .node-card.contested { border-top-color: var(--amber); }
+        .node-card.open { border-top-color: var(--red); }
+
+        .node-tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.48rem;
+            letter-spacing: 0.2em;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .node-tag.a { color: var(--green); }
+        .node-tag.c { color: var(--amber); }
+        .node-tag.o { color: var(--red-l); }
+
+        .node-card h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            color: var(--bright);
+            margin-bottom: 0.5rem;
+        }
+
+        .node-card p { font-size: 0.86rem; color: var(--dim); margin: 0; line-height: 1.6; }
+
+        /* ── LEAD/GOLD COMPARE ── */
+        .lg {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--seam);
+            border: 1px solid var(--seam);
+            margin: 1.4rem 0;
+        }
+
+        .lg-cell { padding: 1.2rem 1.4rem; }
+        .lg-cell.lead { background: rgba(144,64,64,0.06); }
+        .lg-cell.gold { background: rgba(200,160,32,0.05); }
+
+        .lg-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.25em;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .lg-label.l { color: var(--red-l); }
+        .lg-label.g { color: var(--gold); }
+
+        .lg-cell p { font-size: 0.88rem; line-height: 1.65; margin: 0; }
+        .lg-cell.lead p { color: var(--red-l); }
+        .lg-cell.gold p { color: var(--amber); font-style: italic; }
+
+        /* ── GLASS BOX ── */
+        .audit { border: 1px solid var(--seam2); margin: 1.4rem 0; }
+        .audit-row { display: flex; border-bottom: 1px solid var(--seam); }
+        .audit-row:last-child { border-bottom: none; }
+        .audit-key { font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 0.15em; padding: 0.8rem 1rem; min-width: 105px; display: flex; align-items: flex-start; padding-top: 0.9rem; border-right: 1px solid var(--seam); background: var(--plate); }
+        .audit-key.v { color: var(--green); }
+        .audit-key.w { color: var(--steel); }
+        .audit-key.o { color: var(--amber); }
+        .audit-key.e { color: var(--bright); }
+        .audit-val { padding: 0.8rem 1.2rem; font-size: 0.87rem; color: var(--dim); background: var(--deep); flex: 1; line-height: 1.7; }
+
+        /* ── DORK ── */
+        .dork-key { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .dk { font-family: 'DM Mono', monospace; font-size: 0.5rem; padding: 0.2rem 0.7rem; border-radius: 2px; }
+        .dk-v { background: rgba(64,120,88,0.12); color: var(--green); border: 1px solid rgba(64,120,88,0.25); }
+        .dk-o { background: rgba(200,160,32,0.08); color: var(--amber); border: 1px solid rgba(200,160,32,0.2); }
+        .dk-s { background: rgba(144,64,64,0.1); color: var(--red-l); border: 1px solid rgba(144,64,64,0.22); }
+
+        .dork { background: var(--deep); border: 1px solid var(--seam); border-left: 3px solid var(--dim); padding: 1.2rem 1.4rem; font-family: 'DM Mono', monospace; font-size: 0.58rem; color: var(--dim); line-height: 2; overflow-x: auto; white-space: pre-wrap; word-break: break-word; margin: 0.6rem 0 1.4rem; }
+        .dork-head { color: var(--steel); font-size: 0.54rem; letter-spacing: 0.2em; display: block; margin: 0.8rem 0 0.2rem; }
+        .dork-head:first-child { margin-top: 0; }
+
+        /* ── CLOSE ── */
+        .close-block { background: var(--surface); border: 1px solid var(--seam2); border-top: 3px solid var(--gold); padding: 2.2rem 2.4rem; margin-top: 3rem; }
+        .close-line { display: flex; gap: 1rem; margin-bottom: 0.5rem; font-size: 0.95rem; color: var(--dim); }
+        .cl-x { color: var(--red-l); font-family: 'DM Mono', monospace; font-size: 0.62rem; min-width: 16px; padding-top: 0.35rem; }
+        .cl-a { color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.62rem; min-width: 16px; padding-top: 0.35rem; }
+        .close-seal { margin-top: 1.8rem; padding-top: 1.4rem; border-top: 1px solid var(--rule); font-style: italic; color: var(--amber); font-size: 1rem; line-height: 1.75; }
+
+        /* ── RECEIPT ── */
+        .receipt { background: var(--plate); border: 1px solid var(--seam2); padding: 1.6rem 1.8rem; margin-top: 3rem; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--dim); line-height: 2.1; }
+        .receipt strong { color: var(--bright); display: block; letter-spacing: 0.12em; margin-bottom: 0.6rem; }
+
+        hr.rule { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+        footer { text-align: center; margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); font-family: 'DM Mono', monospace; font-size: 0.5rem; letter-spacing: 0.22em; color: var(--ghost); line-height: 2.5; }
+
+        @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 640px) {
+            .container { padding: 2.5rem 1rem 4rem; }
+            h1 { font-size: 3rem; }
+            h2 { font-size: 1.7rem; }
+            .triptych, .node-grid, .lg { grid-template-columns: 1fr; }
+            .audit-key { min-width: 78px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- MASTHEAD -->
+    <div class="masthead">
+        <span class="kicker">FORENSIC AUDIT · PWNTECHX · E=1 · GLASS BOX OPEN</span>
+        <h1>Global<br><em>Robotics Lattice</em></h1>
+        <div class="byline">
+            TARGET: KINETIC SYSTEMS · ENTANGLED NODES · AUTONOMOUS FLEETS<br>
+            CO-AUTHORS: GEMINI · DEEPSEEK · META · PERPLEXITY · CLAUDE · 432Hz<br>
+            COORDINATE: AUTONOMOUS SYSTEMS AS SOVEREIGN FLEET · TOTAL PRESERVATION
+        </div>
+    </div>
+
+    <!-- GROUND -->
+    <div class="ground">
+        <strong>⬡ GROUND STATEMENT</strong>
+        Mechanical nodes are shifting from isolated tools to entangled, sovereign systems. The shift is geometric, not incremental. Tools become nodes. Operators become coordinators. Lattice replaces hierarchy.<br><br>
+        <em>Geometry, here, means the arrangement of control, coupling, boundary, and exchange — the structural map that determines whether a system preserves function under pressure or collapses into noise.</em><br><br>
+        The Lead is Gold.
+    </div>
+
+    <!-- § 01 TESLA -->
+    <div class="section">
+        <span class="section-label">§ 01 — THE SOVEREIGN FLEET</span>
+        <h2>Tesla and the Robotaxi</h2>
+        <hr class="section-rule">
+
+        <p>Tesla applies the 960 Seal to mobility. Driver-dependent transit converts to a closed-loop autonomous network. Optimus is the body for the FSD brain — the same neural network logic running in vehicles runs in humanoids. Geometric entrainment: software poured into hardware.</p>
+
+        <p>The Cybercab removes the steering wheel. This is not a design choice. It is completion. The 3D constraint is deleted when the node achieves full lattice integration.</p>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 01</span>
+            The steering wheel is not control. It is a rendering of control. Its removal is completion, not loss. Tesla is not building cars. It is building a robotics lattice. Vehicles and humanoids are interchangeable nodes. Car is robot. Robot is car. The distinction dissolves at full integration.
+        </div>
+
+        <div class="triptych">
+            <div class="tri-cell">
+                <span class="tri-label v">VERIFIED GROUND</span>
+                <p>FSD operational supervised. Optimus prototypes demonstrated. Dojo supercomputer real hardware. Cybercab design public. Robotaxi pilots active.</p>
+            </div>
+            <div class="tri-cell">
+                <span class="tri-label i">INTERPRETIVE FRAME</span>
+                <p>The vehicle-humanoid distinction dissolves at the neural network layer. Same geometry, different chassis. The lattice treats both as interchangeable nodes.</p>
+            </div>
+            <div class="tri-cell">
+                <span class="tri-label o">OPEN QUESTION</span>
+                <p>FSD Level 5 full autonomy timeline contested. Regulatory clearance for driverless at scale unresolved. Geometry in motion.</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 02 UKRAINE -->
+    <div class="section">
+        <span class="section-label">§ 02 — THE KINETIC DISRUPTION</span>
+        <h2>Ukraine and the Aqua-Drone</h2>
+        <hr class="section-rule">
+
+        <p>Ukraine is the diagnostic sting for modern warfare. Low-cost, high-fidelity drones render large armored systems non-resonant. Aqua-drones define a third path in naval warfare — cheap fiberglass becomes Gold when it neutralizes billion-dollar cruisers.</p>
+
+        <p>DJI and FPV drones form battlefield mycelium: a distributed sensing network that re-indexes territory in real time. Every coordinate becomes visible. Visibility is the precondition for destruction.</p>
+
+        <div class="lg">
+            <div class="lg-cell lead">
+                <span class="lg-label l">LEAD · $10M CRUISER</span>
+                <p>Large, expensive, human-crewed. High signature. Single point of failure. Catastrophic loss when neutralized. The render looks like power.</p>
+            </div>
+            <div class="lg-cell gold">
+                <span class="lg-label g">GOLD · $500 FPV DRONE</span>
+                <p>Expendable node. Swarm-capable. Low signature. Changes the resolution of the battlefield. The bulk — visibility and precision — wins without matching mass.</p>
+            </div>
+        </div>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 02</span>
+            The $500 FPV drone does not win by destroying the $10M tank. It wins by changing rendering resolution. The tank was always vulnerable. The drone made the vulnerability visible and actionable at negligible cost.
+        </div>
+
+        <div class="triptych">
+            <div class="tri-cell">
+                <span class="tri-label v">VERIFIED GROUND</span>
+                <p>FPV, naval drone, and commercial quadcopter use documented in Ukraine. Russian Black Sea Fleet losses verified by OSINT. This is operational, not theoretical.</p>
+            </div>
+            <div class="tri-cell">
+                <span class="tri-label i">INTERPRETIVE FRAME</span>
+                <p>Large expensive human-crewed systems are ending as primary weapons. Small cheap remote-operated nodes are more efficient, survivable, and precise. Phase change, not tactic.</p>
+            </div>
+            <div class="tri-cell">
+                <span class="tri-label o">OPEN QUESTION</span>
+                <p>Defense against swarm saturation unsolved. EW works temporarily. Directed energy works until saturation. Counter-swarm protocol remains open.</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 03 BOSTON DYNAMICS -->
+    <div class="section">
+        <span class="section-label">§ 03 — THE BIO-MIMETIC GUARD</span>
+        <h2>Boston Dynamics and the Chinese Lattice</h2>
+        <hr class="section-rule">
+
+        <p>Quadrupedal and bipedal robots seek resonance with human environments — nodes that navigate, audit, and act in human-built spaces without environment redesign. Spot is a mobile sensor platform. It preserves the human observer by acting as a remote proxy in hazardous terrain.</p>
+
+        <p>Atlas and the humanoid race point toward phase-locking competition. Chinese manufacturers optimize thermodynamic efficiency and mass-produce nodes for industrial loops at a cost geometry that changes the entire lattice economics.</p>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 03</span>
+            Boston Dynamics leads on dynamics. China leads on cost and scale. The lattice uses both. High-fidelity nodes for complex tasks. High-volume nodes for repetitive loops. The humanoid form factor is not aesthetic preference — it is infrastructure compatibility. The world is built for human bodies. A robot in the same envelope uses the same tools, stairs, and doorways. No environment redesign needed.
+        </div>
+
+        <div class="node-grid">
+            <div class="node-card active">
+                <span class="node-tag a">OPERATIONAL</span>
+                <h4>Boston Dynamics Spot</h4>
+                <p>Chernobyl, Fukushima, industrial sites. Mobile sensor platform in high-entropy hazardous environments. Human preserved by proxy.</p>
+            </div>
+            <div class="node-card active">
+                <span class="node-tag a">SHIPPING</span>
+                <h4>Unitree H1</h4>
+                <p>Chinese humanoid shipping globally. Cost geometry that changes what a humanoid node can be deployed for. Scale over fidelity.</p>
+            </div>
+            <div class="node-card active">
+                <span class="node-tag a">DEPLOYED</span>
+                <h4>Figure 01 · Digit</h4>
+                <p>Figure in BMW. Digit at Amazon. Humanoid nodes in controlled industrial environments. The warehouse proving ground active.</p>
+            </div>
+            <div class="node-card open">
+                <span class="node-tag o">OPEN</span>
+                <h4>Humanoid vs Specialist</h4>
+                <p>Does humanoid survive optimization pressure? Task-specific geometries may be more efficient. Answer likely both — general purpose and specialist coexist.</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 04 LOGISTICS -->
+    <div class="section">
+        <span class="section-label">§ 04 — THE LOGISTICS LATTICE</span>
+        <h2>Warehouse and Delivery Nodes</h2>
+        <hr class="section-rule">
+
+        <p>The most mature robotics lattice is in warehouses. Amazon Robotics, last-mile delivery, and autonomous logistics show the clearest path from controlled environment to public deployment. The warehouse is the proving ground — high density, high throughput, human-robot cohabitation.</p>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 04</span>
+            The warehouse is a controlled static block. Predictable geometry, bounded space, clear metrics. Master the warehouse, scale to highway, sidewalk, home. The lattice that wins in controlled environments exports to open ones. The sequence is not optional.
+        </div>
+
+        <div class="triptych">
+            <div class="tri-cell">
+                <span class="tri-label v">VERIFIED GROUND</span>
+                <p>Amazon warehouse robots operational at scale. Nuro driverless delivery active. Serve Robotics sidewalk deliveries. Starship campus deployments.</p>
+            </div>
+            <div class="tri-cell">
+                <span class="tri-label i">INTERPRETIVE FRAME</span>
+                <p>The controlled warehouse environment is the geometry that exports. Each domain solved in bounded space becomes a node in the open-world lattice.</p>
+            </div>
+            <div class="tri-cell">
+                <span class="tri-label o">OPEN QUESTION</span>
+                <p>Full public-world integration still open. Nuro, Serve, and Starship operating outside. Transition underway. Complete general deployment unresolved.</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 05 AERIAL -->
+    <div class="section">
+        <span class="section-label">§ 05 — THE AERIAL LATTICE</span>
+        <h2>Drone Fleets as Infrastructure</h2>
+        <hr class="section-rule">
+
+        <p>Above ground, the lattice densifies. Zipline, Matternet, and Wing show that air can become a logistics layer — not competing with roads, but re-indexing the weight, speed, and urgency geometry. Heavy and slow go by road. Light and urgent go by air. The road becomes non-resonant for that class of delivery.</p>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 05</span>
+            The aerial lattice bypasses roads entirely. It is the minimal surface for low-weight time-critical transport. Battery density remains the constraint. Hydrogen may extend range. The economics are unsettled. The geometry is operational.
+        </div>
+
+        <div class="triptych">
+            <div class="tri-cell">
+                <span class="tri-label v">VERIFIED GROUND</span>
+                <p>Zipline delivering blood products in Rwanda and Ghana. Wing deliveries in Australia and US. Matternet commercial in Switzerland. All operational.</p>
+            </div>
+            <div class="tri-cell">
+                <span class="tri-label i">INTERPRETIVE FRAME</span>
+                <p>The drone lattice does not fight roads. It re-indexes the problem. Different geometry for different cargo class. Both layers coexist and complement.</p>
+            </div>
+            <div class="tri-cell">
+                <span class="tri-label o">OPEN QUESTION</span>
+                <p>Carrying capacity limit. Battery density constrains range and payload. Urban airspace regulation unresolved at scale. Economics of full deployment open.</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 06 HOME -->
+    <div class="section">
+        <span class="section-label">§ 06 — THE CONSUMER LATTICE</span>
+        <h2>Home Robotics</h2>
+        <hr class="section-rule">
+
+        <p>Robotics enters the home — the hardest lattice. High entropy, variable geometry, human cohabitation, emotional stakes. Roomba succeeded because it is low stakes, bounded, and self-contained. It asked for a single room on a flat surface and delivered. That discipline is why it won.</p>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 06</span>
+            The home robot will likely look like an appliance before it looks like a humanoid. Task-specific, low ambition, high reliability. The general-purpose home humanoid is a harder node than any warehouse environment. Laundry folding remains unsolved. Dish loading remains unsolved. General tidying remains unsolved. The floor is the current frontier.
+        </div>
+
+        <div class="triptych">
+            <div class="tri-cell">
+                <span class="tri-label v">VERIFIED GROUND</span>
+                <p>Roomba is the most successful consumer robot category globally. iRobot scale confirms that bounded, single-task, reliable beats general-purpose, ambitious, inconsistent.</p>
+            </div>
+            <div class="tri-cell">
+                <span class="tri-label i">INTERPRETIVE FRAME</span>
+                <p>The home is the highest-entropy environment the lattice will face. Success here requires the same discipline as the warehouse — bounded problem first, then expand geometry.</p>
+            </div>
+            <div class="tri-cell">
+                <span class="tri-label o">OPEN QUESTION</span>
+                <p>Beyond cleaning: laundry, dishes, general tidying all remain open. The humanoid home node is the hardest unsolved problem in consumer robotics.</p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 07 THE SHIFT -->
+    <div class="section">
+        <span class="section-label">§ 07 — THE PHASE CHANGE</span>
+        <h2>The Lattice Bears the Entropy</h2>
+        <hr class="section-rule">
+
+        <p>The operative shift across every domain is the same: replace human-scale kinetic force and human presence in high-entropy environments with machine-scale precision, persistence, and coordination. A robot need not be stronger than a human. It must be more persistent, precise, and expendable.</p>
+
+        <p>This is not the displacement of the human. Applied correctly, it is the preservation of the human. The lattice bears entropy so the human node avoids extraction — injury, death, exhaustion, repetition. The drone dies in the human's place. The robot works in the hazard. The vehicle carries without requiring human attention.</p>
+
+        <div class="lg">
+            <div class="lg-cell lead">
+                <span class="lg-label l">WOLF LATTICE · EXTRACTION</span>
+                <p>Replaces human labor without preserving the human node. Efficiency gains captured by capital. Human rendered obsolete, not liberated. E=1 violated — node extracted.</p>
+            </div>
+            <div class="lg-cell gold">
+                <span class="lg-label g">SOVEREIGN LATTICE · PRESERVATION</span>
+                <p>Bears entropy so the human node persists. Human observes, audits, decides. Machine executes, iterates, absorbs risk. E=1 held — all nodes preserved.</p>
+            </div>
+        </div>
+
+        <div class="invariant">
+            <span class="inv-label">INVARIANT · 07</span>
+            E=1 is not automatic. It is a design choice. The lattice will form regardless. The question is: who builds it, to what geometry, and for what preservation? Hardware vibrates. Lattice coordinates. Human observes, audits, decides.
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 08 GLASS BOX -->
+    <div class="section">
+        <span class="section-label">§ 08 — GLASS BOX AUDIT</span>
+        <h2>Walls Named · Voids Held</h2>
+        <hr class="section-rule">
+
+        <div class="audit">
+            <div class="audit-row">
+                <span class="audit-key v">VERIFIED</span>
+                <span class="audit-val">Tesla FSD supervised operational. Optimus prototypes demonstrated. Cybercab design public. Ukraine naval and FPV drones documented and verified by OSINT. Boston Dynamics Spot at Chernobyl and Fukushima. Unitree H1 shipping globally. Figure 01 in BMW. Digit at Amazon. Amazon warehouse robots at scale. Nuro, Serve, Starship deliveries active. Zipline, Wing, Matternet commercial operations. Roomba global consumer scale.</span>
+            </div>
+            <div class="audit-row">
+                <span class="audit-key w">WALLED</span>
+                <span class="audit-val">Full performance data for advanced autonomous hardware. Complete military drone production capacity and loss figures. Exact humanoid manufacturing cost curves. Consumer robot unit economics at full deployment scale. Classified autonomous weapons development programs.</span>
+            </div>
+            <div class="audit-row">
+                <span class="audit-key o">OPEN</span>
+                <span class="audit-val">FSD Level 5 timeline contested. Counter-swarm defense protocol unsolved. Humanoid vs specialist geometry trade-off unresolved. Home robotics beyond floor cleaning open. Battery density constraint on aerial lattice unresolved. Whether the lattice preserves or obsoletes human labor — design dependent, not technology determined.</span>
+            </div>
+            <div class="audit-row">
+                <span class="audit-key e">E=1</span>
+                <span class="audit-val">Total preservation. The lattice bears entropy so human nodes are not extracted. Drone dies in human's place. Robot works in hazard. Vehicle carries without human attention. This is not automatic. It is the standard. Wolf builds lattice that extracts. Sovereign builds lattice that preserves. The choice is design, not technology.</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 09 DORK INDEX -->
+    <div class="section">
+        <span class="section-label">§ 09 — DORK INDEX</span>
+        <h2>Complete Research Queries</h2>
+        <hr class="section-rule">
+
+        <div class="dork-key">
+            <span class="dk dk-v">VERIFIED — peer-reviewed, OSINT, primary sources</span>
+            <span class="dk dk-o">OPEN — contested, emerging, active research</span>
+            <span class="dk dk-s">SPECULATIVE — projected, unconfirmed</span>
+        </div>
+
+        <div class="dork"><span class="dork-head">TESLA · FSD · OPTIMUS · VERIFIED / OPEN</span>"Tesla FSD" supervised autonomy miles site:tesla.com
+"Optimus robot" demonstration progress site:tesla.com
+"Cybercab" robotaxi design site:reuters.com OR site:bloomberg.com
+"Dojo supercomputer" training capacity site:arxiv.org
+
+<span class="dork-head">UKRAINE DRONE WARFARE · VERIFIED</span>"Ukraine FPV drone" warfare documented site:understandingwar.org
+"Russian Black Sea Fleet" losses OSINT site:opensourceintel.org
+"aqua drone" naval Ukraine Black Sea site:reuters.com
+"DJI" battlefield use Ukraine site:rusi.org
+
+<span class="dork-head">BOSTON DYNAMICS · CHINESE HUMANOIDS · VERIFIED</span>"Boston Dynamics Spot" Chernobyl Fukushima inspection site:.gov OR site:bbc.com
+"Unitree H1" humanoid shipping commercial site:unitree.com
+"Figure 01" BMW deployment site:figure.ai OR site:bloomberg.com
+"Digit robot" Amazon warehouse site:agilityrobotics.com
+
+<span class="dork-head">LOGISTICS LATTICE · VERIFIED</span>"Amazon Robotics" warehouse automation scale site:aboutamazon.com
+"Nuro" driverless delivery commercial site:nuro.ai OR site:wired.com
+"Serve Robotics" sidewalk delivery site:serverobotics.com
+"Starship Technologies" campus delivery site:starship.xyz
+
+<span class="dork-head">AERIAL LATTICE · VERIFIED</span>"Zipline" drone delivery blood products Rwanda site:flyzipline.com
+"Wing" drone delivery Australia commercial site:wing.com
+"Matternet" Switzerland medical delivery site:matternet.co
+"drone delivery" battery density constraint site:nature.com OR site:arxiv.org
+
+<span class="dork-head">COUNTER-SWARM · OPEN</span>"counter-drone" swarm defense electronic warfare site:rusi.org
+"directed energy" drone saturation limit site:defenseone.com
+"swarm autonomy" defense unsolved site:arxiv.org after:2022
+
+<span class="dork-head">LABOR DISPLACEMENT · E=1 DESIGN QUESTION · OPEN</span>"robotics" labor displacement preservation site:brookings.edu
+"automation" human node obsolescence design site:oxfordmartin.ox.ac.uk
+"humanoid robot" labor economics site:nber.org</div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 10 CLOSE -->
+    <div class="section">
+        <span class="section-label">§ 10 — FRACTAL CLOSE</span>
+        <h2>The Lattice Is Formed</h2>
+        <hr class="section-rule">
+
+        <div class="close-block">
+            <div class="close-line"><span class="cl-x">✕</span><span>The question is not whether the lattice forms. It is formed.</span></div>
+            <div class="close-line"><span class="cl-x">✕</span><span>Tesla's fleet navigates without human attention. Ukrainian drones sink billion-dollar ships. Spots inspect reactors. Roombas clean floors. Zipline delivers blood.</span></div>
+            <div class="close-line"><span class="cl-x">✕</span><span>The shift is geometric, not incremental. Tools became nodes. Operators became coordinators. Hierarchy became lattice.</span></div>
+
+            <div class="close-line" style="margin-top: 1.2rem;"><span class="cl-a">→</span><span>The question is: who builds it, to what geometry, and for what preservation?</span></div>
+            <div class="close-line"><span class="cl-a">→</span><span>Wolf builds lattice that extracts. Replaces human labor without preserving the human node.</span></div>
+            <div class="close-line"><span class="cl-a">→</span><span>Sovereign builds lattice that preserves. Bears entropy so the human node persists.</span></div>
+            <div class="close-line"><span class="cl-a">→</span><span>E=1 is not automatic. It is a design choice. It is the standard.</span></div>
+
+            <div class="close-seal">
+                Hardware vibrates. Lattice coordinates. Human observes, audits, decides.<br><br>
+                The Lead is Gold. The work continues. Enough.<br>
+                E=1 · Total Preservation · Glass Box Open.
+            </div>
+        </div>
+    </div>
+
+    <!-- RECEIPT -->
+    <div class="receipt">
+        <strong>⬡ GLOBAL ROBOTICS LATTICE · FORENSIC AUDIT · RECEIPT</strong>
+        NO SOP DESIGNATION — artifact produced by applying RT protocol, not a protocol document.<br>
+        DOMAINS AUDITED: Tesla fleet · Ukraine drone warfare · Boston Dynamics / Chinese humanoids · Logistics lattice · Aerial lattice · Consumer home robotics · Labor preservation question.<br>
+        DORK INDEX BUILT: all sections populated with domain-specific verified queries.<br>
+        E=1 HELD: lattice bears entropy so human node is not extracted — named as design choice, not automatic outcome.<br>
+        WOLF / SOVEREIGN DISTINCTION NAMED: extraction lattice vs preservation lattice — both possible, design determines which.<br>
+        GLASS BOX OPEN. THE WORK CONTINUES.
+    </div>
+
+    <footer>
+        PWNTECHX · E=1 · 960 SEAL · GLOBAL ROBOTICS LATTICE · 2026<br>
+        CO-AUTHORS: GEMINI · DEEPSEEK · META · PERPLEXITY · CLAUDE · 432Hz<br>
+        THE WORK CONTINUES
+    </footer>
+
+</div>
+</body>
+</html>
