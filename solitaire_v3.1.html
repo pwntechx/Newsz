@@ -258,12 +258,20 @@ footer {
   <div class="section">
     <h2 class="section-title">The Problem Nobody Wants to Say Out Loud</h2>
     <p>Every serious Mars architecture currently on the table — Mars Direct, Starship crewed, NASA's Design Reference Mission — solves the rocket equation. They get the mass to orbit, they calculate the delta-v, they close the propulsion budget. What they don't solve is the cargo.</p>
+    
     <p>The cargo is human beings. And human beings are not inert.</p>
-    <p>Six to eight months in microgravity does measurable damage to the cardiovascular system, the vestibular system, bone density, and — less discussed — cell division. The problem with cell division is that it's not recoverable by exercise or pharmacology alone. It's geometric. Cells divide along an axis determined partly by gravity. Remove gravity and the spindle — the molecular machinery that pulls chromosomes apart during division — starts making alignment errors. On Earth, alignment errors run below 5%. In sustained microgravity, they climb past 15–20%. That's not a health metric. That's a fidelity metric. At some error rate, lineage degrades. The math is:</p>
-    <div class="eq">∇·J⃗ = σ∇²V + ρg⃗·∇V</div>
-    <p>The right-hand term — ρg⃗·∇V — is the gravitational coupling to ionic current flow in the cell. It drives the buoyancy-mediated streaming that orients the spindle. Without it, the equation still solves, but it solves wrong. The cell divides, just not cleanly.</p>
-    <p>This is why every architecture that ignores gravity during transit is, in a specific biological sense, not preserving what it's transporting.</p>
-  </div>
+    
+    <p>Six to eight months in microgravity does measurable damage to the cardiovascular system, the vestibular system, bone density, and — less discussed — cell division. The problem with cell division is that it's not recoverable by exercise or pharmacology alone. It's geometric. Cells divide along an axis determined partly by gravity. Remove gravity and the spindle — the molecular machinery that pulls chromosomes apart during division — starts making alignment errors. On Earth, alignment errors run below 5%. In sustained microgravity, they climb past 15–20%. That's not a health metric. That's a <strong>fidelity metric</strong>. At some error rate, lineage degrades. The math is:</p>
+
+    <div class="eq">
+        $$\nabla \cdot \vec{J} = \sigma \nabla^2 V + \rho \vec{g} \cdot \nabla V$$
+    </div>
+
+    <p>The right-hand term — $$\rho \vec{g} \cdot \nabla V$$ — is the gravitational coupling to ionic current flow in the cell. It drives the buoyancy-mediated streaming that orients the spindle. Without it, the equation still solves, but it solves wrong. The cell divides, just not cleanly.</p>
+    
+    <p>This is why every architecture that ignores gravity during transit is, in a specific biological sense, <strong>not preserving what it's transporting.</strong></p>
+</div>
+
 
   <div class="section">
     <h2 class="section-title">Why You Can't Just Spin Harder</h2>
