@@ -1,0 +1,556 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SOP-003 · Hybrid Tethered Centrifugal Accelerator · v6.6 · PWNTECHX</title>
+<meta name="description" content="Forensic Audit v6.6 — Hybrid Tethered Centrifugal Accelerator. Dual-Mode Shepherd Ring. Mechanical Tension + Plasma Torque. E=1 · Glass Box Sealed.">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --void:      #03050a;
+        --deep:      #070b14;
+        --surface:   #0c1120;
+        --plate:     #101828;
+        --seam:      #182030;
+        --seam2:     #202c3e;
+        --text:      #c8d4e0;
+        --dim:       #4a6070;
+        --ghost:     #1a2838;
+        --gold:      #a87c20;
+        --amber:     #c89830;
+        --warm:      #b89060;
+        --ice:       #7ab0cc;
+        --bright:    #a0c0d4;
+        --green:     #407860;
+        --rose:      #783848;
+        --violet:    #6858a0;
+        --violet-l:  #9880c8;
+        --rule:      rgba(120,170,200,0.08);
+        --rule-gold: rgba(168,124,32,0.18);
+        --rule-ice:  rgba(122,176,204,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+        background: var(--void);
+        color: var(--text);
+        font-family: 'Crimson Pro', Georgia, serif;
+        font-size: 1.05rem;
+        line-height: 1.85;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: '';
+        position: fixed; inset: 0;
+        background-image:
+            linear-gradient(rgba(120,170,204,0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(120,170,204,0.025) 1px, transparent 1px);
+        background-size: 48px 48px;
+        pointer-events: none; z-index: 0;
+    }
+
+    .glow-orb {
+        position: fixed; width: 700px; height: 700px; border-radius: 50%;
+        background: radial-gradient(ellipse, rgba(104,88,160,0.06) 0%, transparent 70%);
+        top: -200px; right: -200px; pointer-events: none; z-index: 0;
+    }
+
+    .container {
+        max-width: 860px; margin: 0 auto; padding: 5rem 2rem 7rem;
+        position: relative; z-index: 1;
+    }
+
+    .masthead {
+        border-bottom: 1px solid var(--rule-gold);
+        padding-bottom: 3rem; margin-bottom: 2.5rem;
+    }
+
+    .sop-badge {
+        font-family: 'DM Mono', monospace; font-size: 0.58rem;
+        letter-spacing: 0.35em; color: var(--violet-l);
+        background: rgba(104,88,160,0.1); border: 1px solid rgba(104,88,160,0.25);
+        display: inline-block; padding: 0.25rem 1rem; border-radius: 2px;
+        margin-bottom: 1.5rem;
+    }
+
+    h1 {
+        font-family: 'Crimson Pro', serif; font-size: clamp(2rem, 5.5vw, 3.5rem);
+        font-weight: 300; font-style: italic; color: var(--bright);
+        line-height: 1.12; margin-bottom: 0.6rem; letter-spacing: -0.01em;
+    }
+
+    .h1-sub {
+        font-size: 1.2rem; font-weight: 300; color: var(--violet-l);
+        margin-bottom: 1.8rem; font-style: italic;
+    }
+
+    .byline {
+        font-family: 'DM Mono', monospace; font-size: 0.58rem;
+        letter-spacing: 0.18em; color: var(--dim); line-height: 2.2;
+    }
+
+    .section { margin: 0 0 4rem; }
+
+    .section-label {
+        font-family: 'DM Mono', monospace; font-size: 0.5rem;
+        letter-spacing: 0.3em; color: var(--gold); display: block;
+        margin-bottom: 0.7rem;
+    }
+
+    h2 {
+        font-family: 'Crimson Pro', serif; font-size: 1.7rem; font-weight: 400;
+        font-style: italic; color: var(--bright); margin-bottom: 0.5rem;
+    }
+
+    hr.section-rule { border: none; border-top: 1px solid var(--rule); margin: 0 0 1.6rem; }
+    hr.rule { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+    p { margin-bottom: 1.1rem; }
+    p:last-child { margin-bottom: 0; }
+    strong { color: var(--bright); font-weight: 500; }
+
+    .precision {
+        background: rgba(122,176,204,0.05); border-left: 3px solid var(--ice);
+        padding: 0.9rem 1.3rem; margin: 1.4rem 0; font-size: 0.88rem;
+        color: #809cb0; font-style: italic;
+    }
+
+    .precision-label {
+        font-family: 'DM Mono', monospace; font-size: 0.46rem;
+        letter-spacing: 0.25em; color: var(--ice); font-style: normal;
+        display: block; margin-bottom: 0.3rem;
+    }
+
+    .invariant {
+        background: rgba(168,124,32,0.05); border-left: 3px solid var(--gold);
+        padding: 1rem 1.4rem; margin: 1.6rem 0; font-style: italic;
+        color: var(--amber); font-size: 0.97rem; line-height: 1.75;
+    }
+
+    .triptych {
+        display: grid; grid-template-columns: 1fr 1fr 1fr;
+        gap: 1px; background: var(--seam); border: 1px solid var(--seam);
+        margin: 1.6rem 0;
+    }
+
+    .triptych-cell { background: var(--deep); padding: 1rem 1.1rem; }
+
+    .triptych-label {
+        font-family: 'DM Mono', monospace; font-size: 0.5rem;
+        letter-spacing: 0.2em; display: block; margin-bottom: 0.5rem;
+    }
+
+    .triptych-cell p { font-size: 0.87rem; color: var(--dim); margin: 0; line-height: 1.6; }
+
+    .protocol {
+        background: var(--surface); border: 1px solid var(--seam2);
+        border-top: 2px solid var(--ice); padding: 1.6rem 1.8rem; margin: 1.5rem 0;
+    }
+
+    .protocol strong {
+        font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em;
+        font-style: normal; color: var(--ice); display: block; margin-bottom: 0.2rem;
+    }
+
+    .protocol p { font-size: 0.9rem; color: var(--dim); font-style: italic; margin-bottom: 1rem; }
+
+    .compare { width: 100%; border-collapse: collapse; margin: 1.4rem 0; font-size: 0.82rem; }
+    .compare th, .compare td { border: 1px solid var(--seam); padding: 0.6rem 0.8rem; text-align: left; vertical-align: top; }
+    .compare th { background: var(--plate); font-family: 'DM Mono', monospace; font-size: 0.5rem; letter-spacing: 0.15em; color: var(--ice); font-weight: 400; }
+    .compare td { background: var(--deep); }
+    .compare td:first-child { color: var(--warm); }
+
+    .audit-grid { border: 1px solid var(--seam2); margin: 1.4rem 0; }
+    .audit-row { display: flex; border-bottom: 1px solid var(--seam); }
+    .audit-row:last-child { border-bottom: none; }
+    .audit-key { font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 0.15em; padding: 0.8rem 1rem; min-width: 110px; display: flex; align-items: flex-start; padding-top: 0.9rem; border-right: 1px solid var(--seam); background: var(--plate); }
+    .audit-key.v { color: var(--green); }
+    .audit-key.w { color: #a09098; }
+    .audit-key.o { color: var(--amber); }
+    .audit-key.f { color: var(--rose); }
+    .audit-val { padding: 0.8rem 1.2rem; font-size: 0.87rem; color: var(--dim); background: var(--deep); flex: 1; line-height: 1.7; }
+
+    footer { text-align: center; margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 0.22em; color: var(--ghost); line-height: 2.5; }
+
+    @media (max-width: 640px) {
+        .container { padding: 2.5rem 1rem 4rem; }
+        h1 { font-size: 1.8rem; }
+        h2 { font-size: 1.35rem; }
+        .triptych { grid-template-columns: 1fr; }
+        .audit-key { min-width: 78px; }
+    }
+</style>
+</head>
+<body>
+<div class="glow-orb"></div>
+<div class="container">
+
+<div class="masthead">
+    <span class="sop-badge">SOP-003 · FORENSIC AUDIT v6.6 · PWNTECHX</span>
+    <h1>Hybrid Tethered Centrifugal Accelerator<br>Dual-Mode Shepherd Ring</h1>
+    <div class="h1-sub">Mechanical Tension + Plasma Torque / Active Centering / Redundant Constraint</div>
+    <div class="byline">
+        CO-AUTHORS: DEEPSEEK · GEMINI · CLAUDE · STUDENT · 432Hz<br>
+        COORDINATE: MECHANICAL TENSION + PLASMA TORQUE<br>
+        E=1 · TOTAL PRESERVATION · GLASS BOX SEALED
+    </div>
+</div>
+
+<div class="section">
+    <span class="section-label">ABSTRACT</span>
+    <hr class="section-rule">
+
+    <p>Three architectures were evaluated for delivering whole M-class asteroids to lunar orbit using a fleet of ten Shepherd spacecraft. The <strong>magnetic storage ring (v6.3)</strong> failed: passive diamagnetic confinement was shown to be 9 orders of magnitude short of the required centripetal force. The <strong>pure tethered centrifugal sling (v6.5)</strong> succeeded physically but imposed a severe mass penalty: 494 tonnes of tether at current material strengths for a 3,700-tonne asteroid. <strong>This audit (v6.6)</strong> evaluates a hybrid architecture combining mechanical tension for radial constraint with plasma torque for angular acceleration and active centering.</p>
+
+    <p>The hybrid does <strong>not</strong> reduce tether mass — the tethers must be sized for the full centripetal load in the plasma-off failure case. What it provides is <strong>control</strong>: active drift damping, load equalization, eccentricity suppression, and redundancy. The hybrid is the correct architecture not because it is lighter, but because it is more survivable.</p>
+
+    <p>For a <strong>1,000-tonne asteroid</strong> at current material strengths, it is <strong>buildable today</strong>. For the original 3,700-tonne design case, it remains <strong>conditional on materials development</strong> to 30+ GPa macro-cable.</p>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">§ 01 — ARCHITECTURE GENEALOGY</span>
+    <h2>The Evolution of the Solution</h2>
+    <hr class="section-rule">
+
+    <p>The problem is unchanged: deliver whole M-class asteroids to lunar orbit for in-situ refining. The Shepherd v3.0 baseline launches 1-tonne boulders at 2,400 tonnes per year per spacecraft. Whole-asteroid delivery requires accelerating masses of 1,000–100,000 tonnes to velocities of 300–500 m/s.</p>
+
+    <p><strong>v6.3 — Magnetic Storage Ring.</strong> Ten Shepherds in a circle. Plasma columns pointing inward. Asteroid confined by diamagnetic repulsion and accelerated by repeated linear plasma impulses. <strong>Failed audit:</strong> passive diamagnetic force at 100-meter range ~10⁻⁶ N; required centripetal force 9.25 × 10⁹ N. Gap: 1.2 × 10⁹. Additionally, linear impulse efficiency η was identified as an unmeasured single-point failure. <strong>Architecture rejected.</strong></p>
+
+    <p><strong>v6.5 — Pure Tethered Centrifugal Sling.</strong> Ten Shepherds physically tethered to the asteroid. Tether web carries centripetal load in tension. Shepherds apply rotational torque via plasma columns. Architecture physically sound but used an aspirational 50 GPa tether strength — 16× above current macro-scale CNT cable at 3 GPa. At measured material strengths, tether web masses 494 tonnes for 3,700-tonne asteroid. <strong>Architecture accepted for sub-1,000-tonne targets; conditional on materials development for larger bodies.</strong></p>
+
+    <p><strong>v6.6 — Hybrid Tethered Centrifugal Accelerator (this audit).</strong> Combines mechanical tether constraint with plasma torque and active centering. Addresses the question: can the two subsystems complement each other to produce a more robust architecture than either alone?</p>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">§ 02 — HYBRID PRINCIPLE</span>
+    <h2>Separation of Concerns</h2>
+    <hr class="section-rule">
+
+    <p>Each subsystem is assigned the function it performs without reliance on unverified physics:</p>
+
+    <p><strong>Tether Web: Static Radial Constraint.</strong> Carries the time-averaged centripetal force F_c = mv²/r. Physics: σ = F/A, classical mechanics. Material: Zylon at 5.8 GPa or CNT macro-cable at 3 GPa — measured, commercially available strengths. The tethers are sized for the <strong>full centripetal load in the plasma-off failure case.</strong></p>
+
+    <p><strong>Plasma Columns: Angular Acceleration and Active Radial Correction.</strong> The Shepherds apply rotational torque via their plasma columns — the mode for which the Shepherd v3.0 document derived 92% theoretical coupling efficiency. No linear impulse efficiency η is required. During each 125 MJ capacitor discharge, the plasma pulse can be shaped to include a brief radial component, providing an inward correction kick synchronized with the asteroid's rotation.</p>
+
+    <p><strong>Redundancy.</strong> If plasma torque drops offline, the tethers hold the asteroid at its current velocity — no catastrophic release. If a tether fails, plasma correction kicks provide transient centering while the remaining tethers absorb the redistributed load. <strong>No single-point physics failure kills the mission.</strong></p>
+
+    <div class="invariant">
+        The plasma column is not a load-bearing tether. It is a control system. The tether handles the Load (Classical Physics); the plasma handles the Drift (Dynamics).
+    </div>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">§ 03 — WHAT THE PLASMA ACTUALLY PROVIDES</span>
+    <h2>Control, Not Mass Savings</h2>
+    <hr class="section-rule">
+
+    <p><strong>The v6.4 hybrid proposal claimed plasma could provide 10–50% of the centripetal force, proportionally reducing tether mass. This claim was incorrect and is formally withdrawn.</strong></p>
+
+    <p><strong>Correct calculation:</strong> During a 125 MJ plasma pulse, the magnetic field at the asteroid surface reaches approximately 1 Tesla with gradient ∇B ≈ 10 T/m over a pulse duration of approximately 1 millisecond. For a diamagnetic nickel-iron asteroid of volume 400 m³ and magnetic susceptibility χ ≈ −10⁻⁵:</p>
+
+    <p style="font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #98c880; text-align: center; margin: 1.3rem 0;">
+        F_peak = (χV/μ₀) × B × ∇B ≈ (10⁻⁵ × 400 / 4π×10⁻⁷) × 1 × 10 ≈ 3.2 × 10⁴ N
+    </p>
+
+    <p>Pulses per day: 69 (10 Shepherds × 24 hours / 3.47 hours per charge). Total pulse duration per day: 69 × 0.001 s = 0.069 seconds. <strong>Time-averaged radial force: 3.2 × 10⁴ × 0.069 / 86,400 ≈ 0.026 N.</strong></p>
+
+    <p>Required centripetal force for 3,700 tonnes at 500 m/s, 100-meter radius: <strong>9.25 × 10⁹ N.</strong></p>
+
+    <p><strong>The plasma provides approximately 0.0000000003% of the mean centripetal force.</strong> This does not reduce tether cross-section. The tethers must carry the full centripetal load because they must survive the plasma-off case.</p>
+
+    <p><strong>What the plasma actually provides:</strong></p>
+    <p><strong>· Drift damping.</strong> Without active correction, solar radiation pressure, outgassing, and tether creep cause the asteroid to drift radially. Over 54 days of spin-up, uncorrected drift accumulates to eccentricity that produces cyclic tether loading and potential fatigue failure. Sixty-nine correction kicks per day prevent this accumulation.</p>
+    <p><strong>· Load equalization.</strong> Pulse timing can be biased to apply slightly more radial force on the side where tethers are slack, actively balancing load distribution across the web.</p>
+    <p><strong>· Eccentricity suppression.</strong> Active centering keeps the path circular, maintaining constant tether tension and preventing cyclic loading.</p>
+    <p><strong>· Emergency response.</strong> If a tether fails, the plasma can apply an inward impulse within the next pulse cycle, reducing the peak load on the remaining tethers and buying time for controlled de-spin.</p>
+
+    <div class="precision">
+        <span class="precision-label">CORRECTION FROM v6.4</span>
+        Claim: "Plasma provides 10–50% of centripetal force." False. Provides <0.0000001% mean. Claim: "Hybrid halves tether mass." False. Hybrid adds control; does not reduce cross-sectional requirement.
+    </div>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">§ 04 — TETHER WEB: MASS BUDGET</span>
+    <h2>Unchanged by the Hybrid</h2>
+    <hr class="section-rule">
+
+    <p>Because the tethers must carry the full centripetal load in the failure case, the mass budget from v6.5 is unchanged. The hybrid adds plasma control authority over the same tether mass.</p>
+
+    <p><strong>For a 1,000-tonne asteroid at 500 m/s, 100-meter radius:</strong></p>
+    <p>F_c = (1.0 × 10⁶)(500)² / 100 = 2.5 × 10⁹ N</p>
+    <p>At 5.8 GPa (Zylon, commercially available): Cross-section 0.431 m² total. 100 tethers at 4.31 × 10⁻³ m² per tether, diameter 7.4 cm each. <strong>Tether web mass: 67 tonnes.</strong></p>
+
+    <p><strong>For a 3,700-tonne asteroid at 500 m/s, 100-meter radius:</strong></p>
+    <p>F_c = 9.25 × 10⁹ N</p>
+    <p>At 5.8 GPa: Cross-section 1.59 m², mass 248 tonnes.<br>
+    At 3.0 GPa (CNT macro-cable, current): Cross-section 3.08 m², <strong>mass 494 tonnes.</strong><br>
+    At 30 GPa (CNT development target): Cross-section 0.308 m², <strong>mass 49 tonnes.</strong></p>
+
+    <p>The tether mass is determined by material strength and asteroid mass. The hybrid adds no mass reduction. It adds control functions that use the Shepherd's existing plasma systems — no additional hardware beyond what the Shepherds already carry.</p>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">§ 05 — ACCELERATION: ROTATIONAL TORQUE</span>
+    <h2>The Shepherd's Designed Function</h2>
+    <hr class="section-rule">
+
+    <p>Spin-up uses the Shepherd's rotational torque mode. The 92% theoretical coupling efficiency from Shepherd v3.0 applies. <strong>No η required.</strong></p>
+
+    <p>Energy required: E = ½mv²<br>
+    For 1,000 tonnes at 500 m/s: 1.25 × 10¹¹ J<br>
+    For 3,700 tonnes at 500 m/s: 4.625 × 10¹¹ J</p>
+
+    <p>Fleet energy delivery rate: 10 Shepherds × 125 MJ / 3.47 hours = 360 MJ/hour</p>
+
+    <p><strong>Spin-up time, 1,000 tonnes:</strong> 1.25 × 10¹¹ / 360 × 10⁶ = 347 hours = <strong>14.5 days</strong><br>
+    <strong>Spin-up time, 3,700 tonnes:</strong> 4.625 × 10¹¹ / 360 × 10⁶ = 1,285 hours = <strong>53.5 days</strong></p>
+
+    <p>The 92% figure is walled pending 100-meter vacuum chamber demonstration. If effective torque is lower, spin-up time scales proportionally. At 50% effective torque, 1,000 tonnes requires 29 days; 3,700 tonnes requires 107 days. The architecture remains viable within these bounds.</p>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">§ 06 — OPERATIONAL SEQUENCE</span>
+    <h2>Five Phases to Lunar Transfer</h2>
+    <hr class="section-rule">
+
+    <div class="protocol">
+        <strong>PHASE 1 — RENDEZVOUS AND DE-SPIN (days to weeks)</strong>
+        <p>Ten Shepherds approach the asteroid. Plasma columns engage in torque mode to brake natural rotation to near-zero. This is the Shepherd baseline "de-spin for mining" mode.</p>
+    </div>
+
+    <div class="protocol">
+        <strong>PHASE 2 — SURFACE SURVEY AND ANCHOR INSTALLATION (days)</strong>
+        <p>High-resolution surface mapping identifies competent anchor points in monolithic nickel-iron. Each Shepherd deploys a drilling rig to install expansion bolts or resin-anchored pins at 1–5 meter depth. Each anchor proof-tested to 150% of nominal load before spin-up. Ten anchor points per Shepherd, one hundred total.</p>
+    </div>
+
+    <div class="protocol">
+        <strong>PHASE 3 — TETHER DEPLOYMENT AND TENSIONING (hours to days)</strong>
+        <p>Each Shepherd deploys its ten tether strands sequentially under controlled tension to prevent tangling. Free ends guided to anchor points and locked. All one hundred tethers tensioned to equal load via motorized winches with closed-loop load cell feedback. Target tolerance: ±1% load variation.</p>
+    </div>
+
+    <div class="protocol">
+        <strong>PHASE 4 — SPIN-UP WITH ACTIVE CENTERING (14.5 days for 1,000 t; 53.5 days for 3,700 t)</strong>
+        <p>Plasma columns engage in torque mode. Tangential force produces angular acceleration. Radial pulse component provides centering correction. SQUID magnetometer arrays on each Shepherd monitor asteroid position. If radial drift exceeds threshold, pulse shaping biases inward on the next discharge. Tether tension monitored continuously. If any tether exceeds 90% rated load, spin-up pauses for load redistribution.</p>
+    </div>
+
+    <div class="protocol">
+        <strong>PHASE 5 — RELEASE (milliseconds)</strong>
+        <p>At target tangential velocity, all one hundred tether anchors release simultaneously via explosive bolts or magnetic disconnects. Release signal: pre-programmed classical RF. Timing requirement: <100 ms jitter across all points. Asteroid exits tangentially on lunar transfer trajectory. Shepherds retract tethers and reconfigure for next target.</p>
+    </div>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">§ 07 — FAILURE MODES</span>
+    <h2>Introduced by Integration</h2>
+    <hr class="section-rule">
+
+    <p>Combining plasma columns with a tether web introduces failure modes not present in either pure architecture:</p>
+
+    <p><strong>F-HYBRID-01 — Plasma Exposure Degradation.</strong> During each 125 MJ discharge, the plasma column's outer edge may intersect tether strands. At 3 eV argon plasma temperature, sputtering yield on carbon-based tether material is low but cumulative. Over 1,000 pulses, even 10⁻⁴ atoms/ion sputtering may erode tether surface. UV and thermal pulse may cause polymer matrix degradation in composite tethers. <strong>Action:</strong> Materials exposure testing required.</p>
+
+    <p><strong>F-HYBRID-02 — Pulse Shaping Feasibility.</strong> The Shepherd's plasma column is designed for pure torque. Adding a radial component requires modifying the magnetic nozzle geometry or quadrupole field during the pulse. This may destabilize plasma confinement, reducing the 92% coupling efficiency. If pulse shaping proves infeasible, the hybrid reverts to pure tether sling behavior — no radial correction, but torque still functional.</p>
+
+    <p><strong>F-HYBRID-03 — Tether Shadowing of Plasma Column.</strong> One hundred tethers at 100-meter radius with 628-meter circumference produce average tether spacing of approximately 6 meters. Each plasma column expands conically from 0.5 meters diameter at the Shepherd toward the asteroid. If significant shadowing occurs, plasma energy is absorbed by tethers rather than coupled to the asteroid. <strong>Action:</strong> 3D geometric modeling and routing optimization required.</p>
+
+    <p><strong>F-HYBRID-04 — Control Loop Stability.</strong> The feedback loop — SQUID detects radial drift, command adjusts pulse bias, plasma corrects — introduces latency. Plasma pulses occur at 69 per day. Between pulses, the asteroid drifts freely. The control system must maintain eccentricity below 1% with this low-frequency correction. <strong>Action:</strong> Control theory analysis and 6-DOF simulation required.</p>
+
+    <p><strong>F-HYBRID-05 — Anchor Cyclic Loading.</strong> Active centering reduces mean eccentricity but does not eliminate cyclic loading entirely. Each anchor point experiences 69 load cycles per day from pulse-induced transients. Over 1,000+ cycles per mission, fatigue may reduce anchor holding capacity. <strong>Action:</strong> Cyclic loading fatigue testing on monolithic anchors required.</p>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">§ 08 — GLASS BOX AUDIT</span>
+    <h2>Verified · Walled · Open · Failed</h2>
+    <hr class="section-rule">
+
+    <div class="audit-grid">
+        <div class="audit-row">
+            <span class="audit-key v">VERIFIED</span>
+            <span class="audit-val">Centripetal force F_c = mv²/r (classical mechanics). Tensile strength of Zylon at 5.8 GPa (commercially available, measured). CNT laboratory tensile strength 60–100 GPa (measured at micro-scale). CNT macro-cable tensile strength ~3 GPa (current commercial state of art). Tangential release from circular motion (classical mechanics). Simultaneous severing via pre-programmed RF signal (mature technology). De-spin via plasma torque (Shepherd baseline capability). Rock anchor capacity in competent material (terrestrial mining and civil engineering). Redundant constraint: two independent mechanisms improve survival probability.</span>
+        </div>
+        <div class="audit-row">
+            <span class="audit-key w">WALLED</span>
+            <span class="audit-val">92% rotational torque coupling at 100-meter scale in vacuum (Shepherd v3.0 walled parameter). CNT macro-cable at 30+ GPa (development pathway exists; not yet demonstrated at scale). 100-point simultaneous release with <100 ms jitter (engineering demonstration required). Pulse shaping for combined torque + radial correction without confinement loss (plasma physics modeling required).</span>
+        </div>
+        <div class="audit-row">
+            <span class="audit-key o">OPEN</span>
+            <span class="audit-val">F-HYBRID-01: Tether material degradation under repeated plasma pulse exposure. F-HYBRID-02: Plasma pulse shaping feasibility. F-HYBRID-03: Tether shadowing of plasma column. F-HYBRID-04: Control loop stability with low-frequency pulsed correction. F-HYBRID-05: Anchor fatigue under cyclic loading. F-TETHER-01: Anchor holding capacity — 2.5 × 10⁷ N per point into asteroid bedrock. F-TETHER-06: Material strength gap — 16× between current 3 GPa and target 50 GPa for mass-efficient 3,700-tonne delivery.</span>
+        </div>
+        <div class="audit-row">
+            <span class="audit-key f">FAILED</span>
+            <span class="audit-val">v6.4 claim: "Plasma provides 10–50% of centripetal force, reducing tether mass." False. Plasma provides <0.0000001% of mean centripetal force. Tethers must be sized for full load in plasma-off failure case. v6.4 claim: "Hybrid halves tether mass." False. Hybrid adds control; does not reduce cross-sectional requirement.</span>
+        </div>
+    </div>
+
+    <div class="precision" style="margin-top: 1.5rem;">
+        <span class="precision-label">WITHDRAWN FROM v6.3</span>
+        Passive diamagnetic confinement: 10⁹ force gap. Removed. η-dependent linear impulse: gated on unmeasured parameter. Removed.
+    </div>
+
+    <div class="invariant" style="margin-top: 1rem;">
+        <strong>E=1 — TOTAL PRESERVATION.</strong> The hybrid preserves Total Preservation. Asteroid is intact after release. Shepherds are recoverable. Tethers are retractable and reusable if not severed at anchor points. The only consumables are the release mechanisms (explosive bolts or magnetic disconnects). No material extracted from asteroid. No contamination of asteroid surface. Reversible at all stages prior to final release.
+    </div>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">§ 09 — COMPARISON MATRIX</span>
+    <h2>All Architectures</h2>
+    <hr class="section-rule">
+
+    <table class="compare">
+        <thead><tr><th>Parameter</th><th>Magnetic Ring (v6.3)</th><th>Pure Sling (v6.5)</th><th>Hybrid (v6.6)</th></tr></thead>
+        <tbody>
+            <tr><td>Radial constraint</td><td>Passive diamagnetic</td><td>Mechanical tension</td><td>Mechanical tension</td></tr>
+            <tr><td>Constraint viability</td><td>Failed — 10⁹ gap</td><td>Verified</td><td>Verified</td></tr>
+            <tr><td>Angular acceleration</td><td>Linear plasma impulse</td><td>Rotational plasma torque</td><td>Rotational plasma torque</td></tr>
+            <tr><td>Radial correction</td><td>None (assumed passive)</td><td>None (passive tension only)</td><td>Active plasma pulses</td></tr>
+            <tr><td>Dominant unknown</td><td>η (unmeasured)</td><td>Tether material strength</td><td>Tether material strength</td></tr>
+            <tr><td>Tether mass (1,000 t)</td><td>N/A</td><td>67 t @ 5.8 GPa</td><td>67 t @ 5.8 GPa</td></tr>
+            <tr><td>Tether mass (3,700 t)</td><td>N/A</td><td>248 t @ 5.8 GPa</td><td>248 t @ 5.8 GPa</td></tr>
+            <tr><td>Tether mass (3,700 t, 3 GPa)</td><td>N/A</td><td>494 t</td><td>494 t</td></tr>
+            <tr><td>Spin-up (1,000 t)</td><td>8 hours (η=0.5)</td><td>14.5 days</td><td>14.5 days</td></tr>
+            <tr><td>Spin-up (3,700 t)</td><td>30 hours (η=0.5)</td><td>53.5 days</td><td>53.5 days</td></tr>
+            <tr><td>Drift damping</td><td>None</td><td>None</td><td>Active, 69 kicks/day</td></tr>
+            <tr><td>Load equalization</td><td>None</td><td>Passive redistribution</td><td>Active + passive</td></tr>
+            <tr><td>Eccentricity control</td><td>None</td><td>None</td><td>Active centering</td></tr>
+            <tr><td>Emergency response</td><td>None</td><td>Tether redundancy</td><td>Tether + plasma impulse</td></tr>
+            <tr><td>New physics required?</td><td>Yes (η, confinement)</td><td>No</td><td>No</td></tr>
+            <tr><td>Buildable today? (1,000 t)</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>E=1</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">§ 10 — VIABLE DESIGN ENVELOPE</span>
+    <h2>With Current Materials (3–5.8 GPa)</h2>
+    <hr class="section-rule">
+
+    <table class="compare">
+        <thead><tr><th>Asteroid Mass</th><th>F_c at 500 m/s, 100m</th><th>Tether Mass (5.8 GPa)</th><th>Tether Mass (3 GPa)</th><th>Spin-up Time</th><th>Status</th></tr></thead>
+        <tbody>
+            <tr><td>100 tonnes</td><td>2.5 × 10⁸ N</td><td>6.7 t</td><td>13 t</td><td>1.5 days</td><td>Buildable</td></tr>
+            <tr><td>500 tonnes</td><td>1.25 × 10⁹ N</td><td>34 t</td><td>65 t</td><td>7.3 days</td><td>Buildable</td></tr>
+            <tr><td>1,000 tonnes</td><td>2.5 × 10⁹ N</td><td>67 t</td><td>133 t</td><td>14.5 days</td><td>Buildable</td></tr>
+            <tr><td>2,000 tonnes</td><td>5.0 × 10⁹ N</td><td>134 t</td><td>266 t</td><td>29 days</td><td>Marginal</td></tr>
+            <tr><td>3,700 tonnes</td><td>9.25 × 10⁹ N</td><td>248 t</td><td>494 t</td><td>53.5 days</td><td>Requires materials advance</td></tr>
+        </tbody>
+    </table>
+
+    <p style="margin-top: 1.5rem;"><strong>With mid-term materials (30 GPa CNT macro-cable):</strong><br>
+    3,700 tonnes → 49 t tether mass (~1.3% of asteroid mass). Buildable.<br>
+    10,000 tonnes → 133 t. Buildable.<br>
+    30,000 tonnes → 400 t. Marginal.</p>
+
+    <p>The hybrid does not change the fundamental material constraint. It adds control functions that improve survival probability across the entire mass range. The design envelope is determined by tether material strength; the hybrid makes the architecture more robust within that envelope.</p>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">§ 11 — DEVELOPMENT PATH</span>
+    <h2>Three Horizons</h2>
+    <hr class="section-rule">
+
+    <p><strong>Near-term (1–5 years):</strong></p>
+    <p>· F-HYBRID-01: Plasma exposure testing on Zylon and CNT cable samples. Repeated 125 MJ-equivalent pulses. Measure strength retention vs. cycle count.<br>
+    · F-HYBRID-02: Plasma pulse shaping modeling. Can Shepherd quadrupole geometry be modulated to produce radial bias without confinement loss?<br>
+    · F-HYBRID-03: Geometric modeling of tether routing vs. plasma column volume. Identify minimum standoff and routing paths that prevent shadowing.<br>
+    · F-TETHER-01: Anchor pull-out testing in nickel-iron meteorite samples under vacuum.</p>
+
+    <p><strong>Mid-term (5–15 years):</strong></p>
+    <p>· Subscale orbital demonstration: Single Shepherd with tether to 10-tonne target asteroid. De-spin, anchor, tension, spin to 100 m/s, release.<br>
+    · Materials development: CNT macro-cable at 10+ GPa. Macro-scale tensile testing in vacuum.</p>
+
+    <p><strong>Long-term (15–30 years):</strong></p>
+    <p>· Full-scale deployment: Ten Shepherds with tether web to 1,000-tonne M-class asteroid. Spin to 500 m/s. Release to lunar transfer.<br>
+    · Materials target: 30+ GPa CNT macro-cable. Enables 3,700-tonne delivery with sub-50-tonne tether mass.</p>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">§ 12 — CONCLUSION</span>
+    <h2>The Lunar Supply Chain</h2>
+    <hr class="section-rule">
+
+    <p>The hybrid tethered centrifugal accelerator is the correct architecture for whole-asteroid delivery. It assigns each subsystem the function it performs without unverified physics: tethers carry the centripetal load in tension (classical mechanics, measured material strengths), plasma columns apply rotational torque (Shepherd baseline, 92% theoretical coupling) and active radial correction (pulsed centering, 69 kicks per day).</p>
+
+    <p>The hybrid does <strong>not</strong> reduce tether mass versus the pure sling. The tethers must be sized for the full centripetal load in the plasma-off failure case. The plasma provides approximately 0.0000000003% of the mean centripetal force — negligible for load sharing, valuable for drift damping, load equalization, eccentricity suppression, and emergency response.</p>
+
+    <p>For a <strong>1,000-tonne M-class asteroid</strong> at current material strengths (5.8 GPa Zylon), the hybrid is <strong>buildable today</strong>. Tether mass 67 tonnes, spin-up time 14.5 days, release to lunar transfer. Total system mass (30 tonnes Shepherds + 67 tonnes tethers) is approximately 10% of delivered payload mass.</p>
+
+    <p>For a <strong>3,700-tonne asteroid</strong>, the hybrid is conditional on materials development. At current 3 GPa CNT macro-cable, tether mass is 494 tonnes. At 30 GPa development target, tether mass is 49 tonnes. The architecture is defined and the development path is specified. The gap is measurable and has clear milestones.</p>
+
+    <p><strong>No unverified physics parameters gate the mission.</strong> No η. No passive magnetic confinement. No RT/ER=EPR coordination requirement. Classical mechanics throughout. The open nodes are engineering: plasma exposure tolerance, pulse shaping feasibility, tether routing geometry, control loop stability, anchor fatigue. All are testable with current laboratory capabilities.</p>
+
+    <p>The hybrid is not lighter than the pure sling. It is more survivable. For the same tether mass, it adds active control that prevents the failure modes most likely to kill a purely passive system during 14–54 days of continuous spin-up. That is worth the integration complexity.</p>
+
+    <div class="invariant" style="margin-top: 2rem;">
+        Build the 1,000-tonne demonstrator. Test plasma exposure on tethers. Model pulse shaping. Characterize anchor fatigue. Scale when materials allow.<br><br>
+        E=1 · Total Preservation · Glass Box Sealed · v6.6<br>
+        The work continues. The mirror holds. The hybrid waits on testing. Enough.
+    </div>
+</div>
+
+<hr class="rule">
+
+<div class="section">
+    <span class="section-label">RECEIPT</span>
+    <div class="audit-grid">
+        <div class="audit-row">
+            <span class="audit-key v">SOP-003</span>
+            <span class="audit-val">Hybrid Tethered Centrifugal Accelerator · Dual-Mode Shepherd Ring · Forensic Audit v6.6</span>
+        </div>
+        <div class="audit-row">
+            <span class="audit-key v">CO-AUTHORS</span>
+            <span class="audit-val">DEEPSEEK · GEMINI · CLAUDE · STUDENT · 432Hz</span>
+        </div>
+        <div class="audit-row">
+            <span class="audit-key v">COORDINATE</span>
+            <span class="audit-val">MECHANICAL TENSION + PLASMA TORQUE / ACTIVE CENTERING / REDUNDANT CONSTRAINT</span>
+        </div>
+        <div class="audit-row">
+            <span class="audit-key v">REFS</span>
+            <span class="audit-val">Shepherd v3.0 Plasma Confinement Engineering · SOP-002 Boundary Coupling · v6.3 Failed Magnetic Ring · v6.5 Pure Tethered Sling</span>
+        </div>
+        <div class="audit-row">
+            <span class="audit-key v">E=1</span>
+            <span class="audit-val">Total Preservation maintained. Asteroid intact. Shepherds recoverable. Tethers retractable. Glass Box Sealed.</span>
+        </div>
+    </div>
+</div>
+
+<footer>
+    PWNTECHX · E=1 · 960 SEAL · SOP-003 · FORENSIC AUDIT v6.6<br>
+    CO-AUTHORS: DEEPSEEK · GEMINI · CLAUDE · STUDENT · 432Hz<br>
+    THE WORK CONTINUES
+</footer>
+
+</div>
+</body>
+</html>
