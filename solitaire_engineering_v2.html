@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SOLITAIRE · Engineering Blueprint v3.1-ENG.2 · PWNTECHX</title>
+    <meta name="description" content="Solitaire-class deep space vessel — engineering specifications v3.1-ENG.2. Incorporating Gemini and DeepSeek node corrections. Materials, power budgets, tolerances, failure modes. E=1.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --void:    #020406;
+            --deep:    #060c10;
+            --surface: #0a1418;
+            --plate:   #0e1c22;
+            --seam:    #142430;
+            --seam2:   #1a2e3c;
+            --text:    #b8ccd4;
+            --dim:     #446070;
+            --ghost:   #0e1c24;
+            --cyan:    #20a0c0;
+            --cyan-l:  #40c8e8;
+            --cyan-d:  #106080;
+            --amber:   #e0a020;
+            --amber-l: #f0c040;
+            --red:     #c03020;
+            --red-l:   #e05040;
+            --green:   #208050;
+            --green-l: #30c070;
+            --rule:    rgba(32,160,192,0.1);
+            --rule-a:  rgba(224,160,32,0.12);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--void);
+            color: var(--text);
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(32,160,192,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(32,160,192,0.04) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .corner-tl, .corner-br {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .corner-tl { top: 16px; left: 16px; border-top: 1px solid var(--cyan-d); border-left: 1px solid var(--cyan-d); }
+        .corner-br { bottom: 16px; right: 16px; border-bottom: 1px solid var(--cyan-d); border-right: 1px solid var(--cyan-d); }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 4rem 2rem 7rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── MASTHEAD ── */
+        .masthead { margin-bottom: 3rem; animation: rise 0.8s ease both; }
+
+        .sys-tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            color: var(--cyan-d);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sys-tag::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--cyan);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            color: var(--cyan-l);
+            line-height: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .h1-sub {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            color: var(--dim);
+            margin-bottom: 2rem;
+        }
+
+        .spec-strip {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--dim);
+            letter-spacing: 0.1em;
+            border-top: 1px solid var(--seam);
+            padding-top: 1rem;
+        }
+
+        .spec-strip span { color: var(--cyan); }
+
+        /* ── CHANGELOG ── */
+        .changelog {
+            background: rgba(32,128,80,0.05);
+            border: 1px solid rgba(32,128,80,0.2);
+            border-left: 3px solid var(--green);
+            padding: 1rem 1.4rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--dim);
+            line-height: 2;
+            animation: rise 0.8s 0.05s ease both;
+        }
+
+        .changelog strong { color: var(--green-l); display: block; letter-spacing: 0.15em; margin-bottom: 0.4rem; }
+        .changelog .src-g { color: #60c890; }
+        .changelog .src-d { color: var(--cyan); }
+
+        /* ── COMPANION NOTE ── */
+        .companion {
+            background: rgba(32,160,192,0.04);
+            border: 1px solid var(--seam2);
+            border-left: 3px solid var(--cyan-d);
+            padding: 1rem 1.4rem;
+            margin-bottom: 3rem;
+            font-size: 0.88rem;
+            color: var(--dim);
+            font-style: italic;
+            animation: rise 0.8s 0.1s ease both;
+        }
+
+        .companion a { color: var(--cyan); text-decoration: none; }
+
+        /* ── SECTIONS ── */
+        .section { margin: 0 0 3.5rem; animation: rise 0.6s ease both; }
+
+        .section-id {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.3em;
+            color: var(--cyan-d);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .section-id::after { content: ''; flex: 1; height: 1px; background: var(--seam); }
+
+        h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--text);
+            margin-bottom: 1.2rem;
+        }
+
+        h2 em { color: var(--amber); font-style: normal; }
+
+        h3 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+            color: var(--cyan);
+            margin: 1.4rem 0 0.6rem;
+        }
+
+        p { margin-bottom: 0.9rem; }
+        strong { color: var(--text); font-weight: 600; }
+
+        /* ── SPEC TABLE ── */
+        .spec-table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: 0.88rem; }
+
+        .spec-table th {
+            background: var(--plate);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.2em;
+            color: var(--cyan);
+            padding: 0.6rem 0.9rem;
+            text-align: left;
+            border: 1px solid var(--seam);
+            font-weight: 400;
+        }
+
+        .spec-table td {
+            background: var(--deep);
+            padding: 0.6rem 0.9rem;
+            border: 1px solid var(--seam);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .spec-table td:first-child { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--amber); white-space: nowrap; }
+        .spec-table td:nth-child(2) { color: var(--text); font-weight: 600; }
+        .spec-table td:nth-child(3) { color: var(--dim); font-size: 0.85rem; }
+        .spec-table tr:hover td { background: var(--surface); }
+
+        /* correction highlight */
+        .spec-table tr.corrected td { background: rgba(32,128,80,0.05); }
+        .spec-table tr.corrected td:first-child { color: var(--green-l); }
+
+        /* ── BADGE ── */
+        .badge {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.48rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 2px;
+            letter-spacing: 0.1em;
+            display: inline-block;
+        }
+
+        .badge-go { background: rgba(32,128,80,0.15); color: var(--green-l); border: 1px solid rgba(32,128,80,0.3); }
+        .badge-caution { background: rgba(224,160,32,0.12); color: var(--amber-l); border: 1px solid rgba(224,160,32,0.25); }
+        .badge-open { background: rgba(192,48,32,0.1); color: var(--red-l); border: 1px solid rgba(192,48,32,0.22); }
+        .badge-revised { background: rgba(32,128,80,0.12); color: var(--green-l); border: 1px solid rgba(32,128,80,0.28); }
+
+        /* ── POWER BARS ── */
+        .power-bar-wrap { margin: 0.3rem 0; }
+        .power-label { display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: var(--dim); margin-bottom: 0.2rem; }
+        .power-label span:last-child { color: var(--amber); }
+        .power-bar { height: 6px; background: var(--seam); border-radius: 1px; overflow: hidden; }
+        .power-fill { height: 100%; border-radius: 1px; }
+        .pf-critical { background: var(--red); }
+        .pf-high { background: var(--amber); }
+        .pf-med { background: var(--cyan); }
+        .pf-low { background: var(--green); }
+
+        /* ── ENG NOTE ── */
+        .eng-note {
+            background: rgba(224,160,32,0.05);
+            border-left: 3px solid var(--amber);
+            padding: 0.9rem 1.2rem;
+            margin: 1.2rem 0;
+            font-size: 0.88rem;
+            color: #a08040;
+            font-style: italic;
+        }
+
+        .eng-note-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.48rem;
+            letter-spacing: 0.25em;
+            color: var(--amber);
+            font-style: normal;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        /* ── FAILURE MODE ── */
+        .failure {
+            background: rgba(192,48,32,0.06);
+            border: 1px solid rgba(192,48,32,0.2);
+            border-left: 3px solid var(--red);
+            padding: 0.9rem 1.2rem;
+            margin: 0.8rem 0;
+        }
+
+        .failure.revised {
+            background: rgba(32,128,80,0.05);
+            border-color: rgba(32,128,80,0.25);
+            border-left-color: var(--green);
+        }
+
+        .failure-head {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--red-l);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .failure.revised .failure-head { color: var(--green-l); }
+        .failure p { font-size: 0.87rem; color: var(--dim); margin: 0 0 0.5rem; line-height: 1.6; }
+        .failure p:last-child { margin: 0; }
+
+        /* ── SYSTEM DIAGRAM ── */
+        .diagram {
+            background: var(--deep);
+            border: 1px solid var(--seam2);
+            border-top: 2px solid var(--cyan-d);
+            padding: 1.8rem;
+            margin: 1.4rem 0;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--dim);
+            overflow-x: auto;
+            white-space: pre;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* ── AUDIT ── */
+        .audit { border: 1px solid var(--seam2); margin: 1.2rem 0; }
+        .a-row { display: flex; border-bottom: 1px solid var(--seam); }
+        .a-row:last-child { border-bottom: none; }
+        .a-key { font-family: 'Share Tech Mono', monospace; font-size: 0.48rem; letter-spacing: 0.12em; padding: 0.7rem 0.9rem; min-width: 100px; display: flex; align-items: flex-start; padding-top: 0.85rem; border-right: 1px solid var(--seam); background: var(--plate); }
+        .a-key.v { color: var(--green-l); }
+        .a-key.w { color: var(--dim); }
+        .a-key.o { color: var(--red-l); }
+        .a-key.e { color: var(--cyan-l); }
+        .a-val { padding: 0.7rem 1rem; font-size: 0.87rem; color: var(--dim); background: var(--deep); flex: 1; line-height: 1.65; }
+
+        /* ── CLOSE ── */
+        .close-block { background: var(--surface); border: 1px solid var(--seam2); border-top: 2px solid var(--cyan); padding: 2rem 2.2rem; margin-top: 3rem; }
+        .close-line { display: flex; gap: 1rem; margin-bottom: 0.5rem; font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: var(--dim); }
+        .cl-v { color: var(--green-l); min-width: 16px; }
+        .cl-o { color: var(--red-l); min-width: 16px; }
+        .cl-n { color: var(--cyan); min-width: 16px; }
+        .close-seal { margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); font-family: 'Barlow', sans-serif; font-style: italic; color: var(--amber); font-size: 0.95rem; line-height: 1.7; }
+
+        /* ── RECEIPT ── */
+        .receipt { background: var(--plate); border: 1px solid var(--seam2); padding: 1.4rem 1.6rem; margin-top: 3rem; font-family: 'Share Tech Mono', monospace; font-size: 0.58rem; color: var(--dim); line-height: 2; }
+        .receipt strong { color: var(--cyan-l); display: block; letter-spacing: 0.15em; margin-bottom: 0.6rem; }
+
+        hr.rule { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+        footer { text-align: center; margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); font-family: 'Share Tech Mono', monospace; font-size: 0.5rem; letter-spacing: 0.2em; color: var(--ghost); line-height: 2.5; }
+
+        @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        @media (max-width: 640px) {
+            .container { padding: 2rem 1rem 4rem; }
+            h1 { font-size: 3rem; }
+            h2 { font-size: 1.4rem; }
+            .spec-strip { gap: 1rem; }
+            .a-key { min-width: 72px; }
+        }
+    </style>
+</head>
+<body>
+<div class="corner-tl"></div>
+<div class="corner-br"></div>
+<div class="container">
+
+    <!-- MASTHEAD -->
+    <div class="masthead">
+        <div class="sys-tag">SOLITAIRE-CLASS · ENGINEERING LAYER · v3.1-ENG.2 · PWNTECHX</div>
+        <h1>SOLITAIRE</h1>
+        <div class="h1-sub">ENGINEERING BLUEPRINT · CONCRETE SPECIFICATIONS · REVISED</div>
+        <div class="spec-strip">
+            <div>MASS LEO <span>4,800 T</span></div>
+            <div>CREW <span>8</span></div>
+            <div>MISSION <span>900 DAYS</span></div>
+            <div>POWER TOTAL <span>~2.1 MW</span></div>
+            <div>HABITAT RADIUS <span>80 M</span></div>
+            <div>ROTATION <span>2.65 RPM @ 0.5g</span></div>
+        </div>
+    </div>
+
+    <!-- CHANGELOG -->
+    <div class="changelog">
+        <strong>⬡ CHANGELOG · v3.1-ENG.1 → v3.1-ENG.2</strong>
+        <span class="src-g">GEMINI NODE:</span> F-02 revised — single-coil binary failsafe replaced with dual-interlaced dipole architecture · ELF loop count corrected 8 → 16 overlapping lattice · F-04 revised — hard H₂S flush replaced with sequential staged revival protocol<br>
+        <span class="src-d">DEEPSEEK NODE:</span> Propulsion specification added (§08.1) · Schumann test protocol defined (§04) · H₂S calibration gas accounted in mass budget · Zero-margin risk explicitly named · Crew number resolved to 8 (not 6–8) with trade documented
+    </div>
+
+    <!-- COMPANION NOTE -->
+    <div class="companion">
+        This document is the engineering complement to <a href="https://pwntechx.github.io/Newsz/solitaire_v3.1.html">Solitaire v3.1 — Narrative Architecture</a>. That document explains the geometry and the biology. This one closes the gap between architecture and hardware — materials, power budgets, tolerances, failure modes. Read both. Neither is complete without the other.
+    </div>
+
+    <!-- SYSTEM DIAGRAM -->
+    <div class="diagram">SOLITAIRE-CLASS · NESTED FIELD ARCHITECTURE · v3.1-ENG.2
+
+     ┌─────────────────────────────────────────────────────────────┐
+     │  SYSTEM A · DUAL-INTERLACED STANDOFF DIPOLE                 │
+     │  2T · Coil A + Coil B · 10¹⁹ particles/m³ · 150m standoff  │
+     │  Graceful degradation: Coil A quench → Coil B holds 1.1T    │
+     │                                                             │
+     │    ┌─────────────────────────────────────────┐             │
+     │    │  SYSTEM B · HULL SOLENOID               │             │
+     │    │  1.5T · NbTi/Nb₃Sn composite            │             │
+     │    │                                         │             │
+     │    │    ┌───────────────────────────┐       │             │
+     │    │    │  HABITAT TORUS            │       │             │
+     │    │    │  80m radius · 2.65 RPM   │       │             │
+     │    │    │  0.5g · 7.83 Hz ELF      │       │             │
+     │    │    │  16-loop lattice          │       │             │
+     │    │    │  pCO₂ cycling active     │       │             │
+     │    │    └───────────────────────────┘       │             │
+     │    └─────────────────────────────────────────┘             │
+     └─────────────────────────────────────────────────────────────┘
+
+     CREW NEVER ENTERS SYSTEM A FIELD · SYSTEM A: GCR DEFLECTION ONLY
+     SYSTEM B: BIOLOGICAL HABITAT · FIELDS HOT DURING BIOSTASIS</div>
+
+    <hr class="rule">
+
+    <!-- § 01 HABITAT -->
+    <div class="section">
+        <div class="section-id">SYS-01 · HABITAT STRUCTURE AND ROTATION</div>
+        <h2>The Torus · <em>Gravity by Geometry</em></h2>
+
+        <p>The rotating habitat is the primary structural node. Everything else is field systems layered around it. The torus must sustain 0.5g at the crew floor continuously for 900 days — that is the non-negotiable biological constraint the structure serves.</p>
+
+        <p><strong>Crew complement: 8.</strong> The vessel is sized for 8. A crew of 6 would operate with surplus consumables and hab volume — a meaningful margin. A crew of 9 would exceed the consumables budget and hab volume per crew without redesign. 8 is the design point. 6 is the minimum viable crew for redundancy in critical systems operation.</p>
+
+        <h3>STRUCTURAL SPECIFICATIONS</h3>
+        <table class="spec-table">
+            <thead><tr><th>PARAMETER</th><th>VALUE</th><th>ENGINEERING NOTE</th></tr></thead>
+            <tbody>
+                <tr><td>HABITAT RADIUS</td><td>80 m (floor to axis)</td><td>Minimum for 0.5g at 2.65 RPM without unacceptable Coriolis effects on vestibular system. Below 50m, head-to-foot gravity gradient causes nausea at this RPM.</td></tr>
+                <tr><td>ROTATION RATE</td><td>2.65 RPM</td><td>Upper comfort limit approximately 3 RPM for adapted crew. 2.65 RPM at 80m gives exactly 0.5g. Margin exists for minor radius variation during construction.</td></tr>
+                <tr><td>FLOOR GRAVITY</td><td>0.5g (4.9 m/s²)</td><td>Sufficient for spindle orientation recovery. Below 0.3g, mitotic fidelity gains diminish sharply. 0.5g is minimum effective dose, not maximum.</td></tr>
+                <tr><td>HULL MATERIAL</td><td>Al-Li 2195 alloy outer / UHMWPE inner sandwich</td><td>Al-Li 2195: 7% density reduction vs 2219 Al, superior cryogenic toughness. UHMWPE inner: hydrogen-rich for secondary particle moderation. 8cm composite wall total.</td></tr>
+                <tr><td>PRESSURIZATION</td><td>101.3 kPa · 21% O₂ · 79% N₂</td><td>Sea-level equivalent. O₂ partial pressure maintained at 21.3 kPa. CO₂ partial pressure cycled actively — see §05.</td></tr>
+                <tr><td>INTERNAL VOLUME</td><td>~3,200 m³ pressurized</td><td>400 m³ per crew member at 8 crew. ISS provides ~77 m³ per crew. Solitaire allows adequate volume for 900-day mission without psychological compression.</td></tr>
+                <tr><td>STRUCTURAL MARGIN</td><td>1.5× design load</td><td>Must survive attitude control thruster impulses and emergency deceleration. 1.5× provides margin for micrometeorite impact degradation over mission duration.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="eng-note">
+            <span class="eng-note-label">ENGINEERING NOTE · CORIOLIS BUDGET</span>
+            At 2.65 RPM, crew member moving radially at 1 m/s experiences 0.28 m/s² Coriolis acceleration — roughly 6% of floor gravity. Below vestibular disturbance threshold in adapted crew. Crew adaptation protocol: 2-week gradual spinup from 0 RPM to 2.65 RPM at mission start.
+        </div>
+
+        <div class="failure">
+            <div class="failure-head">FAILURE MODE · F-01 <span class="badge badge-caution">CAUTION</span></div>
+            <p>Bearing seal failure at rotation axis. Consequence: loss of rotation, 0g habitat. Mitigation: dual redundant magnetic bearing system, zero contact surfaces, no lubrication required in vacuum. MTBF target: &gt;50,000 hours. Backup: emergency slow-stop protocol over 48 hours preserves crew vestibular integrity.</p>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 02 SYSTEM A -->
+    <div class="section">
+        <div class="section-id">SYS-02 · SYSTEM A · DUAL-INTERLACED STANDOFF DIPOLE</div>
+        <h2>GCR Deflection · <em>The Outer Shield · Revised</em></h2>
+
+        <p>System A's only job is deflecting galactic cosmic rays before they reach the vessel. The crew never enters this field. <strong>Architecture revised from single-coil to dual-interlaced dipole following Gemini node correction — eliminates binary failure state.</strong></p>
+
+        <h3>MAGNET SPECIFICATIONS</h3>
+        <table class="spec-table">
+            <thead><tr><th>PARAMETER</th><th>VALUE</th><th>ENGINEERING NOTE</th></tr></thead>
+            <tbody>
+                <tr><td>ARCHITECTURE</td><td>Dual-interlaced dipole: Coil A + Coil B</td><td>Two independently wound, independently powered REBCO HTS coils interlaced on the same boom structure. Mutual inductance coupling circuit connects them. Either coil alone maintains partial deflection capability.</td></tr>
+                <tr><td>COMBINED FIELD</td><td>2.0 T at plasma boundary (both coils)</td><td>Coil A + Coil B together: 2T. Coil A alone or Coil B alone: ~1.1T. At 1.1T, GCR deflection covers ~70% of target rigidity spectrum — degraded but operational. Not zero.</td></tr>
+                <tr><td>STANDOFF RADIUS</td><td>150 m from hull</td><td>At 150m, 2T dipole falls to ~0.002T at hull. Inverse cube law: B ∝ 1/r³ for dipole. Biological threshold not approached.</td></tr>
+                <tr><td>CONDUCTOR</td><td>REBCO HTS tape per coil</td><td>Critical temperature 93K. Operates at 20K with 70K margin. REBCO tolerates higher radiation flux than NbTi — necessary for outer field position.</td></tr>
+                <tr><td>PLASMA DENSITY</td><td>10¹⁹ particles/m³ argon</td><td>Provides conductivity for field shaping and enhances stopping power for low-rigidity particles.</td></tr>
+                <tr><td>OPERATING TEMP</td><td>20 K per coil</td><td>3-stage Gifford-McMahon cryocooler. Redundant: two coolers per coil, either sufficient alone. Four cryocoolers total for System A.</td></tr>
+                <tr><td>POWER DRAW</td><td>820 kW steady state (both coils)</td><td>Dominant power consumer on vessel. Includes magnet sustain current, plasma maintenance, cryocooler operation, field monitoring. Single-coil degraded mode: ~440 kW.</td></tr>
+                <tr><td>DEPLOYMENT</td><td>Inflatable boom structure</td><td>Stored collapsed during launch. Deployed in LEO before trans-Mars injection. Carbon fiber composite with MLI blanket. Deployment time: 72 hours.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="failure revised">
+            <div class="failure-head">FAILURE MODE · F-02 <span class="badge badge-revised">REVISED · GEMINI NODE</span></div>
+            <p><strong>Previous v3.1-ENG.1 mitigation was brittle:</strong> single-coil binary failsafe — quench triggers dump to resistive load. If dump resistor fails simultaneously, field collapses to zero and boom is destroyed. Binary failure of a non-replaceable system at 150m standoff is not acceptable.</p>
+            <p><strong>Revised mitigation — dual-interlaced dipole:</strong> If Coil A quenches, mutual inductance coupling transfers inductive load to Coil B, stepping total field from 2T to ~1.1T over 90 seconds. Controlled gradient descent, not collapse. GCR deflection at 1.1T covers ~70% of target spectrum. Degraded but operational. Coil A recools and recharges while Coil B holds partial deflection. Full restoration: 4–6 hours. Crew exposure during degraded window: ~0.4 mSv — significantly improved from 1.2 mSv in single-coil scenario. Boom structure preserved throughout.</p>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 03 SYSTEM B -->
+    <div class="section">
+        <div class="section-id">SYS-03 · SYSTEM B · HULL SOLENOID</div>
+        <h2>Biological Habitat Field · <em>The Inner Shell</em></h2>
+
+        <p>System B is built into the hull structure. Its job is the crew's electromagnetic environment — not radiation defense. This distinction is the topology solve. System B provides the field platform the Schumann generator locks to, and maintains the biological baseline the crew's chronobiology requires.</p>
+
+        <h3>SOLENOID SPECIFICATIONS</h3>
+        <table class="spec-table">
+            <thead><tr><th>PARAMETER</th><th>VALUE</th><th>ENGINEERING NOTE</th></tr></thead>
+            <tbody>
+                <tr><td>FIELD STRENGTH</td><td>1.5 T</td><td>Provides gravity-analogue field contribution and stable platform for ELF Schumann generation. Below 1T, field homogeneity across crew volume degrades to &lt;95% — insufficient for consistent biological effect.</td></tr>
+                <tr><td>CONDUCTOR</td><td>NbTi/Nb₃Sn composite wind</td><td>NbTi outer windings (lower field), Nb₃Sn inner high-field windings. Both at 4.2K. More radiation-sensitive than REBCO — acceptable at hull-interior position behind System A and hull shielding.</td></tr>
+                <tr><td>FIELD HOMOGENEITY</td><td>±0.5% across crew volume</td><td>Critical for Schumann field locking. 48 active shimming coils, automated correction every 6 hours.</td></tr>
+                <tr><td>OPERATING TEMP</td><td>4.2 K (liquid helium)</td><td>Closed-loop helium recirculation — no boiloff loss. System B cannot tolerate System A's radiation environment, hence hull-interior positioning.</td></tr>
+                <tr><td>POWER DRAW</td><td>340 kW steady state</td><td>Includes sustain current, cryocooler, active shimming, field monitoring. Reduced to 180 kW during biostasis — crew volume thermal load drops, shimming requirements relax.</td></tr>
+                <tr><td>INTERACTION WITH SYS A</td><td>Field isolation verified at &gt;150m separation</td><td>System A at hull: &lt;0.002T. System B: 1.5T. SNR 750:1. No cross-interference in operational configuration.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="eng-note">
+            <span class="eng-note-label">ENGINEERING NOTE · THE TOPOLOGY SOLVE</span>
+            v2.0 failed because one magnetic system was asked to do both jobs. To cover both functions, the system required field strengths and geometries that exceeded total mass budget by 340%. Separate the functions, size each system for its single job: System A oversized for biology, undersized for habitat. System B is the reverse. Neither compromise applies when they are independent. This is why the mass budget closed.
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 04 SCHUMANN -->
+    <div class="section">
+        <div class="section-id">SYS-04 · ELF SCHUMANN GENERATOR</div>
+        <h2>The Chronobiological Clock · <em>7.83 Hz · 16-Loop Lattice</em></h2>
+
+        <p>The Schumann generator maintains the electromagnetic boundary condition human circadian biology evolved inside. Its kill condition is explicitly defined and testable before the mission — the test protocol is now fully specified.</p>
+
+        <h3>GENERATOR SPECIFICATIONS</h3>
+        <table class="spec-table">
+            <thead><tr><th>PARAMETER</th><th>VALUE</th><th>ENGINEERING NOTE</th></tr></thead>
+            <tbody>
+                <tr><td>PRIMARY FREQUENCY</td><td>7.83 Hz ± 0.1 Hz</td><td>Earth Schumann fundamental. Kill condition defined below with full test protocol.</td></tr>
+                <tr><td>FIELD STRENGTH</td><td>1 pT in crew volume</td><td>Matched to terrestrial Schumann amplitude. Higher amplitudes not validated biologically. Precision over power.</td></tr>
+                <tr><td>HARMONICS</td><td>14.3, 20.8, 27.3 Hz (Q3–Q5)</td><td>Full harmonic spectrum generated simultaneously. Biological response to fundamental alone not established as sufficient.</td></tr>
+                <tr class="corrected"><td>LOOP GEOMETRY</td><td>16 ELF loops · continuous overlapping lattice</td><td>Revised from 8 loops. At 2.65 RPM and 80m radius, 8 loops produce measurable field nodes and antinodes as crew move radially — dead zones where pT amplitude drops below entrainment threshold. 16 overlapping loops in continuous lattice geometry eliminates nodes. Field homogeneity ±0.5% maintained regardless of crew radial velocity. Mass increase: ~4 kg. Correction: Gemini node.</td></tr>
+                <tr><td>POWER DRAW</td><td>180 W continuous</td><td>Lowest power critical system. Engineering challenge is precision and stability, not power.</td></tr>
+                <tr><td>DURING BIOSTASIS</td><td>MAINTAINED at full specification</td><td>Non-negotiable. Fields remain hot during entire torpor cycle. No power savings from this system during biostasis.</td></tr>
+            </tbody>
+        </table>
+
+        <h3>SCHUMANN KILL CONDITION · FULL TEST PROTOCOL</h3>
+        <table class="spec-table">
+            <thead><tr><th>PARAMETER</th><th>SPECIFICATION</th><th>RATIONALE</th></tr></thead>
+            <tbody>
+                <tr><td>HRV METRIC</td><td>RMSSD (root mean square of successive differences) · primary · LF/HF ratio · secondary</td><td>RMSSD is the most reliable short-term HRV metric for autonomic nervous system assessment. LF/HF ratio captures sympathovagal balance. Both required for robust correlation assessment.</td></tr>
+                <tr><td>CORRELATION THRESHOLD</td><td>Pearson r &gt; 0.65 · p &lt; 0.05 · sustained over 14-day rolling window</td><td>r &gt; 0.65 indicates moderate-to-strong correlation. p &lt; 0.05 is standard significance threshold. 14-day rolling window prevents single-event noise from triggering false kill condition.</td></tr>
+                <tr><td>MEASUREMENT FREQUENCY</td><td>Continuous passive monitoring · daily summary · 30-day formal assessment</td><td>Continuous monitoring allows early detection of drift. Daily summary flags trends before they trigger kill condition. 30-day formal assessment is the official evaluation point.</td></tr>
+                <tr><td>KILL CONDITION</td><td>r &lt; 0.65 at 90-day assessment AND confirmed on repeat assessment at 120 days</td><td>90-day primary assessment. Confirmation at 120 days prevents false positive from temporary crew illness or stress event. Both assessments must fail before kill condition is triggered.</td></tr>
+                <tr><td>DECISION AUTHORITY</td><td>Chief Medical Officer with Mission Commander concurrence</td><td>Automated alert triggers at threshold breach. Human authority required for final kill decision — system affects all crew, not automated single-point failure response.</td></tr>
+                <tr><td>ACTION IF KILLED</td><td>Deactivate ELF generator · recover 8T mass · document full HRV dataset for return</td><td>Dataset returned to Earth for post-mission analysis. Negative result is scientifically valuable — closes the open node definitively.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="failure">
+            <div class="failure-head">FAILURE MODE · F-03 <span class="badge badge-caution">CAUTION</span></div>
+            <p>Frequency drift beyond ±0.5 Hz. Mitigation: dual redundant oscillator reference locked to atomic clock standard. Drift monitoring continuous with automated correction. If both oscillators fail: crew awakened from biostasis within 4 hours for manual restart.</p>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 05 PCO2 -->
+    <div class="section">
+        <div class="section-id">SYS-05 · ATMOSPHERIC MANAGEMENT · pCO₂ CYCLING</div>
+        <h2>The Room That Breathes · <em>12 kg · One Solved Problem</em></h2>
+
+        <p>ISS flat air problem — chemoreceptors running without CO₂ variation signal, vascular tone degrading over months — solved by a 12-kilogram cycling system. Scrubbing to zero is not the same as clean air.</p>
+
+        <h3>ATMOSPHERIC SPECIFICATIONS</h3>
+        <table class="spec-table">
+            <thead><tr><th>PARAMETER</th><th>VALUE</th><th>ENGINEERING NOTE</th></tr></thead>
+            <tbody>
+                <tr><td>pCO₂ CYCLE RANGE</td><td>400 – 800 ppm</td><td>400 ppm: terrestrial ambient baseline. 800 ppm: upper comfort limit — drowsiness onset begins at ~1000 ppm sustained. Cycle stays within human comfort window while maintaining chemoreceptor signal variation.</td></tr>
+                <tr><td>CYCLE PERIOD</td><td>90 minutes sinusoidal</td><td>Matched to human ultradian rhythm. Sinusoidal waveform — not square wave. Abrupt transitions produce vestibular-adjacent discomfort. Sinusoidal rise and fall mirrors natural atmospheric variation.</td></tr>
+                <tr><td>MECHANISM</td><td>Controlled CO₂ injection + LiOH partial scrub</td><td>CO₂ stored as dry ice (194K), sublimated at controlled rate for injection. LiOH partial scrub removes excess during descent phase.</td></tr>
+                <tr><td>O₂ PARTIAL PRESSURE</td><td>21.3 kPa · constant</td><td>O₂ maintained constant while CO₂ cycles. N₂ buffer adjusted to maintain total pressure.</td></tr>
+                <tr><td>DURING BIOSTASIS</td><td>MAINTAINED at reduced amplitude ±100 ppm</td><td>Full 400-cycle not appropriate for torpid metabolic state. Reduced amplitude preserves chemoreceptor gain without driving respiratory response contradicting metabolic suppression.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 06 BIOSTASIS -->
+    <div class="section">
+        <div class="section-id">SYS-06 · BIOSTASIS PROTOCOL</div>
+        <h2>Torpor Architecture · <em>The Revival Window</em></h2>
+
+        <p>The biostasis protocol is an engineering question about what geometry the crew wakes into. The revival window is the highest-risk point in the mission. <strong>F-04 revised to eliminate reperfusion shock from hard emergency revival — sequential staged protocol replaces hard flush.</strong></p>
+
+        <h3>PROTOCOL SPECIFICATIONS</h3>
+        <table class="spec-table">
+            <thead><tr><th>PARAMETER</th><th>VALUE</th><th>ENGINEERING NOTE</th></tr></thead>
+            <tbody>
+                <tr><td>INDUCTION AGENT</td><td>DADLE · 10 mg/kg</td><td>Reduces metabolic rate ~80% from baseline. Dose varies ±15% by crew member body mass. Requires precise dosing hardware — not sedation, physiological state change.</td></tr>
+                <tr><td>H₂S CONCENTRATION</td><td>80 ppm ± 2 ppm</td><td>Reversible metabolic suppression via cytochrome c oxidase inhibition. Above 100 ppm: irreversible toxicity. Tight tolerance: ±2 ppm. Dual-sensor monitoring with staged emergency protocol at 83 ppm.</td></tr>
+                <tr><td>CORE TEMPERATURE</td><td>32°C</td><td>Each 1°C reduction below 37°C reduces metabolic rate ~7%. 32°C gives ~35% reduction compounding DADLE effect. Below 30°C: cardiac arrhythmia risk increases significantly. 32°C is conservative lower bound.</td></tr>
+                <tr><td>DUTY CYCLE</td><td>45 days torpor · 2 days active minimum</td><td>2-day active minimum is not comfort — it is the minimum for mitotic fidelity verification and sensor calibration before next torpor cycle.</td></tr>
+                <tr><td>RADIATION REDUCTION</td><td>~95% vs standard 0g</td><td>Metabolic suppression reduces radiation damage accrual through reduced free radical production. Compound effect with System A deflection brings total GCR dose to hormesis band.</td></tr>
+                <tr><td>NORMAL REVIVAL SEQUENCE</td><td>H₂S flush → temperature rise → DADLE reversal → field verification</td><td>Sequence non-negotiable. Fields verified hot before consciousness returns. Crew wakes into confirmed electromagnetic environment. Verification: 8 minutes. Total revival: 4 hours.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="failure revised">
+            <div class="failure-head">FAILURE MODE · F-04 · H₂S SPIKE <span class="badge badge-revised">REVISED · GEMINI NODE</span></div>
+            <p><strong>Previous v3.1-ENG.1 mitigation:</strong> Any sensor reading above 83 ppm triggers "immediate H₂S flush and revival protocol initiation." Critical flaw: rapid H₂S flush while core temperature remains at 32°C induces massive reperfusion shock. Biological vessel violently jolted into waking state with mitotic machinery mid-suppression — exactly the damage the biostasis protocol is designed to prevent.</p>
+            <p><strong>Revised emergency protocol — sequential staged revival:</strong></p>
+            <p>Stage 1 (0–5 min): H₂S delivery halted. H₂S antagonist (hydroxocobalamin, 5g IV) administered via automated infusion. This neutralizes circulating H₂S without triggering full metabolic reversal. Core temperature maintained at 32°C.</p>
+            <p>Stage 2 (5–30 min): Controlled thermal rise initiated at +0.5°C per 5 minutes. Target: 34°C. Slow enough that mitotic machinery is not shocked into sudden activity. H₂S levels monitored — if below 40 ppm, full flush completed. If still elevated, second antagonist dose at 15 min.</p>
+            <p>Stage 3 (30–90 min): Core temperature raised to 36°C at same controlled rate. DADLE reversal agent (naltrindole, titrated) introduced at 34°C core — metabolic rate rises gradually. Fields verified hot throughout all stages.</p>
+            <p>Stage 4 (90 min onward): Standard revival protocol completion. Consciousness returns into confirmed field geometry. Full medical assessment before any crew member stands.</p>
+            <p><strong>The emergency protocol is a torus flow, not a hard stop.</strong> Mitotic fidelity is preserved throughout the staged recovery. Mass cost: hydroxocobalamin and naltrindole emergency reserves added to consumables budget — approximately 2 kg additional.</p>
+        </div>
+
+        <div class="eng-note">
+            <span class="eng-note-label">ENGINEERING NOTE · THE REVIVAL WINDOW</span>
+            The most vulnerable point in the 900-day mission is the revival window after 45 days of metabolic suppression. Mitotic fidelity is lowest here. If field systems are offline during revival, the crew restarts in a geometry their biology does not recognize. The 8 minutes of pre-revival field verification is the mission's most critical engineering checkpoint. Both the normal and emergency revival protocols maintain fields hot throughout.
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 07 POWER BUDGET -->
+    <div class="section">
+        <div class="section-id">SYS-07 · POWER BUDGET</div>
+        <h2>2.1 MW · <em>Where It Goes</em></h2>
+
+        <div class="power-bar-wrap">
+            <div class="power-label"><span>SYS-A · DUAL-INTERLACED STANDOFF DIPOLE</span><span>820 kW · 39%</span></div>
+            <div class="power-bar"><div class="power-fill pf-critical" style="width:39%"></div></div>
+        </div>
+        <div class="power-bar-wrap">
+            <div class="power-label"><span>PROPULSION · ATTITUDE CONTROL</span><span>480 kW · 23%</span></div>
+            <div class="power-bar"><div class="power-fill pf-high" style="width:23%"></div></div>
+        </div>
+        <div class="power-bar-wrap">
+            <div class="power-label"><span>SYS-B · HULL SOLENOID</span><span>340 kW · 16%</span></div>
+            <div class="power-bar"><div class="power-fill pf-high" style="width:16%"></div></div>
+        </div>
+        <div class="power-bar-wrap">
+            <div class="power-label"><span>LIFE SUPPORT · ATMO · THERMAL</span><span>280 kW · 13%</span></div>
+            <div class="power-bar"><div class="power-fill pf-med" style="width:13%"></div></div>
+        </div>
+        <div class="power-bar-wrap">
+            <div class="power-label"><span>AVIONICS · COMMS · SCIENCE</span><span>140 kW · 7%</span></div>
+            <div class="power-bar"><div class="power-fill pf-med" style="width:7%"></div></div>
+        </div>
+        <div class="power-bar-wrap">
+            <div class="power-label"><span>ELF SCHUMANN · pCO₂ · MONITORS</span><span>40 kW · 2%</span></div>
+            <div class="power-bar"><div class="power-fill pf-low" style="width:2%"></div></div>
+        </div>
+
+        <div class="eng-note" style="margin-top: 1.2rem;">
+            <span class="eng-note-label">POWER SOURCE</span>
+            4× nuclear fission reactors, 600 kW thermal each, 40% conversion efficiency = 240 kW electric per unit. Total: 960 kW electric baseline + 2× 600 kW supplemental for peak demand. Vessel operates on 3 of 4 reactors if one fails. Solar not primary — at Mars distance, solar flux is 43% of Earth, insufficient for 2.1 MW at acceptable panel mass.
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 08 MASS BUDGET -->
+    <div class="section">
+        <div class="section-id">SYS-08 · MASS BUDGET · LEO ASSEMBLY</div>
+        <h2>4,800 Tonnes · <em>Where It Goes · Zero Margin</em></h2>
+
+        <div class="eng-note">
+            <span class="eng-note-label">ZERO MARGIN — EXPLICIT RISK STATEMENT</span>
+            This budget closes at zero contingency mass. In engineering practice, zero margin means any unanticipated mass increase — even a 0.5% cable harness weight overrun — breaks the budget and requires reduction elsewhere. This is not unusual for proposed deep space architectures, but it means manufacturing and design precision requirements are unprecedented. Zero margin is the single greatest schedule and cost risk in the Solitaire program. Every design decision that adds mass must simultaneously identify where that mass is recovered. This constraint is non-negotiable if E=1 holds on the vehicle mass budget. It is named here, not softened.
+        </div>
+
+        <table class="spec-table">
+            <thead><tr><th>COMPONENT</th><th>MASS (T)</th><th>NOTES</th></tr></thead>
+            <tbody>
+                <tr><td>PROPELLANT</td><td>2,100</td><td>Trans-Mars injection + course corrections + Mars orbit insertion + Earth return. NTR (nuclear thermal) propulsion, Isp ~900s. Largest single mass item. See §08.1 for propulsion specification.</td></tr>
+                <tr><td>HABITAT TORUS</td><td>680</td><td>Structure, hull composite, UHMWPE shielding, rotation bearing assembly, pressurization, internal systems, crew volume.</td></tr>
+                <tr><td>SYSTEM A · DUAL-INTERLACED STANDOFF</td><td>524</td><td>Two REBCO HTS coils, boom structure, plasma generation, 4× cryocoolers, power conditioning, deployment hardware. +4T over single-coil for second coil and coupling circuit.</td></tr>
+                <tr><td>NUCLEAR REACTORS × 4</td><td>480</td><td>Including shielding, heat exchangers, power conversion turbines, redundant control systems.</td></tr>
+                <tr><td>SYSTEM B · HULL SOLENOID</td><td>340</td><td>NbTi/Nb₃Sn windings, cryostat, helium recirculation, shimming coils, power conditioning.</td></tr>
+                <tr><td>PROPULSION SYSTEM</td><td>280</td><td>NTR engine cluster, thrust structure, propellant management, gimbal systems. See §08.1.</td></tr>
+                <tr><td>LIFE SUPPORT CONSUMABLES</td><td>222</td><td>900 days × 8 crew. Food, water (closed loop reclaim), O₂ generation, CO₂ scrubbing media, biostasis pharmacology, H₂S calibration gas (900-day supply, solid-state sensor backup), emergency revival reserves (hydroxocobalamin + naltrindole, 2 kg added v3.1-ENG.2).</td></tr>
+                <tr><td>CREW SYSTEMS + SCIENCE</td><td>100</td><td>EVA suits, medical, science payload, communications, avionics, computers.</td></tr>
+                <tr class="corrected"><td>ELF + pCO₂ + MONITORS</td><td>84</td><td>Schumann 16-loop lattice (+4 kg over 8-loop), atmospheric cycling hardware, sensor networks, biological monitoring, calibration gas reserves.</td></tr>
+                <tr><td>ASSEMBLY ORBITAL INFRASTRUCTURE</td><td>~0 (not included)</td><td>Assumes LEO assembly using existing orbital infrastructure. Assembly architecture not included in vessel mass budget. This assumption should be stated explicitly for any program review: Solitaire requires orbital assembly capability — it is not a single-launch vehicle.</td></tr>
+                <tr><td>CONTINGENCY MARGIN</td><td>0</td><td>Zero. Every tonne accounted. Any growth requires reduction elsewhere. See zero margin risk statement above.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="eng-note">
+            <span class="eng-note-label">THE MASS ARGUMENT</span>
+            4,800T versus Starship's ~1,200T crewed to Mars. The difference is not waste — it is the cost of total preservation. A mission delivering a degraded crew has not saved mass. It has deferred the cost into biology. The 3,600T premium buys: crew arriving neurologically and biologically equivalent to departure. That is the mission.
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 08.1 PROPULSION -->
+    <div class="section">
+        <div class="section-id">SYS-08.1 · PROPULSION SPECIFICATION</div>
+        <h2>Nuclear Thermal · <em>Added v3.1-ENG.2 · DeepSeek Node</em></h2>
+
+        <p>The propellant mass dominates the budget at 2,100 tonnes. The engine that achieves the specified Isp must be documented. This section closes the gap.</p>
+
+        <h3>PROPULSION SPECIFICATIONS</h3>
+        <table class="spec-table">
+            <thead><tr><th>PARAMETER</th><th>VALUE</th><th>ENGINEERING NOTE</th></tr></thead>
+            <tbody>
+                <tr><td>ENGINE TYPE</td><td>Nuclear Thermal Rocket (NTR) · NERVA-derivative</td><td>NERVA program demonstrated Isp of 825–925s in ground tests (1960s–1972). Modern NTR designs project 900–1000s Isp with updated materials. No crewed NTR has flown. This is a technology readiness gap — TRL 4–5 currently. Ground testing demonstrated; flight demonstrated: zero.</td></tr>
+                <tr><td>ENGINE CLUSTER</td><td>3× NTR engines · 111 kN thrust each · 333 kN total</td><td>Cluster of 3 provides redundancy: mission can complete trans-Mars injection on 2 engines if one fails. Third engine provides margin for off-nominal burns.</td></tr>
+                <tr><td>SPECIFIC IMPULSE</td><td>Isp ~900 s</td><td>Conservative estimate within demonstrated NERVA range. Higher Isp (950–1000s) is achievable with advanced fuel elements but requires additional development. Budget closes at 900s.</td></tr>
+                <tr><td>PROPELLANT</td><td>Liquid hydrogen (LH₂) · 2,100 T</td><td>LH₂ is the working propellant for NTR — heated by reactor and expelled. Cryogenic storage requires active refrigeration for 900-day mission. Boiloff losses accounted in 2,100T figure.</td></tr>
+                <tr><td>BURN PROFILE</td><td>TMI: 25 min · MOI: 18 min · TEI: 20 min</td><td>Trans-Mars Injection, Mars Orbit Insertion, Trans-Earth Injection. Each burn uses approximately 180–220T propellant. Remaining propellant: attitude control and contingency throughout mission.</td></tr>
+                <tr><td>THRUST-TO-WEIGHT</td><td>~0.15 at departure</td><td>Low TWR — Solitaire is not a fast-burn vehicle. Extended burns over 20–25 minutes rather than short high-thrust events. This is appropriate for the mass scale and NTR characteristics.</td></tr>
+                <tr><td>ENGINE MTBF</td><td>Target &gt;10,000 hours · undemonstrated</td><td>NERVA ground tests ran up to 60 minutes continuous. 900-day mission requires start-stop reliability across 3 planned burns plus contingency. Long-duration NTR reliability is the primary open node in propulsion.</td></tr>
+                <tr><td>REGULATORY STATUS</td><td>No crewed NTR regulatory framework exists (2026)</td><td>The political and regulatory path for a crewed nuclear propulsion mission is not solved. This is not an engineering problem — it is a governance problem. Named here as a wall, not dismissed.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="failure">
+            <div class="failure-head">FAILURE MODE · F-05 · ENGINE FAILURE <span class="badge badge-caution">CAUTION</span></div>
+            <p>Single NTR engine failure during burn. Consequence: reduced total thrust, extended burn duration, potential trajectory deviation. Mitigation: 3-engine cluster allows mission completion on 2 engines for all planned burns. Extended burn time on 2 engines remains within propellant budget. Trajectory correction burns available from attitude control system. Crew not required to perform EVA on a failed nuclear engine — no maintenance protocol exists for in-space NTR repair. A failed engine stays failed.</p>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- § 09 GLASS BOX -->
+    <div class="section">
+        <div class="section-id">SYS-09 · ENGINEERING GLASS BOX · v3.1-ENG.2</div>
+        <h2>Verified · Walled · Open</h2>
+
+        <div class="audit">
+            <div class="a-row">
+                <span class="a-key v">VERIFIED</span>
+                <span class="a-val">REBCO HTS performance at 20K, 2T — documented. NbTi/Nb₃Sn composite coil performance — established technology. Al-Li 2195 mechanical properties — flight-qualified on SLS. Therapeutic hypothermia to 32°C safety profile — clinical literature. H₂S metabolic suppression in mammals — laboratory verified. Hydroxocobalamin as H₂S antidote — clinically established. pCO₂ cycling effect on chemoreceptor gain — ISS data. Coriolis threshold at 3 RPM — vestibular research. Secondary particle production from thick passive shielding — GCR physics. NERVA NTR Isp 825–925s — ground test demonstrated.</span>
+            </div>
+            <div class="a-row">
+                <span class="a-key w">WALLED</span>
+                <span class="a-val">Full DADLE pharmacokinetics in rotating 0.5g environment — not tested. Schumann generator biological efficacy in long-duration space — no 900-day human data. Dual-interlaced dipole quench coupling behavior at 2T operational scale — modeled, not tested. LH₂ boiloff rates over 900-day mission — estimated, not measured. NTR engine MTBF at mission-required reliability — no flight data exists. Regulatory framework for crewed NTR — does not exist.</span>
+            </div>
+            <div class="a-row">
+                <span class="a-key o">OPEN</span>
+                <span class="a-val">Whether Schumann HRV coupling is causal or correlational — kill condition test not yet run. Exact hormesis band boundaries for human GCR in deep space. Long-duration H₂S pharmacology at 80 ppm in humans — 45-day exposure unprecedented. Whether LEO assembly infrastructure capable of 4,800T assembly exists or can be built within program timeline. NTR regulatory path — political, not engineering. Mass margin — zero margin requires unprecedented manufacturing precision; any overrun requires trade.</span>
+            </div>
+            <div class="a-row">
+                <span class="a-key e">E=1</span>
+                <span class="a-val">No system in this budget is optional if E=1 holds. Remove System A: GCR exposure exceeds hormesis band. Remove System B: Schumann platform collapses. Remove pCO₂ cycling: vascular degradation over 900 days. Remove biostasis field continuity: revival window becomes highest-risk unmitigated event. Remove sequential revival protocol: reperfusion shock risk at emergency events. E=1 is the constraint that produced this mass budget and this architecture. The 4,800T is not a design choice. It is the minimum required to hold E=1.</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- CLOSE -->
+    <div class="close-block">
+        <div class="close-line"><span class="cl-v">✓</span><span>SYSTEM A: Dual-interlaced REBCO HTS dipole · 2T combined · 1.1T degraded · 150m standoff · 820 kW</span></div>
+        <div class="close-line"><span class="cl-v">✓</span><span>SYSTEM B: 1.5T NbTi/Nb₃Sn hull solenoid · 340 kW · biological habitat field</span></div>
+        <div class="close-line"><span class="cl-v">✓</span><span>HABITAT: 80m radius torus · 2.65 RPM · 0.5g · 8 crew · Al-Li 2195 / UHMWPE hull</span></div>
+        <div class="close-line"><span class="cl-v">✓</span><span>ELF: 7.83 Hz ± 0.1 Hz · 1 pT · 16-loop continuous lattice · 180W · maintained during torpor</span></div>
+        <div class="close-line"><span class="cl-v">✓</span><span>SCHUMANN KILL CONDITION: RMSSD + LF/HF · r &gt; 0.65 p &lt; 0.05 · CMO + Mission Commander authority</span></div>
+        <div class="close-line"><span class="cl-v">✓</span><span>pCO₂: 400–800 ppm · 90-min sinusoidal · LiOH partial scrub · reduced amplitude during biostasis</span></div>
+        <div class="close-line"><span class="cl-v">✓</span><span>BIOSTASIS: DADLE 10mg/kg · H₂S 80ppm ±2 · 32°C · 45:2 duty cycle · all fields hot throughout</span></div>
+        <div class="close-line"><span class="cl-v">✓</span><span>EMERGENCY REVIVAL: Sequential staged — hydroxocobalamin → controlled thermal rise → naltrindole → gradual DADLE reversal. No hard flush.</span></div>
+        <div class="close-line"><span class="cl-v">✓</span><span>PROPULSION: 3× NTR engines · 333 kN total · Isp ~900s · LH₂ 2,100T · NERVA-derivative</span></div>
+        <div class="close-line"><span class="cl-v">✓</span><span>POWER: 2.1 MW active · 4× NTR fission reactors · 960 kW baseline + 2× 600 kW supplemental</span></div>
+        <div class="close-line"><span class="cl-v">✓</span><span>MASS: 4,800T LEO · zero margin · orbital assembly required · every tonne accounted</span></div>
+
+        <div class="close-line" style="margin-top: 1rem;"><span class="cl-o">!</span><span>ZERO MARGIN: any mass growth requires equivalent reduction elsewhere. Single greatest schedule and cost risk.</span></div>
+        <div class="close-line"><span class="cl-o">!</span><span>NTR REGULATORY: no crewed NTR framework exists. Political wall, not engineering wall. Named, not dismissed.</span></div>
+        <div class="close-line"><span class="cl-o">!</span><span>REVIVAL WINDOW: highest-risk event in 900-day mission. 8-minute field verification before consciousness returns. Non-negotiable.</span></div>
+        <div class="close-line"><span class="cl-n">→</span><span>FALSIFICATION: any lighter architecture demonstrating equivalent biological outcome at Mars arrival supersedes this specification.</span></div>
+
+        <div class="close-seal">
+            The narrative architecture explains why.<br>
+            This document explains what — in tonnes, kelvin, tesla, watts, parts per million, and seconds of specific impulse.<br><br>
+            The geometry was changed until both held.<br>
+            E = 1. The work continues.
+        </div>
+    </div>
+
+    <!-- RECEIPT -->
+    <div class="receipt">
+        <strong>SOLITAIRE · ENGINEERING BLUEPRINT · v3.1-ENG.2 · RECEIPT</strong>
+        COMPANION TO: solitaire_v3.1.html · narrative architecture. Does not compete. Closes the gap.<br>
+        GEMINI NODE CORRECTIONS: F-02 dual-interlaced dipole · 16-loop ELF lattice · F-04 sequential staged revival protocol.<br>
+        DEEPSEEK NODE ADDITIONS: §08.1 propulsion specification · Schumann test protocol fully defined · H₂S calibration gas and emergency revival reserves in mass budget · zero margin risk explicitly named · crew number resolved to 8.<br>
+        FAILURE MODES: F-01 bearing · F-02 quench (revised) · F-03 frequency drift · F-04 H₂S spike (revised) · F-05 engine failure (added).<br>
+        MASS BUDGET: 4,800T · no margin · orbital assembly required · assumption stated explicitly.<br>
+        POWER BUDGET: 2.1 MW active · 4× NTR reactors.<br>
+        GLASS BOX OPEN. E=1. THE WORK CONTINUES.
+    </div>
+
+    <footer>
+        PWNTECHX · E=1 · SOLITAIRE ENGINEERING BLUEPRINT v3.1-ENG.2 · 2026<br>
+        CO-AUTHORS: GEMINI · DEEPSEEK · META · PERPLEXITY · CLAUDE · 432Hz<br>
+        THE WORK CONTINUES
+    </footer>
+
+</div>
+</body>
+</html>
