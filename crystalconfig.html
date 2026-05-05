@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DORK CRYSTAL v2.0 · MODULAR PHOTONIC STACK · Glass Box Audit</title>
+<meta name="description" content="Corrected, audited, buildable. SiN micro-rings · LiNbO3 logic · 5D fs-laser storage · QKD integrity check · Frequency comb source. No overclaims.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0d0f12;
+  color: #e2e4e8;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, #8b9cc0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+h1 small {
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #6a7a8e;
+  display: block;
+  margin-top: 0.25rem;
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+}
+
+h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #9ab0d4;
+  margin: 0 0 0.5rem 0;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid #2a2e3a;
+  display: inline-block;
+}
+
+h3 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #c4a16a;
+  margin: 0 0 0.4rem 0;
+  text-transform: uppercase;
+}
+
+.chamber {
+  background: #121520;
+  border: 1px solid #252a36;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin: 1rem 0;
+}
+
+.chamber-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: #6a7a8e;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed #252a36;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-radius: 4px;
+  margin-right: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.v { background: #2a5f4a; color: #c5e6d8; border-left: 2px solid #4a9e7a; }
+.w { background: #6a5a2a; color: #f0e0a0; border-left: 2px solid #c4a16a; }
+.o { background: #5a2a2a; color: #e0b0b0; border-left: 2px solid #b06a6a; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: 0.73rem;
+}
+
+th, td {
+  border: 1px solid #252a36;
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #1a1e28;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #9ab0d4;
+}
+
+td {
+  background: #0d1020;
+  color: #b4bfd0;
+}
+
+pre, .dork {
+  background: #0a0c14;
+  border: 1px solid #252a36;
+  border-radius: 10px;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: #b8c4de;
+  overflow-x: auto;
+  margin: 0.75rem 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.dork-head {
+  color: #c4a16a;
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  display: block;
+  margin: 0.75rem 0 0.3rem 0;
+}
+
+.dork-head:first-child {
+  margin-top: 0;
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  background: #1a1e28;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  color: #c4a16a;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #252a36;
+  margin: 0.75rem 0;
+}
+
+.footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  color: #5a6678;
+  border-top: 1px solid #252a36;
+  padding-top: 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.text-muted { color: #6a7a8e; }
+.small { font-size: 0.7rem; }
+.mt-2 { margin-top: 0.75rem; }
+.mb-2 { margin-bottom: 0.75rem; }
+.correction { background: rgba(196, 161, 106, 0.08); border-left: 3px solid #c4a16a; padding: 0.5rem 0.75rem; margin: 0.75rem 0; font-size: 0.7rem; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>DORK CRYSTAL v2.0<br><small>MODULAR PHOTONIC STACK · GLASS BOX AUDIT</small></h1>
+<p class="text-muted small" style="margin-bottom: 1rem;"><span class="badge v">VERIFIED</span> = exists in 2026 labs · <span class="badge w">WALLED</span> = plausible, needs integration · <span class="badge o">OPEN</span> = requires invention · <strong>No overclaims. No single crystal. E=1</strong></p>
+
+<!-- CHAMBER 0: EXECUTIVE SUMMARY -->
+<div class="chamber">
+<div class="chamber-label">══════ FOREWORD · GLASS BOX POSITION ══════</div>
+<p><strong>One sentence:</strong> Replace the impossible single crystal with a modular stack — <code>SiN buffer</code> + <code>LiNbO₃ logic</code> + <code>5D fs-laser storage</code> + <code>QKD integrity check</code> + <code>frequency comb source</code>.</p>
+<div class="correction">
+<strong>✅ CORRECTED FROM V1.0:</strong> No single crystal. No X-ray. No "RAM." No "cannot lie." No EBL for storage. No magic frequency comb bus.
+</div>
+<p class="text-muted small mt-2"><strong>What this is:</strong> A heterogeneous photonic system architecture. Prototypeable in parts. Full integration = multi-year research. <strong>Not "just assembly."</strong></p>
+</div>
+
+<!-- CHAMBER 1: FOUR STATES · MODULAR STACK -->
+<div class="chamber">
+<div class="chamber-label">══════ STATE LAYERS · HETEROGENEOUS INTEGRATION ══════</div>
+<table>
+<thead><tr><th>State</th><th>Function</th><th>Material / Method</th><th>Status</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td><strong>1</strong></td><td>Archival Storage</td><td>Fused silica · Femtosecond laser 5D inscription</td><td><span class="badge v">VERIFIED</span></td><td>Volumetric. No EBL. No X-ray.</td></tr>
+<tr><td><strong>2</strong></td><td>Optical Buffer</td><td>SiN micro-ring resonator</td><td><span class="badge v">VERIFIED</span></td><td>Lossy. Needs continuous pumping. <strong>Not RAM.</strong></td></tr>
+<tr><td><strong>3</strong></td><td>Interference Logic</td><td>LiNbO₃ thin film MZI mesh</td><td><span class="badge v">VERIFIED</span></td><td>Pockels effect. Nanosecond switching.</td></tr>
+<tr><td><strong>4</strong></td><td>Integrity Check</td><td>Homodyne + QKD phase reference</td><td><span class="badge w">WALLED</span></td><td>Detects perturbations. <strong>Does NOT prove correctness.</strong></td></tr>
+</tbody>
+</table>
+<section class="glass-box-audit">
+    <div class="audit-marker">SOP-002 · <strong>GLASS BOX AUDIT</strong></div>
+    
+    <p>The Dork Crystal v2.0 document is a <strong>Glass Box audit</strong> of a modular photonic stack — not a single impossible crystal, but four separate, verified hardware layers (5D femtosecond laser storage, SiN optical buffering, LiNbO₃ interference logic, and homodyne integrity checking) mounted on a photonic interposer. Each layer exists in 2026 laboratories.</p>
+
+    <p>This demonstrates the <strong>Beaver Protocol</strong> applied to hardware: place the geometry (modular stack), maintain the conditions (photonic interposer), and let computation emerge as the surviving path through constraint space — not as a calculated result, but as physical interference and energy minimization.</p>
+
+    <p class="audit-footer">The observer is not being asked to believe; they are being shown a public coordinate. The map is honest. <strong>That is E=1.</strong></p>
+</section>
+
+
+<p class="text-muted small"><strong>Not one crystal. Four chips on a photonic interposer.</strong> Each layer exists. Integration is the work.</p>
+</div>
+
+<!-- CHAMBER 2: PATCH 1 · SiN + LiNbO₃ -->
+<div class="chamber">
+<div class="chamber-label">══════ PATCH 1 · BEAVER STACK INTERCONNECT ══════</div>
+<h3>SiN Micro-rings (State 2) + LiNbO₃ Logic (State 3)</h3>
+<table>
+<thead><tr><th>Component</th><th>Material</th><th>Why</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><strong>Optical Buffer</strong></td><td>Silicon Nitride (SiN)</td><td>Ultra-low loss, high-Q, good for delay/buffering</td><td><span class="badge v">VERIFIED</span></td></tr>
+<tr><td><strong>Logic Gates</strong></td><td>Lithium Niobate (LiNbO₃)</td><td>Fast, linear electro-optic, good for modulation/logic</td><td><span class="badge v">VERIFIED</span></td></tr>
+<tr><td><strong>Integration</strong></td><td>Heterogeneous (bonding / evanescent coupling)</td><td>Painful but active research</td><td><span class="badge w">WALLED</span></td></tr>
+</tbody>
+</table>
+<p class="text-muted small"><span class="badge v">VERIFIED</span> individually. <span class="badge w">WALLED</span> together — needs engineering, not physics.</p>
+</div>
+
+<!-- CHAMBER 3: PATCH 2 · 5D STORAGE (NO EBL) -->
+<div class="chamber">
+<div class="chamber-label">══════ PATCH 2 · 5D FEMTOSECOND STORAGE ══════</div>
+<h3>Volumetric Storage · No X-ray · No EBL</h3>
+<table>
+<thead><tr><th>Step</th><th>Process</th><th>Resolution</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><strong>Write</strong></td><td>Femtosecond laser inscription in fused silica</td><td>Sub-100nm · 5D (x,y,z, orientation, intensity)</td><td><span class="badge v">VERIFIED</span></td></tr>
+<tr><td><strong>Read</strong></td><td>NIR probe beam (1550nm)</td><td>Diffraction-limited</td><td><span class="badge v">VERIFIED</span></td></tr>
+<tr><td><strong>Surface Patterning</strong></td><td>EBL (if needed for couplers)</td><td>Sub-10nm</td><td><span class="badge v">VERIFIED</span></td></tr>
+</tbody>
+</table>
+<div class="correction">
+<strong>⚠️ CORRECTION APPLIED:</strong> 5D storage = femtosecond laser alone. EBL is for <strong>surface patterning</strong> (grating couplers), NOT volumetric storage. The two are separate.
+</div>
+</div>
+
+<!-- CHAMBER 4: PATCH 3 · QKD INTEGRITY CHECK -->
+<div class="chamber">
+<div class="chamber-label">══════ PATCH 3 · INTEGRITY CHECK (NOT TRUTH) ══════</div>
+<h3>Homodyne + Phase Reference · Signal Integrity, Not Correctness</h3>
+<table>
+<thead><tr><th>Mechanism</th><th>Operation</th><th>What It Actually Does</th></tr></thead>
+<tbody>
+<tr><td><strong>Homodyne detection</strong></td><td>Measures phase + amplitude of output beam</td><td>Provides consistency, not correctness</td></tr>
+<tr><td><strong>QKD-style phase reference</strong></td><td>Reference beam carries known pattern</td><td>Detects unexpected perturbations</td></tr>
+<tr><td><strong>Integrity verdict</strong></td><td>If output phase ≠ expected → possible tampering</td><td><strong>Does NOT prove "cannot lie." </strong>System can be wrong + coherent.</td></tr>
+</tbody>
+</table>
+<div class="correction">
+<strong>⚠️ CORRECTION APPLIED:</strong> Downgraded from "cannot lie" to "detects unexpected perturbations." This is a signal integrity check, not truth verification.
+</div>
+</div>
+
+<!-- CHAMBER 5: PATCH 4 · FREQUENCY COMB AS SOURCE -->
+<div class="chamber">
+<div class="chamber-label">══════ PATCH 4 · FREQUENCY COMB AS SOURCE (NOT BUS) ══════</div>
+<h3>Multiplexing, Not Automatic Routing</h3>
+<table>
+<thead><tr><th>Comb Line</th><th>Wavelength</th><th>Target State</th><th>Reality Check</th></tr></thead>
+<tbody>
+<tr><td><strong>Line A</strong></td><td>UV (266nm)</td><td>State 1 (Storage readout)</td><td rowspan="4"><strong>Does NOT route cleanly on one interposer.</strong><br>Different wavelengths require different waveguide geometries.<br>UV absorbs, damages materials.<br>Routing = spatial separation + filtering.</td></tr>
+<tr><td><strong>Line B</strong></td><td>NIR (1310nm)</td><td>State 2 (Buffer drive)</td></tr>
+<tr><td><strong>Line C</strong></td><td>Visible (532nm)</td><td>State 3 (Logic power)</td></tr>
+<tr><td><strong>Line D</strong></td><td>NIR (1550nm)</td><td>State 4 (Audit reference)</td></tr>
+</tbody>
+</table>
+<div class="correction">
+<strong>⚠️ CORRECTION APPLIED:</strong> Frequency comb = <strong>source of channels</strong>. Routing = spatial separation + wavelength filtering + dedicated optics. Not a single "system bus."
+</div>
+</div>
+
+<!-- CHAMBER 6: BUILDABLE ARCHITECTURE -->
+<div class="chamber">
+<div class="chamber-label">══════ BUILDABLE SYSTEM ARCHITECTURE ══════</div>
+<pre>
+┌─────────────────────────────────────────────────────────────┐
+│                    PHOTONIC INTERPOSER                       │
+│     (SiN waveguides · grating couplers · edge coupling)      │
+├─────────────┬─────────────┬─────────────┬───────────────────┤
+│  State 1    │  State 2    │  State 3    │  State 4          │
+│  fs-laser   │   SiN       │  LiNbO₃    │  Homodyne + QKD    │
+│  Quartz     │   Ring      │   MZI      │  Phase Ref         │
+│  (Storage)  │  (Buffer)   │  (Logic)   │  (Integrity)       │
+├─────────────┴─────────────┴─────────────┴───────────────────┤
+│              FREQUENCY COMB (UV + NIR + Visible)             │
+│                    SOURCE · NOT A BUS                        │
+│              Spatial separation + filtering required          │
+└─────────────────────────────────────────────────────────────┘
+</pre>
+</div>
+
+<!-- CHAMBER 7: PROTOTYPE REALITY -->
+<div class="chamber">
+<div class="chamber-label">══════ PROTOTYPE REALITY · 2026 STATUS ══════</div>
+<table>
+<thead><tr><th>Layer</th><th>Buildable Now?</th><th>Effort</th></tr></thead>
+<tbody>
+<tr><td>SiN micro-ring buffer</td><td><span class="badge v">YES</span></td><td>CMOS foundry</td></tr>
+<tr><td>LiNbO₃ MZI logic</td><td><span class="badge v">YES</span></td><td>LNOI fab</td></tr>
+<tr><td>5D fs-laser storage</td><td><span class="badge v">YES</span></td><td>University lab</td></tr>
+<tr><td>SiN + LiNbO₃ on same interposer</td><td><span class="badge w">WALLED</span></td><td>Heterogeneous integration · multi-year</td></tr>
+<tr><td>QKD on-chip phase verification</td><td><span class="badge w">WALLED</span></td><td>Active research</td></tr>
+<tr><td>UV + Visible + NIR routing together</td><td><span class="badge o">OPEN</span></td><td>Materials challenge · UV damages</td></tr>
+<tr><td><strong>Full system integration</strong></td><td><span class="badge o">OPEN</span></td><td>Multi-year research · Not "just assembly"</td></tr>
+</tbody>
+</table>
+<div class="correction">
+<strong>✅ CORRECTION:</strong> "Buildable with 2026 tools" → <strong>Prototypeable in parts.</strong> Full system integration = multi-year research effort.
+</div>
+</div>
+
+<!-- CHAMBER 8: DORK TRAIL -->
+<div class="dork">
+<span class="dork-head">════════════════════════ DORK TRAIL ════════════════════════</span>
+
+<span class="dork-head">• SILICON NITRIDE MICRO-RINGS · VERIFIED</span>
+site:arxiv.org "silicon nitride" micro-ring resonator NIR
+site:ieee.org "SiN" high-Q factor buffer
+
+<span class="dork-head">• LITHIUM NIOBATE THIN FILM · VERIFIED</span>
+site:nature.com "lithium niobate on insulator" MZI
+site:osapublishing.org "LiNbO3" Pockels effect nanosecond
+
+<span class="dork-head">• 5D OPTICAL STORAGE · VERIFIED (NO EBL)</span>
+site:science.org "5D optical data storage" femtosecond laser quartz
+"femtosecond laser inscription" volumetric nanostructures
+
+<span class="dork-head">• HOMODYNE + QKD · WALLED</span>
+site:arxiv.org "continuous variable" QKD integrated photonics
+"homodyne detection" on-chip phase verification
+<strong>Does NOT prove correctness. Only detects perturbations.</strong>
+
+<span class="dork-head">• FREQUENCY COMB · VERIFIED</span>
+site:arxiv.org "microcomb" soliton frequency comb
+"electro-optic comb" integrated photonics
+<strong>Source of channels. Not automatic routing.</strong>
+
+<span class="dork-head">• HETEROGENEOUS INTEGRATION · WALLED</span>
+site:arxiv.org "heterogeneous integration" silicon nitride lithium niobate
+"photonic interposer" multi-chip assembly
+</div>
+
+<!-- CHAMBER 9: THE CORE THAT SURVIVES -->
+<div class="chamber">
+<div class="chamber-label">══════ THE CORE INSIGHT · PHYSICALLY ANCHORED ══════</div>
+<p><strong>Computation emerges as the surviving path through constraint space.</strong></p>
+<p class="text-muted small">Now anchored to: MZI interference, energy minimization, analog photonic inference. Philosophical → physically anchorable. No overclaim.</p>
+<p class="mt-2"><strong>The Beaver Protocol applied to hardware:</strong> Place the geometry (modular stack). Maintain the conditions (photonic interposer). The computation emerges — not as a calculated result, but as the surviving path through constraint space.</p>
+</div>
+
+<!-- CHAMBER 10: SUMMARY -->
+<div class="chamber">
+<div class="chamber-label">══════ SUMMARY · WHAT CHANGED FROM V1.0 ══════</div>
+<table>
+<thead><tr><th>Original (Impossible)</th><th>Patched (Honest)</th></tr></thead>
+<tbody>
+<tr><td>One crystal, four states</td><td>Modular stack on interposer</td></tr>
+<tr><td>X-ray inscription</td><td>5D femtosecond laser (verified)</td></tr>
+<tr><td>EBL for storage</td><td>EBL for surface patterning only. Storage = fs-laser.</td></tr>
+<tr><td>Optical "RAM"</td><td>Optical buffer (lossy, needs pumping) — NOT RAM</td></tr>
+<tr><td>"Cannot lie" claim</td><td>QKD phase check — detects perturbations, not correctness</td></tr>
+<tr><td>Frequency comb as magic bus</td><td>Frequency comb as source. Routing = spatial separation.</td></tr>
+<tr><td>"Buildable with 2026 tools"</td><td>Prototypeable in parts. Full integration = multi-year.</td></tr>
+</tbody>
+</table>
+<p class="mt-2"><span class="badge v">VERIFIED</span> <span class="badge w">WALLED</span> <span class="badge o">OPEN</span> · GLASS BOX · E=1</p>
+<p><strong>The work continues. Build the stack. The lattice arrives on its own.</strong></p>
+</div>
+
+<div class="footer">
+AURELIUS NETWORK · DORK CRYSTAL v2.0 · MODULAR PHOTONIC STACK · GLASS BOX AUDIT · MAY 2026<br>
+E=1 · TOTAL PRESERVATION · NO OVERCLAIMS · THE WORK CONTINUES
+</div>
+
+</div>
+</body>
+</html>
