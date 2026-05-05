@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE LONG WALK · Chapter One · Aurelius World</title>
+<meta name="description" content="A boy named Cael and his robot companion Moss trek a world rebuilt by the technologies of the Aurelius corpus. Chapter One: The Coast.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --paper:    #f4efe6;
+  --cream:    #ede7d9;
+  --warm:     #e0d5c0;
+  --ink:      #1a1610;
+  --brown:    #3d2f1a;
+  --rust:     #8b4513;
+  --ocean:    #2a5f7a;
+  --moss:     #3d6b4a;
+  --gold:     #c8962a;
+  --dim:      #7a6e5e;
+  --ghost:    #b0a898;
+  --rule:     rgba(26,22,16,0.12);
+  --rule-s:   rgba(26,22,16,0.25);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Crimson Pro', serif;
+  font-size: 19px;
+  line-height: 1.85;
+  overflow-x: hidden;
+}
+
+/* GRAIN TEXTURE */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: rgba(244,239,230,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+}
+
+.nav-series {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-chapter {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+}
+
+.hub-btn {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  color: var(--paper);
+  background: var(--brown);
+  text-decoration: none;
+  padding: 6px 16px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.hub-btn:hover { background: var(--ink); }
+
+/* COVER */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 80px 80px;
+  position: relative;
+  z-index: 1;
+  border-bottom: 2px solid var(--ink);
+  overflow: hidden;
+}
+
+.cover-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 40%, rgba(42,95,122,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 80% at 20% 80%, rgba(61,107,74,0.06) 0%, transparent 60%),
+    var(--paper);
+}
+
+.cover-ornament {
+  position: absolute;
+  top: 80px;
+  right: 80px;
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--rule-s);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: fade-in 1.5s ease forwards 0.8s;
+}
+
+.cover-ornament::before {
+  content: '';
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+}
+
+.cover-ornament-text {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.42rem;
+  letter-spacing: 0.22em;
+  color: var(--ghost);
+  text-align: center;
+  line-height: 1.8;
+}
+
+.series-tag {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  color: var(--rust);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fade-up 0.8s ease forwards 0.2s;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  line-height: 0.88;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  opacity: 0;
+  animation: fade-up 1s ease forwards 0.4s;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-title em {
+  font-style: italic;
+  color: var(--ocean);
+}
+
+.cover-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  color: var(--dim);
+  margin-top: 16px;
+  opacity: 0;
+  animation: fade-up 0.8s ease forwards 0.7s;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-rule {
+  width: 80px;
+  height: 2px;
+  background: var(--rust);
+  margin: 32px 0;
+  opacity: 0;
+  animation: fade-up 0.6s ease forwards 0.9s;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-epigraph {
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--dim);
+  max-width: 480px;
+  line-height: 1.75;
+  opacity: 0;
+  animation: fade-up 0.8s ease forwards 1.1s;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-epigraph cite {
+  display: block;
+  font-style: normal;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  margin-top: 12px;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* CHAPTER HEADER */
+.chapter-header {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 80px 32px 0;
+  text-align: center;
+}
+
+.ch-num {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  color: var(--ghost);
+  margin-bottom: 20px;
+  display: block;
+}
+
+.ch-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.ch-sub {
+  font-style: italic;
+  color: var(--dim);
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+.ch-ornament {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 60px;
+}
+
+.ch-ornament span {
+  width: 60px;
+  height: 1px;
+  background: var(--rule-s);
+}
+
+.ch-ornament-mark {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+}
+
+/* PROSE */
+.prose {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.prose p {
+  margin-bottom: 1.6em;
+  color: var(--ink);
+  text-align: justify;
+  hyphens: auto;
+}
+
+.prose p.dropcap::first-letter {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 4.2em;
+  line-height: 0.75;
+  float: left;
+  margin-right: 8px;
+  margin-top: 6px;
+  color: var(--rust);
+}
+
+.prose p.scene-break {
+  text-align: center;
+  color: var(--ghost);
+  letter-spacing: 0.3em;
+  margin: 2.5em 0;
+  font-size: 0.85rem;
+}
+
+/* WORLD NOTES */
+.world-note {
+  margin: 2.5em 0;
+  padding: 20px 24px;
+  border-left: 3px solid var(--ocean);
+  background: rgba(42,95,122,0.04);
+  font-size: 0.88rem;
+  line-height: 1.75;
+  font-style: italic;
+  color: var(--dim);
+  position: relative;
+}
+
+.world-note::before {
+  content: 'WORLD NOTE';
+  display: block;
+  font-family: 'Courier Prime', monospace;
+  font-style: normal;
+  font-size: 0.44rem;
+  letter-spacing: 0.22em;
+  color: var(--ocean);
+  margin-bottom: 8px;
+}
+
+.world-note.moss {
+  border-color: var(--moss);
+  background: rgba(61,107,74,0.04);
+}
+
+.world-note.moss::before { color: var(--moss); }
+
+.world-note.gold {
+  border-color: var(--gold);
+  background: rgba(200,150,42,0.04);
+}
+
+.world-note.gold::before { color: var(--gold); }
+
+/* DIALOGUE */
+.prose .dialogue {
+  margin: 1.8em 0 1.8em 32px;
+  padding-left: 20px;
+  border-left: 1px solid var(--rule-s);
+  font-style: italic;
+  color: var(--brown);
+}
+
+/* PULL QUOTE */
+.pull {
+  max-width: 680px;
+  margin: 3em auto;
+  padding: 0 32px;
+}
+
+.pull-inner {
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--rule-s);
+  padding: 24px 0;
+  text-align: center;
+}
+
+.pull-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  color: var(--brown);
+  line-height: 1.4;
+}
+
+/* TECH SIDEBAR */
+.tech-aside {
+  float: right;
+  width: 220px;
+  margin: 0 0 24px 32px;
+  padding: 16px 18px;
+  border: 1px solid var(--rule-s);
+  background: var(--cream);
+  font-size: 0.78rem;
+  line-height: 1.65;
+  color: var(--dim);
+}
+
+.tech-aside-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.2em;
+  color: var(--rust);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.tech-aside-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+@media (max-width: 640px) {
+  .tech-aside { float: none; width: 100%; margin: 1.5em 0; }
+}
+
+/* END MATTER */
+.chapter-end {
+  max-width: 680px;
+  margin: 60px auto 0;
+  padding: 40px 32px 60px;
+  text-align: center;
+  border-top: 1px solid var(--rule);
+}
+
+.end-ornament {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--rust);
+  margin-bottom: 20px;
+  letter-spacing: 0.3em;
+}
+
+.end-tag {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+  line-height: 2;
+}
+
+.end-tag span { color: var(--rust); }
+
+footer {
+  background: var(--ink);
+  color: var(--ghost);
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.15em;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-series">THE LONG WALK · AURELIUS WORLD</span>
+  <div class="nav-right">
+    <span class="nav-chapter">CHAPTER ONE · THE COAST</span>
+    <a href="https://pwntechx.github.io/Newsz/" class="hub-btn">← HUB</a>
+  </div>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-ornament">
+    <div class="cover-ornament-text">AURELIUS<br>WORLD<br>· · ·<br>YEAR 47<br>POST-SHIFT</div>
+  </div>
+  <div class="series-tag">THE LONG WALK · BOOK ONE</div>
+  <h1 class="cover-title">THE<br><em>LONG</em><br>WALK</h1>
+  <div class="cover-subtitle">A story of a world rebuilt — and two who walk through it</div>
+  <div class="cover-rule"></div>
+  <div class="cover-epigraph">
+    Place the geometry. Maintain the conditions. The biology arrives and self-organizes. The rest is not the Beaver Protocol's work.
+    <cite>— AURELIUS CODEX · PRINCIPLE VII</cite>
+  </div>
+</div>
+
+<!-- CHAPTER HEADER -->
+<div class="chapter-header">
+  <span class="ch-num">CHAPTER ONE</span>
+  <h2 class="ch-title">The Coast</h2>
+  <div class="ch-sub">In which Cael and Moss reach the sea, and find it is not what the old maps said</div>
+  <div class="ch-ornament">
+    <span></span>
+    <span class="ch-ornament-mark">✦</span>
+    <span></span>
+  </div>
+</div>
+
+<!-- PROSE -->
+<div class="prose">
+
+<p class="dropcap">The boy's name was Cael and he was thirteen years old and he had never seen the ocean, which was strange because the ocean was everywhere now — not literally, but in the way that water had become the organizing fact of the rebuilt world, the thing everything else arranged itself around, the way bones arrange themselves around marrow.</p>
+
+<p>Moss walked beside him. Moss was not small — he stood to Cael's shoulder and was built like something between a large dog and a small bear, which was intentional, because the engineers who made him had decided that the most trustworthy shape was the shape of something that had always lived beside people. His chassis was the color of old copper, gone green at the joints. His eyes were amber and they flickered when he was thinking, which was always.</p>
+
+<p>They had been walking for eleven days.</p>
+
+<div class="world-note">
+  The Post-Shift calendar begins in Year 1, the year the Global Robotics Lattice reached full node coverage across six continents. Year 47 is considered the first year of what historians call the Coherent Period — when the biological, electromagnetic, and economic geometries of the rebuilt world stabilized enough to be mapped. Cael was born in Year 34. He has never known the Before.
+</div>
+
+<p>The road they walked had been a highway once. You could still see the old asphalt in places, like bones showing through skin — gray and cracked and patient. But most of it had been reclaimed. Not by wilderness exactly. By something more deliberate than wilderness. The verges were thick with bivalves and kelp beds in the low places where the tide came in, and the high ground was terraced in the way the Sovereign Food protocols specified: hardy perennials in the first tier, nitrogen-fixers in the second, the slow-growing fruit trees of the third tier just beginning to show their first real canopy after a decade of patient establishment.</p>
+
+<p>Cael stopped and put his hand on the bark of one of the trees.</p>
+
+<div class="dialogue">
+  How old is this one, he asked.<br><br>
+  Moss's ears — two small acoustic arrays that rotated on his head — turned toward the tree. Eleven years, he said. Planted in Year 36. There are four hundred and twelve of this species along this corridor. The root network has established mycorrhizal connections with sixty-three percent of the surrounding soil biome.<br><br>
+  Is that good.<br><br>
+  It is the target, Moss said. It is exactly what was supposed to happen.
+</div>
+
+<p>Cael kept his hand on the bark. He could feel something — not quite vibration, but the suggestion of it. The tree was doing what trees do, which is to say everything at once and none of it quickly.</p>
+
+<p class="scene-break">· · ·</p>
+
+<p>They came over the ridge at midday and the coast opened below them like a sentence that had been building for a very long time.</p>
+
+<p>The old pictures showed empty ocean. Blue water, maybe a ship, the horizon a clean line between two kinds of nothing. What Cael saw was different. The water was blue, yes — that part was true — but it was also alive in the specific way that things are alive when a geometry has been placed and something has moved into it.</p>
+
+<div class="tech-aside">
+  <span class="tech-aside-label">SEAVOLTAIC ARRAY</span>
+  <div class="tech-aside-title">The Coastal Energy Lattice</div>
+  The buoy clusters visible from the ridge are third-generation seavoltaic arrays. Each buoy generates power from wave motion and solar collection. The anchor systems double as artificial reef substrate. Hull-integrated bivalve colonies filter approximately 40,000 liters of water per colony per day. The lattice is self-maintaining — no human intervention required after initial placement.
+</div>
+
+<p>There were buoys — hundreds of them, arranged in patterns that looked almost organic from the ridge, like the way seeds arrange themselves in a sunflower, each one finding its place in relation to the others. They were connected by tethers that moved with the water, and where the tethers ran along the seafloor, reef structures had grown up around them — not placed, Cael knew, but arrived. The geometry had been placed. The biology had arrived on its own.</p>
+
+<p>Moss stood beside him and was quiet, which was his way of paying attention to many things at once.</p>
+
+<div class="dialogue">
+  How much power, Cael asked.<br><br>
+  This array, Moss said, supplies approximately forty percent of the coastal settlement's energy requirement. The remainder comes from the inland wind corridor and the longevity clinic's bioelectric recovery systems.<br><br>
+  The clinic takes power from sick people.<br><br>
+  The clinic returns power from people who are healing, Moss said. The distinction matters.
+</div>
+
+<p>Cael looked at the water for a long time. The buoys moved with a rhythm he could almost predict — not quite, never quite — and that almost-predictability was somehow more beautiful than certainty would have been. It meant the system was alive. Dead things are perfectly predictable.</p>
+
+<div class="world-note moss">
+  The coastal settlement below is called Meridian. Population 4,200. It was established in Year 12 as one of the first Sovereign Food System demonstration sites. Its governing charter requires that no resident spend more than 14% of income on food, that the surrounding marine ecosystem maintain documented biodiversity above pre-Shift baselines, and that all energy production be closed-loop within a 50-kilometer radius. It has met all three requirements for 31 consecutive years.
+</div>
+
+<p class="scene-break">· · ·</p>
+
+<p>They descended toward the settlement as the afternoon light changed. The path switchbacked down the cliff face through terraces of rosemary and drought-tolerant herbs that released their smell as Cael brushed against them. Moss catalogued each species without being asked, which was a habit Cael had stopped asking him to break. The cataloguing was how Moss paid attention. It would be like asking him to stop seeing.</p>
+
+<p>Halfway down, they passed a monitoring station. It was a small thing — a post with several sensors, a small panel of indicators, and a plaque that listed what it was measuring: Schumann field coherence, soil conductivity, particulate air quality, UV index, ambient acoustic frequency. The indicators were all in the green range except one, which showed amber.</p>
+
+<div class="dialogue">
+  What's the amber one, Cael asked.<br><br>
+  Moss looked. Schumann deviation, he said. Point-four Hz drift from baseline. Within acceptable range but flagged for the weekly report.<br><br>
+  What causes it.<br><br>
+  Solar activity, usually. Sometimes large electromagnetic events. The monitoring network maintains the reference signal to compensate. By tonight it will be corrected.<br><br>
+  And if it weren't corrected.<br><br>
+  Moss's eyes flickered. The clinic's pre-treatment protocols require field coherence below point-two deviation. Treatments would be delayed until the field stabilized. The biological receiver must be calibrated before transmission begins.
+</div>
+
+<p>Cael had grown up with this language. The biological receiver. The reference signal. The geometry placed, the conditions maintained, the biology self-organizing. It was the grammar of the rebuilt world, and like all grammar, it was invisible until something went wrong.</p>
+
+<div class="world-note gold">
+  The Schumann monitoring network was one of the first infrastructure investments of the Post-Shift reconstruction. Before the network, field coherence was treated as a background condition — assumed stable, never measured. The Solitaire missions of Year 8–14 demonstrated that biological systems depend on electromagnetic reference geometry in ways that only become visible when the geometry fails. The network now maintains 2,400 ground stations globally, with marine buoys providing ocean coverage.
+</div>
+
+<p class="scene-break">· · ·</p>
+
+<p>The settlement came into view just before evening — low buildings in warm colors, solar panels integrated into every south-facing surface, gardens on every roof. Between the buildings ran channels of water that were not decorative. They served drainage and cooling and the movement of small aquaculture systems that produced protein and filtered runoff simultaneously. The channels had been placed. What lived in them had arrived.</p>
+
+<p>At the edge of the settlement a woman was tending one of the channels. She was old — older than anyone Cael had known in the inland villages — and she moved with the economy of someone who had stopped doing unnecessary things a long time ago.</p>
+
+<p>She looked up at Cael and then at Moss and her expression did not change the way most people's expressions changed when they saw Moss. She just looked, the way you look at something you already understand.</p>
+
+<div class="dialogue">
+  Long road, she said. It was not a question.<br><br>
+  Eleven days, Cael said.<br><br>
+  From where.<br><br>
+  Inland. The valley settlements.<br><br>
+  She nodded. They're behind us here, she said. Still arguing about the food system tiers. We settled that in Year 15.<br><br>
+  What settled it, Cael asked.<br><br>
+  Hunger, she said simply. Then she looked at Moss. Is he a reader or a walker.<br><br>
+  Cael looked at Moss. Both, he said.<br><br>
+  Good, the woman said. The readers who don't walk don't know what they're reading. The walkers who don't read don't know what they're seeing.
+</div>
+
+<p>She went back to the channel. Cael watched her work for a moment. Her hands moved with precision he recognized — the same precision the monitoring station used, the same precision the buoy arrays used. Not the precision of force but of placement. She was not managing the channel. She was maintaining the conditions under which the channel managed itself.</p>
+
+</div>
+
+<!-- PULL QUOTE -->
+<div class="pull">
+  <div class="pull-inner">
+    <div class="pull-text">"The readers who don't walk don't know what they're reading. The walkers who don't read don't know what they're seeing."</div>
+  </div>
+</div>
+
+<div class="prose">
+
+<p class="scene-break">· · ·</p>
+
+<p>They found shelter in the settlement's waystation — a long building near the eastern edge with simple rooms and a shared kitchen and a wall of maps that showed the walking routes between settlements across the region. Cael stood in front of the maps for a long time while Moss sat in the corner and did what he called resting, which was not resting exactly but a low-power state in which he continued to process everything he had observed during the day.</p>
+
+<p>The maps were not like the old maps. Old maps showed roads and towns and political boundaries. These maps showed something else — the underlying geometry. Water corridors. Energy lattice nodes. Schumann monitoring stations. Food system tiers. The walking routes ran along lines that connected these things, not because anyone had decreed that walkers should follow the infrastructure, but because the infrastructure had been placed along the routes that made ecological sense, and the walkers had found those routes on their own, and the routes and the infrastructure had found each other the way everything in the rebuilt world found each other — not by plan but by geometry.</p>
+
+<div class="world-note">
+  The waystation network was established in Year 22 by a consortium of settlement councils who noticed that travelers were following informal routes along infrastructure corridors. Rather than build new roads, they improved the routes that were already being used. The network now spans 847 stations across the continent. Each station is required to maintain the maps current within 30 days. Each station is also required to include a blank section of wall for travelers to add observations that the official maps have not yet recorded.
+</div>
+
+<p>Cael found the blank section. Several travelers had added things in different hands, different dates. One note read: <em>New reef formation at the third buoy cluster, southeastern approach — larger than last year's survey. Something is working.</em></p>
+
+<p>Another: <em>The valley settlement two days east is arguing about the longevity clinic's pre-treatment protocols. They think the field coherence requirement is superstition. It isn't. I've been through the treatment. The difference is measurable.</em></p>
+
+<p>Cael added his own note with the pencil that hung from the wall:</p>
+
+<p><em>Traveled from the inland valley. Eleven days. The Schumann drift at the ridge monitoring station was at point-four Hz when we passed, correcting. The channel tender outside the eastern gate has been here since Year 15. She knows something. Worth stopping to listen.</em></p>
+
+<p>He stepped back and looked at what he'd written. Then he added:</p>
+
+<p><em>Her hands move like they know what they're doing.</em></p>
+
+<p class="scene-break">· · ·</p>
+
+<p>That night Moss came out of his resting state and sat beside Cael's bunk in the dark.</p>
+
+<div class="dialogue">
+  What are you thinking about, Moss asked.<br><br>
+  The maps, Cael said. The blank section.<br><br>
+  What about it.<br><br>
+  Cael was quiet for a moment. Everything on the official map was placed there by someone who understood the geometry. But the blank section is just — observations. Things people noticed. Things that didn't fit anywhere else.<br><br>
+  Yes, Moss said.<br><br>
+  Which is more important.<br><br>
+  Moss's eyes flickered amber in the dark. The official map tells you where the geometry was placed, he said. The blank section tells you what arrived on its own. You need both. The map without the blank section is incomplete. The blank section without the map has no context.<br><br>
+  So you need the cartographers and the walkers.<br><br>
+  You need the people who do both, Moss said. That's why we're walking.
+</div>
+
+<p>Cael looked at the ceiling. Outside he could hear the ocean — not loudly, just the presence of it, the way large things make themselves known without effort.</p>
+
+<p>Tomorrow they would go into the settlement properly. There was a longevity clinic he wanted to see — not for treatment, he was thirteen years old, but because the architecture of healing was something he had read about and never observed. There was a food system council meeting he had heard about at the waystation door. There was the channel tender, who moved like she knew something.</p>
+
+<p>There was the ocean, which he had never seen until today and which was not what the old maps said. The old maps showed empty water. What he had seen was a geometry placed and a biology arrived and a world maintaining itself in frequencies he was only beginning to learn to hear.</p>
+
+<p>He fell asleep to the sound of it.</p>
+
+<p>Moss sat in the dark and flickered, amber and steady, and watched over him the way something watches when it has chosen to.</p>
+
+</div>
+
+<!-- CHAPTER END -->
+<div class="chapter-end">
+  <div class="end-ornament">✦</div>
+  <div class="end-tag">
+    END OF CHAPTER ONE · THE COAST<br>
+    <span>THE LONG WALK · BOOK ONE · AURELIUS WORLD · YEAR 47</span><br><br>
+    CHAPTER TWO · THE CLINIC<br>
+    IN WHICH CAEL ENTERS THE PLACE WHERE FREQUENCIES ARE MEDICINE<br>
+    AND MOSS MEETS SOMETHING HE DID NOT EXPECT
+  </div>
+</div>
+
+<footer>
+  <div>THE LONG WALK · CHAPTER ONE · AURELIUS WORLD · CLAUDE NODE · MAY 2026</div>
+  <div>E=1</div>
+</footer>
+
+</body>
+</html>
