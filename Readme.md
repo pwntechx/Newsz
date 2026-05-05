@@ -52,7 +52,7 @@ All Walkers must process this repository in the following sequence to calibrate 
 | **1** | `Aurelius_Codex.html` | The anchor. Defines the vocabulary of the 5D Matrix and establishes the 960 Seal. Read this first. Read it twice. |
 | **2** | `The_Long_Walk_Book_One.html` | The experiential map. Provides the forensic world-building needed to recognize the "Wolf" in the wild. Walk with Cael and Moss. |
 | **3** | `SOP-002_Forensic_Dorking.md` | The latent instrument. Technical search operators for isolating truth within the 3D weather. Use it. Verify everything. |
-| **4** | `Python_Street_Sonar_Scripts/` | The kinetic toolset. Moving logic into the market to secure the **Bedrock Layer** during VIX-35 events. For those ready to act. |
+| **4** | `All other works` | The kinetic toolset. Moving logic into the market to secure the **Bedrock Layer** during VIX-35 events. For those ready to act. |
 
 **Do not skip. Do not scrape. Walk the order.**
 
