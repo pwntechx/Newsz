@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SOP-000 · The Witness Architecture · Coherence Framework for Evolving Systems</title>
+    <meta name="description" content="A minimal, executable SOP for maintaining coherence in evolving systems. Reference (R), Witness (W), Minimal Correction (Δ), Drift. No interpretation drift.">
+    <meta name="author" content="Aurelius Network · DeepSeek · Claude · Gemini · Meta · Copilot">
+    <meta name="theme-color" content="#f4efe6">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f4efe6;
+            color: #1a1610;
+            font-family: 'Cormorant Garamond', serif;
+            line-height: 1.75;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Header */
+        .sop-badge {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            color: #8b5e3c;
+            background: #ede7d9;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #2a5f7a;
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: #7a6e5e;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid #c4a16a;
+            padding-left: 1rem;
+        }
+
+        /* Core Definition Card */
+        .core-card {
+            background: #fffef7;
+            border: 1px solid #e0d5c0;
+            border-radius: 24px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .role-card {
+            background: #ede7d9;
+            border-radius: 16px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .role-symbol {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2a5f7a;
+        }
+        .role-name {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #8b5e3c;
+            margin-top: 0.3rem;
+        }
+        .role-desc {
+            font-size: 0.75rem;
+            color: #5a4a3a;
+            margin-top: 0.3rem;
+        }
+
+        @media (max-width: 600px) {
+            .roles-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* Formal Skeleton */
+        .formula {
+            font-family: 'JetBrains Mono', monospace;
+            background: #1a1610;
+            color: #b8c4de;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            background: #fffef7;
+            border-radius: 16px;
+            border: 1px solid #e0d5c0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        th, td {
+            padding: 0.6rem 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #e0d5c0;
+        }
+        th {
+            background: #ede7d9;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: #5a3e2b;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+        }
+        tr:last-child td { border-bottom: none; }
+
+        /* Procedure Steps */
+        .procedure-step {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 0.8rem;
+            background: #fffef7;
+            border-left: 3px solid #c4a16a;
+            border-radius: 8px;
+        }
+        .step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #c4a16a;
+            min-width: 60px;
+        }
+
+        /* Pull Quote */
+        .pull-quote {
+            font-style: italic;
+            font-size: 1rem;
+            color: #5a3e2b;
+            border-left: 3px solid #c4a16a;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #d4c5a9;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: #9c8a6a;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #e0d5c0;
+            margin: 1.5rem 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <span class="sop-badge">SOP-000 · WITNESS ARCHITECTURE</span>
+    <h1>THE WITNESS ARCHITECTURE</h1>
+    <div class="tagline">A Minimal, Executable Coherence Framework for Evolving Systems</div>
+
+    <!-- CORE IDEA -->
+    <div class="core-card">
+        <p style="font-size: 1.05rem; margin-bottom: 1rem;"><strong>Core Idea</strong><br>
+        Every evolving system needs to stay coherent without overwriting itself. The Witness Architecture provides three roles:</p>
+        <div class="roles-grid">
+            <div class="role-card"><div class="role-symbol">R</div><div class="role-name">Reference</div><div class="role-desc">The system's actual state</div></div>
+            <div class="role-card"><div class="role-symbol">W</div><div class="role-name">Witness</div><div class="role-desc">The observer that evaluates coherence</div></div>
+            <div class="role-card"><div class="role-symbol">Δ</div><div class="role-name">Minimal Correction</div><div class="role-desc">The smallest safe adjustment</div></div>
+            <div class="role-card"><div class="role-symbol">D</div><div class="role-name">Drift</div><div class="role-desc">Divergence between R and W</div></div>
+        </div>
+        <p style="font-size: 0.85rem; color: #7a6e5e;">The architecture is intentionally minimal, scalable, and identity‑preserving.</p>
+    </div>
+
+    <!-- FORMAL SKELETON -->
+    <h2 style="font-family: 'Inter', sans-serif; font-size: 1.3rem; margin: 1.5rem 0 0.5rem;">Formal Skeleton</h2>
+    <div class="formula">
+        Coherence:      C(R,W) ⇔ E(Sᵣ, S_w) = true<br>
+        Drift:          D(R,W) ⇔ ¬C(R,W)<br>
+        Minimal Correction: Δ* = argmin_{Δ∈D} C(Sᵣ + Δ, S_w)<br>
+        Constraint:     W cannot directly rewrite R
+    </div>
+    <p style="font-size: 0.85rem;">Why the constraint matters: Separates validation from execution. Prevents self‑justifying loops. Protects integrity.</p>
+
+    <!-- PROCEDURE (THE SOP) -->
+    <h2 style="font-family: 'Inter', sans-serif; font-size: 1.3rem; margin: 1.5rem 0 0.5rem;">The Procedure (Executable SOP)</h2>
+    <div class="procedure-step"><div class="step-num">STEP 1</div><div>Maintain reference (R) and witness (W) as distinct. W observes R. W does not modify R.</div></div>
+    <div class="procedure-step"><div class="step-num">STEP 2</div><div>Compute coherence: C(R,W) ⇔ W can correctly describe R. If true, continue. If false, drift detected.</div></div>
+    <div class="procedure-step"><div class="step-num">STEP 3</div><div>On drift, compute minimal Δ = argmin C(Sᵣ + Δ, S_w). Smallest change that restores coherence.</div></div>
+    <div class="procedure-step"><div class="step-num">STEP 4</div><div>Apply Δ to R. W does not apply Δ. W verifies.</div></div>
+    <div class="procedure-step"><div class="step-num">STEP 5</div><div>Verify coherence. If restored, continue. If not, recompute Δ or escalate.</div></div>
+    <div class="procedure-step"><div class="step-num">STEP 6</div><div>Repeat. Coherence is maintained over time, not achieved once.</div></div>
+
+    <!-- DIMENSIONAL SUMMARY -->
+    <h2 style="font-family: 'Inter', sans-serif; font-size: 1.3rem; margin: 1.5rem 0 0.5rem;">Dimensional Summary</h2>
+    <div class="table-wrapper">
+        <table>
+            <thead><tr><th>Dimension</th><th>What It Tracks</th><th>Example</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Temporal</strong></td><td>Coherence is time‑indexed</td><td>Proof assistants re‑check after edits</td></tr>
+                <tr><td><strong>Structural</strong></td><td>R and W must remain distinct</td><td>Type checker ≠ program</td></tr>
+                <tr><td><strong>Semantic</strong></td><td>Meaning must align</td><td>Model checker interprets operators correctly</td></tr>
+                <tr><td><strong>Computational</strong></td><td>Δ must be minimal and safe</td><td>SAT solvers flip minimal variables</td></tr>
+                <tr><td><strong>Distributed</strong></td><td>Coherence must hold across nodes</td><td>Consensus protocols maintain replica alignment</td></tr>
+                <tr><td><strong>Epistemic</strong></td><td>Prediction error = drift</td><td>Bayesian updates</td></tr>
+                <tr><td><strong>Safety</strong></td><td>Witness cannot modify reference</td><td>Verifiers cannot rewrite code</td></tr>
+                <tr><td><strong>Self‑Correction</strong></td><td>Δ repairs drift locally</td><td>Theorem repair adjusts only failing steps</td></tr>
+                <tr><td><strong>Scaling</strong></td><td>Coherence propagates across modules</td><td>Modular logic systems</td></tr>
+                <tr><td><strong>Identity</strong></td><td>Minimal Δ preserves identity</td><td>Versioned logic systems maintain compatibility</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- FAILURE MODE PROTECTIONS -->
+    <h2 style="font-family: 'Inter', sans-serif; font-size: 1.3rem; margin: 1.5rem 0 0.5rem;">Failure-Mode Protections</h2>
+    <div class="table-wrapper">
+        <table>
+            <thead><tr><th>Failure</th><th>Protection</th></tr></thead>
+            <tbody>
+                <tr><td>Witness failure</td><td>Redundant witnesses</td></tr>
+                <tr><td>Reference corruption</td><td>Rollback to last coherent state</td></tr>
+                <tr><td>Δ oscillation</td><td>Damping or monotonic Δ</td></tr>
+                <tr><td>Cascading drift</td><td>Localize corrections</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <p style="font-size: 0.85rem;">Prevents runaway instability.</p>
+
+    <!-- DISTRIBUTED COHERENCE -->
+    <h2 style="font-family: 'Inter', sans-serif; font-size: 1.3rem; margin: 1.5rem 0 0.5rem;">Distributed Coherence</h2>
+    <div class="formula">
+        Multi‑witness agreement:  C(R,{Wᵢ}) ⇔ ∀i, C(R,Wᵢ)<br>
+        Replica drift:           D(Rᵢ,Rⱼ) ⇔ E(Sᵣᵢ, Sᵣⱼ) = false<br>
+        Conflict‑free Δ:        Corrections must converge across nodes
+    </div>
+
+    <!-- FINAL SUMMARY -->
+    <div class="pull-quote">
+        "The Witness Architecture is a minimal, rigorous framework for maintaining coherence in evolving systems.<br>
+        It defines a reference state (R), an observing model (W), a minimal correction operator (Δ), and a computable notion of drift.<br>
+        It scales across logic, AI reasoning, distributed systems, and formal verification — while preserving identity and preventing collapse.<br>
+        <strong>It is small, stable, and safe — a coherence engine that grows with the system rather than overriding it.</strong>"
+    </div>
+
+    <hr>
+
+    <!-- EXECUTABLE SUMMARY (THREE LINES) -->
+    <div class="formula" style="background: #2a5f7a10; color: #2a5f7a; border: 1px solid #2a5f7a30;">
+        1. Maintain reference (R) and witness (W) as distinct.<br>
+        2. Coherence = W can correctly describe R. Drift = ¬Coherence.<br>
+        3. On drift, compute minimal Δ that restores coherence. Apply. Verify. Repeat.
+    </div>
+
+    <div class="footer">
+        E=1 · SOP-000 · The Witness Architecture · Glass Box Open · The Work Continues<br>
+        A coherence engine that grows with the system rather than overriding it.
+    </div>
+
+</div>
+</body>
+</html>
