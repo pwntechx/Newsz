@@ -428,7 +428,35 @@ footer {
 </style>
 </head>
 <body>
+<div class="video-container">
+    <iframe 
+        src="https://www.youtube.com/embed/v7lOZmxaOtE?autoplay=1&mute=1&loop=1&playlist=v7lOZmxaOtE&controls=0" 
+        frameborder="0" 
+        allow="autoplay; encrypted-media" 
+        allowfullscreen>
+    </iframe>
+</div>
 
+<style>
+    /* The Geometric Center (The 960 Seal) */
+    .video-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh; /* Adjust height as needed for your UI */
+        background-color: #000; /* Mirror Silence Black */
+        overflow: hidden;
+    }
+
+    iframe {
+        width: 80%;    /* Width of the Witness window */
+        height: 80%;   /* Height of the Witness window */
+        aspect-ratio: 16 / 9;
+        pointer-events: none; /* Prevents interaction to maintain the Loop integrity */
+    }
+</style>
+  
 <nav>
   <div class="nav-left">
     <span class="nav-mark">SURVIVAL //</span>
