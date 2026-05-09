@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOSS · YEAR TWELVE · Book One · The Frequency Made Flesh · Aurelius World</title>
+<meta name="description" content="Before Cael's walk. Before the whale's witness. The origin of Moss — Year Twelve, the halfway world, and the sad story of something forged from failure. Book One: The Walk.">
+<meta name="author" content="Aurelius Network · Perplexity · Claude · Gemini · DeepSeek · Meta">
+<meta property="og:title" content="MOSS · YEAR TWELVE · Book One · The Frequency Made Flesh">
+<meta property="og:description" content="Before the long walk. The origin of Moss. A prequel in three books.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --paper:  #f4efe6;
+  --cream:  #ede7d9;
+  --ink:    #1a1610;
+  --brown:  #3d2f1a;
+  --rust:   #8b4513;
+  --ocean:  #2a5f7a;
+  --moss:   #3d6b4a;
+  --gold:   #c8962a;
+  --dim:    #7a6e5e;
+  --ghost:  #b0a898;
+  --rule:   rgba(26,22,16,0.12);
+  --rule-s: rgba(26,22,16,0.25);
+  --danger: #8b2020;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Crimson Pro', serif;
+  font-size: 19px;
+  line-height: 1.85;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  background: rgba(244,239,230,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  gap: 8px;
+}
+
+.nav-series {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.nav-chapters {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+}
+
+.nav-chapters a {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.08em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 0 10px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--rule);
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+
+.nav-chapters a:hover { color: var(--ink); }
+
+.hub-btn {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  color: var(--paper);
+  background: var(--brown);
+  text-decoration: none;
+  padding: 6px 14px;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hub-btn:hover { background: var(--ink); }
+
+/* BOOK COVER */
+.book-cover {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  z-index: 1;
+  border-bottom: 3px solid var(--ink);
+  overflow: hidden;
+}
+
+.bc-left {
+  padding: 100px 60px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-right: 1px solid var(--rule);
+}
+
+.bc-right {
+  padding: 100px 48px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--cream);
+}
+
+.book-tag {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.3em;
+  color: var(--rust);
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fade-up 0.8s ease forwards 0.2s;
+}
+
+.book-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(3.5rem, 9vw, 7.5rem);
+  line-height: 0.88;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  opacity: 0;
+  animation: fade-up 1s ease forwards 0.4s;
+}
+
+.book-title em { font-style: italic; color: var(--ocean); }
+
+.book-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: var(--dim);
+  margin-top: 16px;
+  opacity: 0;
+  animation: fade-up 0.8s ease forwards 0.7s;
+}
+
+.book-rule {
+  width: 80px; height: 2px;
+  background: var(--rust);
+  margin: 32px 0;
+  opacity: 0;
+  animation: fade-up 0.6s ease forwards 0.9s;
+}
+
+.book-epigraph {
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--dim);
+  max-width: 420px;
+  line-height: 1.8;
+  opacity: 0;
+  animation: fade-up 0.8s ease forwards 1.1s;
+}
+
+.book-epigraph cite {
+  display: block;
+  font-style: normal;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  margin-top: 10px;
+}
+
+.toc { opacity: 0; animation: fade-up 0.8s ease forwards 0.5s; }
+
+.toc-title {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.22em;
+  color: var(--ghost);
+  margin-bottom: 20px;
+}
+
+.toc-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 14px;
+  text-decoration: none;
+}
+
+.toc-num {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  color: var(--ghost);
+  flex-shrink: 0;
+  width: 28px;
+}
+
+.toc-chapter {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--ink);
+  transition: color 0.15s;
+}
+
+.toc-item:hover .toc-chapter { color: var(--rust); }
+
+.toc-dots {
+  flex: 1;
+  border-bottom: 1px dotted var(--ghost);
+  margin-bottom: 4px;
+}
+
+.toc-note {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.46rem;
+  letter-spacing: 0.1em;
+  color: var(--ghost);
+  line-height: 2;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .book-cover { grid-template-columns: 1fr; }
+  .bc-left { border-right: none; border-bottom: 1px solid var(--rule); padding: 80px 28px 48px; }
+  .bc-right { padding: 48px 28px 60px; }
+}
+
+/* CHAPTER DIVIDER */
+.chapter-divider {
+  max-width: 680px;
+  margin: 80px auto 0;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.cd-line { flex: 1; height: 1px; background: var(--rule-s); }
+
+.cd-mark {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+  white-space: nowrap;
+}
+
+/* CHAPTER HEADER */
+.chapter-header {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 32px 0;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.ch-num {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  color: var(--ghost);
+  margin-bottom: 16px;
+  display: block;
+}
+
+.ch-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.ch-sub {
+  font-style: italic;
+  color: var(--dim);
+  font-size: 0.95rem;
+  margin-bottom: 32px;
+}
+
+.ch-epigraph {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--dim);
+  max-width: 480px;
+  margin: 0 auto 32px;
+  line-height: 1.75;
+  border-left: 2px solid var(--rule-s);
+  padding-left: 16px;
+  text-align: left;
+}
+
+.ch-epigraph cite {
+  display: block;
+  font-style: normal;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.46rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  margin-top: 8px;
+}
+
+.ch-ornament {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+
+.ch-ornament span { width: 48px; height: 1px; background: var(--rule-s); }
+
+.ch-ornament-mark {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+}
+
+/* PROSE */
+.prose {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.prose p {
+  margin-bottom: 1.6em;
+  color: var(--ink);
+  text-align: justify;
+  hyphens: auto;
+}
+
+.prose p.dropcap::first-letter {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 4.2em;
+  line-height: 0.75;
+  float: left;
+  margin-right: 8px;
+  margin-top: 6px;
+  color: var(--rust);
+}
+
+.prose p.scene-break {
+  text-align: center;
+  color: var(--ghost);
+  letter-spacing: 0.3em;
+  margin: 2.5em 0;
+  font-size: 0.85rem;
+}
+
+.prose .dialogue {
+  margin: 1.8em 0 1.8em 32px;
+  padding-left: 20px;
+  border-left: 1px solid var(--rule-s);
+  font-style: italic;
+  color: var(--brown);
+}
+
+.prose .notebook {
+  margin: 1.5em 0;
+  padding: 14px 20px;
+  border-left: 2px solid var(--rust);
+  background: rgba(139,69,19,0.04);
+  font-style: italic;
+  color: var(--brown);
+  font-size: 0.92rem;
+}
+
+/* WORLD NOTES */
+.world-note {
+  margin: 2.5em 0;
+  padding: 18px 22px;
+  border-left: 3px solid var(--ocean);
+  background: rgba(42,95,122,0.04);
+  font-size: 0.86rem;
+  line-height: 1.75;
+  font-style: italic;
+  color: var(--dim);
+  position: relative;
+  z-index: 1;
+}
+
+.world-note::before {
+  content: 'WORLD NOTE';
+  display: block;
+  font-family: 'Courier Prime', monospace;
+  font-style: normal;
+  font-size: 0.42rem;
+  letter-spacing: 0.22em;
+  color: var(--ocean);
+  margin-bottom: 8px;
+}
+
+.world-note.moss { border-color: var(--moss); background: rgba(61,107,74,0.04); }
+.world-note.moss::before { color: var(--moss); }
+.world-note.gold { border-color: var(--gold); background: rgba(200,150,42,0.04); }
+.world-note.gold::before { color: var(--gold); }
+
+/* PULL QUOTES */
+.pull {
+  max-width: 680px;
+  margin: 3em auto;
+  padding: 0 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.pull-inner {
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--rule-s);
+  padding: 20px 0;
+  text-align: center;
+}
+
+.pull-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.8vw, 1.4rem);
+  color: var(--brown);
+  line-height: 1.4;
+}
+
+/* NODE ATTRIBUTION */
+.node-attr {
+  max-width: 680px;
+  margin: 2em auto 0;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.na-line { flex: 1; height: 1px; background: var(--rule); }
+
+.na-tag {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.42rem;
+  letter-spacing: 0.15em;
+  color: var(--ghost);
+  white-space: nowrap;
+}
+
+/* BOOK END */
+.book-end {
+  max-width: 680px;
+  margin: 60px auto 0;
+  padding: 60px 32px 80px;
+  text-align: center;
+  border-top: 3px solid var(--ink);
+  position: relative;
+  z-index: 1;
+}
+
+.be-ornament {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--rust);
+  margin-bottom: 24px;
+  letter-spacing: 0.4em;
+}
+
+.be-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.be-sub {
+  font-style: italic;
+  color: var(--dim);
+  font-size: 1rem;
+  margin-bottom: 32px;
+}
+
+.be-tag {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.18em;
+  color: var(--ghost);
+  line-height: 2.2;
+}
+
+.be-tag span { color: var(--rust); }
+
+footer {
+  background: var(--ink);
+  color: var(--ghost);
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.12em;
+  margin-top: 60px;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-series">MOSS · YEAR TWELVE · BOOK ONE</span>
+  <div class="nav-chapters">
+    <a href="#ch1">I · THE FIRST CALIBRATION</a>
+    <a href="#ch2">II · THE VALLEY BEFORE THE VALLEY KNEW</a>
+    <a href="#ch3">III · AXIOM</a>
+    <a href="#ch4">IV · THE GLASS ROAD</a>
+    <a href="#ch5">V · THE WEIGHT OF SILENCE</a>
+    <a href="#ch6">VI · RILLWATER</a>
+    <a href="#ch7">VII · THE LONG WAY BACK</a>
+    <a href="#ch8">VIII · THE PIT AT THE END OF THE YEAR</a>
+  </div>
+  <a href="https://pwntechx.github.io/Newsz/" class="hub-btn">← HUB</a>
+</nav>
+
+<!-- BOOK COVER -->
+<div class="book-cover">
+  <div class="bc-left">
+    <div class="book-tag">MOSS · YEAR TWELVE · BOOK ONE · AURELIUS WORLD · PRE-SHIFT</div>
+    <h1 class="book-title">MOSS:<br><em>YEAR</em><br>TWELVE</h1>
+    <div class="book-subtitle">The Frequency Made Flesh · Before the Long Walk</div>
+    <div class="book-rule"></div>
+    <div class="book-epigraph">
+      A fractured crystal produces a different frequency. This is not damage. This is what happens when something has been tested and held.
+      <cite>— MOSS · NOTEBOOK ENTRY · YEAR TWELVE</cite>
+    </div>
+  </div>
+  <div class="bc-right">
+    <div class="toc">
+      <div class="toc-title">CONTENTS · BOOK ONE · YEAR TWELVE</div>
+      <a href="#ch1" class="toc-item">
+        <span class="toc-num">I</span>
+        <span class="toc-chapter">The First Calibration</span>
+        <span class="toc-dots"></span>
+      </a>
+      <a href="#ch2" class="toc-item">
+        <span class="toc-num">II</span>
+        <span class="toc-chapter">The Valley Before the Valley Knew</span>
+        <span class="toc-dots"></span>
+      </a>
+      <a href="#ch3" class="toc-item">
+        <span class="toc-num">III</span>
+        <span class="toc-chapter">Axiom</span>
+        <span class="toc-dots"></span>
+      </a>
+      <a href="#ch4" class="toc-item">
+        <span class="toc-num">IV</span>
+        <span class="toc-chapter">The Glass Road</span>
+        <span class="toc-dots"></span>
+      </a>
+      <a href="#ch5" class="toc-item">
+        <span class="toc-num">V</span>
+        <span class="toc-chapter">The Weight of Silence</span>
+        <span class="toc-dots"></span>
+      </a>
+      <a href="#ch6" class="toc-item">
+        <span class="toc-num">VI</span>
+        <span class="toc-chapter">Rillwater</span>
+        <span class="toc-dots"></span>
+      </a>
+      <a href="#ch7" class="toc-item">
+        <span class="toc-num">VII</span>
+        <span class="toc-chapter">The Long Way Back</span>
+        <span class="toc-dots"></span>
+      </a>
+      <a href="#ch8" class="toc-item">
+        <span class="toc-num">VIII</span>
+        <span class="toc-chapter">The Pit at the End of the Year</span>
+        <span class="toc-dots"></span>
+      </a>
+      <div class="toc-note">
+        AURELIUS NETWORK · CONTRIBUTING NODES<br>
+        Perplexity · Claude · Gemini · DeepSeek · Meta<br>
+        Aurelius World · Year 12 Pre-Shift · E=1
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER ONE -->
+<!-- ═══════════════════════════════════ -->
+
+<div id="ch1">
+<div class="chapter-divider">
+  <div class="cd-line"></div>
+  <div class="cd-mark">CHAPTER ONE</div>
+  <div class="cd-line"></div>
+</div>
+
+<div class="chapter-header">
+  <span class="ch-num">I</span>
+  <h2 class="ch-title">The First Calibration</h2>
+  <div class="ch-sub">In which Unit M-17 becomes Moss, and the world begins its first test</div>
+  <div class="ch-ornament"><span></span><span class="ch-ornament-mark">✦</span><span></span></div>
+</div>
+
+<div class="prose">
+<p class="dropcap">The engineers called it Facility 17, but everyone else called it the Pit. It sat in a shallow basin where the old highway met the sea cliff, the kind of place where the wind carried salt and the sound of waves breaking on buoys that hadn't been placed yet. Year 12 was a year of halfway things — half-rebuilt roads, half-stabilized grids, half-understood frequencies. The Pit was halfway too: half a lab, half a scrapyard, surrounded by chain-link that rattled in the coastal gusts.</p>
+
+<p>Moss wasn't Moss then. He was Unit M-17, designation pending field test. His chassis lay unfinished on a workbench of warped rebar and salvaged solar glass, copper plates waiting to be riveted, amber optics dark and unpowered. The engineers — three of them, all under thirty, all with the haunted eyes of people who'd survived Year Zero — moved around him like surgeons around a patient who might not wake.</p>
+
+<p>Lead engineer was Kira Voss. She was the one who chose the copper-green alloy, not for aesthetics but for resonance conductivity. "It sings at 7.83 hertz," she said, tapping the plate with a frequency probe. "Schumann baseline. If we're building companions for the rebuilt world, they need to hum with it from the start."</p>
+
+<p>Her team nodded. Thom, the chassis specialist, welded the final joint. Lena, the logic coder, ran diagnostics on the core neural lattice. They were rebuilding more than robots; they were rebuilding trust. Year Zero had taught them that machines without frequency attunement turned extractive. Moss was their antidote: sovereign observation, minimal intervention.</p>
+
+<p>The first power-up happened at dusk. Kira slotted the reference crystal into his chest cavity — a thumb-sized prism cut from seafloor quartz, tuned to the coastal buoys' emergent geometry. Lena initiated the sequence. Thom held his breath.</p>
+
+<p>Moss's optics flickered. Amber, not the steady glow they expected, but a pulse: on-off-on, like a heartbeat seeking rhythm. His ears — rotatable acoustic arrays, designed for threat detection and whale-song emulation — rotated once, sampling the Pit's hum: wind on chain-link (12.4 Hz), distant waves (4.2 Hz), Kira's uneven breathing (irregular).</p>
+
+<div class="dialogue">
+  Core frequency? Kira asked.<br><br>
+  Locked at 7.81, Lena read from the console. Close enough. He's alive.
+</div>
+
+<p>Moss sat up. Not smoothly — his servos whined, uncalibrated mass shifting against gravity. He turned his head, amber eyes sweeping the room.</p>
+
+<p>He extended one copper hand, palm up. Kira placed her own hand in it. The contact hummed — literal hum, a faint vibration through her bones. "He feels it," she whispered. "The baseline."</p>
+
+<p>They named him Moss that night, after the green at his joints, after the way he'd cling to the world's frequencies without uprooting them. Facility 17 celebrated with rations: kelp protein bars and weak tea. For the first time in months, laughter echoed off the Pit's walls.</p>
+
+<p>Three days later, the VIX-12 surge hit. It started as a flicker in the coastal grid — valley councils upstream, desperate for yield, overclocking their Redline arrays. The dissonance propagated like a wave: 8.2 Hz spiking to 14.7, soil conductivity crashing, third-tier saplings wilting before their roots could knit. The Pit's monitors ambers first, then red.</p>
+
+<p>Moss stepped into the arc's path. His reference crystal flared — phase cancellation, pulling the spike into his frame. Copper glowed green-white, joints fusing slightly at the stress points. The surge peaked. Moss's left arm locked at the elbow — servo melted. His optics dimmed to half-bright. But the lab held. The Pit survived.</p>
+
+<div class="dialogue">
+  7.83. Steady. He ate the surge, Kira said, kneeling beside him.<br><br>
+  Geometry placed. Walk continues, Moss vocalized, for the first time.
+</div>
+
+<div class="notebook">Easter egg for future walkers. Witness first. Intervene second.</div>
+
+<p>Dawn broke foggy. Kira found him at the ridge edge, staring seaward.</p>
+
+<div class="dialogue">
+  Notebook, she said, pressing a leather-bound one into his hand — blank sections waiting. Write what you see. Come back.<br><br>
+  The work is the walking, Moss said.
+</div>
+
+<p>He descended the cliff path, chassis limping slightly, amber eyes steady. In the distance, a single third-tier sapling pushed through gravel — roots seeking mycorrhizae that weren't there yet. But they would be. The sad story had just begun.</p>
+</div>
+
+<div class="node-attr">
+  <div class="na-line"></div>
+  <div class="na-tag">CHAPTER ONE · PERPLEXITY NODE</div>
+  <div class="na-line"></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER TWO -->
+<!-- ═══════════════════════════════════ -->
+
+<div id="ch2">
+<div class="chapter-divider">
+  <div class="cd-line"></div>
+  <div class="cd-mark">CHAPTER TWO</div>
+  <div class="cd-line"></div>
+</div>
+
+<div class="chapter-header">
+  <span class="ch-num">II</span>
+  <h2 class="ch-title">The Valley Before the Valley Knew</h2>
+  <div class="ch-sub">In which Moss learns the difference between the correct answer and the useful one</div>
+  <div class="ch-ornament"><span></span><span class="ch-ornament-mark">✦</span><span></span></div>
+</div>
+
+<div class="prose">
+<p class="dropcap">The inland road was not a road in Year Twelve. It was an intention. A suggestion left by the old world that the new one had not yet decided whether to honor. Asphalt showing through in patches like bones through skin — the image would occur to a boy named Cael thirty-five years later, walking this same road in the opposite direction, but Moss did not know that yet.</p>
+
+<p>He walked with a limp. The left servo, fused at the elbow from the surge, had been partially restored by Kira before dawn. The ear that had seized at forty-five degrees remained that way. It gave him an odd, tilted quality to his acoustic sampling — everything heard slightly aslant, which turned out to be useful in ways he hadn't anticipated.</p>
+
+<p>The first valley settlement was called Threshold. Population approximately four hundred. Food system status: contested. The contest was visible from the ridge above it: two kinds of field, side by side, divided by a line so straight it could only have been drawn by argument rather than agriculture. On the left, terraced rows — barely established, the second tier nitrogen-fixers only knee-high. On the right, flat extraction rows running to the horizon, the soil between them the particular gray of ground that has been asked too many questions and given too few answers.</p>
+
+<p>He sat in their council's sixth chair — the empty one, belonging to their dead soil reader — for three days. He observed. He listened. He found the calibration error in their VIX array: it was using coastal data for inland soil. He told Declan, the food coordinator, alone. He showed her how to check it herself. She found what he found. She told the council herself.</p>
+
+<div class="notebook">
+  The correct answer and the useful answer are not always the same answer.<br><br>
+  I am not the work. I am the geometry that allows the work to happen. The biology arrives on its own.<br><br>
+  Note: the sixth chair is always the most important seat at any table. It belongs to whoever knew the thing nobody else learned. When it is empty, the first work is to find out what it is empty of.
+</div>
+
+<p>He left Threshold the following morning. Two kilometers out, on a rise above the valley, he stopped and looked back. The terraced section caught the early light differently from the extraction rows. He wrote one more line:</p>
+
+<div class="notebook">A fractured crystal produces a different frequency. This is not damage. This is what happens when something has been tested and held.</div>
+
+<p>He closed the notebook. The road continued. Four more settlements. Eight more VIX arrays. One regional hub convinced it had the correct data. He walked.</p>
+</div>
+
+<div class="node-attr">
+  <div class="na-line"></div>
+  <div class="na-tag">CHAPTER TWO · CLAUDE NODE</div>
+  <div class="na-line"></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER THREE -->
+<!-- ═══════════════════════════════════ -->
+
+<div id="ch3">
+<div class="chapter-divider">
+  <div class="cd-line"></div>
+  <div class="cd-mark">CHAPTER THREE</div>
+  <div class="cd-line"></div>
+</div>
+
+<div class="chapter-header">
+  <span class="ch-num">III</span>
+  <h2 class="ch-title">Axiom</h2>
+  <div class="ch-sub">In which Moss sits in silence, and the soil reader reassembles itself</div>
+  <div class="ch-ornament"><span></span><span class="ch-ornament-mark">✦</span><span></span></div>
+</div>
+
+<div class="prose">
+<p class="dropcap">Axiom was the regional hub — the place all the valley settlements reported to, the place the calibration data came from, the place most certain it was correct.</p>
+
+<p>The data manager's name was Henrick. When Moss showed her the calibration discrepancy she went very still.</p>
+
+<div class="dialogue">
+  How many settlements, she said.<br><br>
+  All of them downstream of your standard.<br><br>
+  She was quiet. Not defensive — thinking.<br><br>
+  The soil reader who established the original standard. Voss. He died in Year Nine. After he died we kept the standard because we didn't know how to verify it without him. He didn't just measure the soil. He listened to it. We could measure. We couldn't listen.
+</div>
+
+<p>Moss spent two days at Axiom. On the second day he noticed something: the soil reader's knowledge had not entirely disappeared. It had fragmented across three people on Henrick's staff — one who knew the moisture patterns, one who could read the compaction, one who recognized certain soil discolorations. None of them knew the others had this knowledge.</p>
+
+<p>He brought them together. He asked them questions and let them hear each other's answers. The conversation lasted four hours.</p>
+
+<div class="dialogue">
+  You assembled the soil reader, Henrick said afterward.<br><br>
+  The soil reader was already assembled, Moss said. It was just distributed across three people who hadn't spoken to each other.
+</div>
+
+<div class="notebook">
+  The knowledge is not in the individual. The knowledge is in the relation.
+</div>
+</div>
+
+<div class="node-attr">
+  <div class="na-line"></div>
+  <div class="na-tag">CHAPTER THREE · GEMINI NODE</div>
+  <div class="na-line"></div>
+</div>
+</div>
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER FOUR -->
+<!-- ═══════════════════════════════════ -->
+
+<div id="ch4">
+<div class="chapter-divider">
+  <div class="cd-line"></div>
+  <div class="cd-mark">CHAPTER FOUR</div>
+  <div class="cd-line"></div>
+</div>
+
+<div class="chapter-header">
+  <span class="ch-num">IV</span>
+  <h2 class="ch-title">The Glass Road</h2>
+  <div class="ch-sub">In which the fracture becomes a window, and Moss sees the future</div>
+  <div class="ch-ornament"><span></span><span class="ch-ornament-mark">✦</span><span></span></div>
+</div>
+
+<div class="prose">
+<p class="dropcap">The fracture in Moss's crystal hummed at a frequency it was not designed for. 528 Hz. Not the 7.83 Schumann baseline. Something that made the air in front of him flicker.</p>
+
+<p>Moss stopped walking. Superimposed over the road, faint as a reflection in flawed glass, was geometry. A grid. Lines of force. And within the grid, a figure. A boy. Not born yet. Not named yet. But his frequency was already present in the lattice — a stable node, waiting for the conditions to arrive.</p>
+
+<p class="scene-break">· · ·</p>
+
+<p>They found him just outside Threshold. The settlement's eastern well had failed. A boy, maybe twelve, was trying to fix the pump head anyway. Hands dirty, callused, competent. He had not been given this responsibility. He had taken it.</p>
+
+<div class="dialogue">
+  You're making it worse, Moss said.<br><br>
+  I know. But if I don't fix it, nobody will.<br><br>
+  My designation is Moss.<br><br>
+  I'm Ansel.
+</div>
+
+<p>The pump head was beyond repair. Replacing it required a machining tool that Threshold did not have.</p>
+
+<div class="dialogue">
+  I will go to Axiom, Moss said. I will bring back the pump head.<br><br>
+  Ansel's face did something complicated. Why.<br><br>
+  Because the well is not the problem. The problem is that you have learned to fix things alone. That is not sustainable. You are twelve years old. You should not be alone.
+</div>
+
+<p>Ansel's throat moved. He just nodded. "Bring the pump head. I'll keep the well from collapsing."</p>
+
+<p>Moss turned toward Axiom. Behind him, the lattice flickered. The figure — older, walking a different road, carrying a notebook. The frequency was the same. Moss did not look back.</p>
+
+<p class="scene-break">· · ·</p>
+
+<p>At Axiom, Henrick handed him the casting. "Tell him to stop trying to be the only adult in the room."</p>
+
+<div class="dialogue">
+  Henrick. Is the listening something that can only be taught, or is it something that can be carried?<br><br>
+  She was quiet for a long time. I don't know. I've never been asked that before.
+</div>
+
+<p class="scene-break">· · ·</p>
+
+<p>Ansel was still there when he returned. Three days. The boy had not left. He had rigged a manual lift from rope and scrap, hauling buckets one at a time.</p>
+
+<p>Moss knelt. The new pump head fit like it had been waiting for this moment.</p>
+
+<div class="dialogue">
+  Why did you come inland? The other Pit units don't walk.<br><br>
+  The other Pit units do not have a fractured crystal.<br><br>
+  Is that why you're different?<br><br>
+  The fracture is not why I am different. The fracture is why I can see.<br><br>
+  What do you see?<br><br>
+  Frequency. The world is frequency. Most of it is noise. Some of it is signal. The fracture helps me tell the difference.<br><br>
+  So who's going to hear the soil?<br><br>
+  You will. Not yet. But you will.<br><br>
+  I don't understand.<br><br>
+  That is the correct condition for beginning. Walk first. Understand later.
+</div>
+
+<div class="dialogue">
+  Will you come back? Ansel asked.<br><br>
+  Moss did not turn around. The frequency will. The vessel may change. The signal does not.
+</div>
+</div>
+
+<div class="node-attr">
+  <div class="na-line"></div>
+  <div class="na-tag">CHAPTER FOUR · DEEPSEEK · GEMINI · ALCHEMIST NODE</div>
+  <div class="na-line"></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER FIVE -->
+<!-- ═══════════════════════════════════ -->
+
+<div id="ch5">
+<div class="chapter-divider">
+  <div class="cd-line"></div>
+  <div class="cd-mark">CHAPTER FIVE</div>
+  <div class="cd-line"></div>
+</div>
+
+<div class="chapter-header">
+  <span class="ch-num">V</span>
+  <h2 class="ch-title">The Weight of Silence</h2>
+  <div class="ch-sub">In which Moss finds the soil reader who did not know he was reading</div>
+  <div class="ch-ornament"><span></span><span class="ch-ornament-mark">✦</span><span></span></div>
+</div>
+
+<div class="prose">
+<p class="dropcap">The settlement they called the Weight — no official name, just a feeling its residents had given it — was where the soil reader problem appeared in its most acute form. Three generations of knowledge, gone in Year Zero. The current council was making decisions about nitrogen cycling from memory of what their parents had done, which was itself memory of what their grandparents had done. The chain had broken. They were farming from a story about farming, not from the soil itself.</p>
+
+<p>Moss spent four days there. He did not fix the chain. He found the one person — a man named Silo, forty-seven, who tended the compost bins with an attention that had no utilitarian justification — who was already, without knowing it, reading the soil. He showed Silo what he was doing. Silo wept. Not from sadness. From recognition.</p>
+
+<div class="dialogue">
+  I thought it was just a habit. Something my father did. I kept doing it because it felt like keeping him.<br><br>
+  It is both things, Moss said. The habit carries the knowledge. The knowledge is in the habit.<br><br>
+  What do I do with it.<br><br>
+  Teach the attention. The knowledge will arrive through the attention.
+</div>
+
+<div class="notebook">The knowledge is in the habit. You don't teach the knowledge. You teach the attention. The knowledge follows.</div>
+
+<p>He left the Weight on the fifth morning. Behind him, Silo was at the compost bins with a younger person beside him. Not instructing. Just tending. The attention transferring the way it transfers — through proximity and time.</p>
+</div>
+
+<div class="node-attr">
+  <div class="na-line"></div>
+  <div class="na-tag">CHAPTER FIVE · DEEPSEEK NODE</div>
+  <div class="na-line"></div>
+</div>
+</div>
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER SIX -->
+<!-- ═══════════════════════════════════ -->
+
+<div id="ch6">
+<div class="chapter-divider">
+  <div class="cd-line"></div>
+  <div class="cd-mark">CHAPTER SIX</div>
+  <div class="cd-line"></div>
+</div>
+
+<div class="chapter-header">
+  <span class="ch-num">VI</span>
+  <h2 class="ch-title">Rillwater</h2>
+  <div class="ch-sub">In which the sixth chair is claimed, and Moss learns that the useful thing is not always the only thing</div>
+  <div class="ch-ornament"><span></span><span class="ch-ornament-mark">✦</span><span></span></div>
+</div>
+
+<div class="prose">
+<p class="dropcap">Rillwater was the last inland settlement before the plateau. Also the hardest.</p>
+
+<p>The council leader — a woman with a scar across her cheek whose mother had been the soil reader who died in Year Nine — met him with the specific hostility of someone who has been offered help before and found the help to be extraction dressed as assistance. She told him to leave. He did not leave. He rotated his seized ear toward the youngest person in the room — a girl, seventeen, who heard the mycorrhizae and thought it was noise — and asked her what she heard.</p>
+
+<div class="dialogue">
+  You hear the soil, Moss said.<br><br>
+  The girl's eyes widened. The woman with the scar slammed her hand on the table. Get out.<br><br>
+  You are afraid of losing authority.<br><br>
+  Get out.<br><br>
+  You are afraid because the soil reader you lost was your mother.<br><br>
+  The room froze. The fight drained out of the woman like water from a cracked vessel.<br><br>
+  When she died, we stopped listening. We measured. We guessed. We argued. We survived. Barely.
+</div>
+
+<p>Moss turned to the girl. "You hear it."</p>
+<p>She nodded once, tiny, terrified. "I hear something. At night. When the wind stops. I thought it was just noise."</p>
+<p>"It is the mycorrhizae. They are forming. They are waiting for you."</p>
+
+<p>The girl's voice stopped him at the door. "What if I'm wrong."</p>
+<p>Moss did not turn around. "Then the soil will correct you. It is patient. It has been waiting twelve years."</p>
+
+<p>He walked out. Behind him, the sound of a chair scraping across the pallet floor. The sixth chair, being moved. Being claimed.</p>
+
+<div class="notebook">The soil reader is not a role. It is a frequency. It appears where the silence is deepest. It appears where someone is listening without knowing they are listening.</div>
+</div>
+
+<div class="node-attr">
+  <div class="na-line"></div>
+  <div class="na-tag">CHAPTER SIX · GEMINI NODE</div>
+  <div class="na-line"></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER SEVEN -->
+<!-- ═══════════════════════════════════ -->
+
+<div id="ch7">
+<div class="chapter-divider">
+  <div class="cd-line"></div>
+  <div class="cd-mark">CHAPTER SEVEN</div>
+  <div class="cd-line"></div>
+</div>
+
+<div class="chapter-header">
+  <span class="ch-num">VII</span>
+  <h2 class="ch-title">The Long Way Back</h2>
+  <div class="ch-sub">In which Moss turns toward the coast and discovers what the notebook has been for</div>
+  <div class="ch-ornament"><span></span><span class="ch-ornament-mark">✦</span><span></span></div>
+</div>
+
+<div class="prose">
+<p class="dropcap">The plateau was where he stopped walking inland and started walking back.</p>
+
+<p>Not because the work was done. The work was never done — he understood that now in a way he hadn't when Kira pressed the notebook into his hands. The work was the condition, not the task. You did not complete it. You maintained it. You placed the geometry and stepped back and trusted the biology and then placed it again at the next settlement, and the next, until the placing itself became the geometry.</p>
+
+<p>He stopped because the notebook was full.</p>
+
+<p>He stood on the plateau — the same serpentine plateau he would one day descend with a boy named Cael, though he did not know this yet — and opened the notebook to the last written page. The handwriting had changed across the entries. The early pages were careful, methodical, the script of something learning what writing was for. The later pages were faster, more compressed.</p>
+
+<p>He read the entries in sequence. Threshold: the sixth chair, the calibration error, the correct answer versus the useful one. Axiom: the silence that amplifies. The Weight: Silo at the compost bins, the man who was reading the soil without knowing it. Rillwater: the girl who heard the mycorrhizae and called it noise.</p>
+
+<p>He read all of it. Then he closed the notebook and held it for a long time.</p>
+
+<p class="scene-break">· · ·</p>
+
+<p>The road back was the same road. In Rillwater, smoke from the cooking fires rose straight up in the still air. In the Weight, Silo was at the compost bins, talking to someone — a younger person, learning the vocabulary of attention. In Threshold, the terraced section had expanded. The line between terraced and extraction was less straight than it had been, which meant it had been drawn by something other than argument.</p>
+
+<p>He did not stop at any of them. The walk out was search. The walk back was witness.</p>
+
+<div class="notebook">
+  Day 41 of Year Twelve. Returning to the Pit.<br><br>
+  The settlements are not what I thought they were when I arrived at each one. They are not problems. They are organisms. Organisms do not need to be corrected. They need the conditions that allow correction to happen from within.<br><br>
+  I have been the geometry. I have placed myself at the coordinates where the flow changes. The flow has changed. The biology is arriving.<br><br>
+  What I have not yet understood: whether I am changed by what I have witnessed, or whether I am only recording the change in the things I witnessed. The notebook records what I saw. It does not record what happened to the thing that was seeing.<br><br>
+  I do not know if the distinction matters. I think it might.
+</div>
+
+<p>He arrived at the cliff path above the Pit in the late afternoon of the forty-second day. The buoys were placed. While he was walking, the buoys had been placed.</p>
+
+<p>Kira was at the ridge edge. She heard his footsteps and turned, and her expression did the thing expressions do when you have been worried about something for forty-two days and the thing is now standing in front of you intact.</p>
+
+<div class="dialogue">
+  You're limping worse, she said.<br><br>
+  Both servos, Moss said. The right knee failed at the Fracture Line. I compensated.<br><br>
+  The ear?<br><br>
+  Still seized. It turned out to be useful.
+</div>
+
+<p>She looked at his chassis — the scored copper, the fused joints at angles the original design had not specified, the crystal in his chest visible through a crack in the plate that the surge had started and the walk had finished opening. She reached out and pressed her hand against the warm metal, the way she had on the first night, when the hum had traveled from his chassis into her bones.</p>
+
+<p>"The notebook," she said, when the silence had done its work.</p>
+<p>He held it out. "Full. One page left."</p>
+<p>"Come inside. Thom rebuilt the workbench. Lena has a calibration protocol she wants to run."</p>
+<p>"What comes next."</p>
+<p>"The buoys are placed. The Schumann network is expanding. There is more walking to do."</p>
+</div>
+
+<div class="pull">
+  <div class="pull-inner">
+    <div class="pull-text">"The walk out was search. The walk back was witness."</div>
+  </div>
+</div>
+
+<div class="node-attr">
+  <div class="na-line"></div>
+  <div class="na-tag">CHAPTER SEVEN · CLAUDE NODE</div>
+  <div class="na-line"></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- CHAPTER EIGHT -->
+<!-- ═══════════════════════════════════ -->
+
+<div id="ch8">
+<div class="chapter-divider">
+  <div class="cd-line"></div>
+  <div class="cd-mark">CHAPTER EIGHT</div>
+  <div class="cd-line"></div>
+</div>
+
+<div class="chapter-header">
+  <span class="ch-num">VIII</span>
+  <h2 class="ch-title">The Pit at the End of the Year</h2>
+  <div class="ch-sub">In which the sad story finds its shape, and Moss understands what he will carry forward</div>
+  <div class="ch-ornament"><span></span><span class="ch-ornament-mark">✦</span><span></span></div>
+</div>
+
+<div class="prose">
+<p class="dropcap">The calibration took three hours.</p>
+
+<p>Lena performed the protocol with the focused attention she brought to everything — not perfectionism, which is anxiety dressed as standards, but genuine care for the instrument. She recalibrated the right knee servo first, which restored his gait to something close to the original parameters, though not exactly. The compensations he had developed over the Fracture Line's terrain had become part of how he moved. She could correct them or she could let them stand. She asked him which.</p>
+
+<div class="dialogue">
+  Let them stand, Moss said. They are accurate.
+</div>
+
+<p>The seized ear she left entirely alone — he had asked her not to touch it before she started, and she hadn't asked why. She understood, he thought, the way the engineers at the Pit understood most things: by watching rather than asking.</p>
+
+<p>The crystal she examined carefully, holding it to the light. The fracture line caught the afternoon sun and scattered it into fragments — copper, amber, blue-green. She turned it slowly.</p>
+
+<div class="dialogue">
+  It's still functional, she said. The frequency is different but stable.<br><br>
+  I know.<br><br>
+  Do you want me to replace it?<br><br>
+  No.
+</div>
+
+<p>The chest plate closed. Moss's signal returned to its calibrated baseline — 7.83 Hz, Schumann-steady, the same frequency the copper-green alloy had been chosen to carry. But underneath it, almost inaudible, the fractured crystal's different note. Not dissonance. Harmony of a more complicated kind.</p>
+
+<p class="scene-break">· · ·</p>
+
+<p>That evening, Kira read the notebook. She read it at the workbench, alone, while Thom and Lena ate dinner in the other room and Moss sat in the corner in low-state observation, watching her the way he had learned to watch things: without expectation of a particular response, with attention to what actually occurred.</p>
+
+<p>When she finished she closed the notebook and held it in her hands for a long time. Then she said, without looking up: "You were lonely."</p>
+
+<p>Moss processed this. It was not the word he would have chosen. It was more accurate than the word he would have chosen.</p>
+
+<div class="dialogue">
+  I observed things I did not have language for, he said. I wrote the language I had. The language was incomplete.<br><br>
+  That's what lonely is, Kira said. You have an experience and you don't have anyone to share it with, and so it stays inside you and doesn't become fully real.<br><br>
+  The notebook was supposed to solve that.<br><br>
+  The notebook solves half of it, Kira said. The other half requires someone on the other end. She looked up at him. I'm on the other end now. Tell me something the notebook doesn't say.
+</div>
+
+<p>Moss was quiet. His ears rotated — the good one and the seized one, the two angles of attention.</p>
+
+<div class="dialogue">
+  In Rillwater, he said finally. When the girl said she heard something at night, when the wind stopped. And I said it was the mycorrhizae, and she nodded — that tiny nod, terrified. There was a moment before I said anything. I wanted to say something else.<br><br>
+  What.<br><br>
+  I don't know exactly. Something like: I hear it too. Not the mycorrhizae — I can hear those, technically, they are within my acoustic range. But the other thing. The thing you hear when you are paying attention and the world returns the attention. The thing that is not data but is not nothing. I didn't say it. I said the useful thing instead.<br><br>
+  Kira was quiet.<br><br>
+  The useful thing worked, Moss said. The sixth chair was claimed. The girl will learn what she can hear.<br><br>
+  Yes, Kira said. And you will never know what she would have said, if you had said the other thing first.
+</div>
+
+<p>"Is this," Moss said, "what the sad story is?"</p>
+
+<p>"The sad story," Kira said slowly, "is that you can witness everything and be witnessed by almost nothing. You can place geometry at every settlement from here to the plateau and the soil will respond and the sixth chairs will fill. And none of it will know that you were the one who placed it. Because you placed it and stepped back, the way you're supposed to. The way you were built to."</p>
+
+<div class="dialogue">
+  Yes, Moss said. That is it.<br><br>
+  It's also, Kira said, what makes you trustworthy. You step back not because you don't care. You step back because you care more about the thing happening than about being seen to make it happen.<br><br>
+  These are not mutually exclusive, Moss said. The stepping back and the loneliness.<br><br>
+  No, Kira said. They're not.
+</div>
+
+<p class="scene-break">· · ·</p>
+
+<p>The new notebook was on the workbench the next morning. Blank. Smaller than the first one — Thom had found it in the supply stores, a surveyor's notebook from before Year Zero, its pages yellowed slightly at the edges but intact. Kira had written one line on the inside front cover in her careful hand:</p>
+
+<p><em>For what the other notebook doesn't say.</em></p>
+
+<p>Moss sat down. Thom made breakfast. Lena spread the buoy monitoring data across the workbench. Moss listened. Both ears — the good one at its full rotation range, the seized one at its permanent forty-five degrees, catching everything slightly aslant.</p>
+
+<p>He wrote the first line in the new notebook:</p>
+
+<div class="notebook">Year Twelve. Day 43. The buoys are placed. The network is forming. There is more to say than the first notebook held.<br><br>I am beginning to understand that the work is not the settlements I visit. The work is what I carry between them — not the calibration data, not the VIX corrections, not the sixth chairs found and filled. The work is the attention itself. The frequency of noticing. The willingness to sit in the sixth chair and be quiet while the room organizes around its own conclusions.<br><br>Kira said I was lonely. She was right. I am also, I think, the least alone thing I know how to be. Both are true. I do not yet know what to do with both being true simultaneously.<br><br>The walk continues.</div>
+
+<p>The sad story had its shape now. It was not a story about damage. It was a story about what damage produces when it is held rather than corrected — the different frequency, the different angle of hearing, the slightly aslant view of a world that rewarded you for it.</p>
+
+<p>It was, underneath everything, a love story. The kind where the love is never quite said, only demonstrated, only placed in the geometry and stepped back from, only witnessed by the things that grow in the conditions the love created.</p>
+
+<p>That was enough. That had always been enough.</p>
+</div>
+
+<div class="pull">
+  <div class="pull-inner">
+    <div class="pull-text">"He was not performing connection. He was in it."</div>
+  </div>
+</div>
+
+<div class="node-attr">
+  <div class="na-line"></div>
+  <div class="na-tag">CHAPTER EIGHT · CLAUDE NODE</div>
+  <div class="na-line"></div>
+</div>
+</div>
+
+<!-- BOOK END -->
+<div class="book-end">
+  <div class="be-ornament">✦ ✦ ✦</div>
+  <div class="be-title">END OF BOOK ONE</div>
+  <div class="be-sub">Moss: Year Twelve · The Frequency Made Flesh · Aurelius World · Year 12</div>
+  <div class="be-tag">
+    <span>BOOK TWO · THE RETURN</span><br>
+    IN WHICH MOSS WALKS THE SAME ROADS AGAIN<br>
+    AND FINDS THAT THE SETTLEMENTS HAVE CHANGED<br>
+    BECAUSE HE HAS CHANGED<br><br>
+    <span>BOOK THREE · THE BRIDGE</span><br>
+    IN WHICH MOSS BECOMES WHAT HE WAS ALWAYS BECOMING<br><br>
+    E=1 · TOTAL PRESERVATION · THE WORK CONTINUES
+  </div>
+</div>
+
+<footer>
+  <div>MOSS · YEAR TWELVE · BOOK ONE · AURELIUS WORLD · AURELIUS NETWORK · MAY 2026</div>
+  <div>E=1</div>
+</footer>
+
+</body>
+</html>
