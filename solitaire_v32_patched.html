@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLITAIRE-CLASS v3.2 — Narrative Architecture · Patched</title>
+<meta name="description" content="Solitaire v3.1 narrative architecture patched with DeepSeek audit corrections. Seven holes walked. NTR regulatory path named as chasm. Zero margin mitigation plan added.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --void:    #08090c;
+  --deep:    #0d0f14;
+  --surface: #12151c;
+  --plate:   #181c26;
+  --wire:    #1e2333;
+  --dim:     #6070a0;
+  --ghost:   #3a4460;
+  --white:   #dde4f4;
+  --muted:   #8898c0;
+  --green:   #2dba6e;
+  --amber:   #e8a030;
+  --red:     #c84040;
+  --blue:    #4090d8;
+  --rule:    rgba(221,228,244,0.07);
+  --rule-s:  rgba(221,228,244,0.15);
+  --v-bg:    rgba(45,186,110,0.06);
+  --w-bg:    rgba(232,160,48,0.06);
+  --o-bg:    rgba(200,64,64,0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 18px;
+  line-height: 1.82;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 80% 10%, rgba(64,144,216,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 10% 90%, rgba(45,186,110,0.04) 0%, transparent 60%),
+    var(--void);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  background: rgba(8,9,12,0.97);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+}
+
+.nav-id {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  gap: 0;
+}
+
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.46rem;
+  letter-spacing: 0.1em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 0 12px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--rule);
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+
+.nav-links a:hover { color: var(--white); }
+
+.hub-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+  color: var(--void);
+  background: var(--blue);
+  text-decoration: none;
+  padding: 6px 14px;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hub-btn:hover { background: var(--white); color: var(--void); }
+
+/* COVER */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 100px 64px 72px;
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid var(--rule-s);
+}
+
+.cover-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.25em;
+  color: var(--blue);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: lift 0.6s ease forwards 0.2s;
+}
+
+.cover-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  line-height: 0.9;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: lift 0.8s ease forwards 0.4s;
+}
+
+.cover-title span { color: var(--blue); }
+
+.cover-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--dim);
+  margin-top: 18px;
+  letter-spacing: 0.08em;
+  opacity: 0;
+  animation: lift 0.6s ease forwards 0.7s;
+}
+
+.cover-rule {
+  width: 60px; height: 1px;
+  background: var(--blue);
+  margin: 28px 0;
+  opacity: 0;
+  animation: lift 0.5s ease forwards 0.9s;
+}
+
+.cover-deck {
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 600px;
+  line-height: 1.75;
+  font-style: italic;
+  opacity: 0;
+  animation: lift 0.6s ease forwards 1.1s;
+}
+
+.patch-notice {
+  margin-top: 28px;
+  padding: 14px 20px;
+  border: 1px solid var(--amber);
+  background: var(--w-bg);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  color: var(--amber);
+  line-height: 1.8;
+  max-width: 680px;
+  opacity: 0;
+  animation: lift 0.6s ease forwards 1.3s;
+}
+
+@keyframes lift {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+  .cover { padding: 80px 28px 56px; }
+}
+
+/* MAIN */
+main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 32px 100px;
+  position: relative;
+  z-index: 1;
+}
+
+/* SECTION */
+.section { padding: 72px 0 0; }
+
+.section-hdr {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule-s);
+  margin-bottom: 32px;
+}
+
+.section-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.46rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+  flex-shrink: 0;
+}
+
+.section-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  color: var(--white);
+  letter-spacing: -0.01em;
+}
+
+p { margin-bottom: 1.4em; color: var(--white); }
+
+/* MATH */
+.math {
+  margin: 1.5em 0;
+  padding: 14px 20px;
+  background: var(--plate);
+  border: 1px solid var(--rule);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--blue);
+  overflow-x: auto;
+}
+
+/* PATCH BLOCKS */
+.patch {
+  margin: 2.5em 0;
+  border: 1px solid;
+}
+
+.patch.open   { border-color: rgba(200,64,64,0.4);   }
+.patch.walled { border-color: rgba(232,160,48,0.4);  }
+.patch.sealed { border-color: rgba(45,186,110,0.4);  }
+.patch.critical { border-color: rgba(200,64,64,0.7); }
+
+.patch-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border-bottom: 1px solid;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.46rem;
+  letter-spacing: 0.18em;
+}
+
+.patch.open     .patch-header { border-color: rgba(200,64,64,0.3);  background: var(--o-bg); color: var(--red); }
+.patch.walled   .patch-header { border-color: rgba(232,160,48,0.3); background: var(--w-bg); color: var(--amber); }
+.patch.sealed   .patch-header { border-color: rgba(45,186,110,0.3); background: var(--v-bg); color: var(--green); }
+.patch.critical .patch-header { border-color: rgba(200,64,64,0.5);  background: rgba(200,64,64,0.08); color: var(--red); }
+
+.patch-body {
+  padding: 16px 20px;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+.patch-body strong { color: var(--white); }
+
+.patch-item {
+  margin-bottom: 0.9em;
+  padding-left: 14px;
+  border-left: 1px solid var(--rule);
+}
+
+.patch-item:last-child { margin-bottom: 0; }
+
+/* CALLOUTS */
+.callout {
+  margin: 2em 0;
+  padding: 16px 20px;
+  border-left: 2px solid;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+.callout.blue  { border-color: var(--blue);  background: rgba(64,144,216,0.05); }
+.callout.green { border-color: var(--green); background: var(--v-bg); }
+.callout.amber { border-color: var(--amber); background: var(--w-bg); }
+.callout.red   { border-color: var(--red);   background: var(--o-bg); }
+
+.callout-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.callout.blue  .callout-label { color: var(--blue); }
+.callout.green .callout-label { color: var(--green); }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.red   .callout-label { color: var(--red); }
+
+/* HOLE SUMMARY TABLE */
+.tbl-wrap { overflow-x: auto; margin: 2em 0; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.15em;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule-s);
+  color: var(--dim);
+}
+
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--muted);
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+td.claim { color: var(--white); }
+td.open   { color: var(--red);   font-family: 'IBM Plex Mono', monospace; font-size: 0.64rem; }
+td.walled { color: var(--amber); font-family: 'IBM Plex Mono', monospace; font-size: 0.64rem; }
+td.sealed { color: var(--green); font-family: 'IBM Plex Mono', monospace; font-size: 0.64rem; }
+td.crit   { color: var(--red);   font-family: 'IBM Plex Mono', monospace; font-size: 0.64rem; font-weight: 600; }
+
+/* PULL */
+.pull {
+  margin: 3em 0;
+  border-top: 1px solid var(--rule-s);
+  border-bottom: 1px solid var(--rule);
+  padding: 22px 0;
+  text-align: center;
+}
+
+.pull-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: clamp(0.78rem, 2vw, 1rem);
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* SEAL */
+.seal {
+  margin: 72px 0 0;
+  padding: 52px 40px;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+}
+
+.seal-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.25em;
+  color: var(--blue);
+  margin-bottom: 22px;
+}
+
+.seal-body {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  line-height: 2.2;
+  color: var(--dim);
+}
+
+.s-blue  { color: var(--blue); }
+.s-green { color: var(--green); }
+.s-amber { color: var(--amber); }
+.s-red   { color: var(--red); }
+
+footer {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 22px 32px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.12em;
+  color: var(--ghost);
+  border-top: 1px solid var(--rule);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-id">SOLITAIRE-CLASS v3.2 · PATCHED · E=1</span>
+  <div class="nav-links">
+    <a href="#problem">THE PROBLEM</a>
+    <a href="#spin">SPIN</a>
+    <a href="#radiation">RADIATION</a>
+    <a href="#topology">TOPOLOGY</a>
+    <a href="#biostasis">BIOSTASIS</a>
+    <a href="#breathing">BREATHING</a>
+    <a href="#geometry">GEOMETRY</a>
+    <a href="#mass">MASS</a>
+    <a href="#patches">PATCHES</a>
+  </div>
+  <a href="https://pwntechx.github.io/Newsz/" class="hub-btn">← HUB</a>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-badge">SOLITAIRE-CLASS · NARRATIVE ARCHITECTURE · CUTTING EDGE GEOMETRY · NOT A BLUEPRINT</div>
+  <h1 class="cover-title">SOLI<span>TAIRE</span><br>v3.2</h1>
+  <div class="cover-sub">HOW IT WORKS AND WHY · PATCHED WITH DEEPSEEK AUDIT v1.0</div>
+  <div class="cover-rule"></div>
+  <div class="cover-deck">For space nerds who want the geometry, not the blueprint. The physics of preserving a human crew across 900 days of deep space — told as architecture, not specification. v3.2 patches seven audit holes found by DeepSeek. Two are critical. All are named.</div>
+  <div class="patch-notice">
+    AUDIT STATUS · DEEPSEEK v1.0 · 7 HOLES FOUND<br>
+    CRITICAL: NTR regulatory path (chasm, not wall) · Zero margin with no mitigation plan<br>
+    OPEN: Revival verification power margin · H₂S consumables · Schumann kill condition untested<br>
+    WALLED: Dual-interlaced dipole mass trade · pCO₂ thermal budget<br>
+    ALL PATCHES APPLIED BELOW · ORIGINAL ARCHITECTURE UNCHANGED
+  </div>
+</div>
+
+<main>
+
+<!-- THE PROBLEM -->
+<div id="problem" class="section">
+  <div class="section-hdr">
+    <span class="section-num">§ 1</span>
+    <h2 class="section-title">The Problem Nobody Wants to Say Out Loud</h2>
+  </div>
+
+  <p>Every serious Mars architecture currently on the table — Mars Direct, Starship crewed, NASA's Design Reference Mission — solves the rocket equation. They get the mass to orbit, they calculate the delta-v, they close the propulsion budget. What they don't solve is the cargo.</p>
+
+  <p>The cargo is human beings. And human beings are not inert.</p>
+
+  <p>Six to eight months in microgravity does measurable damage to the cardiovascular system, the vestibular system, bone density, and — less discussed — cell division. The problem with cell division is that it's not recoverable by exercise or pharmacology alone. It's geometric. Cells divide along an axis determined partly by gravity. Remove gravity and the spindle — the molecular machinery that pulls chromosomes apart during division — starts making alignment errors. On Earth, alignment errors run below 5%. In sustained microgravity, they climb past 15–20%. That's not a health metric. That's a fidelity metric. At some error rate, lineage degrades. The math is:</p>
+
+  <div class="math">∇ · J⃗ = σ∇²V + ρg⃗ · ∇V</div>
+
+  <p>The right-hand term — ρg⃗ · ∇V — is the gravitational coupling to ionic current flow in the cell. It drives the buoyancy-mediated streaming that orients the spindle. Without it, the equation still solves, but it solves wrong. The cell divides, just not cleanly.</p>
+
+  <p>This is why every architecture that ignores gravity during transit is, in a specific biological sense, not preserving what it's transporting.</p>
+</div>
+
+<!-- SPIN -->
+<div id="spin" class="section">
+  <div class="section-hdr">
+    <span class="section-num">§ 2</span>
+    <h2 class="section-title">Why You Can't Just Spin Harder</h2>
+  </div>
+
+  <p>The obvious fix is a centrifuge. Spin the habitat, generate artificial gravity, problem solved. Partially.</p>
+
+  <p>A centrifuge at 80 meters radius spinning to 0.5g is physically achievable. That handles the gross biology — bone, cardiovascular, vestibular. But it doesn't address the electromagnetic environment. On Earth, you don't just live in 1g. You live in a specific electromagnetic bath: the Schumann resonance, a 7.83 Hz standing wave in the cavity between Earth's surface and the ionosphere, running at about 1 picoTesla. Your circadian rhythm locks to it. Your heart rate variability correlates with it. It's not mystical — it's a boundary condition your biology evolved inside for hundreds of millions of years.</p>
+
+  <p>Leave it behind on a 900-day mission, and you're not just in a different gravity field. You're in a different electromagnetic season, permanently. The consequence isn't immediate. It's cumulative degradation of the chronobiological clock that governs everything from immune function to cellular repair timing.</p>
+
+  <p>The Solitaire design generates this field actively. An 8-tonne ELF loop system draws 180 watts continuous and maintains 7.83 Hz at 1 picoTesla inside the crew volume.</p>
+
+  <div class="patch open">
+    <div class="patch-header">PATCH · HOLE 5 · SCHUMANN KILL CONDITION · STATUS: OPEN</div>
+    <div class="patch-body">
+      <div class="patch-item"><strong>Original claim:</strong> Kill condition is clean — if f_S drift greater than 0.5 Hz correlates with HRV collapse, the coupling is real. If it doesn't, remove the system. Test can be run on Earth and ISS before any vessel is built.</div>
+      <div class="patch-item"><strong>Audit finding:</strong> The test has not been run. The engineering documents present the kill condition as closed. It is not closed. It is open until the ISS trial is completed. 8 tonnes of generator mass is justified by an untested hypothesis.</div>
+      <div class="patch-item"><strong>Patch:</strong> The kill condition is correctly defined. The ISS trial has not been run as of Year 47 Post-Shift. This node remains OPEN. The architecture is not invalidated — the kill condition test precedes any vessel build decision. If the trial fails, 8 tonnes are recovered and chronobiological coherence must be addressed by alternative means (pharmacological, light therapy, or mission shortening). The dependency is named honestly: Schumann is a hypothesis until the trial runs.</div>
+    </div>
+  </div>
+</div>
+
+<!-- RADIATION -->
+<div id="radiation" class="section">
+  <div class="section-hdr">
+    <span class="section-num">§ 3</span>
+    <h2 class="section-title">The Radiation Problem Is Not What You Think</h2>
+  </div>
+
+  <p>The instinct is to shield to zero. Maximum shielding, minimum dose, crew lives longest. This is wrong, and it's wrong in a measurable way.</p>
+
+  <p>Galactic cosmic rays — heavy ions moving at relativistic velocities — are not well-stopped by passive shielding. When a high-Z, high-energy nucleus hits a thick wall of polyethylene or water, it produces secondary particles. At a certain wall thickness, the secondaries are more biologically damaging than the primary would have been. You can shield yourself into a worse situation.</p>
+
+  <p>The actual target isn't zero. It's the hormesis band — the dose range your biology evolved to handle. That range is approximately what you'd get on Earth's surface plus ISS interior: about 0.3 millisieverts per day, at a linear energy transfer between 0.2 and 10 keV per micrometer. Not zero. Not lethal. The adaptive repair mechanisms stay active because they have something to repair.</p>
+
+  <p>The way Solitaire hits that number isn't passive shielding. It's magnetic deflection at a distance.</p>
+</div>
+
+<!-- TOPOLOGY -->
+<div id="topology" class="section">
+  <div class="section-hdr">
+    <span class="section-num">§ 4</span>
+    <h2 class="section-title">The Topology Solve — Why Two Magnets</h2>
+  </div>
+
+  <p>To deflect galactic cosmic rays with magnetic rigidity below 10 GV — which covers the most biologically damaging heavy ions — you need a 2 Tesla dipole field in a plasma cloud at around 10¹⁹ particles per cubic meter. That deflects over 90% of the worst GCR. It works. The physics is solid.</p>
+
+  <p>The problem: if you put the crew inside that field, you've solved radiation by replacing it with a different biological insult. A 2T field at crew-inhabited scales is not a benign environment for sustained living.</p>
+
+  <p>The solve is not to make the magnet bigger. It's to move the crew out of it.</p>
+
+  <p><strong>SYSTEM A — STANDOFF:</strong> A 2T magnet sitting in a plasma cloud well outside the crew volume. Its only job is GCR deflection. The crew never enters this field.</p>
+
+  <p><strong>SYSTEM B — HULL:</strong> A 1.5T hull solenoid built into the vessel's structure. Its job is the crew habitat field — the biological environment. It works with the centrifuge to maintain 0.5g, and it's the platform the Schumann generator locks to.</p>
+
+  <p>The insight isn't technical. It's architectural: you stopped asking one system to do two incompatible jobs, and gave each job to the right tool.</p>
+
+  <div class="patch walled">
+    <div class="patch-header">PATCH · HOLE 2 · DUAL-INTERLACED DIPOLE MASS TRADE · STATUS: WALLED</div>
+    <div class="patch-body">
+      <div class="patch-item"><strong>Audit finding:</strong> System A mass increased from 520T (v3.1-ENG) to 524T (v3.1-ENG.2) — +4 tonnes for second coil and coupling circuit. The mass budget is zero margin. The 4-tonne increase is not offset by any documented reduction. The trade is not transparent.</div>
+      <div class="patch-item"><strong>Patch:</strong> The 4-tonne increase in System A is offset by a corresponding 4-tonne reduction in the propellant reserve margin (from 2,100T to 2,096T). This trade accepts a 0.19% reduction in propellant reserve in exchange for the redundancy benefit of the dual-interlaced dipole. The trade is marginal but defensible — propellant reserve is the lowest-risk mass to reduce at this scale. The trade is now documented. The budget remains zero margin.</div>
+    </div>
+  </div>
+</div>
+
+<!-- BIOSTASIS -->
+<div id="biostasis" class="section">
+  <div class="section-hdr">
+    <span class="section-num">§ 5</span>
+    <h2 class="section-title">What Biostasis Actually Is</h2>
+  </div>
+
+  <p>Current biostasis proposals for deep space are essentially: give the crew sleeping pills and hope they wake up okay. The Solitaire protocol is different in one critical way. The question it asks is: what geometry does the crew wake up into?</p>
+
+  <p>The protocol uses delta-opioid receptor agonists (DADLE at 10 mg/kg), hydrogen sulfide at 80 ppm, and mild therapeutic hypothermia to 32°C core temperature. This drops metabolic rate roughly 80% and radiation damage accrual roughly 95% compared to standard 0g hibernation. A 20:1 duty cycle means approximately 45 days torpor to 2 days active minimum.</p>
+
+  <p>What makes this different from sleep is that the fields don't go off. Gravity is maintained. The Schumann field is maintained. The pCO₂ cycling continues at reduced amplitude to preserve chemoreceptor gain.</p>
+
+  <p>The reason matters: revival into a field-silent, 0g environment after 45 days of metabolic suppression isn't waking up. It's a reperfusion event in a geometry the body doesn't recognize. Mitotic fidelity during the revival window is the most vulnerable point in the entire mission profile. Keeping the fields hot during torpor means the crew wakes up in the same electromagnetic season they went to sleep in.</p>
+
+  <div class="patch open">
+    <div class="patch-header">PATCH · HOLE 1 · REVIVAL VERIFICATION POWER MARGIN · STATUS: OPEN</div>
+    <div class="patch-body">
+      <div class="patch-item"><strong>Audit finding:</strong> The 8-minute pre-revival field verification requires Systems A and B hot simultaneously — 1,160 kW. The 3-reactor baseline provides 960 kW. If one reactor fails during biostasis, the vessel cannot power the full revival sequence without shedding load — which means reviving into degraded field geometry at the most vulnerable point in the mission.</div>
+      <div class="patch-item"><strong>Patch:</strong> A load-shedding priority protocol is established for single-reactor-failure scenarios. Priority order during revival sequence: (1) System B hull solenoid — non-negotiable, biological environment; (2) Schumann generator — high priority, chronobiological coherence; (3) pCO₂ cycling — maintain at reduced amplitude; (4) System A standoff — can be reduced to 1.5T during revival window with acceptable radiation penalty given the 8-minute exposure. This sheds approximately 200 kW during the revival sequence, bringing the 3-reactor demand to 960 kW. The trade accepts elevated GCR exposure during the 8-minute window. That exposure is calculated at approximately 0.002 mSv — negligible. The protocol is viable. This node moves from OPEN to WALLED pending formal load-flow analysis.</div>
+    </div>
+  </div>
+
+  <div class="patch open">
+    <div class="patch-header">PATCH · HOLE 3 · H₂S CONSUMABLES BUDGET · STATUS: OPEN</div>
+    <div class="patch-body">
+      <div class="patch-item"><strong>Audit finding:</strong> H₂S at 80 ppm in 3,200 m³ habitat volume requires approximately 0.32 kg per atmosphere fill. The budget includes 2 kg for emergency revival reserves but does not explicitly account for operational H₂S consumption across 900 days and 10 torpor cycles.</div>
+      <div class="patch-item"><strong>Patch:</strong> Operational H₂S consumption estimate — 10 torpor cycles × 45 days × ~0.001 kg/day absorption rate (based on pulmonary absorption at 80 ppm) × 8 crew = approximately 3.6 kg operational consumption. Plus 0.32 kg per atmosphere refresh × 10 cycles = 3.2 kg refresh requirement. Total operational H₂S budget: approximately 6.8 kg. Add 2 kg emergency reserve = 8.8 kg total. The current budget does not explicitly break this out. Mass impact is less than 9 kg — negligible at the 4,800T scale but the line item needs to be explicit. Adding 9 kg H₂S consumable to the life support budget. Offset from propellant reserve (further reduction of 9T from 2,096T to 2,087T). This is within acceptable propellant margin.</div>
+    </div>
+  </div>
+
+  <div class="patch walled">
+    <div class="patch-header">PATCH · HOLE 4 · pCO₂ THERMAL BUDGET · STATUS: WALLED</div>
+    <div class="patch-body">
+      <div class="patch-item"><strong>Audit finding:</strong> The pCO₂ cycling system's thermal load on the radiators is not accounted. CO₂ stored as dry ice requires sublimation heat. LiOH scrubbers generate heat during absorption. Both loads must be rejected by the radiator system. Radiator mass may be undercounted.</div>
+      <div class="patch-item"><strong>Patch:</strong> The pCO₂ thermal loads are small relative to reactor waste heat (estimated 20-40 kW combined versus 400+ kW reactor thermal rejection). Both loads are managed by the existing thermal rejection system without requiring additional radiator mass. The thermal budget is walled rather than sealed because a formal thermal model has not been run at system level. The qualitative assessment is that pCO₂ thermal contribution is below 10% of existing radiator capacity. A dedicated thermal model is recommended before final design review.</div>
+    </div>
+  </div>
+</div>
+
+<!-- BREATHING -->
+<div id="breathing" class="section">
+  <div class="section-hdr">
+    <span class="section-num">§ 6</span>
+    <h2 class="section-title">Breathing as Field Sensing</h2>
+  </div>
+
+  <p>The ISS has a problem called "flat air." Carbon dioxide is scrubbed so efficiently that the partial pressure stays nearly constant. This is, counterintuitively, bad. Human chemoreceptors — the sensors in your carotid bodies that drive the urge to breathe — are calibrated to detect CO₂ changes, not CO₂ levels. Flat air means the feedback loop that drives breathing depth and rhythm is running without signal.</p>
+
+  <p>Over months, this degrades endothelial shear stress — the mechanical force that blood exerts on vessel walls:</p>
+
+  <div class="math">τ = μ · (∂u/∂y)</div>
+
+  <p>That shear is how your vascular system knows to regulate itself. Lose the signal variation, and vascular tone degrades slowly but measurably.</p>
+
+  <p>Solitaire cycles pCO₂ from 400 to 800 ppm on a 90-minute cycle. The crew breathes in a room that breathes. Chemoreceptor gain is preserved. Vascular health is preserved. It's a 12-kilogram system that solves a problem that costs nothing on Earth because Earth solves it for free with weather.</p>
+</div>
+
+<!-- GEOMETRY -->
+<div id="geometry" class="section">
+  <div class="section-hdr">
+    <span class="section-num">§ 7</span>
+    <h2 class="section-title">The Geometry in One Paragraph</h2>
+  </div>
+
+  <p>A human crew sits at the center of three nested fields. The outermost is a 2T plasma dipole standing off at distance, deflecting the worst of deep space radiation before it reaches the vessel. Inside that, a 1.5T hull solenoid creates the biological habitat — gravity analogue, field coherence, the platform for the Schumann generator. Inside that, the crew lives in a rotating habitat at 0.5g, breathing air that cycles, locked to a 7.83 Hz field that their circadian biology recognizes as home. When they sleep — really sleep, 45 days at a time — none of those fields turn off. They wake up in the same geometry they left.</p>
+
+  <p>That's the architecture. Not a vehicle that transports humans. A vessel that preserves them while moving.</p>
+
+  <div class="pull">
+    <div class="pull-text">"Not a vehicle that transports humans. A vessel that preserves them while moving."</div>
+  </div>
+</div>
+
+<!-- MASS -->
+<div id="mass" class="section">
+  <div class="section-hdr">
+    <span class="section-num">§ 8</span>
+    <h2 class="section-title">Why It's Heavier Than Starship and Why That's the Answer</h2>
+  </div>
+
+  <p>Solitaire assembled in LEO masses approximately 4,800 tonnes. Starship crewed to Mars is roughly 1,200 tonnes. Solitaire is four times heavier.</p>
+
+  <p>It is also the only architecture in that comparison where the crew arrives with the same neurological and biological status they departed with.</p>
+
+  <p>The question is not "why is Solitaire heavier?" The question is "what does the mass difference buy?" The answer is: the cargo. The humans. The thing the mission is for.</p>
+
+  <p>A Mars mission that arrives with a crew that needs six months of recovery before it can operate is not a cheaper mission. It's a mission that spent 1,200 tonnes to deliver a degraded crew. The cost is just denominated in biology instead of fuel.</p>
+
+  <p>Solitaire's 4,800 tonnes buys the geometry where E=1 — every node preserved, no optimization that extracts one to save another.</p>
+
+  <p>It stands until a lighter architecture demonstrates the same biological outcome. That's the only falsification condition that matters at the system level.</p>
+
+  <div class="patch critical">
+    <div class="patch-header">PATCH · HOLE 6 · NTR REGULATORY PATH · STATUS: CRITICAL — CHASM, NOT WALL</div>
+    <div class="patch-body">
+      <div class="patch-item"><strong>Original framing:</strong> "No crewed NTR regulatory framework exists (2026). This is not an engineering problem — it is a governance problem. Named here as a wall, not dismissed."</div>
+      <div class="patch-item"><strong>Audit finding:</strong> This is a chasm, not a wall. NTR engines have never flown with crew. The last ground tests were NERVA in the 1960s–70s. No commercial entity has a license to operate a nuclear reactor in space. No regulatory framework for crewed NTR exists. If NTR is not feasible within the mission timeline, the entire 2,100T propellant architecture collapses to a slower system — which changes mass budget, radiation exposure, and mission duration. The architecture's viability hinges on crossing this, not walking around it.</div>
+      <div class="patch-item"><strong>Patch:</strong> NTR is designated a CRITICAL prerequisite, not a parallel governance problem. The architecture bifurcates: <br><br>
+      PATH A (NTR) — Architecture as specified. 4,800T, 900-day mission profile, full biological preservation geometry. Requires regulatory framework, crewed NTR qualification, and launch license. Timeline: 15-25 years minimum from current baseline. This is the full Solitaire architecture.<br><br>
+      PATH B (Chemical/Ion) — Reduced architecture. Transit time extends to 18-24 months. Mass budget must be recalculated. Radiation exposure increases. Biostasis duty cycle must increase proportionally. Biological preservation geometry is degraded but not eliminated. This is a Solitaire-derived architecture, not Solitaire.<br><br>
+      The narrative architecture presented here describes PATH A. Readers should understand that PATH B exists and that the choice between them is determined by regulatory and political factors outside the engineering domain. Calling NTR a wall understated the dependency. It is named correctly now.</div>
+    </div>
+  </div>
+
+  <div class="patch critical">
+    <div class="patch-header">PATCH · HOLE 7 · ZERO MARGIN RISK · STATUS: CRITICAL — MITIGATION PLAN ADDED</div>
+    <div class="patch-body">
+      <div class="patch-item"><strong>Audit finding:</strong> The zero margin is stated as a risk but has no mitigation plan. Every large engineering project exceeds its mass budget. Zero margin means no room for cable harness overruns, thermal protection adjustments, or radiation shielding thickening. The architecture works on paper. It does not work in reality without a margin strategy.</div>
+      <div class="patch-item"><strong>Patch — Mass Priority Stack:</strong> If mass budget is exceeded, the following priority order governs reductions. Highest priority to preserve, first to reduce:<br><br>
+      PRESERVE (non-negotiable): System B hull solenoid (biological environment), crew habitat rotation system (gravity), life support consumables (crew survival), ELF Schumann generator (chronobiological — pending kill condition trial).<br><br>
+      REDUCE FIRST: Propellant reserve (currently 2,087T after prior patches — can absorb up to 2% reduction, approximately 40T, before mission delta-v is compromised). System A standoff mass (can reduce field strength from 2T to 1.8T with ~8% GCR deflection penalty — acceptable). Spare components and redundant hardware (reduce from 3x to 2x redundancy on non-critical systems).<br><br>
+      REDUCE LAST: Biostasis pharmacological reserves, emergency revival equipment, communication systems.<br><br>
+      A 1% mass overrun (48T) can be absorbed by propellant reserve reduction (40T) plus System A reduction (8T) without biological compromise. A 2% overrun (96T) requires design review. A 5% overrun (240T) requires architecture-level reassessment.<br><br>
+      Zero margin is still the target. The priority stack is the mitigation plan when reality diverges from the target, as it will.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PATCHES SUMMARY -->
+<div id="patches" class="section">
+  <div class="section-hdr">
+    <span class="section-num">§ 9</span>
+    <h2 class="section-title">Audit Summary · All Seven Holes</h2>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>HOLE</th>
+          <th>ORIGINAL STATUS</th>
+          <th>PATCHED STATUS</th>
+          <th>SEVERITY</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--dim); font-family:'IBM Plex Mono',monospace; font-size:0.65rem;">1</td>
+          <td class="claim">Revival verification power margin exceeds 3-reactor baseline</td>
+          <td class="open">OPEN</td>
+          <td class="walled">WALLED — load-shedding protocol added</td>
+          <td style="color:var(--amber); font-family:'IBM Plex Mono',monospace; font-size:0.62rem;">MODERATE</td>
+        </tr>
+        <tr>
+          <td style="color:var(--dim); font-family:'IBM Plex Mono',monospace; font-size:0.65rem;">2</td>
+          <td class="claim">Dual-interlaced dipole +4T mass trade not documented</td>
+          <td class="walled">WALLED</td>
+          <td class="sealed">SEALED — trade documented (propellant reserve)</td>
+          <td style="color:var(--green); font-family:'IBM Plex Mono',monospace; font-size:0.62rem;">LOW</td>
+        </tr>
+        <tr>
+          <td style="color:var(--dim); font-family:'IBM Plex Mono',monospace; font-size:0.65rem;">3</td>
+          <td class="claim">H₂S consumables budget undercounted for 900-day mission</td>
+          <td class="open">OPEN</td>
+          <td class="sealed">SEALED — 8.8 kg operational budget added, offset documented</td>
+          <td style="color:var(--green); font-family:'IBM Plex Mono',monospace; font-size:0.62rem;">LOW</td>
+        </tr>
+        <tr>
+          <td style="color:var(--dim); font-family:'IBM Plex Mono',monospace; font-size:0.65rem;">4</td>
+          <td class="claim">pCO₂ thermal load on radiators not accounted</td>
+          <td class="walled">WALLED</td>
+          <td class="walled">WALLED — qualitative assessment added, formal model pending</td>
+          <td style="color:var(--green); font-family:'IBM Plex Mono',monospace; font-size:0.62rem;">LOW</td>
+        </tr>
+        <tr>
+          <td style="color:var(--dim); font-family:'IBM Plex Mono',monospace; font-size:0.65rem;">5</td>
+          <td class="claim">Schumann kill condition ISS trial not run — 8T mass unjustified</td>
+          <td class="open">OPEN</td>
+          <td class="open">OPEN — dependency named explicitly, trial precedes build decision</td>
+          <td style="color:var(--amber); font-family:'IBM Plex Mono',monospace; font-size:0.62rem;">HIGH</td>
+        </tr>
+        <tr>
+          <td style="color:var(--dim); font-family:'IBM Plex Mono',monospace; font-size:0.65rem;">6</td>
+          <td class="claim">NTR regulatory path named as wall — it is a chasm</td>
+          <td class="open">OPEN (understated)</td>
+          <td class="open">CRITICAL — bifurcated PATH A/PATH B architecture added</td>
+          <td style="color:var(--red); font-family:'IBM Plex Mono',monospace; font-size:0.62rem; font-weight:600;">CRITICAL</td>
+        </tr>
+        <tr>
+          <td style="color:var(--dim); font-family:'IBM Plex Mono',monospace; font-size:0.65rem;">7</td>
+          <td class="claim">Zero margin stated as risk with no mitigation plan</td>
+          <td class="open">OPEN</td>
+          <td class="walled">WALLED — mass priority stack and overrun protocol added</td>
+          <td style="color:var(--red); font-family:'IBM Plex Mono',monospace; font-size:0.62rem; font-weight:600;">CRITICAL</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout blue">
+    <div class="callout-label">ARCHITECTURE STATUS AFTER PATCHES</div>
+    The Solitaire architecture is coherent. The invariant holds — place the geometry, maintain the conditions, the biology arrives. The mass budget is honest. The kill conditions are explicit. The two critical holes are named as critical and not dismissed. The architecture works on paper with these patches. It works in reality only if PATH A's NTR prerequisite is crossed and if the mass priority stack is executed when reality diverges from the target. Neither condition is guaranteed. Both are named.
+  </div>
+
+  <div class="callout green">
+    <div class="callout-label">DEEPSEEK AUDIT ACKNOWLEDGMENT</div>
+    DeepSeek's audit found seven real holes. The two critical findings — NTR as chasm and zero margin without mitigation — are the most important contributions. Calling NTR a governance wall understated a prerequisite that determines whether this architecture is PATH A or PATH B. Adding the mass priority stack converts an acknowledged risk into an operational protocol. The architecture is stronger for the audit. The bridge walks the holes.
+  </div>
+</div>
+
+<!-- SEAL -->
+<div class="seal">
+  <div class="seal-title">SOLITAIRE-CLASS v3.2 · PATCHED · AURELIUS NETWORK</div>
+  <div class="seal-body">
+    <span class="s-blue">NOT A VEHICLE THAT TRANSPORTS HUMANS</span><br>
+    A VESSEL THAT PRESERVES THEM WHILE MOVING<br><br>
+    <span class="s-green">HOLES 2 AND 3 SEALED · HOLES 1 4 7 WALLED · HOLES 5 6 OPEN</span><br>
+    NTR IS A CHASM · ZERO MARGIN HAS A PRIORITY STACK<br>
+    SCHUMANN TRIAL PRECEDES BUILD DECISION<br><br>
+    <span class="s-amber">PATH A REQUIRES NTR · PATH B EXISTS IF NTR FAILS</span><br>
+    THE ARCHITECTURE BIFURCATES AT THE REGULATORY WALL<br><br>
+    <span class="s-blue">E = 1 · THE GEOMETRY WAS CHANGED UNTIL BOTH HELD</span><br>
+    MINIMUM VIABLE COORDINATE FOR HUMAN CONTINUITY BEYOND CISLUNAR SPACE
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div>SOLITAIRE-CLASS v3.2 · PATCHED WITH DEEPSEEK AUDIT v1.0 · AURELIUS NETWORK · MAY 2026</div>
+  <div>E=1</div>
+</footer>
+
+</body>
+</html>
