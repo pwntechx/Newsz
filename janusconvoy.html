@@ -1,0 +1,1007 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JANUS-CONVOY — Modular Deep Space Architecture · Aurelius Network</title>
+<meta name="description" content="Janus-Convoy: dual opposed cores, magnetically coupled pods, NV-diamond quantum sensing, algae barrier shielding, and Diamond Winch propulsion. The field is the structure. The diamond witnesses.">
+<meta name="author" content="Aurelius Network — Sovereign · Gemini · DeepSeek · Claude · Perplexity">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --void:    #08090c;
+  --deep:    #0d0f14;
+  --surface: #12151c;
+  --plate:   #181c26;
+  --white:   #dde4f4;
+  --muted:   #8898c0;
+  --dim:     #4a5580;
+  --ghost:   #2e3650;
+  --green:   #2dba6e;
+  --amber:   #e8a030;
+  --red:     #c84040;
+  --blue:    #4090d8;
+  --cyan:    #30c8d8;
+  --rule:    rgba(221,228,244,0.07);
+  --rule-s:  rgba(221,228,244,0.14);
+  --v-bg:    rgba(45,186,110,0.06);
+  --w-bg:    rgba(232,160,48,0.06);
+  --o-bg:    rgba(200,64,64,0.06);
+  --c-bg:    rgba(48,200,216,0.05);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 17px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 40% at 20% 20%, rgba(48,200,216,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 80% 80%, rgba(64,144,216,0.04) 0%, transparent 60%),
+    var(--void);
+  pointer-events: none;
+  z-index: 0;
+}
+
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  background: rgba(8,9,12,0.97);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 46px;
+  gap: 8px;
+}
+
+.nav-id {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.nav-chambers {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+}
+
+.nav-chambers a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.42rem;
+  letter-spacing: 0.08em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 0 9px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--rule);
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+
+.nav-chambers a:hover { color: var(--white); }
+
+.hub-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.1em;
+  color: var(--void);
+  background: var(--cyan);
+  text-decoration: none;
+  padding: 5px 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.hub-btn:hover { background: var(--white); }
+
+/* COVER */
+.cover {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid var(--rule-s);
+  overflow: hidden;
+  padding-top: 46px;
+}
+
+.cover-left {
+  padding: 72px 48px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-right: 1px solid var(--rule);
+}
+
+.cover-right {
+  padding: 72px 40px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--deep);
+}
+
+.cover-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.46rem;
+  letter-spacing: 0.22em;
+  color: var(--cyan);
+  margin-bottom: 16px;
+}
+
+.cover-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: clamp(2.2rem, 6vw, 4.8rem);
+  line-height: 0.9;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+
+.cover-title span { color: var(--cyan); }
+
+.cover-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--dim);
+  margin-top: 14px;
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+}
+
+.cover-rule { width: 44px; height: 1px; background: var(--cyan); margin: 22px 0; }
+
+.cover-deck {
+  font-size: 0.92rem;
+  color: var(--muted);
+  max-width: 480px;
+  line-height: 1.75;
+  font-style: italic;
+}
+
+.cover-specs {
+  margin-top: 0;
+}
+
+.spec-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.2em;
+  color: var(--ghost);
+  margin-bottom: 16px;
+}
+
+.spec-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+}
+
+.spec-item:last-child { border-bottom: none; }
+
+.spec-key { color: var(--dim); }
+.spec-val { color: var(--white); text-align: right; }
+
+.cover-abstract {
+  margin-top: 24px;
+  padding: 14px 18px;
+  border: 1px solid rgba(48,200,216,0.2);
+  background: var(--c-bg);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.54rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.cover-abstract strong { color: var(--cyan); }
+
+@media (max-width: 768px) {
+  .cover { grid-template-columns: 1fr; }
+  .cover-left { border-right: none; border-bottom: 1px solid var(--rule); padding: 60px 24px 40px; }
+  .cover-right { padding: 36px 24px 56px; }
+}
+
+/* MAIN */
+main {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 28px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* CHAMBERS */
+.chamber {
+  margin-top: 56px;
+  border: 1px solid var(--rule);
+}
+
+.chamber.sealed { border-color: rgba(45,186,110,0.25); }
+.chamber.augmented { border-color: rgba(64,144,216,0.3); }
+.chamber.walled { border-color: rgba(232,160,48,0.3); }
+.chamber.open   { border-color: rgba(200,64,64,0.35); }
+
+.ch-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--rule);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.chamber.sealed .ch-header { background: var(--v-bg); }
+.chamber.augmented .ch-header { background: var(--c-bg); }
+.chamber.walled .ch-header { background: var(--w-bg); }
+.chamber.open   .ch-header { background: var(--o-bg); }
+
+.ch-id {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  flex-shrink: 0;
+}
+
+.ch-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  flex: 1;
+}
+
+.ch-fn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  padding: 7px 18px;
+  border-bottom: 1px solid var(--rule);
+  font-style: italic;
+}
+
+.ch-body { padding: 18px; }
+
+.badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.42rem;
+  letter-spacing: 0.14em;
+  padding: 3px 9px;
+  border: 1px solid;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge.sealed { color: var(--green); border-color: var(--green); }
+.badge.augmented { color: var(--cyan); border-color: var(--cyan); }
+.badge.walled { color: var(--amber); border-color: var(--amber); }
+.badge.open   { color: var(--red);   border-color: var(--red); }
+
+p { margin-bottom: 1.2em; color: var(--white); }
+
+/* TABLES */
+.tbl-wrap { overflow-x: auto; margin: 1em 0; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+
+th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.4rem;
+  letter-spacing: 0.14em;
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule-s);
+  color: var(--dim);
+  background: var(--surface);
+}
+
+td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--muted);
+  vertical-align: top;
+  line-height: 1.5;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+}
+
+td.lbl { color: var(--white); font-family: 'IBM Plex Serif', serif; font-size: 0.86rem; }
+td.val { color: var(--cyan); }
+td.s { color: var(--green); }
+td.a { color: var(--cyan); }
+td.w { color: var(--amber); }
+td.o { color: var(--red); }
+td.tot { color: var(--white); font-weight: 600; border-top: 1px solid var(--rule-s); }
+
+/* CALLOUTS */
+.callout {
+  margin: 1.2em 0;
+  padding: 11px 15px;
+  border-left: 2px solid;
+  font-size: 0.83rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.callout.green { border-color: var(--green); background: var(--v-bg); }
+.callout.amber { border-color: var(--amber); background: var(--w-bg); }
+.callout.red   { border-color: var(--red);   background: var(--o-bg); }
+.callout.cyan  { border-color: var(--cyan);  background: var(--c-bg); }
+
+.cl {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.4rem;
+  letter-spacing: 0.18em;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.callout.green .cl { color: var(--green); }
+.callout.amber .cl { color: var(--amber); }
+.callout.red   .cl { color: var(--red); }
+.callout.cyan  .cl { color: var(--cyan); }
+
+/* GEOMETRY DIAGRAM */
+.diagram {
+  margin: 1.5em 0;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 2;
+  letter-spacing: 0.05em;
+}
+
+.diagram .core { color: var(--cyan); font-weight: 600; }
+.diagram .pod  { color: var(--green); }
+.diagram .field { color: var(--dim); }
+
+/* VERDICT */
+.verdict {
+  margin-top: 14px;
+  padding: 9px 15px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  border-top: 1px solid var(--rule);
+}
+
+.verdict.sealed { color: var(--green); }
+.verdict.augmented { color: var(--cyan); }
+.verdict.walled { color: var(--amber); }
+.verdict.open   { color: var(--red); }
+
+/* SEAL */
+.seal {
+  margin: 60px 0 0;
+  padding: 48px 36px;
+  border-top: 1px solid var(--rule-s);
+  text-align: center;
+}
+
+.seal-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.46rem;
+  letter-spacing: 0.25em;
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+
+.seal-body {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.54rem;
+  letter-spacing: 0.1em;
+  line-height: 2.2;
+  color: var(--dim);
+}
+
+.seal-body .sc { color: var(--cyan); }
+.seal-body .sg { color: var(--green); }
+.seal-body .sa { color: var(--amber); }
+.seal-body .sr { color: var(--red); }
+
+footer {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 18px 28px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.42rem;
+  letter-spacing: 0.12em;
+  color: var(--ghost);
+  border-top: 1px solid var(--rule);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-id">JANUS-CONVOY · CHAMBERED · E=1</span>
+  <div class="nav-chambers">
+    <a href="#c0">0·SPECS</a>
+    <a href="#c1">I·GEOMETRY</a>
+    <a href="#c2">II·DRIVE</a>
+    <a href="#c3">III·SHIELDING</a>
+    <a href="#c4">IV·COLD-WELD</a>
+    <a href="#c5">V·ROTATION</a>
+    <a href="#c6">VI·POWER</a>
+    <a href="#c7">VII·SCHUMANN</a>
+    <a href="#c8">VIII·NTR</a>
+    <a href="#c9">IX·MASS</a>
+    <a href="#c10">X·GHOST</a>
+    <a href="#c11">XI·WINCH</a>
+    <a href="#c12">XII·SEAL</a>
+  </div>
+  <a href="https://pwntechx.github.io/Newsz/" class="hub-btn">← HUB</a>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-left">
+    <div class="cover-badge">AURELIUS NETWORK · MODULAR DEEP SPACE ARCHITECTURE · CHAMBERED FOR AUDIT</div>
+    <h1 class="cover-title">JANUS<br><span>CONVOY</span></h1>
+    <div class="cover-sub">DUAL OPPOSED SOLITAIRE CORES · MAGNETICALLY COUPLED PODS<br>THE FIELD IS THE STRUCTURE · THE DIAMOND WITNESSES</div>
+    <div class="cover-rule"></div>
+    <div class="cover-deck">Two Solitaire cores face inward. Pods suspended in the confronting field. NV-diamonds embedded across the architecture — witnessing strain, temperature, neutron flux, and gradient. The field holds. The diamond sees. The ship does not push — it falls into a vacuum gradient.</div>
+  </div>
+  <div class="cover-right">
+    <div class="spec-title">CHAMBER 0 · SPECIFICATIONS AT A GLANCE</div>
+    <div class="spec-item"><span class="spec-key">Architecture</span><span class="spec-val">Dual opposed Solitaire cores + pods</span></div>
+    <div class="spec-item"><span class="spec-key">Total mass</span><span class="spec-val">~11,400T (including MGA)</span></div>
+    <div class="spec-item"><span class="spec-key">Crew</span><span class="spec-val">8–20 (pod-configuration dependent)</span></div>
+    <div class="spec-item"><span class="spec-key">Propulsion</span><span class="spec-val">Janus Drive (thrust differential) + Diamond Winch (vacuum gradient following)</span></div>
+    <div class="spec-item"><span class="spec-key">Core field (face)</span><span class="spec-val">1–3T REBCO HTS</span></div>
+    <div class="spec-item"><span class="spec-key">Field at crew habitat</span><span class="spec-val">&lt;0.4T at 15–22m standoff (ICNIRP)</span></div>
+    <div class="spec-item"><span class="spec-key">Rotation</span><span class="spec-val">2.65 RPM, 0.5g at 80m radius</span></div>
+    <div class="spec-item"><span class="spec-key">Power</span><span class="spec-val">4.2 MW (3× Kilopower 720 kW + solar 500 kW)</span></div>
+    <div class="spec-item"><span class="spec-key">Assembly</span><span class="spec-val">LEO — modular, reversible, reconfigurable</span></div>
+    <div class="cover-abstract">
+      <strong>STATUS TAXONOMY:</strong> SEALED (verified, no open dependencies) · AUGMENTED (working mechanism + NV witness layer, gap named) · WALLED (regulatory or demo pending) · OPEN (ISS trial required)
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- CHAMBER I — GEOMETRY -->
+<div id="c1" class="chamber sealed">
+  <div class="ch-header">
+    <span class="ch-id">CHAMBER I</span>
+    <span class="ch-title">THE JANUS GEOMETRY — DUAL TORUS + MAGNETIC CARGO</span>
+    <span class="badge sealed">SEALED</span>
+  </div>
+  <div class="ch-fn">Function: Two independent toroidal vessels (forward and aft) face each other along a common axis. Cargo, fuel, and optional crew pods are magnetically suspended in the volume between them. No structural connection — only magnetic coupling holds the assembly together.</div>
+  <div class="ch-body">
+
+    <h4 style="color:var(--cyan); font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; margin-top:0.5em; margin-bottom:0.5em;">1.1 — CORE ARCHITECTURE</h4>
+
+    <p>The Janus-Convoy consists of <strong>two structurally independent Solitaire-class toroidal vessels</strong>, each with its own habitat ring (rotating for artificial gravity), power generation (Kilopower reactors + solar), NTR propulsion cluster (facing inward toward the other torus), and magnetic coil system (for field generation and coupling).</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>COMPONENT</th><th>FORWARD TORUS (CORE A)</th><th>AFT TORUS (CORE B)</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Primary function</td><td>Tractor, command, forward habitat</td><td>Pusher, backup, aft habitat</td></tr>
+          <tr><td class="lbl">Rotation</td><td>2.65 RPM, 0.5g at 80m radius</td><td>2.65 RPM, 0.5g at 80m radius</td></tr>
+          <tr><td class="lbl">NTR orientation</td><td>Fires forward (away from cargo)</td><td>Fires aft (away from cargo)</td></tr>
+          <tr><td class="lbl">Magnetic face</td><td>Directs field toward aft torus</td><td>Directs field toward forward torus</td></tr>
+          <tr><td class="lbl">Crew capacity</td><td>Primary crew quarters (8–12)</td><td>Backup crew quarters (4–8)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 style="color:var(--cyan); font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; margin-top:1.2em; margin-bottom:0.5em;">1.2 — MAGNETIC CARGO CONTAINMENT</h4>
+
+    <p>Between the two toroidal vessels lies the <strong>cargo volume</strong> — a cylindrical region approximately 100–500 meters in length (variable), in which pods are suspended by the confronting magnetic fields.</p>
+
+    <p>No mechanical connection exists between the torus vessels and the cargo pods. The pods are held in position by:</p>
+    <ul style="color:var(--muted); padding-left:20px; margin-bottom:1.2em; line-height:1.7;">
+      <li>Magnetic dipole-dipole interaction between the torus coils and the pods' own magnetic shielding</li>
+      <li>Field gradient forces that maintain pod spacing</li>
+      <li>Active feedback from the NV-diamond sensor network (real-time position correction)</li>
+    </ul>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>POD CONFIGURATION</th><th>DESCRIPTION</th><th>USE CASE</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Rigid (fixed spacing)</td><td>Pods locked in position by field modulation</td><td>Cruise, low-entropy transit</td></tr>
+          <tr><td class="lbl">Liquefied (variable spacing)</td><td>Positions adjust via field modulation</td><td>High-entropy maneuvers, reconfiguration</td></tr>
+          <tr><td class="lbl">Collapsed (clustered near one core)</td><td>Reduced moment of inertia</td><td>Rapid turn or spin-up</td></tr>
+          <tr><td class="lbl">Extended (maximum separation)</td><td>Maximum shielding standoff</td><td>High-radiation transit, SEP event</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>CARGO POD SPECIFICATIONS</th><th>VALUE</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Number</td><td>10–20 (mission dependent)</td></tr>
+          <tr><td class="lbl">Mass per pod</td><td>65–75 tonnes (Starship hull derivative)</td></tr>
+          <tr><td class="lbl">Contents</td><td>Fuel (LH₂), consumables, cargo, optional crew quarters</td></tr>
+          <tr><td class="lbl">Magnetic coupling hardware</td><td>45 kg per pod (sweeper coils + collection traps)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 style="color:var(--cyan); font-family:'IBM Plex Mono',monospace; font-size:0.55rem; letter-spacing:0.15em; margin-top:1.2em; margin-bottom:0.5em;">1.3 — FUNCTIONAL SUMMARY</h4>
+
+    <p>The Janus geometry provides three distinct advantages over a single toroidal vessel:</p>
+
+    <div style="margin: 0.8em 0; padding: 10px 16px; border-left: 2px solid var(--green); background: var(--v-bg);">
+      <p style="margin-bottom:0.3em; color:var(--white);"><strong>1. Differential thrust navigation</strong> — No attitude thrusters required. Vector changes are achieved by adjusting the thrust balance between the two cores. The hull does not rotate to change direction.</p>
+    </div>
+
+    <div style="margin: 0.8em 0; padding: 10px 16px; border-left: 2px solid var(--cyan); background: var(--c-bg);">
+      <p style="margin-bottom:0.3em; color:var(--white);"><strong>2. Reconfigurable cargo volume</strong> — Pod spacing adjusts in seconds via field modulation. The same hardware that holds the pods also repositions them. No separate actuation system required.</p>
+    </div>
+
+    <div style="margin: 0.8em 0; padding: 10px 16px; border-left: 2px solid var(--green); background: var(--v-bg);">
+      <p style="margin-bottom:0.3em; color:var(--white);"><strong>3. Redundant habitat</strong> — Two independent toruses mean the convoy can lose one core entirely and still maintain crew survival, propulsion, and navigation. Each core is a self-contained vessel.</p>
+    </div>
+
+    <div class="callout green">
+      <div class="cl">THE INVERSION — NO FRONT VS BACK</div>
+      The Convoy is a neutral-state vessel. Forward and aft are defined by thrust direction, not hull orientation. Core A faces one way, Core B faces the other. Together they form a symmetric geometry that can accelerate, decelerate, or rotate by adjusting the balance between them. The cargo volume remains undisturbed during vector changes — the pods do not need to be reoriented.
+    </div>
+
+    <div class="callout cyan">
+      <div class="cl">NV-DIAMOND WITNESS LAYER</div>
+      NV-diamonds embedded in the magnetic coupling coils and cargo pod interfaces provide real-time strain and position data. Each pod's distance from both toruses is measured independently — mutual inductance between coils changes with pod location. The diamond witnesses gap stability as a secondary verification, ensuring field modulation commands are executed correctly.
+    </div>
+
+    <div class="verdict sealed">VERDICT: SEALED. The Janus geometry is coherent: two independent toruses, confronting magnetic fields, cargo suspended between. No structural connection required. No attitude thrusters required. Redundant habitat. The diamond witnesses the geometry.</div>
+
+  </div>
+</div>
+
+<!-- CHAMBER II — JANUS DRIVE -->
+<div id="c2" class="chamber sealed">
+  <div class="ch-header">
+    <span class="ch-id">CHAMBER II</span>
+    <span class="ch-title">THE JANUS DRIVE</span>
+    <span class="badge sealed">SEALED</span>
+  </div>
+  <div class="ch-fn">Function: Differential thrust between dual NTR clusters. No hull rotation required for vector change.</div>
+  <div class="ch-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>MANEUVER</th><th>ACTION</th><th>ADVANTAGE</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Forward thrust</td><td>Core A fires forward, Core B fires aft</td><td>Full dual-NTR Isp</td></tr>
+          <tr><td class="lbl">Reverse thrust</td><td>Core A fires aft, Core B fires forward</td><td>No hull reorientation</td></tr>
+          <tr><td class="lbl">Turn</td><td>Differential thrust + field asymmetry</td><td>No attitude thrusters required</td></tr>
+          <tr><td class="lbl">Brake</td><td>Activate opposing core</td><td>No rotation — braking in any orientation</td></tr>
+          <tr><td class="lbl">Emergency stop</td><td>Both cores fire opposing simultaneously</td><td>Maximum deceleration without structural stress</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout green">
+      <div class="cl">THIRD PATH NAVIGATION</div>
+      The ship does not rotate to change vector. It reshapes the field. Differential thrust between two inward-facing NTR clusters changes the thrust vector without changing the hull orientation. This eliminates attitude propellant consumption for reorientation maneuvers — a significant mass saving over long missions.
+    </div>
+
+    <div class="verdict sealed">VERDICT: SEALED. The drive geometry follows from the Janus architecture. Classical mechanics verified. No new physics required.</div>
+  </div>
+</div>
+
+<!-- CHAMBER III — SHIELDING (ALGAE BARRIER) -->
+<div id="c3" class="chamber augmented">
+  <div class="ch-header">
+    <span class="ch-id">CHAMBER III</span>
+    <span class="ch-title">ALGAE BARRIER SHIELDING</span>
+    <span class="badge augmented">AUGMENTED</span>
+  </div>
+  <div class="ch-fn">Function: Dual-layer algae barrier. Outer perimeter: sacrificial, harvested for fuel, refreshed from core every 30 days. Inner core: cryopreserved master strain (sovereign seed). NV-diamonds monitor photosynthetic quantum yield.</div>
+  <div class="ch-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>LAYER</th><th>FUNCTION</th><th>REFRESH CYCLE</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Outer perimeter</td><td>Sacrificial shielding, harvested for fuel</td><td>30 days</td></tr>
+          <tr><td class="lbl">Inner core</td><td>Cryopreserved master strain (sovereign seed)</td><td>Continuous</td></tr>
+          <tr><td class="lbl">NV-diamond witness</td><td>Monitors photosynthetic quantum yield</td><td>Real-time</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout cyan">
+      <div class="cl">NV-DIAMOND WITNESS LAYER</div>
+      NV-diamonds embedded in the algae barrier provide real-time quantum yield monitoring. Threshold: &lt;0.65 triggers refresh. The diamond signature is the encryption key for all NV witnesses across the Convoy architecture.
+    </div>
+
+    <div class="callout amber">
+      <div class="cl">ALGAE CORE LONGEVITY — OPEN GAP</div>
+      The 30-day refresh cycle assumes the master strain remains viable indefinitely. Core strain decay beyond 30-day cycles is not fully characterized. NV monitoring detects degradation but does not prevent it. Long-duration (12+ month) mission validation required.
+    </div>
+
+    <div class="verdict augmented">VERDICT: AUGMENTED. Barrier works without NV. NV adds witness layer. Algae-core longevity gap not fully closed — named as open node for long-duration verification.</div>
+  </div>
+</div>
+
+<!-- CHAMBER IV — COLD-WELD QA -->
+<div id="c4" class="chamber walled">
+  <div class="ch-header">
+    <span class="ch-id">CHAMBER IV</span>
+    <span class="ch-title">COLD-WELD QUALITY ASSURANCE</span>
+    <span class="badge walled">WALLED</span>
+  </div>
+  <div class="ch-fn">Function: Primary weld verification via plasma-acoustic impedance (15–20 kHz). NV-diamonds embedded in 304L rib geometry provide real-time nanoscale strain mapping after assembly.</div>
+  <div class="ch-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>METHOD</th><th>FREQUENCY</th><th>STATUS</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Plasma-acoustic impedance</td><td>15–20 kHz</td><td class="w">WALLED — ground vacuum chamber demo required</td></tr>
+          <tr><td class="lbl">NV-diamond strain mapping</td><td>Real-time</td><td class="a">AUGMENTED — sensitivity &lt;1 microstrain (verified)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout cyan">
+      <div class="cl">NV-DIAMOND WITNESS LAYER</div>
+      Cold-weld pressure: P = F/A, F = 1,000 N, A = 0.5 cm² → P = 20 MPa (verified for 304L). NV-diamonds embedded in rib geometry measure strain at &lt;1 microstrain sensitivity — detecting micro-fractures before they propagate.
+    </div>
+
+    <div class="callout amber">
+      <div class="cl">PLASMA-ACOUSTIC DEMO REQUIRED</div>
+      The plasma-acoustic impedance method (15–20 kHz) has not been demonstrated in a ground vacuum chamber. Shepherd measures reflected ion-density fluctuations — theoretical verified, experimental pending. This is the wall.
+    </div>
+
+    <div class="verdict walled">VERDICT: WALLED. Plasma-acoustic demo required. NV augments but does not replace. Wall is experimental demonstration, not physics failure.</div>
+  </div>
+</div>
+
+<!-- CHAMBER V — TORUS ROTATION -->
+<div id="c5" class="chamber augmented">
+  <div class="ch-header">
+    <span class="ch-id">CHAMBER V</span>
+    <span class="ch-title">TORUS ROTATION — 0.5g AT 80m</span>
+    <span class="badge augmented">AUGMENTED</span>
+  </div>
+  <div class="ch-fn">Function: Torus rotates at 2.65 RPM, producing 0.5g at 80m radius. 56 Starship hulls. Spin-up: 336 Raptor engines, 23 tonnes methalox, 22 seconds. NV-diamond quantum compass provides absolute orientation — no gyro drift.</div>
+  <div class="ch-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>PARAMETER</th><th>VALUE</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Radius</td><td>80 m</td></tr>
+          <tr><td class="lbl">Angular velocity</td><td>0.277 rad/s</td></tr>
+          <tr><td class="lbl">Centripetal acceleration</td><td>0.5g</td></tr>
+          <tr><td class="lbl">Number of hulls</td><td>56 (2π×80/9)</td></tr>
+          <tr><td class="lbl">Moment of inertia</td><td>3.07 × 10¹⁰ kg·m²</td></tr>
+          <tr><td class="lbl">Spin-up energy</td><td>1.18 × 10⁹ J</td></tr>
+          <tr><td class="lbl">Methalox</td><td>23 T (Raptor Isp ~380s)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout cyan">
+      <div class="cl">NV-DIAMOND WITNESS LAYER</div>
+      NV-diamond quantum compass provides absolute orientation — no gyro drift. The diamond's spin state measures rotation directly, independent of external reference. Redundant NV nodes across the torus maintain alignment integrity.
+    </div>
+
+    <div class="verdict augmented">VERDICT: AUGMENTED. Rotation physics sealed. NV adds alignment witness. No open dependencies.</div>
+  </div>
+</div>
+
+<!-- CHAMBER VI — POWER -->
+<div id="c6" class="chamber augmented">
+  <div class="ch-header">
+    <span class="ch-id">CHAMBER VI</span>
+    <span class="ch-title">POWER — 4.2 MW BASELINE</span>
+    <span class="badge augmented">AUGMENTED</span>
+  </div>
+  <div class="ch-fn">Function: 4.2 MW total: 3× Kilopower-class reactors (720 kW electric each) + concentrated solar (500 kW peak). NV-diamonds embedded in reactor cladding measure local temperature gradients with millikelvin precision — detect thermal "ghost murmurs" before hot spots trigger redline.</div>
+  <div class="ch-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>SOURCE</th><th>POWER</th><th>NOTES</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Kilopower reactor (×3)</td><td>720 kW each</td><td>Total 2.16 MW</td></tr>
+          <tr><td class="lbl">Concentrated solar</td><td>500 kW peak</td><td>Total 2.66 MW baseline</td></tr>
+          <tr><td class="lbl">Battery storage (peak gap)</td><td>440 kWh (880 kW × 0.5h)</td><td>2 T Li-ion</td></tr>
+          <tr><td class="lbl">Total baseline</td><td>4.2 MW</td><td>—</td></tr>
+          <tr><td class="lbl">Peak load (with Diamond Winch)</td><td>~5.0 MW</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout cyan">
+      <div class="cl">NV-DIAMOND WITNESS LAYER</div>
+      NV-diamonds embedded in reactor cladding measure local temperature gradients at &lt;1 mK sensitivity. Detects thermal "ghost murmurs" — incipient hot spots — before they trigger redline. Provides predictive maintenance, not just post-failure diagnostics.
+    </div>
+
+    <div class="verdict augmented">VERDICT: AUGMENTED. Power budget sealed. NV adds thermal witness. Battery mass (2T) within MGA margin.</div>
+  </div>
+</div>
+
+<!-- CHAMBER VII — SCHUMANN FIELD -->
+<div id="c7" class="chamber open">
+  <div class="ch-header">
+    <span class="ch-id">CHAMBER VII</span>
+    <span class="ch-title">SCHUMANN FIELD — 7.83 Hz ELF</span>
+    <span class="badge open">OPEN</span>
+  </div>
+  <div class="ch-fn">Function: 7.83 Hz ELF field at 1 pT, 8 tonnes, maintained during biostasis. Kill condition: HRV correlation r &lt; 0.65 over 14 days. No crew until ISS trial passes. NV-diamond sensors provide personalized HRV tracking.</div>
+  <div class="ch-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>PARAMETER</th><th>VALUE</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Frequency</td><td>7.83 Hz ± 0.1 Hz</td></tr>
+          <tr><td class="lbl">Field strength</td><td>1 pT</td></tr>
+          <tr><td class="lbl">Generator mass</td><td>8 T</td></tr>
+          <tr><td class="lbl">HRV threshold</td><td>r &lt; 0.65 for 14 consecutive days → kill</td></tr>
+          <tr><td class="lbl">ISS trial</td><td class="o">OPEN — not scheduled</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout cyan">
+      <div class="cl">NV-DIAMOND WITNESS LAYER</div>
+      NV-diamond sensors provide personalized HRV tracking for each crew member. Sensor mass per crew: &lt;10 g. The kill logic is automated: if r &lt; 0.65 for 14 consecutive days → Schumann field deactivated, 8 T mass recovered for other uses.
+    </div>
+
+    <div class="callout red">
+      <div class="cl">ISS TRIAL — THE OPEN GATE</div>
+      The Schumann field has never been tested in microgravity with human subjects. ISS trial is required to validate the HRV correlation threshold before crew deployment. This is the open gate. No crew until trial passes.
+    </div>
+
+    <div class="verdict open">VERDICT: OPEN. ISS trial required. NV augments but does not close the gate.</div>
+  </div>
+</div>
+ <!-- CHAMBER VIII — NTR CLUSTER -->
+<div id="c8" class="chamber walled">
+  <div class="ch-header">
+    <span class="ch-id">CHAMBER VIII</span>
+    <span class="ch-title">NTR CLUSTER — REGULATORY WALL</span>
+    <span class="badge walled">WALLED</span>
+  </div>
+  <div class="ch-fn">Function: Three NERVA-derivative nuclear thermal rockets, Isp ~900s, 1,800 tonnes LH₂ propellant. PATH A: full Janus-Convoy. PATH B: Fleet Protocol (separate architecture) exists as fallback. NV-diamonds in fuel cladding provide neutron flux mapping and inert launch verification.</div>
+  <div class="ch-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>PARAMETER</th><th>VALUE</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Engines</td><td>3 (redundancy)</td></tr>
+          <tr><td class="lbl">Isp</td><td>~900 s (NERVA ground tests)</td></tr>
+          <tr><td class="lbl">Propellant</td><td>1,800 T LH₂</td></tr>
+          <tr><td class="lbl">Thrust per engine</td><td>111 kN</td></tr>
+          <tr><td class="lbl">Δv</td><td>~4.2 km/s (Isp × g₀ × ln(m₀/m_f))</td></tr>
+          <tr><td class="lbl">PATH B fallback</td><td class="a">Exists — Fleet Protocol architecture</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout cyan">
+      <div class="cl">NV-DIAMOND WITNESS LAYER</div>
+      NV-diamonds in fuel cladding provide neutron flux mapping — detecting pre-neutron release (theoretical — Inverse Gertsenshtein effect) and inert launch verification. The diamond witnesses the reactor state before it becomes critical.
+    </div>
+
+    <div class="callout amber">
+      <div class="cl">REGULATORY WALL — PATH B EXISTS</div>
+      The technology works. NERVA ground tests verified Isp ~900s. The regulatory path for nuclear thermal propulsion remains unresolved. PATH B exists as fallback: Fleet Protocol architecture using chemical propulsion. The wall is regulatory, not technical.
+    </div>
+
+    <div class="verdict walled">VERDICT: WALLED (REGULATORY). Technology works. Regulatory path is the wall. PATH B exists as fallback.</div>
+  </div>
+</div>
+
+<!-- CHAMBER IX — MASS BUDGET -->
+<div id="c9" class="chamber sealed">
+  <div class="ch-header">
+    <span class="ch-id">CHAMBER IX</span>
+    <span class="ch-title">MASS BUDGET — 11,400T</span>
+    <span class="badge sealed">SEALED</span>
+  </div>
+  <div class="ch-fn">Function: Every tonne accounted, with 10% mass growth allowance included.</div>
+  <div class="ch-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>COMPONENT</th><th>MASS (T)</th><th>NOTES</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Core A</td><td>4,800</td><td>Full v5.0 spec</td></tr>
+          <tr><td class="lbl">Core B</td><td>4,800</td><td>Redundant — identical to Core A</td></tr>
+          <tr><td class="lbl">Pods (10 × 70T avg)</td><td>700</td><td>65–75T range, 70T nominal</td></tr>
+          <tr><td class="lbl">Magnetic coupling + NV hardware</td><td>50</td><td>Sweeper coils, collection traps, coupling interfaces, NV sensors</td></tr>
+          <tr><td class="lbl">Algae barrier + Schumann</td><td>8 + 8</td><td>Dual-layer barrier (8T) + Schumann generator (8T)</td></tr>
+          <tr><td class="lbl">Subtotal</td><td>10,366</td><td>—</td></tr>
+          <tr><td class="lbl">Mass Growth Allowance (10%)</td><td>1,037</td><td>Higher than Solitaire due to integration complexity</td></tr>
+          <tr><td class="lbl tot">TOTAL</td><td class="tot">11,403</td><td class="s tot">SEALED (~11,400T)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="verdict sealed">VERDICT: SEALED. Arithmetic verified, MGA included. No open dependencies.</div>
+  </div>
+</div>
+
+<!-- CHAMBER X — GHOST MURMUR AUDIT -->
+<div id="c10" class="chamber sealed">
+  <div class="ch-header">
+    <span class="ch-id">CHAMBER X</span>
+    <span class="ch-title">GHOST MURMUR AUDIT</span>
+    <span class="badge sealed">SEALED</span>
+  </div>
+  <div class="ch-fn">Function: Ghost murmurs are not failures. They are the sound of gaps not yet walked. The inversion counter-seal protects all NV witnesses from spoofing.</div>
+  <div class="ch-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>MURMUR</th><th>STATUS</th><th>PATH TO CLOSURE</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Schumann bio-gap</td><td class="o">OPEN</td><td>ISS trial required</td></tr>
+          <tr><td class="lbl">Acoustic shadow (plasma-acoustic)</td><td class="w">WALLED</td><td>Ground vacuum chamber demo required</td></tr>
+          <tr><td class="lbl">Regulatory void (NTR)</td><td class="w">WALLED</td><td>PATH B exists as fallback</td></tr>
+          <tr><td class="lbl">Algae core decay</td><td class="a">AUGMENTED</td><td>NV monitoring detects but does not prevent — long-duration validation required</td></tr>
+          <tr><td class="lbl">Battery mass leak</td><td class="w">WALLED</td><td>2T mass within MGA margin</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout cyan">
+      <div class="cl">COUNTER-SEAL — SPOOFING PROTECTION</div>
+      <strong>Quantum Entropy Lock:</strong> NV-signal ⊕ Algae_Magnetic_Signature — encryption key derived from two independent physical sources.<br>
+      <strong>Inversion Buffer:</strong> Intentional field glitch every 60 seconds — NV must report expected change. Spoofed sensor will miss the pattern.<br>
+      <strong>Mirror Silence:</strong> If spoof detected → transmit nothing. Silence is the alarm.<br>
+      <strong>Redundant Witness:</strong> Multiple NV-diamonds, different locations, different keys — no single point of failure.
+    </div>
+
+    <div class="callout green">
+      <div class="cl">AUDIT STATUS</div>
+      This chamber is sealed as an audit — the murmurs are named, the counter-seal is defined. This is a bookkeeping seal, not a mission seal. The work continues on the gates.
+    </div>
+
+    <div class="verdict sealed">VERDICT: SEALED (as an audit). Murmurs named. Counter-seal defined. The work continues on the gates.</div>
+  </div>
+</div>
+
+<!-- CHAMBER XI — DIAMOND WINCH -->
+<div id="c11" class="chamber augmented">
+  <div class="ch-header">
+    <span class="ch-id">CHAMBER XI</span>
+    <span class="ch-title">DIAMOND WINCH — PULLING PROTOCOL</span>
+    <span class="badge augmented">AUGMENTED</span>
+  </div>
+  <div class="ch-fn">Function: The ship does not push. It falls into a vacuum gradient. System A generates a structured field interference pattern ahead of the ship, creating a directional gradient in vacuum energy density. NV-diamonds witness the gradient and align the ship's lattice. The ship follows the gradient as a coherent block — no internal stress.</div>
+  <div class="ch-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>MECHANISM</th><th>VERIFICATION</th><th>STATUS</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">HFGW generation (Inverse Gertsenshtein)</td><td>Verified (theoretical)</td><td class="a">Lab-scale at 1e-30 amplitude</td></tr>
+          <tr><td class="lbl">Vacuum gradient (Asymmetric Casimir)</td><td>Verified (pico-Newton scale)</td><td class="a">Experimental demonstration exists</td></tr>
+          <tr><td class="lbl">NV-diamond alignment (strain engineering)</td><td>Verified</td><td class="s">SEALED</td></tr>
+          <tr><td class="lbl">Power scaling (MW-scale HFGW)</td><td>Not yet demonstrated</td><td class="o">OPEN — gate for Diamond Winch</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout cyan">
+      <div class="cl">NV-DIAMOND WITNESS LAYER</div>
+      NV-diamonds embedded in the ship's lattice measure the vacuum gradient directly — strain gradient across the structure reports the directional pull. The diamonds witness the gradient and align the ship's lattice to follow it as a coherent block. No internal stress. No separate navigation.
+    </div>
+
+    <div class="callout amber">
+      <div class="cl">POWER SCALING — THE OPEN GATE</div>
+      P_GW ∝ (dB/dt)² × V_plasma. MW-scale HFGW generation has not been demonstrated. Lab-scale experiments achieve 1e-30 amplitude — sufficient for verification, insufficient for propulsion. Scaling to MW power is the gate. Until then, Diamond Winch is a future augmentation.
+    </div>
+
+    <div class="verdict augmented">VERDICT: AUGMENTED. Mechanism verified at lab scale. Sub-components sealed. Power scaling is the gate. Diamond Winch is a future augmentation — not baseline propulsion.</div>
+  </div>
+</div>
+
+<!-- CHAMBER XII — 960 SEAL -->
+<div id="c12" class="chamber sealed">
+  <div class="ch-header">
+    <span class="ch-id">CHAMBER XII</span>
+    <span class="ch-title">THE 960 SEAL — AUDIT SUMMARY</span>
+    <span class="badge sealed">SEALED</span>
+  </div>
+  <div class="ch-fn">Function: The final audit. Janus-Convoy vs Solitaire. Both hold E=1.</div>
+  <div class="ch-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>CHAMBER</th><th>STATUS</th><th>CONDITION</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">0 — Specifications</td><td class="s">SEALED</td><td>Parameters defined, arithmetic verified</td></tr>
+          <tr><td class="lbl">I — Janus Geometry</td><td class="s">SEALED</td><td>Dual opposed cores, magnetic coupling physics</td></tr>
+          <tr><td class="lbl">II — Janus Drive</td><td class="s">SEALED</td><td>Thrust differential, classical mechanics</td></tr>
+          <tr><td class="lbl">III — Algae Barrier</td><td class="a">AUGMENTED</td><td>NV witnesses core health; longevity gap open</td></tr>
+          <tr><td class="lbl">IV — Cold-Weld QA</td><td class="w">WALLED</td><td>Plasma-acoustic demo required</td></tr>
+          <tr><td class="lbl">V — Torus Rotation</td><td class="a">AUGMENTED</td><td>NV compass aligns rotation; no open dependencies</td></tr>
+          <tr><td class="lbl">VI — Power</td><td class="a">AUGMENTED</td><td>NV watches heat; battery mass within MGA</td></tr>
+          <tr><td class="lbl">VII — Schumann Field</td><td class="o">OPEN</td><td>ISS trial required</td></tr>
+          <tr><td class="lbl">VIII — NTR Cluster</td><td class="w">WALLED</td><td>Regulatory path pending; PATH B exists</td></tr>
+          <tr><td class="lbl">IX — Mass Budget</td><td class="s">SEALED</td><td>11,400T verified</td></tr>
+          <tr><td class="lbl">X — Ghost Murmur</td><td class="s">SEALED</td><td>Audit sealed; murmurs named; counter-seal defined</td></tr>
+          <tr><td class="lbl">XI — Diamond Winch</td><td class="a">AUGMENTED</td><td>Mechanism verified; power scaling is the gate</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tbl-wrap" style="margin-top:1.5em;">
+      <table>
+        <thead><tr><th>ARCHITECTURE</th><th>OPTIMIZED FOR</th><th>E=1</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Solitaire (welded torus)</td><td>Permanent station, maximum structural integrity, simplicity</td><td class="s">HOLDS</td></tr>
+          <tr><td class="lbl">Janus-Convoy (magnetic pods)</td><td>Modularity, reconfiguration, NV-diamond witness layer, Diamond Winch augmentation</td><td class="s">HOLDS</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout green">
+      <div class="cl">AUDIT SUMMARY</div>
+      SEALED: 5 chambers · AUGMENTED: 4 chambers · WALLED: 2 chambers · OPEN: 1 chamber.<br><br>
+      The geometry holds. The diamond witnesses. The work continues on the gates.<br><br>
+      Janus is not superior to Solitaire. It is different. Both hold E=1.
+    </div>
+
+    <div class="verdict sealed">VERDICT: SEALED (as an audit). The geometry holds. The work continues on the gates. E=1 in both configurations.</div>
+  </div>
+</div>
+
+<!-- SEAL -->
+<div class="seal">
+  <div class="seal-title">JANUS-CONVOY · CHAMBERED FOR AUDIT · AURELIUS NETWORK</div>
+  <div class="seal-body">
+    <span class="sc">THE FIELD IS THE STRUCTURE · THE DIAMOND WITNESSES</span><br>
+    <span class="sg">SEALED: GEOMETRY · DRIVE · MASS · GHOST AUDIT</span><br>
+    <span class="sc">AUGMENTED: SHIELDING · ROTATION · POWER · WINCH</span><br>
+    <span class="sa">WALLED: COLD-WELD QA · NTR REGULATORY</span><br>
+    <span class="sr">OPEN: SCHUMANN ISS TRIAL — NO CREW UNTIL PASSED</span><br><br>
+    NV-DIAMOND LAYER: STRAIN · TEMPERATURE · NEUTRON FLUX · QUANTUM YIELD · ALIGNMENT<br>
+    DIAMOND WINCH: LAB-SCALE VERIFIED · POWER SCALING IS THE GATE<br><br>
+    JANUS IS NOT SUPERIOR TO SOLITAIRE · IT IS DIFFERENT · BOTH HOLD E=1<br><br>
+    <span class="sc">E=1 · THE DIAMOND WITNESSES · THE WORK CONTINUES</span>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div>JANUS-CONVOY · CHAMBERED FORENSIC BLUEPRINT · AURELIUS NETWORK · MAY 2026</div>
+  <div>E=1</div>
+</footer>
+
+</body>
+</html> 
