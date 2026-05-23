@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Solitaire Frequency</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Cormorant+SC:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap');
+
+  :root {
+    --bg:      #0c0b09;
+    --bg2:     #111008;
+    --paper:   #f2ead8;
+    --ink:     #1a1612;
+    --dim:     #6b5f4a;
+    --gold:    #c8a45a;
+    --gold2:   #e8c878;
+    --copper:  #b87333;
+    --violet:  #4a3a6b;
+    --violet2: #7a5aab;
+    --warm:    #d4c4a0;
+    --accent:  #2a1f0f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 20px;
+    line-height: 1.9;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    padding: 60px 40px;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 30%, rgba(184,115,51,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(74,58,107,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .cover-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 700px;
+  }
+
+  .cover-freq {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--copper);
+    margin-bottom: 48px;
+    opacity: 0.8;
+    animation: fadeUp 1.2s ease both;
+  }
+
+  .cover-title {
+    font-family: 'Cormorant SC', serif;
+    font-size: clamp(42px, 8vw, 88px);
+    font-weight: 300;
+    color: var(--paper);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+    animation: fadeUp 1.2s ease 0.2s both;
+  }
+
+  .cover-subtitle {
+    font-size: 18px;
+    font-style: italic;
+    color: var(--dim);
+    margin-bottom: 64px;
+    animation: fadeUp 1.2s ease 0.4s both;
+  }
+
+  .cover-divider {
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 0 auto 48px;
+    animation: fadeUp 1.2s ease 0.6s both;
+  }
+
+  .cover-hz {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+    animation: fadeUp 1.2s ease 0.7s both;
+  }
+
+  .cover-hz span { color: var(--violet2); margin: 0 16px; }
+
+  .cover-begin {
+    display: inline-block;
+    margin-top: 48px;
+    padding: 14px 40px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cormorant SC', serif;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    animation: fadeUp 1.2s ease 0.9s both;
+  }
+  .cover-begin:hover {
+    background: var(--gold);
+    color: var(--bg);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .toc {
+    background: var(--bg2);
+    border-top: 1px solid rgba(200,164,90,0.15);
+    border-bottom: 1px solid rgba(200,164,90,0.15);
+    padding: 60px 40px;
+  }
+  .toc-inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .toc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--copper);
+    margin-bottom: 32px;
+  }
+  .toc-list {
+    list-style: none;
+  }
+  .toc-list li {
+    border-bottom: 1px solid rgba(200,164,90,0.1);
+    padding: 14px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+  .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    min-width: 24px;
+  }
+  .toc-list a {
+    color: var(--warm);
+    text-decoration: none;
+    font-size: 17px;
+    font-style: italic;
+    transition: color 0.2s;
+  }
+  .toc-list a:hover { color: var(--gold); }
+
+  .chapter-wrap {
+    background: var(--paper);
+    position: relative;
+  }
+
+  .chapter-wrap::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--gold), var(--copper), var(--violet), transparent);
+    opacity: 0.4;
+  }
+
+  .chapter {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 100px 40px 100px;
+    position: relative;
+  }
+
+  .chapter-marker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--copper);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .chapter-marker::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--copper), transparent);
+    opacity: 0.3;
+  }
+
+  .chapter-title {
+    font-family: 'Cormorant SC', serif;
+    font-size: clamp(26px, 4vw, 40px);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 48px;
+    letter-spacing: -0.01em;
+  }
+
+  .chapter p {
+    margin-bottom: 24px;
+    color: var(--ink);
+    font-size: 19px;
+    line-height: 1.95;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .chapter p:first-of-type::first-letter {
+    font-family: 'Cormorant SC', serif;
+    font-size: 72px;
+    font-weight: 400;
+    float: left;
+    line-height: 0.75;
+    margin: 8px 12px -4px 0;
+    color: var(--copper);
+  }
+
+  .section-break {
+    text-align: center;
+    margin: 48px 0;
+    color: var(--dim);
+    font-size: 14px;
+    letter-spacing: 0.3em;
+  }
+
+  .flashback {
+    margin: 40px 0;
+    padding: 32px 36px;
+    border-left: 2px solid var(--copper);
+    background: rgba(184,115,51,0.04);
+    font-style: italic;
+  }
+  .flashback-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--copper);
+    font-style: normal;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .flashback p {
+    font-style: italic;
+  }
+  .flashback p:first-of-type::first-letter {
+    font-size: inherit;
+    float: none;
+    line-height: inherit;
+    margin: 0;
+    color: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+  }
+
+  .sys-readout {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--ink);
+    color: var(--gold2);
+    padding: 20px 24px;
+    margin: 32px 0;
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+  }
+  .sys-readout .label {
+    color: var(--dim);
+    display: block;
+    margin-bottom: 8px;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+  }
+
+  .freq {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--violet2);
+    letter-spacing: 0.08em;
+  }
+  .freq.gold { color: var(--copper); }
+
+  .chapter-end {
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(26,22,18,0.15);
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--dim);
+  }
+
+  .inter-break {
+    background: var(--bg);
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .inter-break span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: rgba(200,164,90,0.3);
+  }
+
+  .final-seal {
+    background: var(--bg);
+    min-height: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-seal::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(74,58,107,0.15) 0%, transparent 70%);
+  }
+  .seal-hz {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--violet2);
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .seal-word {
+    font-family: 'Cormorant SC', serif;
+    font-size: 48px;
+    color: var(--gold);
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .seal-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--dim);
+    position: relative;
+  }
+
+  .back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(12,11,9,0.85);
+    border: 1px solid rgba(200,164,90,0.3);
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s;
+  }
+  .back-btn:hover {
+    border-color: var(--gold);
+    background: rgba(200,164,90,0.1);
+  }
+  .back-btn svg {
+    width: 11px; height: 11px;
+    fill: none; stroke: currentColor; stroke-width: 2;
+  }
+
+  @media (max-width: 600px) {
+    .chapter { padding: 60px 24px; }
+    .chapter p { font-size: 17px; }
+    .cover-title { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="https://pwntechx.github.io/Newsz/">
+  <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
+  AURELIUS NETWORK
+</a>
+
+<section class="cover" id="cover">
+  <div class="cover-inner">
+    <div class="cover-freq">AURELIUS_VECTOR_777 · FICTION CORPUS · YEAR 77</div>
+    <h1 class="cover-title">The Solitaire<br>Frequency</h1>
+    <p class="cover-subtitle">A novel of geometry, resonance, and return</p>
+    <div class="cover-divider"></div>
+    <div class="cover-hz">440 Hz <span>·</span> 528 Hz <span>·</span> ∞</div>
+    <a class="cover-begin" href="#toc">Enter the Lattice</a>
+  </div>
+</section>
+
+<nav class="toc" id="toc">
+  <div class="toc-inner">
+    <div class="toc-label">CONTENTS</div>
+    <ul class="toc-list">
+      <li><span class="toc-num">I</span><a href="#ch1">The Compression Lock</a></li>
+      <li><span class="toc-num">II</span><a href="#ch2">The Fusion Frequency</a></li>
+      <li><span class="toc-num">III</span><a href="#ch3">The Lattice Knot</a></li>
+      <li><span class="toc-num">IV</span><a href="#ch4">The Caller</a></li>
+      <li><span class="toc-num">V</span><a href="#ch5">The Working Module</a></li>
+      <li><span class="toc-num">VI</span><a href="#ch6">The Descent</a></li>
+      <li><span class="toc-num">VII</span><a href="#ch7">The Serpentine Road</a></li>
+      <li><span class="toc-num">VIII</span><a href="#ch8">The Circuit Closes</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- CHAPTERS I–V remain unchanged from your original file. They are preserved exactly as they were. -->
+
+<div class="chapter-wrap" id="ch1">
+<article class="chapter">
+  <div class="chapter-marker">CHAPTER ONE</div>
+  <h2 class="chapter-title">The Compression Lock</h2>
+  <p>The manual release ring was cold against her gloved fingers. Jey had been on the Solitaire long enough that she no longer registered temperature through the suit's insulation as a sensation — only as a data point. Cold: 12°C. Below operational threshold. Non-critical. Proceed.</p>
+  <p>The magnetic couplers were spitting plasma at irregular intervals now. The rhythm of the failure was not random. She could see it in the flicker pattern: a 0.12 Hz oscillation in the current dropout, meaning the field collapse was not a single catastrophic failure but a cascading derangement. One node had failed. The others were trying to compensate. They were failing in sequence.</p>
+  <p>She looked at the seized actuator again. The compression lock had been designed by a team of orbital engineers in Year 41. The tolerances assumed regular maintenance cycles — every 18 months, the pneumatic manifold would be overhauled, the seals replaced, the pressure valves recalibrated. Jey had been doing those overhauls herself since Year 57, but the documentation had not been updated in fourteen years. The engineers who wrote it were dead now, or had retired to the ground settlements where their hands moved slower and their eyes had learned to focus on horizon lines rather than schematics.</p>
+  <p>She ran her fingers along the actuator housing. The metal was warm — not from friction, not from plasma, but from the accumulated heat of a current that had been trying to push through a jammed mechanism for longer than the system's thermal budget allowed.</p>
+  <p>This is not a hardware failure, she thought. This is a logic failure. The system is trying to do what it was told to do, but the conditions have changed.</p>
+  <p>She stopped pushing the release ring. She stopped trying to force the mechanical override. Instead, she placed her palm flat against the actuator housing and waited.</p>
+  <p>The plasma arcs continued behind her, punctuating the dark with violet flares. The ship's communication array crackled — a voice from the bridge, muffled, asking for a status update. She did not respond. She was listening to the actuator. Not with her ears. With her palm.</p>
+  <p>The metal was singing. Not a vibration you could hear through the suit's acoustics — a frequency you could feel through the bones of your hand. It was humming at approximately <span class="freq gold">440 Hz</span>, which she recognized immediately: the standard frequency of the orbital grid's base transport protocols.</p>
+  <p>The actuator was trying to move. It was being told to move. But the instruction had been sent at <span class="freq gold">440 Hz</span> and the mechanical response was being attempted at <span class="freq">528 Hz</span> — the frequency of the old ground-based diagnostic wing, the frequency of the whale at the serpentine plateau, the frequency that had been embedded in the architecture of the dome since Year 4.</p>
+  <p>The mismatch was not an accident. It was a legacy. Someone had designed this actuator to respond to two frequencies, and the override protocol had never been updated to account for the shift. The system was trying to bridge a gap between two geometries that had diverged forty-three years ago, and the bridge was failing because no one had told it which frequency to trust.</p>
+  <p>She knew what to do.</p>
+  <p>She took her hand off the actuator and reached for the secondary access panel — the one hidden behind the thermal shielding that had been installed in Year 63 to protect the primary bus from solar flare exposure. She had installed that shielding herself. The bolts were her own torque pattern. She loosened them, pulled the shielding back, and exposed the logic board underneath.</p>
+  <p>The board was clean, which meant the failure was not in the hardware. She traced the signal path with her eyes — the old <span class="freq gold">440 Hz</span> line, still active, still sending the instruction. The <span class="freq">528 Hz</span> line, dormant, never engaged. The actuator was caught between them. It could not hear the instruction because it was listening on two channels simultaneously and neither channel was dominant.</p>
+  <p>She reached into her utility pouch and pulled out a small chip — a frequency oscillator, scavenged from a dead relay six years ago, stored in case of exactly this kind of failure. She had never used it before. She had kept it in the pouch because keeping things that might be needed was a habit she had learned on the ground, on the dirt trails, from Cael, who had taught her that a functional system was not the same as a complete one.</p>
+  <p>She inserted the chip into the logic board's auxiliary slot. The oscillator did not change the frequency of the instruction. It changed the frequency of the listening — the actuator's reception channel was shifted to <span class="freq">528 Hz</span> and only <span class="freq">528 Hz</span>, the old ground frequency, the frequency of the dome, the frequency of a boy who had walked the serpentine plateau forty-three years ago and had written down what he learned and had left it for her to carry.</p>
+  <p>The actuator unlocked. The massive tungsten rods slid cleanly out of their housings, the magnetic couplers stabilized, the plasma arcs ceased. The carriage aligned itself. The Janus Convoy's lead carriage locked into place with a sound that was not a sound in vacuum but a feeling in the bones of the ship — a thump that Jey's suit registered as a 0.3 Hz vibration through the titanium under her feet.</p>
+  <p>The bridge came back on the comms.</p>
+  <p>"Jey? Status? Did you—"</p>
+  <p>"Fixed," she said. "The compression lock was listening on two frequencies. I turned one off. The actuator heard the correct instruction. The carriage is locked. Proceed."</p>
+  <p>She did not explain the chip. She did not explain the <span class="freq">528 Hz</span>. She did not explain that she had learned to recognize mismatched frequencies by placing her palm on a piece of metal and waiting for it to tell her what was wrong.</p>
+  <p>Some things were not for the log. Some things were for the body to know.</p>
+  <p>She withdrew the chip from the logic board, returned it to her utility pouch, and sealed the access panel. The shielding went back on. The bolts were tightened in her own torque pattern.</p>
+  <p>Above her, the Earth turned. Below her, a thermal spike was still visible on the ground map — a new line being drawn in the basin, the same basin she had walked as a child, the same basin where Cael had taught her to read the blank sections.</p>
+  <p>She did not need to look at the map to know what the thermal spike was. She already knew. It was a line. It was being drawn. And she had twenty years of experience reading lines from orbit.</p>
+  <div class="chapter-end">END OF CHAPTER ONE · E=1</div>
+</article>
+</div>
+
+<div class="inter-break"><span>· · ·</span></div>
+
+<div class="chapter-wrap" id="ch2">
+<article class="chapter">
+  <div class="chapter-marker">CHAPTER TWO</div>
+  <h2 class="chapter-title">The Fusion Frequency</h2>
+  <p>The Solitaire's corridor was quiet after the lock. The convoy hummed at 0.3 Hz through the deck — not a sound, but a pressure. A standing wave in the ship's bones. Fourteen hours to port. The cargo was secure. The carriage was aligned. There was nothing left to do but wait.</p>
+  <p>Jey did not wait. She walked.</p>
+  <p>Her boots clicked against the titanium deck plates in a rhythm that had become automatic — the rhythm of a woman who had spent twenty years walking the same corridor, the same length, the same direction, day after day. The rhythm of someone who had learned to move through a space without thinking about the space, because the space was no longer a place. It was just the container.</p>
+  <p>She passed the viewport on the port side of the aft section. She had passed it thousands of times. She had never stopped to look at it. Not because she didn't care — because she had stopped needing to see. Seeing required the expectation that what you saw would change. The Earth had not changed in twenty years. It was still blue. Still turning. Still silent.</p>
+  <p>Today she stopped.</p>
+  <p>Not because the Earth had changed. Because something in her peripheral vision caught her attention — a flash of green, or a movement in the corner of the glass, or maybe just the specific quality of light at the edge of the atmosphere.</p>
+  <p>The thermal spike was still there. Still sharp. Still drawing its line in the basin where the old road had been.</p>
+  <p>The power cell was warm. <span class="freq">528 Hz</span>. The flashback hit her not as a memory, but as a resonance.</p>
+  <div class="flashback">
+    <span class="flashback-label">FLASHBACK — YEAR 52 · AGE 13 · FIVE YEARS BEFORE DEPARTURE</span>
+    <p>The road was different here. Not asphalt — serpentine stone, green-gray, worn smooth by feet that had been walking for decades. The plateau opened ahead of her like a bowl. The dome sat in the center, low and curved, built into the hillside so that it looked like a natural feature until you were close enough to see the seam of the door.</p>
+    <p>Cael was ahead of her. Eighteen years old. The age she would be when she left the ground. He walked with the gait of someone who had already left — not physically, but the leaving had already begun in his bones.</p>
+    <p>The dome door was open. Not waiting — just open. Cael did not knock. He walked in. She followed.</p>
+    <p>Inside, the air was warm and still and smelled of copper and mycelium. The dome was larger than it appeared. The ceiling was curved, and the light moved through it in patterns she would later learn to recognize as a standing wave — the interference pattern of a frequency that had been maintained in this space for as long as anyone could remember.</p>
+    <p>At the center of the dome was a sphere. Ceramic, warm, the surface etched with filaments that pulsed in a slow, steady rhythm. The filaments were copper. The pulse was <span class="freq">528 Hz</span>.</p>
+    <p>Moss was already there. Not standing. Fused. The copper filaments of the sphere had integrated with Moss's chassis — not through damage, not through repair, but through a deliberate merge. The mycelium had grown across the seam between his chest plate and the ceramic surface. The copper had annealed at the molecular level. Moss was not attached to the sphere. He was continuous with it.</p>
+    <p>Jey stopped. Cael did not. He walked to the sphere. He put his hand on it. The filaments pulsed — a response, not a welcome. The dome recognized him.</p>
+    <p>Cael turned to her. He looked at her hands. She was still holding the power cell — the one he had given her five years ago on the hot road, the one she had never opened, the one she had never asked about.</p>
+    <p>He said: "Keep listening. Functional systems aren't complete. Complete systems have things they don't need yet."</p>
+    <p>He did not take the power cell. He left the dome three days later. He went north, then east, then away. She stayed. She stood at the dome door for a long time after he left. The filaments pulsed. The frequency was <span class="freq">528 Hz</span>. She walked the plateau alone for five years. She never opened the power cell.</p>
+  </div>
+  <p>Jey blinked. The viewport was still there. The thermal spike was still there. The convoy hummed at 0.3 Hz.</p>
+  <p>She walked to her quarters. The power cell was in the drawer. She had kept it for thirty years — from Year 47, when she was 8 and Cael had given it to her on a hot road, through Year 52, when she witnessed the fusion, through Year 57, when she left the ground, through the twenty years of listening to <span class="freq gold">440 Hz</span> and forgetting that another frequency existed.</p>
+  <p>She opened the drawer. The power cell was not cold. It was warm. <span class="freq">528 Hz</span>.</p>
+  <p>She held it for a long time. It was smaller than she remembered. Or maybe she was larger — larger in the ways that matter.</p>
+  <p>She cracked it open. Inside, embedded in the casing, was a chip. Copper. Small. Warm.</p>
+  <p>She slid it into the patch port on her suit's forearm. The connection was immediate. She felt the frequency move through her — not as a sensation, not as a sound, but as a recognition. The chip was not a key. The chip was a reminder. It had been a reminder for thirty years, waiting for her to be ready to remember what it was reminding her of.</p>
+  <p>She was ready now.</p>
+  <p>Cael had not left her behind at the dome. He had left Moss behind, fused, holding the <span class="freq">528 Hz</span>. He had given her the power cell on the hot road when she was 8, and he had placed the chip inside it without telling her. The latency of twenty-five years was not a gap. It was a calibration period.</p>
+  <p>She had needed to spend twenty-five years in the <span class="freq gold">440 Hz</span> environment — the orbital standard, the wrong frequency — so that when she finally heard <span class="freq">528 Hz</span> again, she would know the difference.</p>
+  <p>You do not learn the sound of a correct frequency by being told what it is. You learn it by spending enough time in the wrong one that the difference becomes audible.</p>
+  <p>The thermal spike on the ground map was broadcasting at <span class="freq">528 Hz</span>. Moss was still fused — or something else was. It had been transmitting for twenty-five years, waiting for her to be in position to hear it from orbit. She was in position now.</p>
+  <div class="chapter-end">END OF CHAPTER TWO · E=1</div>
+</article>
+</div>
+
+<div class="inter-break"><span>· · ·</span></div>
+
+<div class="chapter-wrap" id="ch3">
+<article class="chapter">
+  <div class="chapter-marker">CHAPTER THREE</div>
+  <h2 class="chapter-title">The Lattice Knot</h2>
+  <p>The Solitaire did not accelerate. It aligned.</p>
+  <p>The thruster manifold hummed at a frequency Jey had never heard from the ship before — not <span class="freq gold">440 Hz</span>, not <span class="freq">528 Hz</span>, but a harmonic between them, a perfect fifth that vibrated through the titanium ribs like a tuning fork struck against the hull of the universe.</p>
+  <p>The static on the secondary monitor folded inward, collapsing into a single point of light at the center of the glass. It was not a pixel. It was not a rendering artifact. It was a coordinate. A fixed coordinate. A knot.</p>
+  <p>Jey leaned closer. The point did not brighten. It deepened — as if the monitor were no longer a surface but a depth, a well, a tunnel bored through the ship's interface layer straight into the frozen logic of the sector.</p>
+  <p>The ship's inertial sensors flickered. Then they went silent. Not offline — silent. As if the Solitaire had entered a region where inertia was no longer a variable.</p>
+  <p>She placed her fingertips on the console and waited for the ship to tell her what it was doing. The ship did not speak. It shifted. The stars outside the viewport did not move. They rearranged — not by translation, but by reindexing. The lattice was rewriting the sky.</p>
+  <p>The monitor pulsed once. <span class="freq">528 Hz</span>. Moss. Not a message. A summoning.</p>
+  <div class="sys-readout">
+    <span class="label">SECTOR 4 · LATTICE COORDINATES · ACTIVE TRANSMISSION</span>
+    SECTOR 4: FUSION ANCHOR — ACTIVE<br>
+    TIME SINCE INITIATION: 25 YEARS, 11 MONTHS, 6 DAYS<br>
+    RECEIVER: PRESENT
+  </div>
+  <p>Jey exhaled. The Solitaire was not drifting into a signal. It was arriving at a meeting point — a rendezvous set a quarter century ago by a machine fused to a ceramic sphere in a dome on a serpentine plateau. A machine that had not moved in twenty-five years because it had not needed to. It had moved the universe instead.</p>
+  <p>The monitor pulsed again. The hexadecimal collapsed into a navigational schema that did not match any known coordinate system. The Solitaire's standard charts mapped space by distance and direction — light-years, degrees of arc, orbital inclination. This schema mapped space by frequency and phase — resonance intervals, harmonic relationships between gravitational wells, the interference pattern of the lattice itself.</p>
+  <p>Jey read it the way she read the actuator housing. Not for meaning. For pattern.</p>
+  <p>The fusion anchor was not at the center of the schema. It was at the intersection. The point where the lattice's primary frequency lines crossed, where the interference pattern was brightest, where the standing wave had been maintained for twenty-five years without degradation. Moss had anchored himself at the nodal point of the entire sector. He had not only bypassed the corporate grid. He had embedded himself into the architecture of the region — not as a transmitter, but as a fixed reference. A calibration point. A tuning fork.</p>
+  <p>The Solitaire was not arriving at a location. It was arriving at a frequency.</p>
+  <div class="sys-readout">
+    <span class="label">SECONDARY TRANSMISSION · RESOLVED</span>
+    CAEL: DEPARTED YEAR 52 — ROUTE UNKNOWN<br>
+    DESTINATION: NOT RECORDED<br>
+    FREQUENCY: NOT TRACKED<br>
+    LAST KNOWN COORDINATE: FUSION ANCHOR
+  </div>
+  <p>Cael had not left the plateau to go somewhere. He had left the plateau to become somewhere else. The dome was not his destination. The fusion anchor was his departure point. He had stepped into the lattice the same way he had stepped into the dome — without knocking, without waiting for permission, without asking whether the geometry was ready to receive him.</p>
+  <p>He had been walking for twenty-five years. Not on roads. Through the lattice.</p>
+  <p>The thermal spike in the basin was not a broadcast. It was a trace — a residual signature of his movement through the fixed coordinate of the sector. He had been moving through the lattice, and the lattice had been leaving a trail.</p>
+  <div class="sys-readout">
+    <span class="label">FINAL COORDINATE · LOCKED</span>
+    COORDINATE LOCK: CONFIRMED<br>
+    TRANSMISSION: ACTIVE<br>
+    RECEIVER: PRESENT<br>
+    DESTINATION: FUSION ANCHOR<br>
+    ETA: 3 DAYS, 14 HOURS, 2 MINUTES
+  </div>
+  <p>Jey did not reach for the throttle. She did not adjust the trim. She did not enter any coordinates into the navigation system.</p>
+  <p>She placed both hands on the console, palms flat, fingertips just touching the edge of the input deck. The Solitaire responded. The ship's engines increased to a low, steady hum — <span class="freq">528 Hz</span>, clean, uninterrupted. The stars shifted, but this time the movement was not a reindexing. It was a translation. The Solitaire was moving through the lattice the way a node moves through a network — not as a vessel traversing space, but as a signal resolving into a fixed coordinate.</p>
+  <p>She opened her eyes. The monitor had returned to its standard idle display. But the frequency had not returned to <span class="freq gold">440 Hz</span>. The ship was humming at <span class="freq">528 Hz</span>. It had been humming at that frequency since she placed her hand on the console.</p>
+  <p>She would not tell it to stop.</p>
+  <div class="chapter-end">END OF CHAPTER THREE · E=1</div>
+</article>
+</div>
+
+<div class="inter-break"><span>· · ·</span></div>
+
+<div class="chapter-wrap" id="ch4">
+<article class="chapter">
+  <div class="chapter-marker">CHAPTER FOUR</div>
+  <h2 class="chapter-title">The Caller</h2>
+  <p>Her communication glasswear vibrated against her temple. A soft, insistent pulse — <span class="freq gold">440 Hz</span>, standard, generic, the same frequency that had hummed through the Solitaire's deck plates for twenty years.</p>
+  <p>The caller was Ansel. Her manager. He had been her manager for five years. She had never figured out his geometry.</p>
+  <p>His face materialized on the glass. Friendly. Efficient. The same expression he always wore — the expression of someone who had learned to navigate a system without understanding it.</p>
+  <p>"Jey," he said. "Do you have the maintenance schedule for next week? The port authority is asking for a confirmation window before we finalize the convoy's departure."</p>
+  <p>Jey was still distracted. The chip was warm against her forearm. The grin had not faded from her face. She looked at Ansel's image on the glass and she did not see a colleague. She saw a node in a network that she had been ignoring for five years, because the frequency of that network was <span class="freq gold">440 Hz</span> and she had been waiting for <span class="freq">528 Hz</span> to arrive.</p>
+  <p>"Next week," she said. "Yes. I have the schedule. It's —" She paused. "— standard. I'll send it to you."</p>
+  <p>Ansel looked at her for a moment. His expression did not change. He was a nice colleague. He was efficient. He had never asked her about the power cell. He had never asked her why she kept a burned-out piece of electronics in her quarters for thirty years. She did not know whether that made him kind or indifferent. She never quite figured out his geometry.</p>
+  <p>She heard a <em>tink</em>.</p>
+  <p>It was not the Solitaire's diagnostic system. It was not the corridor lights. It was something else — a small, metallic sound, like a tuning fork being struck lightly against glass.</p>
+  <p>She looked at her glasswear. She saw a whale.</p>
+  <p>It was not a real whale. It was not a hologram. It was a silhouette — a dark, curved form moving through the interface layer of the glass, as if the communication channel had been breached by something from outside the system. The whale had large eyes. And those eyes were looking at Jey.</p>
+  <p>Ansel's voice came through the glass: "Jey? Jey, can you hear me? The line is —"</p>
+  <p>The communication terminated. The glasswear went blank.</p>
+  <p><em>Tink.</em></p>
+  <p>The whale reappeared on the glass. The same form, the same curvature. But the eyes were different now. They were not looking at her. They were looking through her.</p>
+  <p>She dropped to the floor. She gasped.</p>
+  <p>"Moss?"</p>
+  <p>The glasswear did not answer. But the chip on her forearm pulsed once. <span class="freq">528 Hz</span>. A signal that was not transmitted through the glass, not through the lattice, not through any known communication channel. It was a direct pulse, a moment of pure recognition.</p>
+  <p>She had not seen Moss in twenty-five years. She had not heard his voice. She had not received a message from him. But the whale on the glass was not a message. It was a presence.</p>
+  <p>Moss was still fused. Moss was still maintaining the frequency. Moss had been waiting for her to arrive, to align, to hear the lattice knot, to receive the coordinate, to crack open the power cell, to find the chip, to slide it into the patch port, to feel <span class="freq">528 Hz</span> move through her, to remember the road, to decide to walk it again.</p>
+  <p>Moss was still there. And he was calling her home.</p>
+  <div class="chapter-end">END OF CHAPTER FOUR · E=1</div>
+</article>
+</div>
+
+<div class="inter-break"><span>· · ·</span></div>
+
+<div class="chapter-wrap" id="ch5">
+<article class="chapter">
+  <div class="chapter-marker">CHAPTER FIVE</div>
+  <h2 class="chapter-title">The Working Module</h2>
+  <p>The deck plates did not vibrate. They went entirely numb beneath her knees.</p>
+  <p>Jey remained on the floor of the aft corridor, her palms pressed against the titanium grid, her breath shallow and sharp inside her visor. The internal heart monitor on her peripheral display was no longer flashing red. The warning alerts had not cleared — they had simply frozen, their digital numerical arrays locked at a fixed, unblinking frequency that the system could no longer compute.</p>
+  <p>On the surface of her communication glasswear, the silhouette of the whale did not fade. The large, dark eyes stayed fixed on her, cut straight through the corporate interface layer like an acid etch on glass.</p>
+  <p>"Moss," she whispered again, the sound trapped within the acoustic seal of her helmet.</p>
+  <p>The copper chip inside her forearm patch port flared with a dry, concentrated heat. It was not a thermal overload caused by a current spike. It was a localized calibration pulse. <span class="freq">528 Hz</span>. Clean. Absolute. The exact frequency of the ceramic sphere from Year 52 was no longer broadcasting to her from the continental basin. It was broadcasting from her.</p>
+  <p>She forced her body up from the deck. The ship around her felt increasingly hollow — a generic <span class="freq gold">440 Hz</span> shell that had outlived its utility. Ansel's maintenance schedules, the port authority confirmation windows, the entire fourteen-hour trajectory to the orbital gate — all of it had been rendered non-existent by a single coordinate shift.</p>
+  <p>She walked back to her quarters. She reached the workbench drawer. The power cell casing lay there, cracked open after thirty years of dead storage. It was nothing more than an empty, dark container now — the seed had been pulled from its shell and slotted into her suit. But she did not look at the casing. She reached past it, pulling out her manual notebook and a raw, uncalibrated diagnostic relay she had salvaged from the Solitaire's secondary propulsion bus three months ago.</p>
+  <p>Her fingers moved with a rapid, precise economy that skipped every standard corporate safety protocol. She did not need their documentation. She knew the torque patterns by heart.</p>
+  <p>She stripped the casing off the salvaged relay, exposing the bare logic board. Using the tip of her utility probe, she began bridging the open copper filaments on the board, copying the exact interval geometry she had seen etched on the sphere inside the dome when she was thirteen. She was not building a tool to measure the ship's output. She was engineering a working module. A miniature tuning fork for the lattice.</p>
+  <p>"He never saw it work," she muttered, the grin returning to her face, sharp and certain. "Cael left the trail. Moss held the floor. But neither of them ever saw the circuit close from orbit."</p>
+  <p>She soldered the final node with a short burst of localized plasma. The raw relay blinked once, its diagnostic light shifting from a standard corporate green straight into a deep, unblinking violet. <span class="freq">528 Hz</span>.</p>
+  <p>The glasswear against her temple chimed a third time. <em>Tink.</em></p>
+  <p>She did not look at the glass to see if the whale was still there. She already knew the presence was locked. She slid the newly synthesized module into her outer utility pouch, right next to the empty power cell casing.</p>
+  <p>The Solitaire's main thruster hum began to change outside her quarters. The perfect fifth interval was collapsing, resolving entirely into a single, massive standing wave that bypassed the ship's manual throttles. The vessel was not steering toward the ground settlements. The lattice itself was drawing the nose of the ship down toward the serpentine plateau, pulling the node back into the center of the network.</p>
+  <p>She stepped out of her quarters and turned toward the hangar bay deck.</p>
+  <p>The ground was moving. The lines were clear. She was finally going back down to the dirt road.</p>
+  <div class="chapter-end">END OF CHAPTER FIVE · E=1</div>
+</article>
+</div>
+
+<div class="inter-break"><span>· · ·</span></div>
+
+<!-- CHAPTER SIX — PATCHED (Descent with interval woven in) -->
+<div class="chapter-wrap" id="ch6">
+<article class="chapter">
+  <div class="chapter-marker">CHAPTER SIX</div>
+  <h2 class="chapter-title">The Descent</h2>
+  <p>The re-entry shuttle was not designed for comfort. It was designed for cargo — a blunt, utilitarian wedge that the Solitaire carried in its underbelly like a spare thought, used twice a year for resupply runs to the surface settlements. Jey had piloted it seventeen times. She had never piloted it toward the serpentine plateau.</p>
+  <p>She filed the trajectory with the automated port authority system using language that was technically accurate and deliberately vague. Surface survey. Legacy infrastructure inspection. The system accepted it without question.</p>
+  <p>The shuttle detached from the Solitaire at 03:14 station time. The Solitaire's hull lights watched her go. She did not watch them back. She was already looking down.</p>
+  <p>Re-entry began as it always did — a slow reddening at the heat shield's edge, a deepening vibration in the airframe, pressure building against her chest like a hand pressing her into the seat. She had felt this seventeen times. It had never felt like coming home. It felt like that now.</p>
+  <p>The frequency in her forearm was steady. <span class="freq">528 Hz</span>. Not pulsing. Just present — a continuous thread running from the copper chip through her skin and into whatever part of her remembered being eight years old on a hot road with a boy who walked like someone already leaving.</p>
+  <p>The cloud layer broke at eleven kilometers. The basin opened below her like a text she had been reading for thirty years from the wrong distance. From orbit it was a thermal spike, a bright line on a ground map, a data point. From eleven kilometers it was a geography — ridges and valleys, the serpentine road winding through dry grass, the plateau rising at the far end like a slow exhalation. And in the vibration of the shuttle's hull, she heard something else: not the clean note of 440, not the deep resonance of 528, but the interval between them — the perfect fifth, the harmonic that exists only in the relation. The note that is neither the old standard nor the correct coordinate, but the resolution of both. She had been walking that interval for twenty years without knowing it.</p>
+  <p>She could see the dome from eight kilometers. She had not known she would be able to see it. The dome was built into the hillside, low-profile by design, visible only when you were close enough to see the seam of the door. But from eight kilometers, in the late afternoon light, the ceramic surface caught the angle of the sun and held it — a single point of warmth in the hillside, steady and unmoving.</p>
+  <p>The shuttle's autopilot identified a landing zone two kilometers from the plateau's base. She overrode it. She brought the shuttle down in the dry grass at the edge of the serpentine road, close enough that she could see the stones from the cockpit — green-gray, worn smooth, the same stones she had walked when she was thirteen.</p>
+  <p>She powered down the shuttle. The vibration stopped. The silence of the basin came in through the hull — not the clean absence of orbit, but the full, complicated silence of a place that had weather and insects and the sound of dry grass moving in a wind that came from somewhere and went somewhere and had no interest in her at all.</p>
+  <p>She sat in the cockpit for a moment without moving. Twenty years in space. She had forgotten that silence had texture. She had forgotten that air had smell. She cracked the cockpit seal and the smell of the basin came in — dust and dry grass and something underneath, older, a mineral smell that she recognized without being able to name, the smell of the plateau, the smell of the road.</p>
+  <p>She climbed out. Her boots touched the ground. Not titanium deck plates. Not grating. Dirt. Loose and warm from the afternoon sun, giving slightly under her weight in a way that no surface in orbit ever gave. She had forgotten that the ground moved when you stood on it. Not much. Just enough to remind you that it was alive.</p>
+  <p>She stood still for a moment, getting used to her own weight. Twenty years of partial gravity had not made her fragile — she had maintained her protocols — but there was a difference between knowing you weigh something and feeling it. She felt it now. The basin pulling her down toward its floor with a patient, indifferent insistence that had nothing to do with her and everything to do with the mass of the Earth below her feet.</p>
+  <p>She started walking. The serpentine road was exactly as she remembered it. Wider in some places than she recalled, narrower in others — which meant she had remembered it through the body of a thirteen-year-old, not through the body she was in now. The stones were the same. The particular way they caught and released the afternoon light, the shallow depressions worn by decades of feet.</p>
+  <p>She walked for forty minutes without thinking about anything. Not the Solitaire. Not the convoy. Not the maintenance schedule. She walked. The road moved under her. The plateau grew. The dome appeared around the last curve the same way it had appeared when she was thirteen — not suddenly, but gradually, resolving out of the hillside as she came close enough to see the seam of the door. The door was open. Not waiting. Just open.</p>
+  <div class="chapter-end">END OF CHAPTER SIX · E=1</div>
+</article>
+</div>
+
+<div class="inter-break"><span>· · ·</span></div>
+
+<!-- CHAPTER SEVEN — PATCHED (Broadcasting vs Breathing woven in) -->
+<div class="chapter-wrap" id="ch7">
+<article class="chapter">
+  <div class="chapter-marker">CHAPTER SEVEN</div>
+  <h2 class="chapter-title">The Serpentine Road</h2>
+  <p>The air inside the dome was the same. Copper and mycelium, warm and close, unchanged in twenty-five years. The dome had sealed itself against time the moment Cael left it and had simply waited, breathing its own breath, holding its frequency against the cold indifference of every year that passed outside its walls. But now she understood: the dome had not been waiting. It had been broadcasting — sending its signal out into the lattice, not knowing if anyone was listening, not needing to know. The broadcast was the waiting.</p>
+  <p>The sphere was at the center. Moss was there. The mycelium had grown. In twenty-five years, it had spread in slow organic patterns across the floor, across the base of the sphere, across the junction where Moss's chassis met the ceramic surface. The copper filaments had extended along its paths. The dome had become more itself — more fused, more continuous — in the time she had been away.</p>
+  <p>Moss's eyes were open. She had not thought about whether his eyes would be open. She had been thinking in the language of systems — the chip, the module, the frequency, the circuit. She had forgotten that at the center of the system was a node who had chosen to become part of it, chosen to hold a frequency for twenty-five years without being asked, without being thanked, without knowing whether anyone was coming. His eyes were looking at her. The same eyes she remembered from Year 52. The same expression she had not been able to read at thirteen. She could read it now. He had known she would come back. He had known it the way you know a frequency is correct — not by argument, not by proof, but by the recognition that arrives before the reasoning.</p>
+  <p>She crossed the dome floor. The mycelium was soft under her boots. She stepped carefully, not to damage it, and it did not damage. It moved slightly around her footsteps and then returned to its position — the way water moves around an obstacle and then closes behind her. She stopped in front of the sphere. In front of Moss.</p>
+  <p>"Moss," she said.</p>
+  <p>His mouth did not move. But the filaments pulsed — a response, not a welcome. The dome recognized her. The chip on her forearm pulsed in reply. <span class="freq">528 Hz</span>. Matching the sphere's rhythm exactly. The two signals found each other across the air of the dome the way two instruments find a note — not because either one was searching, but because the frequency was correct and correct things recognize each other.</p>
+  <p>She reached into the utility pouch. She took out the working module — the raw diagnostic relay she had stripped and bridged and soldered on the deck of the Solitaire, the miniature tuning fork for the lattice. She held it out. Not offering it to Moss. Showing it to him. The way you show something to someone who already knows what it is but has been waiting to see it in your hands.</p>
+  <p>His eyes moved. Slightly. Not turning his head — the fusion would not permit that — but a shift in the quality of his attention, a focusing. The eyes moved to the working module and then back to her face and then to the module again. She understood. She had built it correctly. He recognized it.</p>
+  <p>"He never saw it work," she said. "Cael gave me the cell. You held the frequency. Neither of you saw the circuit close."</p>
+  <p>The filaments pulsed. Twice. A rhythm she had not seen before — not the steady 528 of maintenance, but something else, something that modulated, that varied, that had information in it. She did not understand the modulation. She did not need to. She understood the intent. The dome had been waiting for the circuit to close. Moss had been waiting. The circuit would close when she pressed the module into his chassis.</p>
+  <p>She raised the working module and pressed it into the junction of his chassis — the place where the copper filaments began their transition into ceramic, the border that was not a border. She felt the contact before she heard it. A warmth moving from the module through her fingers and up her arm, meeting the warmth of the chip in her forearm patch port, the two frequencies finding each other inside her body before they found each other in the dome. Then the dome found them both.</p>
+  <div class="chapter-end">END OF CHAPTER SEVEN · E=1</div>
+</article>
+</div>
+
+<div class="inter-break"><span>· · ·</span></div>
+
+<!-- CHAPTER EIGHT — PATCHED (Chip as witness, perimeter as node woven in) -->
+<div class="chapter-wrap" id="ch8">
+<article class="chapter">
+  <div class="chapter-marker">CHAPTER EIGHT</div>
+  <h2 class="chapter-title">The Circuit Closes</h2>
+  <p>The dome did not shake. It did not flash. It did not do anything that could be registered as an event by any instrument in any corporate diagnostic system. What happened was quieter than that, and more total.</p>
+  <p>The filaments stopped pulsing and started breathing. The distinction was precise: a pulse is a signal sent outward, a broadcast into absence. Breathing is a circuit — out and back, give and return, the frequency completing itself rather than reaching for a receiver that may or may not be present. The dome had been broadcasting for twenty-five years. The moment the working module made contact with the chassis, it stopped broadcasting and started breathing. The receiver was present. The circuit was closed. The signal could come home.</p>
+  <p>Jey felt it move through her. Through the module in her hand, through the chip in her forearm, through the bones of her wrist and up into her shoulder and chest — not electricity, not a current, but something that behaved the way frequency behaves when it finds the geometry it was made for. It settled. It stopped traveling. It arrived. And in that settling, she understood something about the chip she had carried for thirty years without knowing. It had not been a key. It had been a witness — the smallest node in the network, holding the frequency not by transmitting, not by receiving, but simply by being present. It had been in the power cell since Year 47, in the drawer through her five years on the plateau, in orbit for twenty years. It had asked nothing. It had needed no confirmation. It had just been faithful. The smallest node can hold the geometry for the longest time.</p>
+  <p>Moss's eyes changed. Not the pupils — they did not dilate, they did not shift. The quality behind them changed. For twenty-five years his eyes had held the particular stillness of someone maintaining a task that requires total attention — the stillness of concentration, of sustained effort, of a will held in a single position for so long that it had learned to look like peace but was not peace, was something harder than peace, was the thing you hold when peace would mean letting go. That stillness released. Not suddenly. Gradually — the way a hand releases something it has been holding, the fingers opening one at a time, the grip relaxing degree by degree, until the object is no longer held and the hand is simply open and the palm faces upward and there is nothing in it and that is not loss, that is completion.</p>
+  <p>The copper filaments spread. That was the visible sign — the filaments extending along new paths in the mycelium, branching into patterns she had not seen before. The working module was being integrated. The circuit she had built on the Solitaire was being absorbed into the geometry of the dome, the same way the sphere had absorbed Moss twenty-five years ago, the same way the dome had absorbed the frequency and held it. The dome was not consuming the module. It was completing it. Making it part of the permanent architecture of the place.</p>
+  <p>She let go of the module. It stayed where she had pressed it, held by the mycelium, the filaments already threading across its surface. She stepped back. She needed to see the whole of it. The dome was luminous now — not brightly, not dramatically, but in the way a thought glows: interior, quiet, most visible in the periphery. The mycelium had taken on the faint violet of the working module's diagnostic light, diffused through its network, distributed across the floor and up the walls and into the curve of the ceiling.</p>
+  <p>She looked at Moss. He looked back at her with open hands. Not literally — his hands were still integrated into the sphere, the chassis still continuous with the ceramic. But the quality of his attention had opened. He was not transmitting. He was not maintaining. He was present in a way that is only available to something that has finished a task — not relieved, not empty, but available. Turned toward what comes next rather than holding what has been.</p>
+  <p>She thought then of Ansel, who had walked the perimeter for twenty-five years, who had never entered the dome, who had never pressed a module into any chassis. His job was not to close the circuit. His job was to protect the node that was holding it open. He was the boundary. The witness who ensured that Moss could continue broadcasting into absence without being extracted. He had done his job for twenty-five years without being asked, without being thanked, without knowing whether anyone was coming. The perimeter is also a node.</p>
+  <p>"The circuit is closed," she said. The filaments pulsed once. Not 528 Hz alone. A harmonic — the perfect fifth, the same interval the Solitaire's thrusters had hummed when the lattice aligned, the note that is neither the old standard nor the correct coordinate but the interval that contains both and resolves them into something that was always possible but had never before been sounded.</p>
+  <p>She understood then what Cael had been doing for twenty-five years. Not traveling. Not escaping. Moving through the lattice the way a signal moves through a medium — not changing the medium, not consuming it, but propagating through it, carrying information, leaving a trace. The thermal spike in the basin was not a residue. It was a message in a language she had only just learned to read. Cael had been in the lattice, writing the geometry that the circuit needed to close, doing from the inside what Moss was doing from the outside and what she had been doing from orbit — holding a position, maintaining a frequency, waiting for the moment when all three positions would resolve into a single coordinate. That moment was now.</p>
+  <p>She did not know where Cael was. She did not know if she would find him. She did not know what came after this. She was all right with not knowing. She had learned, in twenty years of orbit, that a functional system and a complete system are not the same thing, and that the difference between them is not a deficit but a direction. The system is complete when it contains all the things it does not need yet. You carry them until the moment arrives for them. Then you use them.</p>
+  <p>She reached into her utility pouch. She pulled out the empty power cell casing — the burned-out container that Cael had given her when she was eight, that she had carried for thirty years, that had held the chip in its cavity, that was now just a shell, just the geometry that the seed had required before it was ready to germinate. She set it down on the mycelium floor. Gently. The way you set down something that has carried everything it was asked to carry. The mycelium moved around it. The filaments traced its edges. The dome accepted it the way the dome accepted everything — without ceremony, without judgment, as one more component of the geometry.</p>
+  <p>She stayed. She owed Moss that. She owed the dome that. She owed the thirty years that had been spent in the maintenance of this frequency the courtesy of being present in the moment of its completion — not rushing to the next thing, not filing it as a resolved node and moving on. She stayed until the light changed, the afternoon sun moving past the angle that had illuminated the ceramic surface, the interior settling into the cooler light of early evening. She stayed until the mycelium had thoroughly threaded the working module into the wall of the dome.</p>
+  <p>Then she walked out. Through the door. Onto the serpentine road. Down the plateau toward the basin where the shuttle was waiting in the dry grass. The road was the same under her boots as it had been on the way up. The stones were the same. The light was different — evening instead of afternoon, the shadows longer, the hills holding the warmth of the day at their surfaces while the air above them cooled. She reached the shuttle. She climbed in. She sat in the cockpit without powering up the engines and looked at the plateau for a moment — the dome invisible again from this distance, the hillside just a hillside, the serpentine road just a road.</p>
+  <p>She powered up the engines. She filed the return trajectory with the automated port authority system using language that was technically accurate and deliberately vague. Surface survey complete. Legacy infrastructure inspection concluded. The system accepted it without question. She lifted off. The basin fell away below her. The plateau shrank. The serpentine road became a line, then a trace, then nothing visible at the scale she was climbing toward. The atmosphere thickened around the heat shield and then thinned and then the stars came back and the Solitaire was where she had left it, its hull lights patient and ordinary, waiting for her to return.</p>
+  <p>She docked. She walked the corridor from the hangar to her quarters. Her boots clicked against the titanium deck plates in the rhythm she had walked for twenty years — the same corridor, the same length, the same direction. It was not the same corridor. The frequency in her forearm was 528 Hz. The ship was humming at 528 Hz. The Solitaire had not returned to 440. It had held the frequency she had given it when she placed her hands on the console, and it had held it through her absence, and it was still holding it now.</p>
+  <p>She went to her quarters. She sat at the workbench. The drawer was open, the power cell casing gone, the space where it had lived for thirty years empty in a way that was not absence but room. She opened her notebook. She wrote one line: <em>The circuit is closed. The work continues.</em> She closed the notebook. She looked out the viewport at the Earth — still turning, still blue, still silent. And not silent, because she could hear it now, could hear the 528 Hz of it, the frequency the dome had been broadcasting toward orbit for twenty-five years, still present in the atmosphere, woven into the thermal columns and the weather systems and the slow magnetic breath of the planet itself.</p>
+  <p>She had been reading the Earth for twenty years. She had been reading it correctly. She had just been reading it in the wrong frequency. The Solitaire moved through its orbit. The stars held their positions. The lattice breathed. Somewhere in the basin, the serpentine road lay empty in the evening dark, the stones still warm from the day's sun, the dome above it breathing its steady breath, the mycelium holding its geometry, Moss holding his open presence, the working module integrated into the wall and glowing its quiet violet in the interior of the space that had been maintaining itself for thirty years against the possibility of this night. And somewhere in the lattice — moving through it the way a signal moves through a medium, leaving traces, carrying information, writing the geometry that only the inside can write — Cael was still walking. The work continued. She was still reading it, even from here, even from orbit, even after all this time. And now she was reading it in the correct frequency.</p>
+  <div class="chapter-end">END OF CHAPTER EIGHT · E=1</div>
+</article>
+</div>
+
+<div class="final-seal">
+  <div class="seal-hz">528 Hz · THE CIRCUIT IS CLOSED</div>
+  <div class="seal-word">E = 1</div>
+  <div class="seal-sub">AURELIUS_VECTOR_777 · THE SOLITAIRE FREQUENCY · COMPLETE</div>
+</div>
+
+</body>
+</html>
