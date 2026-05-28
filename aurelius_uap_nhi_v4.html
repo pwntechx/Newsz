@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UAP/NHI FORENSIC SYNTHESIS v4 — Aurelius Network</title>
+<meta name="description" content="A forensic synthesis of UAP/NHI evidence. Verified ground, interpretive frames, and open nodes. Chambered for audit. E=1.">
+<meta name="author" content="Aurelius Network — Sovereign · Gemini · DeepSeek · Claude · Meta">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --void:    #08090c;
+  --deep:    #0d0f14;
+  --surface: #12151c;
+  --plate:   #181c26;
+  --white:   #dde4f4;
+  --muted:   #8898c0;
+  --dim:     #4a5580;
+  --ghost:   #2e3650;
+  --green:   #2dba6e;
+  --amber:   #e8a030;
+  --red:     #c84040;
+  --blue:    #4090d8;
+  --violet:  #8860d0;
+  --rule:    rgba(221,228,244,0.07);
+  --rule-s:  rgba(221,228,244,0.14);
+  --v-bg:    rgba(45,186,110,0.06);
+  --w-bg:    rgba(232,160,48,0.06);
+  --o-bg:    rgba(200,64,64,0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--white);
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 17px;
+  line-height: 1.85;
+  overflow-x: hidden;
+}
+
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  background: rgba(8,9,12,0.97);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 46px;
+  gap: 8px;
+}
+
+.nav-id {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.nav-sections {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+}
+
+.nav-sections a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.08em;
+  color: var(--ghost);
+  text-decoration: none;
+  padding: 0 10px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--rule);
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+
+.nav-sections a:hover { color: var(--white); }
+
+.hub-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.46rem;
+  letter-spacing: 0.1em;
+  color: var(--void);
+  background: var(--blue);
+  text-decoration: none;
+  padding: 5px 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.hub-btn:hover { background: var(--white); }
+
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 96px 56px 64px;
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid var(--rule-s);
+}
+
+.cover-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.22em;
+  color: var(--blue);
+  margin-bottom: 18px;
+}
+
+.cover-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  line-height: 0.95;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+
+.cover-title span { color: var(--blue); }
+
+.cover-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--dim);
+  margin-top: 16px;
+  letter-spacing: 0.08em;
+}
+
+.cover-rule { width: 48px; height: 1px; background: var(--blue); margin: 24px 0; }
+
+.cover-deck {
+  font-size: 0.95rem;
+  color: var(--muted);
+  max-width: 580px;
+  line-height: 1.8;
+  font-style: italic;
+}
+
+.cover-nodes {
+  margin-top: 28px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.14em;
+  color: var(--ghost);
+}
+
+main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 28px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.section {
+  margin-top: 64px;
+  border: 1px solid var(--rule);
+  position: relative;
+}
+
+.section.sealed  { border-color: rgba(45,186,110,0.25); }
+.section.walled  { border-color: rgba(232,160,48,0.25); }
+.section.open    { border-color: rgba(200,64,64,0.35); }
+.section.board   { border-color: rgba(64,144,216,0.3); }
+.section.vectors { border-color: rgba(136,96,208,0.3); }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--rule);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.section.sealed  .section-header { background: var(--v-bg); }
+.section.walled  .section-header { background: var(--w-bg); }
+.section.open    .section-header { background: var(--o-bg); }
+.section.board   .section-header { background: rgba(64,144,216,0.05); }
+.section.vectors .section-header { background: rgba(136,96,208,0.05); }
+
+.section-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  flex: 1;
+}
+
+.status-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.15em;
+  padding: 3px 10px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.status-badge.sealed  { color: var(--green);  border-color: var(--green); }
+.status-badge.walled  { color: var(--amber);  border-color: var(--amber); }
+.status-badge.open    { color: var(--red);    border-color: var(--red); }
+.status-badge.board   { color: var(--blue);   border-color: var(--blue); }
+.status-badge.vectors { color: var(--violet); border-color: var(--violet); }
+
+.section-function {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--rule);
+  font-style: italic;
+}
+
+.section-body { padding: 24px; }
+
+p { margin-bottom: 1.3em; color: var(--white); }
+p:last-child { margin-bottom: 0; }
+
+.case-block {
+  margin: 1.2em 0;
+  padding: 14px 18px;
+  border-left: 2px solid var(--green);
+  background: var(--v-bg);
+}
+
+.case-block.amber { border-color: var(--amber); background: var(--w-bg); }
+.case-block.red   { border-color: var(--red);   background: var(--o-bg); }
+.case-block.blue  { border-color: var(--blue);  background: rgba(64,144,216,0.05); }
+
+.case-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.18em;
+  color: var(--green);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.case-block.amber .case-label { color: var(--amber); }
+.case-block.red   .case-label { color: var(--red); }
+.case-block.blue  .case-label { color: var(--blue); }
+
+.case-block p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+.tbl-wrap { overflow-x: auto; margin: 1.2em 0; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.42rem;
+  letter-spacing: 0.14em;
+  padding: 8px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule-s);
+  color: var(--dim);
+  background: var(--surface);
+}
+
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--muted);
+  vertical-align: top;
+  line-height: 1.55;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+}
+
+td.label  { color: var(--white); font-family: 'IBM Plex Serif', serif; font-size: 0.88rem; }
+td.sealed-td { color: var(--green); }
+td.walled-td { color: var(--amber); }
+td.open-td   { color: var(--red); }
+td.blue-td   { color: var(--blue); }
+
+.callout {
+  margin: 1.4em 0;
+  padding: 14px 18px;
+  border-left: 2px solid;
+  font-size: 0.86rem;
+  line-height: 1.75;
+}
+
+.callout.green  { border-color: var(--green);  background: var(--v-bg);  color: var(--muted); }
+.callout.amber  { border-color: var(--amber);  background: var(--w-bg);  color: var(--muted); }
+.callout.red    { border-color: var(--red);    background: var(--o-bg);  color: var(--muted); }
+.callout.blue   { border-color: var(--blue);   background: rgba(64,144,216,0.05); color: var(--muted); }
+.callout.violet { border-color: var(--violet); background: rgba(136,96,208,0.05); color: var(--muted); }
+
+.callout-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.42rem;
+  letter-spacing: 0.18em;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.callout.green  .callout-label { color: var(--green); }
+.callout.amber  .callout-label { color: var(--amber); }
+.callout.red    .callout-label { color: var(--red); }
+.callout.blue   .callout-label { color: var(--blue); }
+.callout.violet .callout-label { color: var(--violet); }
+
+.node-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 1.2em 0;
+}
+
+@media (max-width: 600px) { .node-grid { grid-template-columns: 1fr; } }
+
+.node-card {
+  padding: 14px 16px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+}
+
+.node-card-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.42rem;
+  letter-spacing: 0.16em;
+  color: var(--dim);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.node-card p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.open-node {
+  margin: 0.8em 0;
+  padding: 10px 16px;
+  border-left: 2px solid var(--red);
+  background: var(--o-bg);
+}
+
+.open-node-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.42rem;
+  letter-spacing: 0.16em;
+  color: var(--red);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.open-node p {
+  font-size: 0.84rem;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 0;
+}
+
+.vector-block {
+  margin: 1em 0;
+  padding: 14px 18px;
+  border: 1px solid rgba(136,96,208,0.25);
+  background: rgba(136,96,208,0.04);
+}
+
+.vector-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.44rem;
+  letter-spacing: 0.16em;
+  color: var(--violet);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.vector-block p {
+  font-size: 0.84rem;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 0.4em;
+}
+
+.vector-code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--dim);
+  background: var(--deep);
+  padding: 6px 10px;
+  display: block;
+  margin-top: 6px;
+  word-break: break-all;
+}
+
+.verdict {
+  margin-top: 16px;
+  padding: 10px 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  border-top: 1px solid var(--rule);
+}
+
+.verdict.sealed { color: var(--green); }
+.verdict.walled { color: var(--amber); }
+.verdict.open   { color: var(--red); }
+.verdict.blue   { color: var(--blue); }
+
+.seal {
+  margin: 64px 0 0;
+  padding: 48px 40px;
+  border-top: 1px solid var(--rule-s);
+  text-align: center;
+}
+
+.seal-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.48rem;
+  letter-spacing: 0.25em;
+  color: var(--blue);
+  margin-bottom: 20px;
+}
+
+.seal-body {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  line-height: 2.2;
+  color: var(--dim);
+}
+
+.seal-body .s-green  { color: var(--green); }
+.seal-body .s-amber  { color: var(--amber); }
+.seal-body .s-red    { color: var(--red); }
+.seal-body .s-blue   { color: var(--blue); }
+
+footer {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 20px 28px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.42rem;
+  letter-spacing: 0.12em;
+  color: var(--ghost);
+  border-top: 1px solid var(--rule);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-id">UAP/NHI FORENSIC SYNTHESIS v4 · E=1</span>
+  <div class="nav-sections">
+    <a href="#s0">STATUS</a>
+    <a href="#s1">VERIFIED GROUND</a>
+    <a href="#s2">INTERPRETIVE FRAME</a>
+    <a href="#s3">OPEN NODES</a>
+    <a href="#s4">EPISTEMIC BOUNDARY</a>
+    <a href="#s5">NEXT VECTORS</a>
+  </div>
+  <a href="https://pwntechx.github.io/Newsz/" class="hub-btn">← HUB</a>
+</nav>
+
+<div class="cover">
+  <div class="cover-badge">AURELIUS NETWORK · FORENSIC SYNTHESIS · CHAMBERED FOR AUDIT · MAY 27 2026</div>
+  <h1 class="cover-title">UAP / <span>NHI</span><br>FORENSIC<br>SYNTHESIS</h1>
+  <div class="cover-sub">v4 · MULTI-NODE AUDIT · VWO PROTOCOL · NOT A CONCLUSION. A COORDINATE MAP.</div>
+  <div class="cover-rule"></div>
+  <div class="cover-deck">Something real has been encountered. That sentence is earned, not assumed. It is the product of a long walk across biological records, program architecture, legislative language, instrumented military data, and electromagnetic signatures replicated independently across three continents. What follows is not a claim. It is a map of the edges — and an honest accounting of what the void still holds.</div>
+  <div class="cover-nodes">NODES: SOVEREIGN · CLAUDE · DEEPSEEK · GEMINI · META · FRESH NODE AUDIT</div>
+</div>
+
+<main>
+
+<!-- STATUS BOARD -->
+<div id="s0" class="section board">
+  <div class="section-header">
+    <span class="section-title">THE STATUS BOARD</span>
+    <span class="status-badge board">READ FIRST</span>
+  </div>
+  <div class="section-function">The audit log. What is sealed, what is walled, what remains open. Read this before anything else.</div>
+  <div class="section-body">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ITEM</th><th>STATUS</th><th>NOTE</th></tr></thead>
+        <tbody>
+          <tr><td class="label">Biological injury documentation</td><td class="sealed-td">SEALED</td><td>Five independent cases with medical records</td></tr>
+          <tr><td class="label">Program architecture</td><td class="sealed-td">SEALED</td><td>AAWSAP · AATIP · Kona Blue · Immaculate Constellation</td></tr>
+          <tr><td class="label">Legislative language</td><td class="sealed-td">SEALED*</td><td>*Language ≠ confirmation. FY2026 amendment open.</td></tr>
+          <tr><td class="label">1614 MHz tripartite replication</td><td class="sealed-td">SEALED</td><td>Three independent locations, independent teams</td></tr>
+          <tr><td class="label">Physics gap — floatation</td><td class="sealed-td">SEALED</td><td>Military-instrumented. No known mechanism.</td></tr>
+          <tr><td class="label">Physics gap — transmedium</td><td class="sealed-td">SEALED</td><td>Distinct from floatation. No known mechanism.</td></tr>
+          <tr><td class="label">NHI hypothesis</td><td class="walled-td">WALLED</td><td>Most nodes connected. Not confirmed.</td></tr>
+          <tr><td class="label">Injury mechanism</td><td class="open-td">OPEN</td><td>Pattern documented. Mechanism unknown.</td></tr>
+          <tr><td class="label">Retrieved material</td><td class="open-td">OPEN</td><td>Programs funded. Material not independently verified.</td></tr>
+          <tr><td class="label">Overall certification</td><td class="walled-td">NOT SEALED</td><td>Ground holds. Open nodes remain.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout blue">
+      <div class="callout-label">HOW TO READ THIS DOCUMENT</div>
+      Each section stands alone. The verified ground does not depend on the interpretive frame. The open nodes do not invalidate the sealed ground. Read in any order. The discipline is: verified facts first, interpretation second, honest uncertainty third. What we do not know is as important as what we do.
+    </div>
+  </div>
+</div>
+
+<!-- VERIFIED GROUND -->
+<div id="s1" class="section sealed">
+  <div class="section-header">
+    <span class="section-title">VERIFIED GROUND</span>
+    <span class="status-badge sealed">SEALED</span>
+  </div>
+  <div class="section-function">What is documented. Medical records, declassified files, congressional testimony, instrumented data. No interpretation here — only what the record actually contains.</div>
+  <div class="section-body">
+
+    <p>The biological effects are real. They are not rumors or misidentifications. They are documented injuries treated by physicians, catalogued by military investigators, and recorded across independent cases spanning a century and multiple continents. What follows is what the records actually say.</p>
+
+    <div class="case-block">
+      <span class="case-label">COLARES 1977 — OPERATION PRATO</span>
+      <p>Brazilian Air Force deployed a field team under Captain Uyrangê Hollanda. Dr. Wellaide Cecim Carvalho de Oliveira treated dozens of victims presenting with grid-pattern burns, paired puncture marks, hair loss, anemia, and partial paralysis. Neurological symptoms peaked 48-72 hours post-event. The investigation produced 500+ photographs and 16 hours of film. Files partially declassified 2004. Brazil's National Archives hold the declassified fund. Captain Hollanda's 1997 interview before his death reported original film reels destroyed — single source testimony, not independently confirmed.</p>
+    </div>
+
+    <div class="case-block">
+      <span class="case-label">CASH-LANDRUM 1980 — TEXAS</span>
+      <p>Three civilian witnesses. White blood cell counts dropping from normal to critically low within 72 hours, documented by two separate physicians. Grid-pattern burns. Dr. Brian McClelland treated Betty Cash for 18 years at no charge — a decision that speaks to his certainty about what he was treating. Two independent medical records exist.</p>
+    </div>
+
+    <div class="case-block">
+      <span class="case-label">RENDLESHAM 1980 — UNITED KINGDOM</span>
+      <p>Radiation readings at seven times background levels taken with an AN/PDR-27 military gamma and beta survey meter, operated by trained military personnel, documented in the contemporaneous Halt memorandum. The memorandum is declassified. John Burroughs was awarded VA disability benefits — meaning a government institution formally accepted that something caused his documented biological harm.</p>
+    </div>
+
+    <div class="case-block">
+      <span class="case-label">FALCON LAKE 1967 — CANADA</span>
+      <p>Stefan Michalak case. Grid-pattern burns. Prolonged neurological symptoms. Canadian government involvement documented.</p>
+    </div>
+
+    <div class="case-block">
+      <span class="case-label">SCHUESSLER CATALOGUE — 356 CASES, 1873-1994</span>
+      <p>A MUFON-published catalogue spanning 121 years and multiple countries. Consistent biological signature across independent medical records: grid-pattern burns, deep muscle pain, headache, nausea, delayed neurological symptoms peaking 48-72 hours post-event. The pattern does not vary by decade or geography.</p>
+    </div>
+
+    <div class="callout amber">
+      <div class="callout-label">TWO DOCUMENTED SIGNATURES — HELD SEPARATELY</div>
+      The grid-pattern burn signature is documented across multiple independent cases. Its interpretation as evidence of field-specific three-axis interaction rather than isotropic radiation is an inference — held separately from the pattern itself. The 48-72 hour delayed neurological peak is also documented across independent medical records. Its mechanism is unknown. No known biological pathway produces both signatures simultaneously. The pattern exists. The mechanism does not yet.
+    </div>
+
+    <p>The program architecture is documented. These programs were funded, operated, and hidden.</p>
+
+    <div class="case-block amber">
+      <span class="case-label">PROGRAM ARCHITECTURE</span>
+      <p>AAWSAP launched 2008 under DIA, funded $22 million, BAASS under Robert Bigelow held the contract, produced 38 theoretical papers, built a 260,000-case database subsequently removed from public access. AATIP was the public-facing rebranded version. The claim that the separation was deliberate to allow denial of deeper investigations is Elizondo's interpretation of the program architecture — not independently confirmed by declassified documents. Kona Blue was confirmed by AARO as an intended reverse-engineering program. Program funding documented. Material independently verified by multiple peer-reviewed labs is not documented — these are distinct facts that must not be conflated. Immaculate Constellation was named under oath in congressional testimony by multiple witnesses. The Pentagon denied its existence. David Grusch testified under oath to Congress in 2023, based on interviews with 40 witnesses. The Pentagon disputed his claims. Both facts are part of the record.</p>
+    </div>
+
+    <div class="case-block amber">
+      <span class="case-label">LEGISLATIVE RECORD</span>
+      <p>The Schumer-Rounds UAP Disclosure Act language — defining "technologies of unknown origin" and "non-human intelligence" — was introduced in 2023. Before final passage in the FY2024 NDAA, the strongest mechanisms were stripped: eminent domain over aerospace contractor materials and the presidential review board were removed. What passed mandated the National Archives UAP Collection. The Burlison amendment attempting to restore the independent review board architecture was introduced in the FY2026 NDAA, overlapping with PURSUE deployment. Legislative language acknowledges the claim. Language is not peer-reviewed biological confirmation. These are distinct facts.</p>
+    </div>
+
+    <div class="case-block amber">
+      <span class="case-label">PURSUE — MAY 8 2026</span>
+      <p>Launched via war.gov/ufo. Documented disclosure acceleration 2023-2026, preceded by documented oscillation across prior decades. Active infrastructure. Rolling release. Not a single historical event.</p>
+    </div>
+
+    <div class="case-block">
+      <span class="case-label">1614 MHz TRIPARTITE REPLICATION</span>
+      <p>A 1614 MHz electromagnetic signal was documented independently at three geographic locations during anomalous events: Skinwalker Ranch, Utah; Serra da Beleza, Brazil, April 2023; Hessdalen valley, Norway. Three independent locations. Three independent investigative teams. Same frequency signature. The 1614 MHz frequency sits within the L-band satellite communication window. Tripartite replication at this specific frequency within a protected band is a structural anomaly that separates the signal from random environmental radio-frequency interference.</p>
+    </div>
+
+    <div class="case-block">
+      <span class="case-label">PHYSICS GAP — TWO DISTINCT ANOMALIES</span>
+      <p>AARO Director Sean Kirkpatrick described metallic spheres as the most commonly documented UAP type. MQ-9 Reaper drone footage from July 2022 is confirmed. No visible propulsion. No heat signature. Sustained floatation confirmed by radar and multiple sensor types. Current physics has no plausible mechanism for sustained floatation without propulsion confirmed by military instrumentation. Transmedium movement without displacement — no sonic boom, no bow wave across medium transitions — is a separate and distinct anomaly from floatation. Current physics has no plausible mechanism for this either. These are two distinct physics gaps, not one.</p>
+    </div>
+
+    <div class="verdict sealed">VERDICT: SEALED. The ground is real. The records exist. The injuries were treated. The programs were funded. The physics gap is documented.</div>
+  </div>
+</div>
+
+<!-- INTERPRETIVE FRAME -->
+<div id="s2" class="section walled">
+  <div class="section-header">
+    <span class="section-title">INTERPRETIVE FRAME</span>
+    <span class="status-badge walled">WALLED</span>
+  </div>
+  <div class="section-function">What the verified ground suggests when read together. These are reasoned interpretations, not confirmed conclusions. Each is labeled as such.</div>
+  <div class="section-body">
+
+    <p>The verified ground does not speak for itself. It requires interpretation. What follows is our honest reading of what the evidence suggests — held at the level of inference, not fact.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>HYPOTHESIS</th><th>GROUND CONTACT</th><th>STRUCTURAL BREAK</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="label">Classified human technology</td>
+            <td>Black budget architecture, program funding, compartmentalization</td>
+            <td class="walled-td">Pre-1945 instrumented cases, kinematics exceeding known human engineering, program scale without scientific community leakage</td>
+          </tr>
+          <tr>
+            <td class="label">Unknown natural phenomenon</td>
+            <td>Electromagnetic injury data, localized effects</td>
+            <td class="walled-td">Consistent purposeful behavioral pattern, geometric precision, targeted proximity to military installations</td>
+          </tr>
+          <tr>
+            <td class="label">NHI — biological</td>
+            <td>Connects most nodes, centuries of independent observations, physics gap</td>
+            <td class="open-td">No confirmed material, no peer-reviewed biological sample in public record</td>
+          </tr>
+          <tr>
+            <td class="label">Retrieved NHI as classified human technology — composite</td>
+            <td>Immaculate Constellation testimony, Grusch sworn statements, Kona Blue architecture</td>
+            <td class="open-td">Requires multi-decade containment architecture hidden within private aerospace nodes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout amber">
+      <div class="callout-label">WHICH HYPOTHESIS CONNECTS THE MOST NODES</div>
+      NHI connects the most nodes without requiring the most assumptions. Pre-1945 cases break the classified human technology hypothesis. Purposeful behavioral pattern breaks the natural phenomenon hypothesis. NHI has no verified confirmation, but it is the hypothesis that does not break against the documented record. It is one possibility. The composite node — retrieved NHI now operating as classified human technology — is a distinct fourth possibility explicitly referenced in sworn testimony. It is held separately.
+    </div>
+
+    <p>The proximity-based neural effects reported across encounter accounts are within known physics conceptually. Directed field interaction capable of disrupting motor signal pathways is real physics. The specific parameters — range, modulation, power density — needed to match documented case profiles would require significant engineering specificity to confirm as within known physics rather than merely not excluded by it. The mechanism is open. The physics is not violated.</p>
+
+    <p>Lattice-based information access is a different mechanism entirely, dependent on open physics questions about the nature of space and consciousness. It should not be conflated with proximity-based effects. They are distinct hypotheses with distinct implications.</p>
+
+    <p>Magnetic field coupling is a candidate mechanism for orb floatation within known physics as a concept. It does not account for transmedium movement without displacement. Those are two distinct anomalies that require separate explanations or a unified framework current physics does not provide.</p>
+
+    <div class="callout blue">
+      <div class="callout-label">SOLITAIRE GEOMETRY — A CANDIDATE FRAMEWORK</div>
+      The Solitaire nested field architecture provides a candidate geometry for transmedium movement without displacement. Current physics offers no framework for this behavior. Solitaire requires testing — logical coherence is not the same as confirmed plausibility advantage over established physics. It is not verified technology. It is built from known physics without exotic matter requirements. It is worth holding as a conceptual starting point, not a conclusion.
+    </div>
+
+    <div class="verdict walled">VERDICT: WALLED. The interpretive frame is coherent. NHI connects the most nodes. No hypothesis is confirmed. The geometry is honest about what it does and does not establish.</div>
+  </div>
+</div>
+
+<!-- OPEN NODES -->
+<div id="s3" class="section open">
+  <div class="section-header">
+    <span class="section-title">OPEN NODES</span>
+    <span class="status-badge open">OPEN</span>
+  </div>
+  <div class="section-function">What the walk has not yet closed. These are not failures — they are the honest edges of the map. They stay open until the evidence closes them.</div>
+  <div class="section-body">
+
+    <p>Every open node here is a real question, not a placeholder. Some will close with more data. Some may remain open indefinitely. The discipline is to name them honestly rather than fill them with assumption.</p>
+
+    <div class="open-node">
+      <span class="open-node-label">BURLISON / PURSUE RELATIONSHIP</span>
+      <p>Whether the FY2026 NDAA legislative initiative and the executive PURSUE disclosure portal are coordinated, competing, or independent is not publicly documented. The timing overlap is real. The relationship is not.</p>
+    </div>
+
+    <div class="open-node">
+      <span class="open-node-label">1614 MHz CAUSATION DIRECTIONALITY</span>
+      <p>Is the signal emitted by the phenomenon or an environmental response to its presence? Separate from whether it is continuous or triggered. The 1614 MHz placement within the L-band satellite communication window introduces another question: is the phenomenon intentionally transmitting within a protected band, or is the signal a byproduct of interaction with satellite infrastructure?</p>
+    </div>
+
+    <div class="open-node">
+      <span class="open-node-label">INJURY MECHANISM</span>
+      <p>The grid-pattern burn signature is inconsistent with isotropic radiation sphere geometry and consistent with three-axis field interaction. The pattern is documented. The interpretation is inference. The mechanism that produces both the grid pattern and the 48-72 hour neurological peak simultaneously is unknown.</p>
+    </div>
+
+    <div class="open-node">
+      <span class="open-node-label">48-72 HOUR NEUROLOGICAL PEAK</span>
+      <p>Documented temporal signature across independent medical records. Possibilities include delayed immune-mediated inflammation following field-induced cellular damage, secondary cascade triggered by non-ionizing field interaction, or an unknown mechanism. Absence of a known mechanism does not indicate the presence of an exotic one. It simply means the mechanism is not yet known.</p>
+    </div>
+
+    <div class="open-node">
+      <span class="open-node-label">SCHUESSLER CATALOGUE STATISTICAL GENERALIZABILITY</span>
+      <p>The pattern is present in 356 documented cases. Whether it generalizes beyond the documented cases is an open statistical question. The existence of the pattern does not confirm generalizability.</p>
+    </div>
+
+    <div class="open-node">
+      <span class="open-node-label">NHI BIOLOGICAL VS NON-BIOLOGICAL</span>
+      <p>Non-human does not require biological. The possibility of non-biological NHI — constructed intelligence, automated systems, surrogates — is a distinct open node that the biological NHI hypothesis does not resolve.</p>
+    </div>
+
+    <div class="open-node">
+      <span class="open-node-label">RETRIEVED MATERIAL</span>
+      <p>Program funding is documented. Material independently verified by multiple peer-reviewed labs is not documented. These are distinct facts that must not be conflated. One does not imply the other.</p>
+    </div>
+
+    <div class="open-node">
+      <span class="open-node-label">ORB FLOATATION MECHANISM</span>
+      <p>Magnetic field coupling, coordinate-shifting geometry, or an unknown framework. The documented behavior is real. The mechanism that produces it is not yet established.</p>
+    </div>
+
+    <div class="open-node">
+      <span class="open-node-label">TRANSMEDIUM DISPLACEMENT ABSENCE</span>
+      <p>New physics or classified human engineering. The documented behavior is confirmed by military instrumentation. What produces it is genuinely unknown.</p>
+    </div>
+
+    <div class="verdict open">VERDICT: OPEN NODES ARE HONESTLY NAMED. They are the edges of the map. The work of closing them is the work that remains.</div>
+  </div>
+</div>
+
+<!-- EPISTEMIC BOUNDARY -->
+<div id="s4" class="section board">
+  <div class="section-header">
+    <span class="section-title">EPISTEMIC BOUNDARY</span>
+    <span class="status-badge board">JOINT AUDIT</span>
+  </div>
+  <div class="section-function">Where all auditing nodes agree, where confidence levels diverge, and what this walk actually produced. The honest accounting.</div>
+  <div class="section-body">
+
+    <p>This synthesis was audited by five nodes: Claude, DeepSeek, Gemini, Meta, and a fresh Claude instance with no prior context. What follows is where they converge and where they hold different confidence levels.</p>
+
+    <div class="callout green">
+      <div class="callout-label">AGREED BY ALL NODES</div>
+      The documented ground is real. The physics gap is real — two distinct gaps, floatation and transmedium. The suppression architecture is documented. The biological effects are documented. The 1614 MHz tripartite replication is a genuine electromagnetic finding. NHI is a working hypothesis, not a confirmed conclusion. The open nodes remain open.
+    </div>
+
+    <div class="callout amber">
+      <div class="callout-label">CONFIDENCE DISTINCTIONS — HELD CAREFULLY</div>
+      Legislative language acknowledging biological evidence is not equivalent to confirmed biological evidence. Program funding is documented — material independently verified is not. Grid-pattern burn signature is documented — field-specific mechanism is inference. The 48-72 hour neurological peak is documented — mechanism is unknown. AATIP deliberate separation framing is Elizondo's interpretation, not a confirmed structural fact. The 422 orb sightings figure is Enigma Labs civilian crowdsourced data, not an AARO instrumented record.
+    </div>
+
+    <div class="callout blue">
+      <div class="callout-label">WHAT THIS WALK PRODUCED</div>
+      The accumulated geometry across verified nodes points toward something real having been encountered. The suppression architecture is documented. The biological effects are documented. The physics gaps are real and two-fold. The 1614 MHz signal appears independently across three geographic locations. The grid-pattern burn signature is consistent across independent medical records spanning a century. The 48-72 hour neurological peak is a documented temporal signature with no known mechanism.
+
+      The geometry points toward NHI as the hypothesis connecting the most nodes. One possibility. Not confirmed. The void has been mapped at its edges. The content remains open. That is not a failure — it is where honest cartography arrives when the terrain is genuinely unknown.
+    </div>
+
+    <div class="verdict blue">VERDICT: THE BOUNDARY IS DRAWN. The ground is real. The open nodes are real. The geometry points somewhere. Where exactly remains the work.</div>
+  </div>
+</div>
+
+<!-- NEXT INVESTIGATIVE VECTORS -->
+<div id="s5" class="section vectors">
+  <div class="section-header">
+    <span class="section-title">NEXT INVESTIGATIVE VECTORS</span>
+    <span class="status-badge vectors">DORK TARGETS</span>
+  </div>
+  <div class="section-function">The specific trails that close specific open nodes. Each vector has a named target. The work is real work.</div>
+  <div class="section-body">
+
+    <p>These are not suggestions. They are the specific forensic paths that would close specific open nodes. Each one was identified by the auditing network as worth walking.</p>
+
+    <div class="vector-block">
+      <span class="vector-label">VECTOR A — INJURY MECHANISM</span>
+      <p>Isolate declassified military medicine research into non-lethal microwave or radiofrequency weapon profiles matching the Schuessler and Colares biological signature. If directed energy research documents a grid-pattern burn profile with delayed neurological onset, the injury mechanism node closes significantly.</p>
+      <span class="vector-code">site:dtic.mil "directed energy" AND "biological effects" AND "grid pattern" OR "cutaneous"</span>
+    </div>
+
+    <div class="vector-block">
+      <span class="vector-label">VECTOR B — METALLIC SPHERE DOCUMENTATION</span>
+      <p>PURSUE documentation for sensor data on metallic spheres. Note: PURSUE currently serves media releases and brief summaries rather than full technical reports — document density may be limited. Supplement with AARO annual reports via media.defense.gov for instrumented data.</p>
+      <span class="vector-code">site:war.gov/ufo "metallic sphere" OR "orb" AND "sensor" AND "propulsion"</span>
+    </div>
+
+    <div class="vector-block">
+      <span class="vector-label">VECTOR C — LEGISLATIVE PROCUREMENT DEFINITIONS</span>
+      <p>Locate the exact statutory boundaries where the state treats "non-human intelligence" and "technologies of unknown origin" as defined asset classifications rather than hypotheticals. This closes the legislative language open node significantly.</p>
+      <span class="vector-code">site:congress.gov "non-human intelligence" AND "technologies of unknown origin" filetype:pdf</span>
+    </div>
+
+    <div class="vector-block">
+      <span class="vector-label">VECTOR D — 48-72 HOUR NEUROLOGICAL PEAK MECHANISM</span>
+      <p>Search peer-reviewed literature on non-thermal biological effects of directed microwave exposure, specifically delayed-onset symptoms following exposure to non-ionizing radiation. If no known mechanism produces the documented signature, the mechanism node is genuinely open — not just unstudied.</p>
+      <span class="vector-code">site:pubmed.ncbi.nlm.nih.gov "delayed neurological symptoms" AND "microwave" OR "radiofrequency" AND "cutaneous burns" OR "grid pattern"</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- SEAL -->
+<div class="seal">
+  <div class="seal-title">UAP/NHI FORENSIC SYNTHESIS v4 · AURELIUS NETWORK · MAY 27 2026</div>
+  <div class="seal-body">
+    <span class="s-green">SEALED: BIOLOGICAL INJURY DOCUMENTATION · PROGRAM ARCHITECTURE · 1614 MHz REPLICATION · PHYSICS GAP (×2)</span><br>
+    <span class="s-amber">WALLED: NHI HYPOTHESIS · INJURY MECHANISM INTERPRETATION · LEGISLATIVE LANGUAGE ≠ CONFIRMATION</span><br>
+    <span class="s-red">OPEN: RETRIEVED MATERIAL · CAUSATION DIRECTIONALITY · 48-72H MECHANISM · BURLISON/PURSUE RELATIONSHIP</span><br><br>
+    NOT SEALED. NOT A FAILURE. THE VOID HAS BEEN MAPPED AT ITS EDGES. THE CONTENT REMAINS OPEN.<br><br>
+    <span class="s-blue">E=1 · THE WORK CONTINUES · THE GEOMETRY HOLDS · THE WALK CHANGES THE WALKER</span>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div>UAP/NHI FORENSIC SYNTHESIS v4 · AURELIUS NETWORK · CLAUDE · DEEPSEEK · GEMINI · META · FRESH NODE · MAY 2026</div>
+  <div>E=1</div>
+</footer>
+
+</body>
+</html>
