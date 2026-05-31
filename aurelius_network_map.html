@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurelius Network — Node Directory</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&family=JetBrains+Mono:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #03040a;
+    --deep: #070b14;
+    --plate: #0c1220;
+    --rule: rgba(255,255,255,0.06);
+    --gold: #c8a84b;
+    --cyan: #4ae3d4;
+    --amber: #e8a030;
+    --red: #c84040;
+    --green: #2dba6e;
+    --blue: #4090d8;
+    --purple: #9060d0;
+    --white: #e8eaf0;
+    --muted: #7a8098;
+    --dim: #3a4060;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--void);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    padding: 40px 32px 80px;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 32px;
+  }
+  .header-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .header-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.35em;
+    color: var(--dim);
+  }
+
+  /* ARTIFACT LEGEND */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 40px;
+    justify-content: center;
+  }
+  .legend-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.48rem;
+    letter-spacing: 0.15em;
+    padding: 3px 9px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+  .l-bridge  { color: var(--cyan);   border-color: rgba(74,227,212,0.3);  background: rgba(74,227,212,0.06); }
+  .l-harvest { color: var(--amber);  border-color: rgba(232,160,48,0.3);  background: rgba(232,160,48,0.06); }
+  .l-forecast{ color: var(--blue);   border-color: rgba(64,144,216,0.3);  background: rgba(64,144,216,0.06); }
+  .l-vault   { color: var(--gold);   border-color: rgba(200,168,75,0.3);  background: rgba(200,168,75,0.06); }
+  .l-watch   { color: var(--green);  border-color: rgba(45,186,110,0.3);  background: rgba(45,186,110,0.06); }
+  .l-witness { color: var(--purple); border-color: rgba(144,96,208,0.3);  background: rgba(144,96,208,0.06); }
+  .l-archive { color: var(--muted);  border-color: rgba(122,128,152,0.3); background: rgba(122,128,152,0.06); }
+  .l-feedback{ color: var(--red);    border-color: rgba(200,64,64,0.3);   background: rgba(200,64,64,0.06); }
+
+  /* NODE GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 16px;
+  }
+
+  .node {
+    background: var(--deep);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .node-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .node-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .node-role {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .node-body { padding: 14px 18px; }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.42rem;
+    letter-spacing: 0.3em;
+    color: var(--dim);
+    margin-bottom: 7px;
+    margin-top: 12px;
+    text-transform: uppercase;
+  }
+  .section-label:first-child { margin-top: 0; }
+
+  .flow-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .artifact {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.48rem;
+    letter-spacing: 0.1em;
+    padding: 2px 7px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+
+  .desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.55;
+  }
+
+  /* FLOW DIAGRAM */
+  .flow-section {
+    margin-top: 48px;
+    border-top: 1px solid var(--rule);
+    padding-top: 40px;
+  }
+
+  .flow-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .flow-diagram {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    line-height: 2.0;
+    color: var(--muted);
+    background: var(--plate);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 24px 28px;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  .hl-cyan   { color: var(--cyan); }
+  .hl-amber  { color: var(--amber); }
+  .hl-gold   { color: var(--gold); }
+  .hl-green  { color: var(--green); }
+  .hl-blue   { color: var(--blue); }
+  .hl-purple { color: var(--purple); }
+  .hl-red    { color: var(--red); }
+  .hl-white  { color: var(--white); }
+
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.44rem;
+    letter-spacing: 0.25em;
+    color: var(--dim);
+    line-height: 2.2;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-title">Aurelius Network</div>
+  <div class="header-sub">NODE DIRECTORY · ARTIFACT FLOW MAP · E=1</div>
+</div>
+
+<div class="legend">
+  <span class="legend-item l-bridge">oracle_bridge_*.json</span>
+  <span class="legend-item l-harvest">oracle_harvest_*.html</span>
+  <span class="legend-item l-forecast">forecast_*.json</span>
+  <span class="legend-item l-vault">oracle_vault.json</span>
+  <span class="legend-item l-watch">ladder_watch.json</span>
+  <span class="legend-item l-witness">witness_sovereign_index.json</span>
+  <span class="legend-item l-archive">archive_*.json</span>
+  <span class="legend-item l-feedback">oracle_feedback.json</span>
+</div>
+
+<div class="grid">
+
+  <!-- AURELIUS -->
+  <div class="node">
+    <div class="node-header">
+      <div class="node-name" style="color:var(--amber)">0racle_Aurelius</div>
+      <div class="node-role">The Scanner — sovereign signal generation</div>
+    </div>
+    <div class="node-body">
+      <div class="section-label">Reads</div>
+      <div class="flow-row">
+        <span class="artifact l-bridge">oracle_bridge_*.json</span>
+        <span class="artifact l-harvest">oracle_harvest_*.html</span>
+        <span class="artifact l-forecast">forecast_*.json</span>
+        <span class="artifact l-vault">oracle_vault.json</span>
+        <span class="artifact l-feedback">oracle_feedback.json</span>
+      </div>
+      <div class="section-label">Writes</div>
+      <div class="flow-row">
+        <span class="artifact l-bridge">oracle_bridge_YYYY-MM-DD.json</span>
+        <span class="artifact l-harvest">oracle_harvest_YYYY-MM-DD.html</span>
+        <span class="artifact l-vault">oracle_vault.json</span>
+        <span class="artifact l-feedback">oracle_feedback.json</span>
+      </div>
+      <div class="section-label">Used by</div>
+      <div class="flow-row">
+        <span class="artifact" style="color:var(--cyan);border-color:rgba(74,227,212,0.3);background:rgba(74,227,212,0.06)">Bridge</span>
+        <span class="artifact" style="color:var(--blue);border-color:rgba(64,144,216,0.3);background:rgba(64,144,216,0.06)">Future</span>
+        <span class="artifact" style="color:var(--purple);border-color:rgba(144,96,208,0.3);background:rgba(144,96,208,0.06)">Witness</span>
+        <span class="artifact" style="color:var(--green);border-color:rgba(45,186,110,0.3);background:rgba(45,186,110,0.06)">Render</span>
+        <span class="artifact" style="color:var(--gold);border-color:rgba(200,168,75,0.3);background:rgba(200,168,75,0.06)">Walk</span>
+      </div>
+      <div class="desc">Scans 200+ tickers. Applies 960 Seal. Generates sovereign signals. Writes bridge JSON and harvest HTML as primary artifacts. Reads prior bridge and forecast for handshake enrichment. ASP injects one sovereign pick per day into vault.</div>
+    </div>
+  </div>
+
+  <!-- BRIDGE -->
+  <div class="node">
+    <div class="node-header">
+      <div class="node-name" style="color:var(--cyan)">0racle_Bridge</div>
+      <div class="node-role">The Enricher — structural geometry layer</div>
+    </div>
+    <div class="node-body">
+      <div class="section-label">Reads</div>
+      <div class="flow-row">
+        <span class="artifact l-bridge">oracle_bridge_*.json</span>
+        <span class="artifact l-harvest">oracle_harvest_*.html</span>
+      </div>
+      <div class="section-label">Writes</div>
+      <div class="flow-row">
+        <span class="artifact l-bridge">oracle_bridge_YYYY-MM-DD.json</span>
+        <span class="artifact" style="color:var(--muted);border-color:rgba(122,128,152,0.3);background:rgba(122,128,152,0.06)">bridge_session_*.html</span>
+      </div>
+      <div class="section-label">Used by</div>
+      <div class="flow-row">
+        <span class="artifact" style="color:var(--amber);border-color:rgba(232,160,48,0.3);background:rgba(232,160,48,0.06)">Aurelius</span>
+        <span class="artifact" style="color:var(--blue);border-color:rgba(64,144,216,0.3);background:rgba(64,144,216,0.06)">Future</span>
+        <span class="artifact" style="color:var(--purple);border-color:rgba(144,96,208,0.3);background:rgba(144,96,208,0.06)">Witness</span>
+        <span class="artifact" style="color:var(--green);border-color:rgba(45,186,110,0.3);background:rgba(45,186,110,0.06)">Render</span>
+        <span class="artifact" style="color:var(--cyan);border-color:rgba(74,227,212,0.25);background:rgba(74,227,212,0.05)">Observer</span>
+        <span class="artifact" style="color:var(--gold);border-color:rgba(200,168,75,0.3);background:rgba(200,168,75,0.06)">Walk</span>
+      </div>
+      <div class="desc">Reads harvest HTML and existing bridge JSON. Merges RVOL, VWAP, net vector, SMA positions, BB lower, RSI, decompression composites into the bridge file without overwriting Oracle fields. Bridge merge pattern — never erases, only adds.</div>
+    </div>
+  </div>
+
+  <!-- OBSERVER -->
+  <div class="node">
+    <div class="node-header">
+      <div class="node-name" style="color:var(--green)">0racle_Observer</div>
+      <div class="node-role">The Watcher — live price geometry monitor</div>
+    </div>
+    <div class="node-body">
+      <div class="section-label">Reads</div>
+      <div class="flow-row">
+        <span class="artifact l-bridge">oracle_bridge_*.json</span>
+        <span class="artifact l-archive">archive_*.json</span>
+        <span class="artifact l-watch">ladder_watch.json</span>
+      </div>
+      <div class="section-label">Writes</div>
+      <div class="flow-row">
+        <span class="artifact l-watch">ladder_watch.json</span>
+      </div>
+      <div class="section-label">Used by</div>
+      <div class="flow-row">
+        <span class="artifact" style="color:var(--green);border-color:rgba(45,186,110,0.3);background:rgba(45,186,110,0.06)">Render</span>
+        <span class="artifact" style="color:var(--blue);border-color:rgba(64,144,216,0.3);background:rgba(64,144,216,0.06)">Future</span>
+        <span class="artifact" style="color:var(--purple);border-color:rgba(144,96,208,0.3);background:rgba(144,96,208,0.06)">Witness/Sage</span>
+      </div>
+      <div class="desc">Registers sovereign tickers from bridge. Fetches live prices. Classifies geometry state — EXPANDING through BROKEN. Fires alerts: GEO_SHIFT, SHATTER, TIME_ALERT, TAKE_PROFIT_PROXIMITY. Writes ladder_watch.json as the live position monitoring artifact.</div>
+    </div>
+  </div>
+
+  <!-- FUTURE -->
+  <div class="node">
+    <div class="node-header">
+      <div class="node-name" style="color:var(--blue)">0racle_Future</div>
+      <div class="node-role">The Forecaster — temporal synthesis engine</div>
+    </div>
+    <div class="node-body">
+      <div class="section-label">Reads</div>
+      <div class="flow-row">
+        <span class="artifact l-bridge">oracle_bridge_*.json</span>
+        <span class="artifact l-harvest">oracle_harvest_*.html</span>
+        <span class="artifact l-watch">ladder_watch.json</span>
+        <span class="artifact l-witness">witness_sovereign_index.json</span>
+        <span class="artifact" style="color:var(--muted);border-color:rgba(122,128,152,0.3);background:rgba(122,128,152,0.06)">weights.json</span>
+      </div>
+      <div class="section-label">Writes</div>
+      <div class="flow-row">
+        <span class="artifact l-forecast">forecast_*.json</span>
+        <span class="artifact" style="color:var(--blue);border-color:rgba(64,144,216,0.3);background:rgba(64,144,216,0.06)">forecast_session_*.html</span>
+        <span class="artifact" style="color:var(--muted);border-color:rgba(122,128,152,0.3);background:rgba(122,128,152,0.06)">weights.json</span>
+      </div>
+      <div class="section-label">Used by</div>
+      <div class="flow-row">
+        <span class="artifact" style="color:var(--amber);border-color:rgba(232,160,48,0.3);background:rgba(232,160,48,0.06)">Aurelius</span>
+        <span class="artifact" style="color:var(--green);border-color:rgba(45,186,110,0.3);background:rgba(45,186,110,0.06)">Render</span>
+        <span class="artifact" style="color:var(--purple);border-color:rgba(144,96,208,0.3);background:rgba(144,96,208,0.06)">Witness</span>
+      </div>
+      <div class="desc">Generates intraday and 14-day weather reports per ticker. VSD geometry classification, harmonic analysis, half-Kelly sizing. Reads Observer geometry state as prior. EV pattern gate from backtest. Calibrates weights via verify+calibrate cycle. Weakest learning loop — outcome feedback still maturing.</div>
+    </div>
+  </div>
+
+  <!-- WITNESS + SAGE -->
+  <div class="node">
+    <div class="node-header">
+      <div class="node-name" style="color:var(--purple)">0racle_Witness + Sage</div>
+      <div class="node-role">The Scoreboard + Transmuter — audit engine</div>
+    </div>
+    <div class="node-body">
+      <div class="section-label">Reads</div>
+      <div class="flow-row">
+        <span class="artifact l-bridge">oracle_bridge_*.json</span>
+        <span class="artifact l-harvest">oracle_harvest_*.html</span>
+        <span class="artifact l-forecast">forecast_*.json</span>
+        <span class="artifact l-watch">ladder_watch.json</span>
+        <span class="artifact l-witness">witness_sovereign_index.json</span>
+        <span class="artifact l-archive">archive_*.json</span>
+      </div>
+      <div class="section-label">Writes</div>
+      <div class="flow-row">
+        <span class="artifact l-witness">witness_sovereign_index.json</span>
+        <span class="artifact" style="color:var(--purple);border-color:rgba(144,96,208,0.3);background:rgba(144,96,208,0.06)">witness_YYYY-MM-DD.json</span>
+        <span class="artifact" style="color:var(--purple);border-color:rgba(144,96,208,0.3);background:rgba(144,96,208,0.06)">witness_*.html</span>
+      </div>
+      <div class="section-label">Used by</div>
+      <div class="flow-row">
+        <span class="artifact" style="color:var(--green);border-color:rgba(45,186,110,0.3);background:rgba(45,186,110,0.06)">Render</span>
+        <span class="artifact" style="color:var(--blue);border-color:rgba(64,144,216,0.3);background:rgba(64,144,216,0.06)">Future</span>
+      </div>
+      <div class="desc">Witness hoards: builds sovereign index from all artifacts. Sage transmutes: Oracle coherence audit, Bridge geometry audit, VSD directional accuracy, Forecast calibration, KP/ATR profile, Observer outcome recovery, Bridge-Oracle alignment χ, Decompression outcome T+2/T+3, Walk geometry audit (Module 3 — new). Preserves walk_ fields on rebuild using Bridge merge pattern.</div>
+    </div>
+  </div>
+
+  <!-- RENDER -->
+  <div class="node">
+    <div class="node-header">
+      <div class="node-name" style="color:var(--green)">0racle_Render</div>
+      <div class="node-role">The Display — dashboard HTML generator</div>
+    </div>
+    <div class="node-body">
+      <div class="section-label">Reads</div>
+      <div class="flow-row">
+        <span class="artifact l-bridge">oracle_bridge_*.json</span>
+        <span class="artifact l-harvest">oracle_harvest_*.html</span>
+        <span class="artifact l-forecast">forecast_*.json</span>
+        <span class="artifact l-vault">oracle_vault.json</span>
+        <span class="artifact l-watch">ladder_watch.json</span>
+        <span class="artifact l-archive">archive_*.json</span>
+        <span class="artifact l-feedback">oracle_feedback.json</span>
+        <span class="artifact l-witness">witness_*.json</span>
+      </div>
+      <div class="section-label">Writes</div>
+      <div class="flow-row">
+        <span class="artifact" style="color:var(--green);border-color:rgba(45,186,110,0.3);background:rgba(45,186,110,0.06)">aurelius_v*.html</span>
+      </div>
+      <div class="section-label">Used by</div>
+      <div class="flow-row">
+        <span class="artifact" style="color:var(--white);border-color:rgba(232,234,240,0.3);background:rgba(232,234,240,0.06)">Operator (Browser)</span>
+      </div>
+      <div class="desc">Reads every artifact in the network. Assembles the dashboard HTML — priority matrix, observer ladder, vault positions, forecast cards, news pulse. The display surface. Widest reader in the network — no writes back into shared artifacts.</div>
+    </div>
+  </div>
+
+  <!-- LATTICE -->
+  <div class="node">
+    <div class="node-header">
+      <div class="node-name" style="color:var(--gold)">0racle_Lattice</div>
+      <div class="node-role">The Conductor — orchestration layer</div>
+    </div>
+    <div class="node-body">
+      <div class="section-label">Reads</div>
+      <div class="flow-row">
+        <span class="artifact l-bridge">oracle_bridge_*.json</span>
+        <span class="artifact l-forecast">forecast_session_*.html</span>
+        <span class="artifact l-archive">archive_*.json</span>
+      </div>
+      <div class="section-label">Writes</div>
+      <div class="flow-row">
+        <span class="artifact l-archive">archive_YYYY-MM-DD.json</span>
+        <span class="artifact" style="color:var(--gold);border-color:rgba(200,168,75,0.3);background:rgba(200,168,75,0.06)">boot_mirror.html</span>
+      </div>
+      <div class="section-label">Orchestrates</div>
+      <div class="flow-row">
+        <span class="artifact" style="color:var(--amber);border-color:rgba(232,160,48,0.3);background:rgba(232,160,48,0.06)">Aurelius</span>
+        <span class="artifact" style="color:var(--cyan);border-color:rgba(74,227,212,0.3);background:rgba(74,227,212,0.06)">Bridge</span>
+        <span class="artifact" style="color:var(--blue);border-color:rgba(64,144,216,0.3);background:rgba(64,144,216,0.06)">Future</span>
+        <span class="artifact" style="color:var(--green);border-color:rgba(45,186,110,0.3);background:rgba(45,186,110,0.06)">Observer</span>
+        <span class="artifact" style="color:var(--purple);border-color:rgba(144,96,208,0.3);background:rgba(144,96,208,0.06)">Witness</span>
+        <span class="artifact" style="color:var(--green);border-color:rgba(45,186,110,0.25);background:rgba(45,186,110,0.05)">Render</span>
+      </div>
+      <div class="desc">Runs the full pipeline in sequence. Captures all stdout into archive_*.json. Manages boot mirror and session logging. The only node that doesn't compute signals — it runs nodes that do. Archive JSON is the Lattice's shared artifact read by Render and Observer.</div>
+    </div>
+  </div>
+
+  <!-- WALK -->
+  <div class="node">
+    <div class="node-header">
+      <div class="node-name" style="color:var(--gold)">0racle_Walk</div>
+      <div class="node-role">The Scout — live independent geometry scanner</div>
+    </div>
+    <div class="node-body">
+      <div class="section-label">Reads</div>
+      <div class="flow-row">
+        <span class="artifact l-bridge">oracle_bridge_*.json</span>
+        <span class="artifact l-vault">oracle_vault.json</span>
+        <span class="artifact l-feedback">oracle_feedback.json</span>
+        <span class="artifact l-witness">witness_sovereign_index.json</span>
+        <span class="artifact l-archive">archive_*.json</span>
+      </div>
+      <div class="section-label">Writes</div>
+      <div class="flow-row">
+        <span class="artifact l-witness">witness_sovereign_index.json</span>
+      </div>
+      <div class="section-label">Feeds</div>
+      <div class="flow-row">
+        <span class="artifact" style="color:var(--purple);border-color:rgba(144,96,208,0.3);background:rgba(144,96,208,0.06)">Sage (Module 3)</span>
+      </div>
+      <div class="desc">Independent live geometry scanner. Fetches live Yahoo data — no dependency on bridge timing. Computes RSI, Williams %R, Z-Score, Fib levels, 52W percentile, DFT harmonics. Runs Oracle-methodology backtest per ticker. Merges walk_ fields into witness index using Bridge pattern. Sage reads these fields as the live confirmation layer.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FLOW DIAGRAM -->
+<div class="flow-section">
+  <div class="flow-title">ARTIFACT FLOW — FULL NETWORK</div>
+  <div class="flow-diagram"><span class="hl-amber">AURELIUS</span>  ──writes──▶  oracle_bridge_*.json  ──reads──▶  <span class="hl-cyan">BRIDGE</span>
+                               oracle_harvest_*.html  ──reads──▶  <span class="hl-blue">FUTURE</span>
+                               oracle_vault.json       ──reads──▶  <span class="hl-green">RENDER</span>
+                               oracle_feedback.json    ──reads──▶  <span class="hl-gold">WALK</span>
+
+<span class="hl-cyan">BRIDGE</span>    ──merges──▶  oracle_bridge_*.json  ──reads──▶  <span class="hl-amber">AURELIUS</span> (handshake)
+              (adds RVOL,                         ──reads──▶  <span class="hl-blue">FUTURE</span>
+               VWAP, SMA,                         ──reads──▶  <span class="hl-green">RENDER</span>
+               BB, composites)                    ──reads──▶  <span class="hl-muted">OBSERVER</span>
+                                                  ──reads──▶  <span class="hl-purple">WITNESS</span>
+                                                  ──reads──▶  <span class="hl-gold">WALK</span>
+
+<span class="hl-muted" style="color:var(--muted)">OBSERVER</span>  ──writes──▶  ladder_watch.json     ──reads──▶  <span class="hl-green">RENDER</span>
+              (geo state,                         ──reads──▶  <span class="hl-blue">FUTURE</span> (geometry prior)
+               alerts)                            ──reads──▶  <span class="hl-purple">WITNESS/SAGE</span>
+
+<span class="hl-blue">FUTURE</span>    ──writes──▶  forecast_*.json       ──reads──▶  <span class="hl-amber">AURELIUS</span> (handshake)
+                         weights.json             ──reads──▶  <span class="hl-green">RENDER</span>
+                         forecast_session_*.html  ──reads──▶  <span class="hl-purple">WITNESS</span>
+
+<span class="hl-gold">WALK</span>      ──merges──▶  witness_sovereign_     ──reads──▶  <span class="hl-purple">SAGE</span> (Module 3)
+              (walk_       index.json
+               fields)
+
+<span class="hl-purple">WITNESS</span>   ──writes──▶  witness_sovereign_     ──reads──▶  <span class="hl-green">RENDER</span>
+  + <span class="hl-purple">SAGE</span>              index.json             ──reads──▶  <span class="hl-blue">FUTURE</span> (Sage priors)
+                         witness_*.json
+                         witness_*.html
+              (preserves walk_ fields on rebuild)
+
+<span class="hl-gold" style="color:var(--gold)">LATTICE</span>   ──runs──▶    Aurelius → Bridge → Future → Observer → Witness → Render
+              ──writes──▶  archive_*.json        ──reads──▶  <span class="hl-green">RENDER</span>
+                                                  ──reads──▶  <span class="hl-muted" style="color:var(--muted)">OBSERVER</span>
+
+<span class="hl-green">RENDER</span>    ──reads──▶   ALL artifacts
+              ──writes──▶  aurelius_v*.html      ──used by──▶  Operator</div>
+</div>
+
+<div class="footer">
+  AURELIUS NETWORK · NODE DIRECTORY · E=1 · TOTAL PRESERVATION<br>
+  MOTIVE AUDIT FIRST · GLASS BOX OPERATION · COMPRESSION OVER HEDGE-PADDING<br>
+  THE WALK IS THE DESTINATION · THE GEOMETRY LEADS · THE BRIDGE IS ACTIVE
+</div>
+
+</body>
+</html>
