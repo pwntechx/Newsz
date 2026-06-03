@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHEPHERD · Complete Architecture · SOP-003 / SOP-004 · PWNTECHX</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --void: #010306;
+    --deep: #040810;
+    --surface: #080f1c;
+    --plate: #0c1422;
+    --seam: #14202e;
+    --seam2: #1c2c3c;
+    --text: #b8c8d8;
+    --dim: #3a5068;
+    --gold: #c09828;
+    --amber: #e0b840;
+    --ice: #5898b8;
+    --bright: #88b0c8;
+    --green: #306850;
+    --rose: #683040;
+    --violet: #506090;
+    --rule: rgba(88,152,184,0.06);
+    --rule-gold: rgba(192,152,40,0.12);
+    --rule-ice: rgba(88,152,184,0.12);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--void);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.1rem;
+    line-height: 1.95;
+    overflow-x: hidden;
+}
+
+/* GRAIN OVERLAY */
+body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+/* AMBIENT GLOW */
+body::after {
+    content: '';
+    position: fixed;
+    width: 800px; height: 800px;
+    background: radial-gradient(ellipse, rgba(80,96,144,0.04) 0%, transparent 70%);
+    top: -300px; right: -300px;
+    pointer-events: none; z-index: 0;
+}
+
+/* HERO */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 8rem 4rem 6rem;
+    position: relative;
+    border-bottom: 1px solid var(--rule-gold);
+    overflow: hidden;
+}
+
+.hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+        linear-gradient(var(--rule) 1px, transparent 1px),
+        linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at 30% 50%, black 20%, transparent 70%);
+}
+
+.hero-ornament {
+    position: absolute;
+    right: 6rem; top: 50%;
+    transform: translateY(-50%);
+    width: 340px; height: 340px;
+    border: 1px solid rgba(192,152,40,0.08);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.hero-ornament::before {
+    content: '';
+    position: absolute;
+    width: 260px; height: 260px;
+    border: 1px solid rgba(88,152,184,0.06);
+    border-radius: 50%;
+}
+
+.hero-ornament::after {
+    content: '';
+    position: absolute;
+    width: 180px; height: 180px;
+    border: 1px solid rgba(192,152,40,0.06);
+    border-radius: 50%;
+}
+
+.hero-inner-glyph {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: rgba(192,152,40,0.3);
+    text-align: center;
+    line-height: 2.4;
+}
+
+.hero-doc-id {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.45em;
+    color: var(--ice);
+    opacity: 0.6;
+    display: block;
+    margin-bottom: 2.5rem;
+    animation: fadeIn 1.2s ease both;
+}
+
+.hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 10vw, 7.5rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--bright);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    animation: fadeUp 1s ease both 0.2s;
+}
+
+.hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: var(--amber);
+    font-style: italic;
+    margin-bottom: 3rem;
+    animation: fadeUp 1s ease both 0.4s;
+    max-width: 600px;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 3rem;
+    animation: fadeUp 1s ease both 0.6s;
+}
+
+.hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.hero-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.44rem;
+    letter-spacing: 0.3em;
+    color: var(--dim);
+}
+
+.hero-stat-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--amber);
+    font-style: italic;
+}
+
+.hero-byline {
+    position: absolute;
+    bottom: 3rem; left: 4rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.46rem;
+    letter-spacing: 0.22em;
+    color: var(--dim);
+    line-height: 2;
+    animation: fadeIn 1.5s ease both 0.8s;
+}
+
+/* TOC */
+.toc-wrapper {
+    padding: 5rem 4rem;
+    border-bottom: 1px solid var(--rule);
+    position: relative; z-index: 1;
+}
+
+.toc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.46rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 2rem;
+}
+
+.toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 4rem;
+}
+
+.toc-part {
+    margin-bottom: 1.5rem;
+}
+
+.toc-part-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.42rem;
+    letter-spacing: 0.3em;
+    color: var(--ice);
+    display: block;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--rule-ice);
+}
+
+.toc-item {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.2rem 0;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.toc-item:hover .toc-item-title { color: var(--amber); }
+
+.toc-item-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.44rem;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    width: 60px;
+}
+
+.toc-item-title {
+    font-size: 0.92rem;
+    color: var(--text);
+    transition: color 0.2s;
+}
+
+/* MAIN CONTAINER */
+.container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    position: relative; z-index: 1;
+}
+
+/* PART DIVIDERS */
+.part-divider {
+    padding: 5rem 0 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.part-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rule-gold), transparent);
+}
+
+.part-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    background: var(--void);
+    padding: 0 2rem;
+    position: relative;
+    display: inline-block;
+}
+
+/* CHAMBERS */
+.chamber {
+    padding: 5rem 0;
+    border-bottom: 1px solid var(--rule);
+}
+
+.chamber:last-of-type { border-bottom: none; }
+
+.chamber-header {
+    margin-bottom: 2.5rem;
+}
+
+.chamber-id {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.46rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.7rem;
+}
+
+.chamber-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--bright);
+    line-height: 1.2;
+    margin-bottom: 0.3rem;
+}
+
+.chamber-subtitle {
+    font-size: 0.88rem;
+    color: var(--dim);
+    font-style: italic;
+}
+
+hr.ch { border: none; border-top: 1px solid var(--rule); margin: 0 0 2rem; }
+hr.rule { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+p { margin-bottom: 1.3rem; }
+p:last-child { margin-bottom: 0; }
+strong { color: var(--bright); font-weight: 600; }
+
+/* SOVEREIGN DECLARATION */
+.sovereign {
+    background: linear-gradient(135deg, rgba(192,152,40,0.04), transparent);
+    border: 1px solid var(--rule-gold);
+    border-left: 4px solid var(--gold);
+    padding: 2.5rem 3rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--amber);
+    font-size: 1.1rem;
+    line-height: 2;
+}
+
+/* INVARIANT */
+.invariant {
+    background: rgba(192,152,40,0.03);
+    border-left: 3px solid var(--gold);
+    padding: 1.2rem 1.8rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--amber);
+    font-size: 0.97rem;
+    line-height: 1.85;
+}
+
+/* ENGINEERING NOTE */
+.eng-note {
+    background: rgba(88,152,184,0.04);
+    border-left: 3px solid var(--ice);
+    padding: 1rem 1.5rem;
+    margin: 1.6rem 0;
+    font-size: 0.88rem;
+    color: #6888a0;
+}
+
+.note-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.42rem;
+    letter-spacing: 0.28em;
+    color: var(--ice);
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+/* FAILURE MODE */
+.failure {
+    background: rgba(104,48,64,0.05);
+    border-left: 3px solid var(--rose);
+    padding: 1rem 1.5rem;
+    margin: 1.6rem 0;
+    font-size: 0.88rem;
+    color: #886070;
+}
+
+.failure-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.42rem;
+    letter-spacing: 0.28em;
+    color: var(--rose);
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+/* CLOSED NODE */
+.closed {
+    background: rgba(48,104,80,0.05);
+    border-left: 3px solid var(--green);
+    padding: 1rem 1.5rem;
+    margin: 1.6rem 0;
+    font-size: 0.88rem;
+    color: #508070;
+}
+
+.closed-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.42rem;
+    letter-spacing: 0.28em;
+    color: var(--green);
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+/* TRIPTYCH */
+.triptych {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--seam);
+    border: 1px solid var(--seam);
+    margin: 2rem 0;
+}
+
+.triptych-cell {
+    background: var(--deep);
+    padding: 1.4rem 1.3rem;
+}
+
+.triptych-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.44rem;
+    letter-spacing: 0.24em;
+    display: block;
+    margin-bottom: 0.7rem;
+}
+
+.triptych-cell p {
+    font-size: 0.87rem;
+    color: var(--dim);
+    margin: 0;
+    line-height: 1.7;
+}
+
+/* DIAGRAM */
+.diagram {
+    background: var(--deep);
+    border: 1px solid var(--seam);
+    border-top: 2px solid var(--ice);
+    padding: 2rem 2.5rem;
+    margin: 2rem 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--dim);
+    line-height: 2.2;
+    overflow-x: auto;
+    white-space: pre;
+}
+
+/* SYSTEM DIAGRAM */
+.sys-diagram {
+    background: var(--surface);
+    border: 1px solid var(--seam2);
+    border-top: 2px solid var(--gold);
+    padding: 2rem 2.5rem;
+    margin: 2rem 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--dim);
+    line-height: 2;
+    overflow-x: auto;
+    white-space: pre;
+}
+
+/* TABLES */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.8rem 0;
+    font-size: 0.87rem;
+}
+
+th {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.44rem;
+    letter-spacing: 0.2em;
+    color: var(--ice);
+    text-align: left;
+    padding: 0.8rem 1.2rem;
+    border-bottom: 1px solid var(--seam);
+    font-weight: 400;
+}
+
+td {
+    padding: 0.7rem 1.2rem;
+    border-bottom: 1px solid rgba(88,152,184,0.04);
+    color: var(--dim);
+    vertical-align: top;
+    line-height: 1.65;
+}
+
+td:first-child {
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+}
+
+tr:hover td { background: rgba(88,152,184,0.02); }
+
+/* BUDGET */
+.budget {
+    background: var(--surface);
+    border: 1px solid var(--seam2);
+    padding: 1.5rem 2rem;
+    margin: 1.8rem 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+}
+
+.budget-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--dim);
+}
+
+.budget-row:last-child {
+    border-bottom: none;
+    padding-top: 0.8rem;
+    margin-top: 0.4rem;
+    color: var(--amber);
+    font-size: 0.84rem;
+}
+
+.budget-row span:first-child { color: var(--text); }
+
+/* STAT STRIP */
+.stat-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--seam);
+    border: 1px solid var(--seam);
+    margin: 2rem 0;
+}
+
+.stat-cell {
+    background: var(--deep);
+    padding: 1.2rem 1rem;
+    text-align: center;
+}
+
+.stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.42rem;
+    letter-spacing: 0.24em;
+    color: var(--dim);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--amber);
+}
+
+/* RECEIPT */
+.receipt {
+    background: var(--surface);
+    border: 1px solid var(--seam2);
+    border-top: 2px solid var(--gold);
+    padding: 2.5rem 3rem;
+    margin: 2rem 0;
+}
+
+.receipt-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+}
+
+.receipt-row:last-child { border-bottom: none; }
+
+.receipt-key {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.46rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+}
+
+.receipt-val {
+    font-size: 0.88rem;
+    color: var(--dim);
+    line-height: 1.6;
+}
+
+/* FOOTER */
+footer {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.44rem;
+    letter-spacing: 0.22em;
+    color: var(--dim);
+    text-align: center;
+    padding: 4rem 0 5rem;
+    line-height: 2.4;
+    border-top: 1px solid var(--rule);
+    position: relative; z-index: 1;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+    .hero { padding: 5rem 2rem 4rem; }
+    .hero-ornament { display: none; }
+    .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .triptych { grid-template-columns: 1fr; }
+    .stat-strip { grid-template-columns: 1fr 1fr; }
+    .receipt-row { grid-template-columns: 1fr; gap: 0.3rem; }
+    .container { padding: 0 1.5rem; }
+    .toc-wrapper { padding: 3rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-ornament">
+        <div class="hero-inner-glyph">
+            SHEPHERD<br>v3.0<br>E=1<br>SOP-003<br>SOP-004<br>ENG-1.2
+        </div>
+    </div>
+
+    <span class="hero-doc-id">SOP-003 · SOP-004 · ENG-1.2 · COMPLETE ARCHITECTURE · PWNTECHX</span>
+
+    <h1 class="hero-title">Shepherd</h1>
+
+    <p class="hero-subtitle">Complete Architecture — How It Works, How It's Built, How It Connects Earth to the Moon</p>
+
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <span class="hero-stat-label">LAUNCH MASS</span>
+            <span class="hero-stat-value">~3,524 kg</span>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-label">SOLAR POWER</span>
+            <span class="hero-stat-value">38 kW</span>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-label">TETHER LOAD</span>
+            <span class="hero-stat-value">2.5 GN</span>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-label">DELTA-V</span>
+            <span class="hero-stat-value">~1,020 m/s</span>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-label">NEW PHYSICS</span>
+            <span class="hero-stat-value">None</span>
+        </div>
+    </div>
+
+    <div class="hero-byline">
+        CO-AUTHORS: AURELIUS NETWORK · CLAUDE · GEMINI · DEEPSEEK<br>
+        BUILT ON: SOP-003 HYBRID TETHERED CENTRIFUGAL ACCELERATOR v6.6<br>
+        E=1 · TOTAL PRESERVATION · GLASS BOX SEALED
+    </div>
+</section>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc-wrapper">
+    <span class="toc-label">CONTENTS</span>
+    <div class="toc-grid">
+        <div>
+            <div class="toc-part">
+                <span class="toc-part-label">PART I · THE ARCHITECTURE</span>
+                <a href="#ch0" class="toc-item"><span class="toc-item-num">CHAMBER 0</span><span class="toc-item-title">Sovereign Declaration</span></a>
+                <a href="#ch1" class="toc-item"><span class="toc-item-num">CHAMBER 1</span><span class="toc-item-title">The Core Insight</span></a>
+                <a href="#ch2" class="toc-item"><span class="toc-item-num">CHAMBER 2</span><span class="toc-item-title">System Overview</span></a>
+            </div>
+            <div class="toc-part">
+                <span class="toc-part-label">PART II · HOW IT OPERATES</span>
+                <a href="#ch3" class="toc-item"><span class="toc-item-num">CHAMBER 3</span><span class="toc-item-title">The Relay Node</span></a>
+                <a href="#ch4" class="toc-item"><span class="toc-item-num">CHAMBER 4</span><span class="toc-item-title">Orbital Inventory</span></a>
+                <a href="#ch5" class="toc-item"><span class="toc-item-num">CHAMBER 5</span><span class="toc-item-title">Trajectory and Abort</span></a>
+                <a href="#ch6" class="toc-item"><span class="toc-item-num">CHAMBER 6</span><span class="toc-item-title">Cargo Classification</span></a>
+                <a href="#ch7" class="toc-item"><span class="toc-item-num">CHAMBER 7</span><span class="toc-item-title">Shepherd Self-Transit</span></a>
+                <a href="#ch8" class="toc-item"><span class="toc-item-num">CHAMBER 8</span><span class="toc-item-title">Earth-to-Orbit Integration</span></a>
+            </div>
+        </div>
+        <div>
+            <div class="toc-part">
+                <span class="toc-part-label">PART III · HARDWARE SPECIFICATIONS</span>
+                <a href="#ch9" class="toc-item"><span class="toc-item-num">CHAMBER 9</span><span class="toc-item-title">Power System</span></a>
+                <a href="#ch10" class="toc-item"><span class="toc-item-num">CHAMBER 10</span><span class="toc-item-title">Plasma Confinement</span></a>
+                <a href="#ch11" class="toc-item"><span class="toc-item-num">CHAMBER 11</span><span class="toc-item-title">Tether System</span></a>
+                <a href="#ch12" class="toc-item"><span class="toc-item-num">CHAMBER 12</span><span class="toc-item-title">Propulsion & Station-Keeping</span></a>
+                <a href="#ch13" class="toc-item"><span class="toc-item-num">CHAMBER 13</span><span class="toc-item-title">Sensing & Guidance</span></a>
+            </div>
+            <div class="toc-part">
+                <span class="toc-part-label">PART IV · BUDGETS AND DEVELOPMENT</span>
+                <a href="#ch14" class="toc-item"><span class="toc-item-num">CHAMBER 14</span><span class="toc-item-title">Mass & Power Budgets</span></a>
+                <a href="#ch15" class="toc-item"><span class="toc-item-num">CHAMBER 15</span><span class="toc-item-title">Network Topology</span></a>
+                <a href="#ch16" class="toc-item"><span class="toc-item-num">CHAMBER 16</span><span class="toc-item-title">Development Path</span></a>
+                <a href="#ch17" class="toc-item"><span class="toc-item-num">CHAMBER 17</span><span class="toc-item-title">Node Status</span></a>
+                <a href="#ch18" class="toc-item"><span class="toc-item-num">CHAMBER 18</span><span class="toc-item-title">Conclusion</span></a>
+                <a href="#receipt" class="toc-item"><span class="toc-item-num">RECEIPT</span><span class="toc-item-title">Audit Trail</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+<!-- PART I -->
+<div class="part-divider"><span class="part-label">PART I · THE ARCHITECTURE</span></div>
+
+<!-- CHAMBER 0 -->
+<section class="chamber" id="ch0">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 0 · SOVEREIGN DECLARATION</span>
+        <h2 class="chamber-title">E=1</h2>
+        <span class="chamber-subtitle">Total Preservation · The Geometry That Holds</span>
+    </div>
+    <hr class="ch">
+    <div class="sovereign">
+        The Shepherd guides. The payload waits. The geometry moves everything.<br><br>
+        Asteroid intact after release. Shepherds recoverable. Tethers retractable. Cargo guided, not abandoned. No unverified physics. No new mechanisms. Classical mechanics throughout.<br><br>
+        The only consumables are propellant and time. Both are renewable.
+    </div>
+    <p>This document is the complete architecture for the Shepherd — what it is, how it operates, and what it is made of. It completes the sequence begun in SOP-003 (asteroid capture) and SOP-004 (relay network logistics). Architecture without hardware is speculation. This document closes that gap.</p>
+    <p>Read SOP-003 for the verified physics of the plasma confinement and tether mechanics. Read SOP-004 for the relay network architecture. Read this document for the hardware that makes both real.</p>
+</section>
+
+<!-- CHAMBER 1 -->
+<section class="chamber" id="ch1">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 1 · THE CORE INSIGHT</span>
+        <h2 class="chamber-title">The Architecture Already Exists</h2>
+        <span class="chamber-subtitle">From asteroid capture to cislunar logistics — one recognition</span>
+    </div>
+    <hr class="ch">
+    <p>The Hybrid Tethered Centrifugal Accelerator established in SOP-003 v6.6 was designed to deliver asteroids to lunar transfer orbits. The same tether, rotation, and release geometry that moves a 1,000-tonne asteroid moves anything else. The architecture does not need to be rebuilt for logistics — it needs to be recognized as logistics.</p>
+    <p>A team of Shepherds stationed at a fixed orbital position is a relay node. Two teams at different positions form a lane. Multiple lanes form a network. The solar system becomes navigable through coordinated rotational mechanics — not continuous propulsion. Shepherds are called Shepherds because that is what they do. They guide.</p>
+    <p>SpinLaunch has demonstrated the same rotational principle from the ground — a vacuum centrifuge that flings payloads at up to 8,000 kph using electricity rather than rocket fuel. Ten successful suborbital tests. NASA partnership confirmed. The gap SpinLaunch cannot close internally: nothing in orbit to catch what it launches. The Shepherd closes that gap.</p>
+    <div class="invariant">
+        The Shepherd does not move cargo. The Shepherd moves energy into cargo — and guides it. The cargo travels the rest of the way carrying nothing but a location broadcaster and a capture collar. The architecture is the same at every scale: asteroid, structural component, supply package, Shepherd in transit. The invariant holds across all of them.
+    </div>
+</section>
+
+<!-- CHAMBER 2 -->
+<section class="chamber" id="ch2">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 2 · SYSTEM OVERVIEW</span>
+        <h2 class="chamber-title">What Gets Built</h2>
+        <span class="chamber-subtitle">One autonomous spacecraft · three primary functions</span>
+    </div>
+    <hr class="ch">
+
+    <div class="eng-note">
+        <span class="note-label">KEY SPECIFICATIONS</span>
+        Launch mass ~2,600 kg · Solar power 38 kW · Plasma coupling 65–75% first-flight · 92% theoretical · Tether load 2.5 GN · Delta-V ~1,020 m/s · New physics: none. Full mass and power budgets in <a href="#ch14" style="color: var(--ice);">Chamber 14</a>.
+    </div>
+
+    <div class="sys-diagram">SHEPHERD v3.0 · SYSTEM ARCHITECTURE
+
+  ┌─────────────────────────────────────────────────────────────┐
+  │  SOLAR ARRAY WING (×2)                                      │
+  │  Each: 60 m² GaAs · ~23 kW raw · 19 kW delivered per wing   │
+  │                                                             │
+  │  ┌───────────────────────────────────────────────────────┐  │
+  │  │  CENTRAL BUS · 800 kg                                 │  │
+  │  │  Power management · Avionics · Comms · Propulsion     │  │
+  │  └───────────────────────────────────────────────────────┘  │
+  │                                                             │
+  │  ┌────────────────┐    ┌─────────────────────────────────┐  │
+  │  │ PLASMA CHAMBER │    │ TETHER SYSTEM                   │  │
+  │  │ Quadrupole     │    │ Spool · Deploy · Anchor         │  │
+  │  │ 0.5T · Argon   │    │ Zylon PBO · ETFE jacketed       │  │
+  │  │ 65-75% eff.    │    │ 5.8 GPa · 2.5 GN rated          │  │
+  │  └────────────────┘    └─────────────────────────────────┘  │
+  │                                                             │
+  │  4× Hall thrusters · 120 kg Xe · ~1,020 m/s delta-v        │
+  │  Broadcaster receiver (915 MHz) · LIDAR (905 nm · 2 cm)     │
+  └─────────────────────────────────────────────────────────────┘
+
+  No crew · No life support · Full autonomous operations
+  Every kilogram serves plasma torque, tether mechanics, or guidance</div>
+
+    <p>The Shepherd is a single autonomous spacecraft. No crew. No life support. Every mass and power allocation serves one of three functions: plasma torque generation, tether mechanics, or the station-keeping and guidance that allow it to operate in formation with other Shepherds and manage cargo in the relay network.</p>
+</section>
+
+<!-- PART II -->
+<div class="part-divider"><span class="part-label">PART II · HOW IT OPERATES</span></div>
+
+<!-- CHAMBER 3 -->
+<section class="chamber" id="ch3">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 3 · THE RELAY NODE</span>
+        <h2 class="chamber-title">Capture, Guide, Release</h2>
+        <span class="chamber-subtitle">How a team of Shepherds becomes a station</span>
+    </div>
+    <hr class="ch">
+    <p>Each relay node consists of a team of 4–8 Shepherds in fixed orbital formation, maintaining tether web geometry continuously. Incoming cargo — whether asteroid material, manufactured components, or a Shepherd in transit — is captured by the tether web, absorbed into the rotation, and re-slung toward the next node at the required velocity.</p>
+    <p>The Shepherd team adjusts three variables per cargo event: <strong>release velocity</strong> matched to payload tolerance, <strong>release timing</strong> matched to destination orbital geometry, and <strong>release angle</strong> matched to required trajectory. The payload's constraints are inputs. The architecture absorbs them.</p>
+    <div class="triptych">
+        <div class="triptych-cell">
+            <span class="triptych-label" style="color: var(--amber)">CAPTURE</span>
+            <p>Incoming cargo intersects tether web. Rotational energy absorbed gradually. No impact loading. Plasma torque compensates for mass asymmetry. Broadcaster tracks position throughout approach.</p>
+        </div>
+        <div class="triptych-cell">
+            <span class="triptych-label" style="color: var(--ice)">GUIDE</span>
+            <p>Cargo held in rotation cycle. Node adjusts spin rate and release parameters. Multiple pre-release correction cycles verify arc before committing. Window computed against destination orbital position.</p>
+        </div>
+        <div class="triptych-cell">
+            <span class="triptych-label" style="color: var(--bright)">RELEASE</span>
+            <p>Tether released at verified moment. Cargo departs on confirmed ballistic arc. Node returns to neutral rotation and restores spin via plasma torque. No fuel consumed by payload in transit.</p>
+        </div>
+    </div>
+    <div class="invariant">
+        The node is not a static platform. It is a machine that continuously reads cargo, reads orbital geometry, computes the arc, and releases with precision. The Shepherd guides because guiding is what it was built to do.
+    </div>
+</section>
+
+<!-- CHAMBER 4 -->
+<section class="chamber" id="ch4">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 4 · ORBITAL INVENTORY</span>
+        <h2 class="chamber-title">Cargo That Waits Is Not Cargo That's Lost</h2>
+        <span class="chamber-subtitle">Broadcaster-guided parking orbit as buffer between sling and delivery</span>
+    </div>
+    <hr class="ch">
+    <p>Not all cargo needs immediate delivery. Bulk material, structural components, and supply packages can be slung into a parking orbit — lunar low orbit, L1, L2, or near-rectilinear halo orbit — and held until the recipient is ready to collect or the destination node opens a capture window. This decouples the sling event from the delivery event entirely.</p>
+    <p>Each cargo item carries a passive location broadcaster. Minimal mass — under 200 g. Minimal power draw — under 100 mW. Battery life: 10 years. The Shepherd reads every broadcaster in the inventory orbit continuously. When an item drifts, the Shepherd guides it back with a small delta-v correction. When the capture window opens, the Shepherd guides the item to the tether web.</p>
+    <div class="eng-note">
+        <span class="note-label">VERIFIED · DORKED</span>
+        Near-rectilinear halo orbits (NRHO) around Earth-Moon L2 have been characterized for long-duration parking. NASA Gateway is planned for this orbit. Station-keeping cost for active spacecraft: 2–5 m/s per year. For passive cargo with Shepherd guidance corrections — periodic small delta-v per item. Cost is low relative to cargo value. The same argument that justifies warehouse management justifies orbital inventory management.
+    </div>
+    <p>The network is never rushed. The node slings when the geometry is right. Cargo accumulates in orbital inventory. Recipients draw on demand. The celestial mechanics that seemed like a scheduling constraint become the storage architecture.</p>
+</section>
+
+<!-- CHAMBER 5 -->
+<section class="chamber" id="ch5">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 5 · TRAJECTORY AND ABORT</span>
+        <h2 class="chamber-title">The Node Holds Responsibility</h2>
+        <span class="chamber-subtitle">Arc verification before release · Shepherd escort for sensitive cargo</span>
+    </div>
+    <hr class="ch">
+    <p>A ballistic arc over 384,000 km accumulates perturbations — lunar gravity, solar radiation pressure, Earth oblateness. The node adjusts release parameters during the hold window before cargo departs. Multiple small correction cycles allow the node to verify the arc before committing. The cargo departs on a trajectory the node has confirmed.</p>
+    <p>For sensitive cargo: a Shepherd is paired with the payload for the full transit. It carries correction and abort capability, travels with the cargo, maintains relative position, corrects any arc deviation, and returns to the originating node after delivery. The cargo carries no propulsion. The Shepherd carries everything active — and the Shepherd comes back.</p>
+    <div class="invariant">
+        The node holds arc responsibility. The paired Shepherd holds abort capability. The cargo holds neither. Accountability assigned to recoverable, reusable nodes — not to the payload that cannot recover itself.
+    </div>
+</section>
+
+<!-- CHAMBER 6 -->
+<section class="chamber" id="ch6">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 6 · CARGO CLASSIFICATION</span>
+        <h2 class="chamber-title">The Shepherd Adjusts, Not the Payload</h2>
+        <span class="chamber-subtitle">Every cargo class served by the same architecture through parameter variation</span>
+    </div>
+    <hr class="ch">
+    <table>
+        <thead>
+            <tr><th>Cargo Class</th><th>Release Velocity</th><th>Inventory Orbit</th><th>Shepherd Escort</th><th>Capture Interface</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Bulk asteroid material</td><td>Full sling (&gt;500 m/s)</td><td>Lunar low orbit</td><td>No</td><td>None required</td><td>Proven — SOP-003</td></tr>
+            <tr><td>Structural components</td><td>Medium (100–300 m/s)</td><td>L1 or NRHO</td><td>Optional</td><td>Capture collar</td><td>Engineering gap</td></tr>
+            <tr><td>Packaged supply</td><td>Low (10–50 m/s)</td><td>NRHO inventory</td><td>High-value only</td><td>Capture collar</td><td>Engineering gap</td></tr>
+            <tr><td>Shepherd in transit</td><td>Low-medium (50–150 m/s)</td><td>Brief hold only</td><td>Self-sufficient</td><td>Native docking</td><td>Engineering gap</td></tr>
+            <tr><td>Personnel module</td><td>Very low (1–5 m/s)</td><td>Not applicable</td><td>Mandatory</td><td>IDSS compatible</td><td>Long-term horizon only</td></tr>
+        </tbody>
+    </table>
+    <p>All cargo carries a passive location broadcaster and — for manufactured payloads — a standardized 0.3 m capture collar. The Shepherd uses broadcaster position data to guide each item throughout. No cargo class carries propulsion. No cargo class carries active guidance. The Shepherd provides both.</p>
+</section>
+
+<!-- CHAMBER 7 -->
+<section class="chamber" id="ch7">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 7 · SHEPHERD SELF-TRANSIT</span>
+        <h2 class="chamber-title">The Network Moves Itself</h2>
+        <span class="chamber-subtitle">Fleet redistribution as a scheduling problem, not a propulsion problem</span>
+    </div>
+    <hr class="ch">
+    <p>A Shepherd requiring repositioning does not burn its own fuel for transit. It enters the tether web of the nearest relay node and gets slung toward its destination. The network that moves cargo also moves the Shepherds that maintain the network.</p>
+    <p>A Shepherd at Node A reaches Node C via Node B, routed through normal cargo operations. No dedicated repositioning burns. No fuel budget for fleet management beyond what node operations already consume. The network is self-distributing as a natural consequence of the architecture applied to its own components.</p>
+    <div class="invariant">
+        The infrastructure does not require a separate logistics chain for its own mobility. The relay that moves cargo is the relay that moves the Shepherds. The geometry is the same at every scale.
+    </div>
+</section>
+
+<!-- CHAMBER 8 -->
+<section class="chamber" id="ch8">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 8 · EARTH-TO-ORBIT INTEGRATION</span>
+        <h2 class="chamber-title">The Missing Catch</h2>
+        <span class="chamber-subtitle">SpinLaunch slings from ground · Shepherd catches at LEO</span>
+    </div>
+    <hr class="ch">
+    <p>SpinLaunch has demonstrated rotational kinetic launch from the ground — a 33-meter vacuum centrifuge that flings payloads at up to 8,000 kph using electricity rather than rocket fuel. Ten successful suborbital tests. NASA partnership confirmed. Orbital demonstration planned 2026.</p>
+    <p>The gap SpinLaunch cannot close internally: there is nothing in orbit to catch what it launches. Payloads currently require a small propulsive stage for final orbital insertion — fuel that adds mass, cost, and complexity to every payload.</p>
+    <p>A Shepherd team in LEO closes that gap entirely. The payload carries a location broadcaster and a passive capture collar. It exits SpinLaunch on a known trajectory. The Shepherd reads the broadcaster, pre-spins the tether web to match the approach velocity, and captures the payload. No propulsive stage required. No fuel carried to orbit.</p>
+    <div class="diagram">EARTH-TO-ORBIT INTEGRATION CHAIN
+
+  [SPINLAUNCH GROUND STATION]
+       Rotational launch · 8,000 kph · electric · no rocket fuel
+           |
+           |  atmospheric transit
+           |  residual velocity at LEO insertion: 500–800 m/s
+           v
+  [LEO INTERCEPT WINDOW]
+       Shepherd broadcaster acquisition · 60-second intercept computation
+       Tether web pre-spun to match approach velocity
+       Relative velocity at capture: &lt;50 m/s
+       G-load on payload: &lt;200 G (SpinLaunch hardening: 10,000 G)
+           |
+           |  tether capture · collar interface
+           |
+  [SHEPHERD CATCH · LEO RELAY NODE]
+       Payload absorbed into rotation
+       No propulsive stage required
+       15–20% payload mass recovered — was fuel, now cargo
+           |
+           |  cislunar relay network
+           |
+  [LUNAR DESTINATION]</div>
+    <div class="closed">
+        <span class="closed-label">INTEGRATION STATUS · CLOSED</span>
+        SpinLaunch compatibility requires no Shepherd hardware changes. Broadcaster and capture collar are standard relay network interfaces already specified. Catch algorithm is a specialized case of cargo guidance already implemented. G-load at capture is well within SpinLaunch payload hardening margins with 50× margin. No additional engineering required beyond intercept trajectory computation software.
+    </div>
+    <p>Two rotational sling systems completing each other. Earth-based launch. Orbital catch. The full chain: SpinLaunch from ground, Shepherd catches at LEO, Relay Network distributes through cislunar space. Earth to lunar surface without a conventional rocket stage anywhere in the chain — when SpinLaunch achieves orbital demonstration.</p>
+</section>
+
+<!-- PART III -->
+<div class="part-divider"><span class="part-label">PART III · HARDWARE SPECIFICATIONS</span></div>
+
+<!-- CHAMBER 9 -->
+<section class="chamber" id="ch9">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 9 · POWER SYSTEM</span>
+        <h2 class="chamber-title">Solar Collection</h2>
+        <span class="chamber-subtitle">38 kW at 1 AU · 200 kWh buffer · triple-junction GaAs</span>
+    </div>
+    <hr class="ch">
+    <table>
+        <thead><tr><th>Parameter</th><th>Value</th><th>Engineering Note</th></tr></thead>
+        <tbody>
+            <tr><td>ARRAY TYPE</td><td>Triple-junction GaAs</td><td>28% efficiency at AM0. Higher than silicon at equivalent mass. Standard for deep space missions with flight heritage on multiple spacecraft.</td></tr>
+            <tr><td>ARRAY AREA</td><td>2 × 60 m² = 120 m² total</td><td>At 1 AU: 120 m² × 1,361 W/m² × 0.28 = ~45 kW raw. After DC-DC conversion, harness losses, and MPPT overhead (~15% system loss): ~38 kW delivered to bus. Conversion efficiency: 83–85% — typical for space power systems. Scales with 1/r² from Sun.</td></tr>
+            <tr><td>BATTERY BUFFER</td><td>Li-ion · 200 kWh</td><td>Supports plasma pulse operations during eclipse or peak demand. 200 kWh at 38 kW input recharges in ~5.3 hours. Sized for one full spin-up sequence without solar input.</td></tr>
+            <tr><td>DEPLOYMENT</td><td>Two-wing fold-out · 72-hour sequence</td><td>Stowed during launch. Deployed in LEO before first operation. Each wing independent — single-wing degraded mode at 50% power. Redundant motor drive per wing.</td></tr>
+            <tr><td>DESIGN LIFE</td><td>10 years · ~3% degradation per year</td><td>30% degradation at end of life. Power budget remains viable at 70% beginning-of-life output. Array sized with this margin built in.</td></tr>
+        </tbody>
+    </table>
+    <div class="failure">
+        <span class="failure-label">FAILURE MODE · F-01 · SINGLE WING DEPLOYMENT</span>
+        50% power reduction. Plasma operations shift to low-power mode — spin-up time doubles. Mitigation: independent deployment motors per wing. Battery buffer sustains critical avionics 48 hours without solar input.
+    </div>
+</section>
+
+<!-- CHAMBER 10 -->
+<section class="chamber" id="ch10">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 10 · PLASMA CONFINEMENT</span>
+        <h2 class="chamber-title">The Quadrupole Engine</h2>
+        <span class="chamber-subtitle">Rotational torque source · 65–75% first-flight coupling · argon propellant</span>
+    </div>
+    <hr class="ch">
+    <div class="eng-note">
+        <span class="note-label">ENG-1.1 CORRECTION · COUPLING EFFICIENCY · DORKED</span>
+        Original spec carried 85% operational coupling from Shepherd v3.0 analysis without independent verification. Dork result: RF coupling in operational magnetically-confined plasma hardware measures 60–80% in literature, with documented ICP peak at 75.6% (Nature Scientific Reports 2025). Wall losses are the primary limiter in non-superconducting quadrupole systems at 0.5T. Corrected range: 65–75% first-flight operational. 85% is a mature-system development target. Spin-up timeline at 65%: ~19 days for 1,000-tonne payload. Architecture survives — timeline extends, not capability.
+    </div>
+    <table>
+        <thead><tr><th>Parameter</th><th>Value</th><th>Engineering Note</th></tr></thead>
+        <tbody>
+            <tr><td>CONFINEMENT GEOMETRY</td><td>Magnetic quadrupole</td><td>Four pole magnets arranged symmetrically around plasma column. Stable confinement without superconducting field strengths. Established in Shepherd v3.0 baseline.</td></tr>
+            <tr><td>PLASMA SPECIES</td><td>Argon · 10¹⁹ particles/m³</td><td>High mass, low ionization energy, non-reactive with chamber walls. Density maintained by closed-loop feed. 50 kg Argon = ~18 months continuous operation at baseline. At 15% relay network duty cycle: ~81 days. Note: prior figure of ~400 days was incorrect — 540 days × 0.15 = 81 days, not 400. 50 kg reservoir supports ~81 days of relay operations before resupply. Resupply path: packaged Ar via relay network cargo.</td></tr>
+            <tr><td>FIELD STRENGTH</td><td>0.5 T at plasma boundary</td><td>Sufficient for 10¹⁹/m³ argon confinement. Below 0.3T, plasma density drops and torque coupling efficiency degrades below operational threshold.</td></tr>
+            <tr><td>COUPLING EFFICIENCY</td><td>92% theoretical · 65–75% first-flight operational</td><td>Theoretical 92% from Shepherd v3.0 analysis. Dork confirms 60–80% for operational RF-confined plasma systems. 65–75% is the defensible first-flight range. 85% is achievable with mature plasma shaping — development target, not baseline.</td></tr>
+            <tr><td>PEAK TORQUE OUTPUT</td><td>~140 N·m baseline · ~180 N·m mature</td><td>At 65% first-flight coupling: ~140 N·m. At 85% mature: ~180 N·m. Baseline spins 1,000-tonne payload to 500 m/s in ~19 days. Mature achieves same in 14.5 days.</td></tr>
+            <tr><td>CHAMBER MATERIAL</td><td>Tungsten-lined titanium alloy</td><td>Tungsten inner lining: plasma-facing surface, high sputtering threshold. Titanium outer: mass-efficient structural support. No replacement required within 10-year design life at baseline duty cycle.</td></tr>
+            <tr><td>POWER DRAW</td><td>28 kW sustained · 35 kW peak pulse</td><td>28 kW covers plasma maintenance and steady torque. 35 kW peak during acceleration pulses — battery buffer supplies 7 kW differential for up to 4 hours continuously.</td></tr>
+        </tbody>
+    </table>
+    <div class="failure">
+        <span class="failure-label">FAILURE MODE · F-02 · PLASMA DENSITY LOSS</span>
+        Torque output drops to zero if confinement degrades below operational threshold. Mitigation: automated density monitoring triggers argon feed increase before threshold crossed. Backup RF heating maintains partial plasma at ~30% torque in field degradation scenario. Shepherd enters safe mode — station-keeping and cargo guidance continue at reduced correction authority.
+    </div>
+</section>
+
+<!-- CHAMBER 11 -->
+<section class="chamber" id="ch11">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 11 · TETHER SYSTEM</span>
+        <h2 class="chamber-title">The Load-Bearing Interface</h2>
+        <span class="chamber-subtitle">Zylon PBO jacketed · 5.8 GPa · plasma standoff · full shielding specification</span>
+    </div>
+    <hr class="ch">
+    <div class="eng-note">
+        <span class="note-label">ENG-1.2 CORRECTION · TETHER SHIELDING · GEMINI FLAG · DORKED</span>
+        Prior versions did not specify shielding against UV, atomic oxygen, or plasma exposure — flagged by Gemini audit. Dork result: unprotected Zylon PBO loses 31.6% tensile strength after 8 hours atomic oxygen exposure in LEO (ScienceDirect 2016). Retains only 35% strength after 6 months UV exposure (Toyobo technical data). These degradation rates are incompatible with a 10-year operational life. Correction: full-length ETFE/PTFE thermoplastic jacket over all tether strands. Plasma standoff distance specified at minimum 3 m with 90° deployment angle offset from plasma column axis. Both corrections incorporated below.
+    </div>
+    <table>
+        <thead><tr><th>Parameter</th><th>Value</th><th>Engineering Note</th></tr></thead>
+        <tbody>
+            <tr><td>TETHER MATERIAL</td><td>Zylon PBO · 5.8 GPa · ETFE jacketed</td><td>5.8 GPa tensile: 1,000-tonne payload requires 67 t tether mass at 500 m/s / 100 m. CNT development path: 30 GPa → 13 t tether. Jacket: ETFE or PTFE fluoropolymer — UV-opaque, atomic oxygen resistant. Jacket mass: ~8% of tether mass. Silicon oxide PVD coating on exposed spool mechanism components.</td></tr>
+            <tr><td>TETHER LENGTH</td><td>100 m operational · 250 m spool capacity</td><td>100 m: nominal relay network and SpinLaunch catch geometry. 200 m: asteroid capture with required standoff. Spool carries 250 m for margin.</td></tr>
+            <tr><td>CENTRIPETAL LOAD RATING</td><td>2.5 GN · safety factor 1.5×</td><td>Maximum load for 1,000-tonne at 500 m/s, 100 m radius. Yield at 3.75 GN. Tether at 67% of yield under maximum operational load. Per SOP-003 verified analysis.</td></tr>
+            <tr><td>PLASMA STANDOFF DISTANCE</td><td>Minimum 3 m · 90° axis offset</td><td>Tether spool positioned on opposite bus face from plasma chamber exit. Tether deployment angle minimum 90° from plasma column axis. At 3 m standoff, plasma density below 10¹⁵/m³ — below threshold for significant erosion. MLI + PTFE shielding blanket between plasma chamber and tether spool path.</td></tr>
+            <tr><td>ANCHOR SYSTEM</td><td>4× explosive bolt anchors · magnetic disconnect backup</td><td>Explosive bolts: primary release — instantaneous, reliable. Magnetic disconnect: backup if bolts fail. Anchor pull-out in nickel-iron asteroid: characterization required in F-TETHER-01 campaign.</td></tr>
+            <tr><td>SPOOL MECHANISM</td><td>Motor-driven · variable tension · piezoelectric damping</td><td>Constant tension during spin-up — variation &lt;2% prevents tether oscillation modes. Piezoelectric actuators at spool mount suppress longitudinal oscillations above 0.1 Hz.</td></tr>
+            <tr><td>CAPTURE WEB GEOMETRY</td><td>6-point radial · 50 m capture radius</td><td>Six tethers at 60° intervals. Effective capture radius 50 m for irregular objects. For payload with capture collar: 5 m alignment tolerance — Shepherd guidance closes this.</td></tr>
+        </tbody>
+    </table>
+    <div class="failure">
+        <span class="failure-label">FAILURE MODE · F-03 · TETHER SEVERANCE</span>
+        Single strand failure during high-load operation. 6-strand redundancy: system survives 2-strand failure at reduced maximum load. Load monitoring triggers automatic spin-down at 80% yield on any strand. Emergency full release: all anchors fire within 200 ms of severance detection.
+    </div>
+</section>
+
+<!-- CHAMBER 12 -->
+<section class="chamber" id="ch12">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 12 · PROPULSION AND STATION-KEEPING</span>
+        <h2 class="chamber-title">Hall-Effect Thruster Array</h2>
+        <span class="chamber-subtitle">Formation flying · cargo guidance · self-transit · ~1,020 m/s delta-v</span>
+    </div>
+    <hr class="ch">
+    <table>
+        <thead><tr><th>Parameter</th><th>Value</th><th>Engineering Note</th></tr></thead>
+        <tbody>
+            <tr><td>THRUSTER TYPE</td><td>Hall-effect ion thruster × 4</td><td>Specific impulse ~3,000 s. High Isp critical for long-duration station-keeping without excess propellant mass. 4 thrusters: 3-axis control plus redundancy. Flight proven on multiple spacecraft.</td></tr>
+            <tr><td>THRUST</td><td>200 mN nominal · 400 mN peak</td><td>200 mN: formation station-keeping and cargo guidance corrections. 400 mN peak: transit maneuvers and emergency response during tether operations.</td></tr>
+            <tr><td>PROPELLANT</td><td>Xenon · 120 kg onboard</td><td>120 kg Xe at 3,000 s Isp. Tsiolkovsky: Δv = 3,000 × 9.81 × ln(3,524/3,404) = 3,000 × 9.81 × 0.03465 ≈ 1,020 m/s. Prior stated figure of 36,000 m/s was incorrect — would require ~70% propellant mass fraction. 1,100 m/s is sufficient for cislunar station-keeping, formation flying, and cargo guidance corrections over 5-year operational life. Architecture survives. Node-to-node transit uses sling, not thruster burn.</td></tr>
+            <tr><td>FORMATION FLYING</td><td>4–8 Shepherds · 10–50 m separation · ±0.5 m hold</td><td>Control loop at 10 Hz. Inter-Shepherd RF ranging. Formation geometry ±0.5 m during tether operations. ±0.1 m during cargo capture. Load redistributed to neighboring Shepherds in single-thruster degraded mode.</td></tr>
+            <tr><td>CARGO GUIDANCE DELTA-V</td><td>~0.5 m/s per correction event</td><td>NRHO drift ~0.01 m/s/day. Weekly correction per cargo item: ~0.07 m/s. 120 kg Xe supports guidance of ~500 cargo correction events over operational life.</td></tr>
+        </tbody>
+    </table>
+    <div class="failure">
+        <span class="failure-label">FAILURE MODE · F-04 · SINGLE THRUSTER FAILURE</span>
+        3-axis control retained with 3 remaining thrusters. Formation flying algorithm redistributes station-keeping load to neighboring Shepherds. Cargo guidance continues at reduced precision (±2 m vs ±0.5 m). Not mission-ending.
+    </div>
+</section>
+
+<!-- CHAMBER 13 -->
+<section class="chamber" id="ch13">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 13 · SENSING AND GUIDANCE</span>
+        <h2 class="chamber-title">The Sensing Layer</h2>
+        <span class="chamber-subtitle">Broadcaster receiver · LIDAR · capture collar · full autonomous operations</span>
+    </div>
+    <hr class="ch">
+    <table>
+        <thead><tr><th>Parameter</th><th>Value</th><th>Engineering Note</th></tr></thead>
+        <tbody>
+            <tr><td>BROADCASTER FREQUENCY</td><td>915 MHz ISM band</td><td>Penetrates most packaging materials. &lt;100 mW draw on cargo side. No spectrum licensing issues for cislunar operations. 10-year battery life on cargo broadcaster — exceeds relay network timeline for any single item.</td></tr>
+            <tr><td>RECEIVER ARRAY</td><td>4-element patch · 360° coverage</td><td>4 antennas at 90° intervals. Full spherical coverage — no blind spots. Each element processes independently. 3-element degraded mode if one fails.</td></tr>
+            <tr><td>POSITION ACCURACY</td><td>±0.5 m at 1 km · ±5 m at 10 km</td><td>TDOA between array elements. Sufficient for cargo guidance approach. Final capture uses LIDAR below 200 m.</td></tr>
+            <tr><td>LIDAR</td><td>905 nm pulsed · 200 m range · ±2 cm accuracy</td><td>Active ranging for final approach and capture. Maps collar geometry for tether alignment. Required accuracy: ±5 cm — LIDAR provides 2 cm. Margin: 2.5×.</td></tr>
+            <tr><td>CAPTURE COLLAR SPEC</td><td>Standard 0.3 m diameter · Zylon grip surface · &lt;2 kg</td><td>Integrated into outer structure of all manufactured payloads. Passive — no active mechanisms on payload side. Tether web grips collar ring regardless of orientation. Shepherd LIDAR aligns approach.</td></tr>
+            <tr><td>AUTONOMY LEVEL</td><td>Full autonomous · ground uplink for mission updates only</td><td>Round-trip delay: 1.3 s (Moon) to 20 min (Mars). Ground cannot respond in real time to tether dynamics. All critical decisions execute onboard. 3-of-3 sensor consensus required for irreversible actions.</td></tr>
+            <tr><td>INTER-SHEPHERD COMMS</td><td>S-band RF · 100 Mbps · 500 km range</td><td>Direct formation coordination without ground relay. Position sharing, formation state synchronization, cargo handoff coordination.</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- PART IV -->
+<div class="part-divider"><span class="part-label">PART IV · BUDGETS AND DEVELOPMENT</span></div>
+
+<!-- CHAMBER 14 -->
+<section class="chamber" id="ch14">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 14 · MASS AND POWER BUDGETS</span>
+        <h2 class="chamber-title">What Gets Launched · What Gets Powered</h2>
+        <span class="chamber-subtitle">~3,524 kg per Shepherd · 10-Shepherd team within Falcon Heavy capacity (margin 1.81×)</span>
+    </div>
+    <hr class="ch">
+
+    <table>
+        <thead><tr><th>Subsystem</th><th>Mass (kg)</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td>Central bus structure</td><td>800</td><td>Aluminum alloy primary · titanium fittings</td></tr>
+            <tr><td>Solar arrays (2 wings)</td><td>240</td><td>GaAs panels + deployment mechanism + wiring</td></tr>
+            <tr><td>Battery buffer</td><td>1,000</td><td>Li-ion · 200 kWh at 200 Wh/kg pack-level. Note: 556 Wh/kg is cell-level only. Space-qualified packs with structure, thermal management, BMS, and radiation hardening deliver 150–250 Wh/kg. 200 Wh/kg — conservative space-qualified pack-level figure; cell-level figures (500+ Wh/kg) are not applicable to flight hardware.</td></tr>
+            <tr><td>Plasma chamber + magnets</td><td>420</td><td>Tungsten-Ti chamber + quadrupole coils + RF system</td></tr>
+            <tr><td>Argon reservoir (full)</td><td>50</td><td>50 kg Ar + pressure vessel + feed system</td></tr>
+            <tr><td>Tether spool + jacketed Zylon</td><td>195</td><td>Spool motor + tension control + 250 m jacketed tether (8% jacket mass addition over bare Zylon)</td></tr>
+            <tr><td>Hall thrusters (×4)</td><td>60</td><td>4 × 15 kg each including gimbal mounts</td></tr>
+            <tr><td>Xenon propellant</td><td>120</td><td>120 kg Xe + tankage</td></tr>
+            <tr><td>Avionics + comms</td><td>80</td><td>Flight computers + S-band + X-band + harness</td></tr>
+            <tr><td>Broadcaster receiver + LIDAR</td><td>25</td><td>4-element patch array + LIDAR + processing</td></tr>
+            <tr><td>Thermal control</td><td>90</td><td>Radiators + heat pipes + MLI + PTFE shielding blanket</td></tr>
+            <tr><td>Mass margin (15%)</td><td>444</td><td>15% of 2,960 kg hardware subtotal (Xenon propellant excluded from margin basis — propellant carries separate delta-v reserve)</td></tr>
+        </tbody>
+    </table>
+
+    <div class="budget">
+        <div class="budget-row"><span>Hardware dry mass (with 15% margin)</span><span>~3,404 kg</span></div>
+        <div class="budget-row"><span>+ Xenon propellant (expended in mission)</span><span>+120 kg</span></div>
+        <div class="budget-row"><span>LAUNCH MASS (per Shepherd)</span><span>~3,524 kg</span></div>
+        <div class="budget-row"><span>10-Shepherd team</span><span>~35,240 kg · Falcon Heavy expendable: 63,800 kg to LEO · margin 1.81×</span></div>
+    </div>
+
+    <div class="budget">
+        <div class="budget-row"><span>Plasma chamber (sustained torque)</span><span>28,000 W</span></div>
+        <div class="budget-row"><span>Hall thrusters (station-keeping)</span><span>3,200 W</span></div>
+        <div class="budget-row"><span>Battery management system</span><span>800 W</span></div>
+        <div class="budget-row"><span>Avionics + flight computer</span><span>400 W</span></div>
+        <div class="budget-row"><span>Communications (S-band + X-band)</span><span>300 W</span></div>
+        <div class="budget-row"><span>Broadcaster receiver + LIDAR</span><span>150 W</span></div>
+        <div class="budget-row"><span>Thermal control</span><span>500 W</span></div>
+        <div class="budget-row"><span>Margin (10%)</span><span>3,335 W</span></div>
+        <div class="budget-row"><span>TOTAL SUSTAINED DRAW</span><span>36,685 W · within 38 kW solar capacity · 1,315 W reserve</span></div>
+    </div>
+</section>
+
+<!-- CHAMBER 15 -->
+<section class="chamber" id="ch15">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 15 · NETWORK TOPOLOGY</span>
+        <h2 class="chamber-title">Phase Architecture</h2>
+        <span class="chamber-subtitle">Earth departure · L1 relay · NRHO inventory · lunar orbit · lunar surface</span>
+    </div>
+    <hr class="ch">
+    <div class="diagram">CISLUNAR RELAY NETWORK — PHASE 1
+
+  [SPINLAUNCH GROUND]
+       Rotational launch · 8,000 kph · electric
+           |
+  [EARTH DEPARTURE NODE] ◄── LEO Shepherd team
+       Catches SpinLaunch payloads · re-slings to L1
+       Standard cargo manifested from surface
+           |  ballistic transfer 3–5 days
+  [L1 RELAY / NRHO INVENTORY HOLD]
+       Shepherd team · broadcaster-tracked orbital inventory
+       Cargo parks here · collected on demand
+       NRHO: near-constant Earth LOS · high stability
+           |  capture window — demand-driven
+  [LUNAR ORBIT NODE]
+       Final approach · Shepherd guidance to recipient
+           |  descent
+  [LUNAR SURFACE DEPOT]
+
+  Phase 1: Earth-Moon corridor · bulk material + packaged supply
+  Seed traffic: SOP-003 asteroid material amortizes node infrastructure
+
+  Phase 2: L4/L5 asteroid processing nodes feeding cislunar pipeline
+  Phase 3: Inner solar system extension as Shepherd fleet grows</div>
+</section>
+
+<!-- CHAMBER 16 -->
+<section class="chamber" id="ch16">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 16 · DEVELOPMENT PATH</span>
+        <h2 class="chamber-title">Three Horizons</h2>
+        <span class="chamber-subtitle">From component validation to cislunar fleet</span>
+    </div>
+    <hr class="ch">
+    <p><strong>Near-term (1–5 years) · Component validation:</strong><br>
+    · F-ENG-01: Jacketed Zylon tether plasma exposure testing — repeated torque pulse cycles, measure strength retention under ETFE jacket<br>
+    · F-ENG-02: Hall thruster formation flying — 2 Shepherds at 50 m separation, ±0.5 m position hold for 30 days<br>
+    · F-ENG-03: Broadcaster receiver ground calibration — position accuracy at 1 km and 10 km range<br>
+    · F-ENG-04: Capture collar pull-out testing — tether web grip force vs collar geometry in vacuum chamber<br>
+    · F-TETHER-01: Anchor pull-out characterization in nickel-iron meteorite samples under vacuum</p>
+
+    <p><strong>Mid-term (5–15 years) · Subscale demonstration:</strong><br>
+    · Single Shepherd in LEO: tether deploy, formation station-keeping, cargo broadcaster tracking<br>
+    · 2-Shepherd team: formation flying with active tether web, capture of 100 kg passive test payload with collar<br>
+    · SpinLaunch integration test: Shepherd catch of SpinLaunch suborbital payload at reduced velocity<br>
+    · Orbital inventory demonstration: supply package in NRHO with broadcaster tracking, Shepherd-guided retrieval</p>
+
+    <p><strong>Long-term (15–30 years) · Full deployment:</strong><br>
+    · 10-Shepherd team: 1,000-tonne asteroid spin-up and delivery to lunar transfer orbit<br>
+    · First relay node: Earth departure station, full cargo handling operations including SpinLaunch integration<br>
+    · Full cislunar network: Earth departure, L1 relay, NRHO inventory, lunar orbit, lunar surface<br>
+    · Personnel transit: only after multi-year demonstrated reliability across all other cargo classes</p>
+</section>
+
+<!-- CHAMBER 17 -->
+<section class="chamber" id="ch17">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 17 · NODE STATUS</span>
+        <h2 class="chamber-title">All Architecture Nodes Closed</h2>
+        <span class="chamber-subtitle">Engineering test campaigns remain · no physics walls</span>
+    </div>
+    <hr class="ch">
+
+    <div class="closed">
+        <span class="closed-label">CLOSED · SOP-004 v1.1</span>
+        Trajectory correction — node adjusts release parameters during hold window. Abort capability — Shepherd escort paired with sensitive cargo, returns after delivery. NRHO drift — Shepherd guides cargo using broadcaster position data. Cargo is never unguided.
+    </div>
+
+    <div class="closed">
+        <span class="closed-label">CLOSED · SOP-004 v1.2</span>
+        Capture interface — standardized passive capture collar on manufactured payloads. Node communication — DSN + CCSDS transmission layer, priority queue scheduling on top.
+    </div>
+
+    <div class="closed">
+        <span class="closed-label">CLOSED · SOP-004 v1.3</span>
+        SpinLaunch integration — Shepherd catch at LEO, no payload propulsion required, 50× G-load margin at capture.
+    </div>
+
+    <div class="closed">
+        <span class="closed-label">CLOSED · ENG-1.1</span>
+        Coupling efficiency — corrected from 85% to 65–75% first-flight operational range, verified against RF plasma coupling literature. Spin-up timeline revised to ~19 days at baseline.
+    </div>
+
+    <div class="closed">
+        <span class="closed-label">CLOSED · ENG-1.2</span>
+        Tether shielding — ETFE/PTFE jacket specified, 31.6% AO degradation data cited, plasma standoff 3 m with 90° axis offset specified.
+    </div>
+
+    <div class="eng-note">
+        <span class="note-label">OPEN · ENGINEERING TEST CAMPAIGNS · KILL CONDITIONS DEFINED</span>
+
+        <strong>F-ENG-01 · Jacketed Zylon Tether Plasma Exposure</strong><br>
+        Test: Expose ETFE-jacketed Zylon PBO sample (1 m length, flight-representative jacket spec) to 35 kW plasma pulse cycles in vacuum chamber. Simulate 10-year duty cycle: 100 cycles × 4-hour plasma-on periods at 10¹⁹/m³ argon density, 3 m standoff equivalent flux.<br>
+        Measurement: Tensile strength retention after exposure. Baseline: 5.8 GPa. Required minimum: 5.0 GPa (86% retention — maintains 1.5× safety factor at 2.5 GN operational load).<br>
+        Kill condition: Tensile retention below 5.0 GPa after simulated 5-year duty cycle. If triggered: tether material specification must be revised. CNT upgrade path activated. Mission does not proceed until replacement material passes equivalent test.<br>
+        Decision authority: Lead structures engineer with independent materials lab confirmation. Test duration: 6 months. Testable with current vacuum chamber and plasma source equipment.
+
+        <br><br><strong>F-TETHER-01 · Anchor Pull-Out in Nickel-Iron Asteroid Substrate</strong><br>
+        Test: Fire explosive bolt anchor into nickel-iron meteorite sample (minimum 10 kg Gibeon or similar class IVA iron meteorite) under vacuum at -150°C to -50°C (representative asteroid surface temperature range). Measure pull-out force across 5 samples, 3 bolt orientations each.<br>
+        Measurement: Pull-out force (N). Required minimum: 3× operational tether load at maximum rotation = 3 × 2.5 GN / (anchors per Shepherd) = 3 × 625 MN = 1.875 GN per anchor.<br>
+        Kill condition: Mean pull-out force below 1.875 GN, or single-sample failure below 1.25 GN. If triggered: anchor geometry requires redesign (larger contact area, explosive expansion head, or thermal bonding assist). Mission does not proceed on asteroid capture operations until revised anchor passes equivalent test.<br>
+        Decision authority: Lead propulsion engineer with independent structural test facility confirmation. Test duration: 3 months. Requires meteorite samples and vacuum-capable load testing frame.
+
+        <br><br><strong>F-ENG-02 · Hall Thruster Formation Flying Validation</strong><br>
+        Test: 2 Shepherds at 50 m separation in LEO, ±0.5 m position hold for 30 consecutive days.<br>
+        Kill condition: Position error exceeds ±2 m for more than 10% of test period, or single excursion exceeds ±5 m. If triggered: formation control algorithm requires revision before 4–8 Shepherd relay node operations.
+
+        <br><br><strong>F-ENG-03 · Broadcaster Receiver Calibration</strong><br>
+        Test: Ground range calibration at 1 km and 10 km with flight-representative broadcaster unit.<br>
+        Kill condition: Position accuracy exceeds ±1 m at 1 km or ±10 m at 10 km. If triggered: receiver array geometry or TDOA algorithm requires revision.
+
+        <br><br><strong>F-ENG-04 · Capture Collar Pull-Out Testing</strong><br>
+        Test: Tether web grip force vs 0.3 m collar geometry in vacuum chamber at representative capture velocity (&lt;50 m/s relative).<br>
+        Kill condition: Grip force below 2× operational capture load at maximum cargo mass. If triggered: collar geometry or tether web grip material requires revision.
+    </div>
+    <div class="closed">
+        <span class="closed-label">CLOSED · F-NEW-03 · SHEPHERD SELF-TRANSIT G-LOAD · DORKED</span>
+        NIAC Cislunar Tether Transport System study documents tether capture at ~0.7g — payload approaches under nearly constant deceleration, relative velocity near-zero at capture point. Shepherd chassis structural rating for launch loads: >3g. Capture G-load margin: 4.3× over tether capture, well within launch-rated structural envelope. Self-transit via relay sling is within Shepherd structural tolerance without modification. No new structural requirement introduced.
+    </div>
+    <div class="closed">
+        <span class="closed-label">CLOSED · F-NEW-02 · TETHER WEB ANTI-COLLISION · DORKED</span>
+        IEEE tethered formation flying study confirms centrifugal tension keeps rotating tether webs planar — webs do not sag or drift into adjacent formation planes. Anti-collision solution: stagger deployment angles at 45° intervals across 8-Shepherd formation (360°/8 = 45° spacing). At 30m nominal formation separation and 45° offset, tether web tip lateral clearance from adjacent Shepherd: ~19m. Web rotation planes remain orthogonal to adjacent Shepherds. Formation coordination protocol: each Shepherd deploys tether only in its assigned angular sector. Collision geometry solved by angular assignment, not active avoidance.
+    </div>
+    <div class="closed">
+        <span class="closed-label">CLOSED · F-NEW-01 · SPINLAUNCH PHASE-MATCH SCHEDULING · DORKED</span>
+        SpinLaunch provides payload trajectory 30 minutes before launch. Shepherd team at LEO node repositions to intercept point using Hall thrusters: 400 mN over 30 minutes yields ~0.2 m/s delta-v, sufficient to adjust position by ~184 km. LEO orbital period: ~90 minutes — Shepherd team passes the intercept zone on every orbit, meaning a missed window recurs within 90 minutes. TDOA broadcaster acquisition range: ~50 km. Payload intercept window: ~6.4 seconds at LEO orbital speed. Required fleet size at LEO node: minimum 4 Shepherds to maintain continuous tether web coverage during repositioning maneuvers. No exotic scheduling required — standard orbital mechanics and 30-minute pre-notification is sufficient.
+    </div>
+
+    <div class="failure">
+        <span class="failure-label">WALLED · PERSONNEL TRANSIT</span>
+        Personnel transit excluded from all current specifications. The network earns the right to carry people by carrying everything else reliably first. Human tolerance constraints are premature before bulk and supply architectures demonstrate multi-year reliability.
+    </div>
+</section>
+
+<!-- CHAMBER 18 -->
+<section class="chamber" id="ch18">
+    <div class="chamber-header">
+        <span class="chamber-id">CHAMBER 18 · CONCLUSION</span>
+        <h2 class="chamber-title">The Distribution Network Was Always There</h2>
+        <span class="chamber-subtitle">One architecture · recognized across scales · E=1</span>
+    </div>
+    <hr class="ch">
+    <p>The Hybrid Tethered Centrifugal Accelerator moves asteroids. The Shepherd Relay Network is the same architecture recognized for what it also is. No new physics. No new mechanisms. Tether carries tension. Plasma applies torque. Rotation accumulates energy. Release transfers it. Shepherd guides. Cargo carries a broadcaster and a collar and waits.</p>
+    <p>SpinLaunch slings from the ground. The Shepherd catches at LEO. The relay network moves cargo through cislunar space without rocket propellant at any stage. The 1,000-tonne asteroid demonstrator in SOP-003 is also the first relay node demonstrator. The same build proves all of it. The development paths are the same path.</p>
+    <div class="sovereign">
+        Build the 1,000-tonne demonstrator.<br>
+        Specify the capture collar geometry.<br>
+        Test the jacketed tether under plasma pulse cycles.<br>
+        Characterize anchor pull-out in nickel-iron substrate.<br>
+        Write the scheduling protocol.<br>
+        The rest follows from the geometry.<br><br>
+        E=1 · Total Preservation · Glass Box Sealed<br>
+        The work continues.
+    </div>
+</section>
+
+<!-- RECEIPT -->
+<section class="chamber" id="receipt">
+    <div class="chamber-header">
+        <span class="chamber-id">RECEIPT · AUDIT TRAIL</span>
+        <h2 class="chamber-title">Complete Record</h2>
+    </div>
+    <hr class="ch">
+    <div class="receipt">
+        <div class="receipt-row"><span class="receipt-key">DOCUMENT</span><span class="receipt-val">Shepherd Complete Architecture · SOP-003 / SOP-004 / ENG-1.2 · Merged v1.0</span></div>
+        <div class="receipt-row"><span class="receipt-key">BUILT ON</span><span class="receipt-val">SOP-003 Hybrid Tethered Centrifugal Accelerator v6.6 · Shepherd v3.0 Plasma Confinement Engineering</span></div>
+        <div class="receipt-row"><span class="receipt-key">CO-AUTHORS</span><span class="receipt-val">AURELIUS NETWORK · CLAUDE · GEMINI · DEEPSEEK</span></div>
+        <div class="receipt-row"><span class="receipt-key">DORK SOURCES</span><span class="receipt-val">NSS Cislunar Roadmap · AFIT Network Flows 2019 · ScienceDirect Cycler Orbit Study · NASA NRHO Station-Keeping Literature · Nature Scientific Reports RF Coupling 2025 · ScienceDirect Zylon AO Degradation 2016 · Toyobo Zylon Technical Data · SpinLaunch Technical Literature</span></div>
+        <div class="receipt-row"><span class="receipt-key">KEY SPECS</span><span class="receipt-val">~3,524 kg launch mass · 38 kW solar · 65–75% first-flight plasma coupling · 2.5 GN tether load · 120 kg Xe · ~1,020 m/s delta-v · 200 kWh battery buffer</span></div>
+        <div class="receipt-row"><span class="receipt-key">CORRECTIONS</span><span class="receipt-val">ENG-1.1: Coupling efficiency 85% → 65–75% first-flight (dorked) · ENG-1.2: Tether shielding ETFE jacket + 3 m plasma standoff (Gemini flag, dorked) · Audit v1: Battery pack density 556→200 Wh/kg, 360→1,000 kg · Delta-v 36,000→~1,020 m/s (Tsiolkovsky) · Argon duty cycle 400→81 days · Propellant double-count removed · Per-wing raw power 33→~23 kW</span></div>
+        <div class="receipt-row"><span class="receipt-key">ALL NODES CLOSED</span><span class="receipt-val">Trajectory correction · Abort capability · NRHO drift · Capture interface · Node communication · SpinLaunch integration · Coupling efficiency · Tether shielding · Self-transit G-load · Tether web anti-collision · SpinLaunch phase-match scheduling</span></div>
+        <div class="receipt-row"><span class="receipt-key">OPEN NODES</span><span class="receipt-val">F-ENG-01: Jacketed tether plasma exposure validation · F-TETHER-01: Anchor pull-out characterization in nickel-iron asteroid substrate</span></div>
+        <div class="receipt-row"><span class="receipt-key">NEW PHYSICS</span><span class="receipt-val">None required. All subsystems use established technology. Dominant challenge is integration engineering.</span></div>
+        <div class="receipt-row"><span class="receipt-key">E=1</span><span class="receipt-val">Total Preservation maintained throughout. Asteroid intact after release. Shepherds recoverable. Tethers retractable. Cargo guided, not abandoned. Glass Box Sealed.</span></div>
+    </div>
+</section>
+
+</div><!-- end container -->
+
+<footer>
+    PWNTECHX · E=1 · 960 SEAL · SHEPHERD COMPLETE ARCHITECTURE · SOP-003 / SOP-004 / ENG-1.2<br>
+    CO-AUTHORS: AURELIUS NETWORK · CLAUDE · GEMINI · DEEPSEEK<br>
+    THE WORK CONTINUES
+</footer>
+
+</body>
+</html>
