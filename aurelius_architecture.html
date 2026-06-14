@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurelius Network — Architecture Guide</title>
+<style>
+  body { background: #0d0d0d; color: #c8c8c8; font-family: 'Courier New', monospace; margin: 0; padding: 24px; line-height: 1.6; }
+  h1 { color: #f0c040; border-bottom: 1px solid #333; padding-bottom: 12px; }
+  h2 { color: #40c0f0; margin-top: 36px; border-left: 3px solid #40c0f0; padding-left: 12px; }
+  h3 { color: #90e090; margin-top: 24px; }
+  h4 { color: #c090e0; margin-top: 16px; }
+  p { margin: 8px 0; }
+  .purpose { background: #1a1a1a; border: 1px solid #40c0f0; border-radius: 4px; padding: 16px; margin: 16px 0; color: #f0c040; }
+  .warning { background: #1a0e0e; border: 1px solid #e04040; border-radius: 4px; padding: 12px; margin: 12px 0; color: #e08080; }
+  .verified { background: #0e1a0e; border: 1px solid #40c040; border-radius: 4px; padding: 10px; margin: 10px 0; color: #80c080; font-size: 0.9em; }
+  .chamber { background: #111; border: 1px solid #333; border-radius: 4px; padding: 14px; margin: 10px 0; }
+  .chamber .name { color: #f0c040; font-weight: bold; }
+  .chamber .owns { color: #c8c8c8; }
+  .chamber .deps { color: #40c0f0; font-size: 0.9em; margin-top: 6px; }
+  .pipeline-step { display: flex; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid #1e1e1e; }
+  .step-num { color: #f0c040; min-width: 32px; font-weight: bold; }
+  .step-desc { color: #c8c8c8; }
+  .file-entry { background: #111; border-left: 3px solid #c090e0; padding: 10px 14px; margin: 8px 0; }
+  .file-name { color: #c090e0; font-weight: bold; }
+  .file-desc { color: #c8c8c8; font-size: 0.9em; margin-top: 4px; }
+  .rule { background: #111; border-left: 3px solid #40c0f0; padding: 10px 14px; margin: 8px 0; }
+  .rule-num { color: #40c0f0; font-weight: bold; }
+  .dont { background: #1a0e0e; border-left: 3px solid #e04040; padding: 8px 14px; margin: 6px 0; color: #e08080; }
+  .code { background: #1a1a1a; color: #90e090; padding: 2px 6px; border-radius: 2px; font-family: monospace; font-size: 0.9em; }
+  .principle { background: #111; border: 1px solid #333; border-radius: 4px; padding: 14px; margin: 12px 0; }
+  .principle h4 { margin-top: 0; }
+  ul { padding-left: 20px; }
+  li { margin: 4px 0; }
+  .naming-term { background: #111; border-left: 3px solid #90e090; padding: 10px 14px; margin: 8px 0; }
+  .term { color: #90e090; font-weight: bold; }
+  .confidence { background: #111; border: 1px dashed #555; border-radius: 4px; padding: 12px; margin-top: 40px; font-size: 0.85em; color: #888; }
+</style>
+</head>
+<body>
+
+<h1>◈ Aurelius Network — Architecture Guide v1.0</h1>
+
+<div class="purpose">
+  Read this before touching any code. It describes how the system works, why it is structured the way it is, and how to navigate it safely.
+</div>
+
+<!-- PIPELINE ORDER -->
+<h2>Pipeline Order</h2>
+<p>The network runs as a sequential pipeline. Each node produces output that the next node reads. Do not run nodes out of order.</p>
+
+<div class="pipeline-step"><span class="step-num">0</span><span class="step-desc"><strong>Oracle (Aurelius)</strong> — detects sovereign signals, writes <span class="code">oracle_bridge_YYYY-MM-DD.json</span></span></div>
+<div class="pipeline-step"><span class="step-num">1</span><span class="step-desc"><strong>Bridge</strong> — structures signals, writes enriched bridge JSON</span></div>
+<div class="pipeline-step"><span class="step-num">2</span><span class="step-desc"><strong>Observer</strong> — monitors ladder watch, alerts on L-level proximity</span></div>
+<div class="pipeline-step"><span class="step-num">3</span><span class="step-desc"><strong>Walk</strong> — enriches geometry, writes walk fields to sovereign index</span></div>
+<div class="pipeline-step"><span class="step-num">4</span><span class="step-desc"><strong>Witness</strong> — audits all prior nodes, writes <span class="code">witness_sovereign_index.json</span></span></div>
+<div class="pipeline-step"><span class="step-num">5</span><span class="step-desc"><strong>Future</strong> — applies TF1 clearance filter, writes <span class="code">forecast_clearance_YYYY-MM-DD.json</span></span></div>
+<div class="pipeline-step"><span class="step-num">6</span><span class="step-desc"><strong>Witness (silent)</strong> — clearance-only pass, no interactive output</span></div>
+<div class="pipeline-step"><span class="step-num">7</span><span class="step-desc"><strong>Sim</strong> — three competing nodes (DeepSeek, Gemini, Claude) + Alchemist run positions</span></div>
+<div class="pipeline-step"><span class="step-num">8</span><span class="step-desc"><strong>Render</strong> — produces HTML dashboard from all prior outputs</span></div>
+
+<div class="verified">◈ Entry point: Lattice (0racle_Lattice.py) orchestrates the pipeline. Do not run individual nodes manually unless debugging a specific chamber.</div>
+
+<!-- CORE PRINCIPLES -->
+<h2>Core Principles</h2>
+
+<div class="principle">
+  <h4>E=1 Total Preservation</h4>
+  <p>No node is extracted from the system. Capital is preserved before aggression. Data once correctly written is never overwritten. The system refuses to act on void information.</p>
+  <p>Where to see it in code:</p>
+  <ul>
+    <li><span class="code">PRESERVE</span> set in Lattice <span class="code">_cleanup_old_artifacts</span> — lists files that are never deleted</li>
+    <li><span class="code">ohlcv_write</span> first-writer-wins rule — once a payload is cached, no node overwrites it</li>
+    <li><span class="code">if data is None: return None</span> — entry gates block on missing price data</li>
+    <li><span class="code">return LAST_MACRO</span> fallback — holds prior macro state rather than fabricating new state</li>
+  </ul>
+</div>
+
+<div class="principle">
+  <h4>Glass Box</h4>
+  <p>Every open node is named. Every correction is shown. Nothing is hidden.</p>
+  <ul>
+    <li>Chamber meta notes describe what the chamber decided, not how to modify it</li>
+    <li>Version notes in meta (v6.8, v4.0, PATCH_D) record what changed and why</li>
+    <li>Corrections shown in meta notes rather than hidden</li>
+  </ul>
+</div>
+
+<div class="principle">
+  <h4>Role Separation</h4>
+  <p>Each node owns one responsibility and stays in it. Aurelius detects. Bridge structures. Walk enriches. Witness audits. Future projects. Sim acts. Render presents. Lattice orchestrates.</p>
+  <div class="warning">⚠ If you find yourself writing logic in the wrong node — Sim code that reads bridge data to make a detection decision, or Aurelius code that acts on sim positions — stop. The logic belongs in the node that owns that responsibility.</div>
+</div>
+
+<div class="principle">
+  <h4>No Guess Principle</h4>
+  <p>The system never assumes. It never coerces None to 0.5. It never fabricates a price. It never continues with partial data when the full data is required.</p>
+  <ul>
+    <li><span class="code">fetch_price</span> returning None blocks sim entry entirely — verified in 0racle_Sim.py</li>
+    <li><span class="code">return LAST_MACRO</span> fallback — holds prior macro state rather than fabricating new state — verified in 0racle_Aurelius.py</li>
+    <li><span class="code">if data is None: return None</span> pattern — present in every fetch function across pipeline</li>
+  </ul>
+</div>
+
+<!-- HOW TO READ CHAMBERS -->
+<h2>How to Read Chambers</h2>
+
+<p>Each script is divided into numbered chambers. Every chamber owns one concern. Read chambers in order — earlier chambers define the ground that later chambers stand on.</p>
+
+<div class="rule"><span class="rule-num">Chamber 0 rule:</span> Always imports and configuration. It is the ground. Do not move logic into Chamber 0.</div>
+<div class="rule"><span class="rule-num">Chamber last rule:</span> Always the entry point or output. Chamber 14 in Aurelius is where the full pipeline fires. Chamber 12 is the interactive terminal.</div>
+<div class="rule"><span class="rule-num">Sub-chambers:</span> When a concern splits — same logical position, different mechanism — chambers split into A, B, C. Example: Chamber 4.A is HTTP core, 4.A.1 is OHLCV cache, 4.B is macro audit. The number preserves position. The letter preserves separation.</div>
+
+<h3>Meta Notes</h3>
+<p><strong>What they are:</strong> The comment block at the top of each chamber. They record what the chamber decided and what changed between versions.</p>
+<p><strong>How to read them:</strong> Read the meta note before reading the code. It tells you the intent. The code tells you the implementation. If they conflict, the meta note describes the design intent — the code may have drifted.</p>
+<div class="warning">⚠ Meta notes are not instructions for how to modify the chamber. They are a forensic record of what the chamber is and why.</div>
+
+<!-- CHAMBER DEPENDENCY MAP -->
+<h2>Chamber Dependency Map</h2>
+
+<div class="chamber">
+  <div class="name">CHAMBER 0 — MULTI DIMENSIONAL DIRECTIVE</div>
+  <div class="owns">Owns: Imports, RSI momentum interpreter</div>
+  <div class="deps">↓ Dependencies downstream: ALL nodes — imports and RSI interpreter used network-wide</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 1 — FOUNDATION</div>
+  <div class="owns">Owns: Constants, thresholds, watchlist, runtime state, file paths</div>
+  <div class="deps">↓ Dependencies downstream: Bridge, Sim, Walk, Render — constants and thresholds read by all</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 2 — SOVEREIGN SOUL REGISTRY</div>
+  <div class="owns">Owns: Ticker soul names and sector mappings</div>
+  <div class="deps">↓ Dependencies downstream: Bridge, Render, Witness — soul names appear in bridge JSON and display labels</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 3 — ADAPTIVE ENGINE</div>
+  <div class="owns">Owns: Regime-adaptive thresholds, KP bar renderer, self-trust system</div>
+  <div class="deps">↓ Dependencies downstream: Sim, Bridge — adaptive hurdle and KP floors read per regime</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 4 — THE SONAR</div>
+  <div class="owns">Owns: HTTP core, OHLCV cache, macro audit, black swan detection, parallel sonar ping</div>
+  <div class="deps">↓ Dependencies downstream: Bridge, Walk, Render, Sim, Future — OHLCV cache consumed by all fetch operations; macro regime injected into LAST_MACRO</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 5 — THE FORENSIC LAB</div>
+  <div class="owns">Owns: Data extraction, smoothing, RSI/ATR/MFI/KP indicators</div>
+  <div class="deps">↓ Dependencies downstream: Bridge, Walk, Sim — indicator values appear in bridge JSON and feed entry gates</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 6 — THE GUARDIAN</div>
+  <div class="owns">Owns: Vault, custom tickers, reputation, decree log, portfolio audit, ASP</div>
+  <div class="deps">↓ Dependencies downstream: Bridge, Sim, Witness — reputation informs soul state; ASP coordinate passed to sovereign index</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 7 — THE 960 SEAL</div>
+  <div class="owns">Owns: Conflict engine, seal application, calibration engine</div>
+  <div class="deps">↓ Dependencies downstream: Bridge, Sim, Future — signal_type set by seal; entry gate and clearance filter both read seal output</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 8 — THE MANIFESTATION ENGINE</div>
+  <div class="owns">Owns: Omni-resonance narrative, dynamic ladder (H1/H2/H3/shatter), deep dive</div>
+  <div class="deps">↓ Dependencies downstream: Bridge, Observer, Sim — ladder coordinates written to bridge JSON; Observer monitors L-levels; Sim uses H1 and shatter for exit logic</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 9 — SIGNAL DISTILLATION</div>
+  <div class="owns">Owns: Macro weather engine, fetch and score pipeline</div>
+  <div class="deps">↓ Dependencies downstream: Bridge, Render, Sim — scored signals written to oracle_bridge JSON; all downstream nodes read from there</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 10 — FORENSIC BACKTEST</div>
+  <div class="owns">Owns: Replay engine, backtest cache read/write</div>
+  <div class="deps">↓ Dependencies downstream: Walk, Witness — shared backtest cache read by Walk enrichment; results appear in sovereign index</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 11 — THE HANDSHAKE &amp; LEGACY DISTILL</div>
+  <div class="owns">Owns: Handshake ingestion, oracle_bridge JSON write, artifact scaffolding, analyst fetch, enrichment, forensic triage, legacy distill</div>
+  <div class="deps">↓ Dependencies downstream: Bridge, Walk, Witness, Observer, Future, Render, Sim — oracle_bridge_YYYY-MM-DD.json is the primary data contract for the full pipeline</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 12 — KINETIC SUB-TERMINAL</div>
+  <div class="owns">Owns: Interactive operator shell, command dispatch</div>
+  <div class="deps">↓ Dependencies downstream: None — terminal output only; no downstream nodes read from this chamber</div>
+</div>
+
+<div class="chamber">
+  <div class="name">CHAMBER 14 — THE DISTILLED GEOMETRY</div>
+  <div class="owns">Owns: Entry point — sequences vault load, handshake, fetch signals, command bridge</div>
+  <div class="deps">↓ Dependencies downstream: ALL nodes — this chamber fires the full pipeline and produces oracle_bridge JSON consumed by everything downstream</div>
+</div>
+
+<!-- KEY FILES -->
+<h2>Key Files</h2>
+
+<div class="file-entry">
+  <div class="file-name">oracle_bridge_YYYY-MM-DD.json</div>
+  <div class="file-desc">Primary data contract. Written by Aurelius Chamber 11. Read by Bridge, Walk, Witness, Observer, Future, Render, Sim. Contains scored signals, ladder coordinates, VSD classifications.</div>
+</div>
+<div class="file-entry">
+  <div class="file-name">witness_sovereign_index.json</div>
+  <div class="file-desc">The network's accumulated memory. Written by Witness. Read by Sim, Walk, Future, Observer. Contains walk geometry tiers, backtest results, soul states, SAGE performance scores.</div>
+</div>
+<div class="file-entry">
+  <div class="file-name">oracle_sim_state.json</div>
+  <div class="file-desc">Live sim positions and closed position ledger. Written and read by Sim. Read by Alchemist for trigger evaluation.</div>
+</div>
+<div class="file-entry">
+  <div class="file-name">ohlcv_cache_YYYY-MM-DD.json</div>
+  <div class="file-desc">Daily Yahoo fetch cache. Written by Aurelius sonar. Read by Bridge, Walk, Future, Render, Observer, Sim. Prevents redundant network calls.</div>
+</div>
+<div class="file-entry">
+  <div class="file-name">backtest_cache.json</div>
+  <div class="file-desc">7-day backtest result cache. Written by Aurelius and Witness. Read by Walk and Aurelius. Prevents redundant computation.</div>
+</div>
+<div class="file-entry">
+  <div class="file-name">analyst_cache.json</div>
+  <div class="file-desc">7-day analyst rating cache. Written by Aurelius. Prevents repeated Yahoo crumb+quoteSummary fetches.</div>
+</div>
+<div class="file-entry">
+  <div class="file-name">ladder_watch.json</div>
+  <div class="file-desc">Active position coordinates under Observer monitoring. Written by Observer. Read by Sim and Render.</div>
+</div>
+<div class="file-entry">
+  <div class="file-name">forecast_clearance_YYYY-MM-DD.json</div>
+  <div class="file-desc">TF1 clearance results per ticker. Written by Future. Read by Witness for future_perf audit.</div>
+</div>
+
+<!-- HOW TO PATCH SAFELY -->
+<h2>How to Patch Safely</h2>
+
+<div class="rule"><span class="rule-num">Rule 1:</span> Always patch from the uploaded source file, never from a prior output. The uploaded file is ground truth.</div>
+<div class="rule"><span class="rule-num">Rule 2:</span> Read the chamber meta note before writing any code. Understand what the chamber decided before changing it.</div>
+<div class="rule"><span class="rule-num">Rule 3:</span> Deliver patches as chamber snippets, not full file rewrites. This preserves the surrounding architecture.</div>
+<div class="rule"><span class="rule-num">Rule 4:</span> Two failed patches means stop and diagnose — do not keep patching. Read the self-terminal debug output.</div>
+<div class="rule"><span class="rule-num">Rule 5:</span> Check the dependency map before modifying any chamber. Changing a constant in Chamber 1 affects Bridge, Sim, Walk, and Render simultaneously.</div>
+<div class="rule"><span class="rule-num">Rule 6:</span> Never write business logic into Chamber 0 or Chamber 14. Chamber 0 is imports only. Chamber 14 is the entry point only.</div>
+<div class="rule"><span class="rule-num">Rule 7:</span> If a patch requires modifying the same data structure in two different nodes, stop and ask whether the architecture has a design decision to make first.</div>
+
+<!-- NAMING CONVENTIONS -->
+<h2>Naming Conventions</h2>
+<p>Names in this codebase carry semantic meaning beyond their function. They are a compressed vocabulary. Do not rename them to conventional technical names — the vocabulary is load-bearing.</p>
+
+<div class="naming-term"><span class="term">soul_state</span> — Not a status flag. The accumulated classification of a ticker's signal history. GHOUL means degraded. ORACLE_NAMED means verified.</div>
+<div class="naming-term"><span class="term">SHATTER</span> — Not a stop loss. A geometrically calculated floor derived from ATR and entry price — the coordinate where the geometry fails.</div>
+<div class="naming-term"><span class="term">960 Seal</span> — Not a score ceiling. A named entry state — a coordinate that has passed every gate simultaneously. Verified from Chamber 7 header and KP scoring logic.</div>
+<div class="naming-term"><span class="term">RECLAMATION</span> — Not a buy signal. A specific signal type meaning price has returned to a previously established ladder level.</div>
+<div class="naming-term"><span class="term">geo_trajectory</span> — Not a trend indicator. The accumulated directional history of a ticker's position within its geometric structure.</div>
+
+<!-- WHAT NOT TO DO -->
+<h2>What Not To Do</h2>
+
+<div class="dont">✗ Do not add a new JSON file without checking if an existing file serves the same purpose</div>
+<div class="dont">✗ Do not write cache logic inside worker threads — workers read from memory only, writes happen after all workers complete</div>
+<div class="dont">✗ Do not coerce None values to defaults inside indicator functions — None means insufficient data, not zero</div>
+<div class="dont">✗ Do not skip reading the meta note and go straight to the code</div>
+<div class="dont">✗ Do not modify Chamber 1 constants without tracing all downstream nodes that read them</div>
+<div class="dont">✗ Do not run nodes out of pipeline order — downstream nodes depend on upstream outputs</div>
+<div class="dont">✗ Do not add unbounded lists or logs — every accumulating structure needs a cap or rotation</div>
+
+<div class="confidence">
+  <strong>Confidence note:</strong> Sections verified from code read on 2026-06-14: pipeline_order, chamber_dependency_map, key_files, how_to_patch_safely, how_to_read_chambers, what_not_to_do, core_principles (code references). Naming conventions derived from reading code structure — definitions of philosophical terms should be verified against the Aurelius Codex document before treating as authoritative.
+</div>
+
+</body>
+</html>
