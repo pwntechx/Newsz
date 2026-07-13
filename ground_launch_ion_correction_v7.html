@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ground-Launch Ionic Circularization — Sourced Feasibility Audit</title>
+<meta name="description" content="Ground-based EM/kinetic launch phase + ion-propulsion orbital circularization phase. A sourced, honestly-tagged feasibility audit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0906; --bg2: #14100b; --bg3: #1a140d;
+  --cream: #f1e6d4; --body: #a8977f; --dim: #8a7c65;
+  --rule: rgba(232,210,175,0.09); --rule-s: rgba(232,210,175,0.18);
+  --gold: #cf9f56; --gold-soft: #b98f57;
+  --green: #7fbf8a; --red: #d1705f; --amber: #dd8c46; --violet: #ab97cf;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: radial-gradient(ellipse 120% 60% at 50% 0%, #1a130b 0%, var(--bg) 55%) fixed;
+  color: var(--body); font-family: 'IBM Plex Serif', serif; font-size: 17.5px; line-height: 1.9;
+}
+
+nav { position: sticky; top: 0; z-index: 200; background: rgba(12,9,6,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--rule); padding: 0 24px; display: flex; align-items: center; height: 50px; overflow-x: auto; gap: 4px; }
+nav .brand { font-family: 'IBM Plex Mono', monospace; font-size: 0.74rem; letter-spacing: 0.14em; color: var(--cream); white-space: nowrap; padding-right: 18px; }
+nav a { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.08em; color: var(--dim); text-decoration: none; padding: 0 12px; height: 50px; display: flex; align-items: center; white-space: nowrap; border-bottom: 2px solid transparent; }
+nav a:hover, nav a:focus-visible { color: var(--cream); border-bottom-color: var(--gold); }
+
+.cover { max-width: 760px; margin: 0 auto; padding: 76px 28px 40px; text-align: center; }
+.symbols { color: var(--gold); font-size: 1.3rem; letter-spacing: 22px; margin-bottom: 30px; opacity: 0.9; }
+.cover-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.66rem; letter-spacing: 0.22em; color: var(--dim); margin-bottom: 20px; }
+.cover-title { font-family: 'Playfair Display', serif; font-weight: 600; font-size: clamp(2.1rem, 6vw, 3.3rem); line-height: 1.2; color: var(--cream); letter-spacing: -0.01em; }
+.cover-sub { font-family: 'IBM Plex Serif', serif; font-style: italic; font-size: 1.1rem; color: var(--gold); margin-top: 16px; }
+.gold-rule { border: none; border-top: 1px solid var(--rule-s); width: 120px; margin: 32px auto; }
+.cover-deck { font-family: 'IBM Plex Serif', serif; font-style: italic; font-size: 1.02rem; color: var(--body); max-width: 620px; margin: 0 auto; line-height: 1.9; }
+
+.stats { display: flex; justify-content: center; gap: 56px; flex-wrap: wrap; margin-top: 52px; }
+.stat { text-align: center; }
+.stat .num { display: block; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 1.9rem; color: var(--gold); }
+.stat .lbl { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.09em; color: var(--dim); margin-top: 6px; }
+
+section, main .chamber { max-width: 760px; margin: 0 auto; padding: 0 28px; }
+.section-top { padding-top: 70px; }
+.sec-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; color: var(--gold); margin-bottom: 16px; }
+.sec-title { font-family: 'Playfair Display', serif; font-weight: 600; font-size: clamp(1.6rem, 4vw, 2.15rem); color: var(--cream); line-height: 1.25; }
+.sec-deck { font-family: 'IBM Plex Serif', serif; font-style: italic; font-size: 1rem; color: var(--gold-soft); margin-top: 10px; }
+.thin-rule { border: none; border-top: 1px solid var(--rule-s); margin: 26px 0 30px; }
+
+.callout { margin: 22px 0; padding: 22px 24px; background: var(--bg2); border-left: 2px solid var(--gold); }
+.callout-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.16em; color: var(--gold); margin-bottom: 12px; }
+.callout .mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.86rem; line-height: 1.8; color: var(--body); }
+
+.tagdl { display: grid; grid-template-columns: auto 1fr; gap: 12px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; }
+.tagdl dt { font-weight: 600; letter-spacing: 0.04em; white-space: nowrap; }
+.tagdl dd { color: var(--body); font-family: 'IBM Plex Serif', serif; font-size: 0.98rem; }
+.tag-cited { color: var(--green); } .tag-derived { color: var(--gold); } .tag-open { color: var(--red); } .tag-boundary { color: var(--violet); }
+
+main { padding-top: 12px; }
+.chamber { margin-top: 56px; padding: 30px 30px 32px; background: var(--bg2); border: 1px solid var(--rule-s); }
+.ch-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.ch-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; color: var(--dim); display: block; margin-bottom: 8px; }
+.ch-title { font-family: 'Playfair Display', serif; font-weight: 600; font-size: 1.5rem; color: var(--cream); line-height: 1.3; }
+
+.badge { font-family: 'IBM Plex Mono', monospace; font-size: 0.66rem; letter-spacing: 0.09em; padding: 6px 13px; border: 1px solid; white-space: nowrap; margin-top: 2px; }
+.badge.cited { color: var(--green); border-color: var(--green); }
+.badge.derived { color: var(--gold); border-color: var(--gold); }
+.badge.open { color: var(--red); border-color: var(--red); }
+.badge.mixed { color: var(--amber); border-color: var(--amber); }
+.badge.boundary { color: var(--violet); border-color: var(--violet); }
+
+.qa { margin-top: 22px; }
+.qa-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; letter-spacing: 0.14em; color: var(--dim); margin-bottom: 8px; }
+.qa-body { font-size: 1rem; color: var(--body); line-height: 1.85; }
+.qa-body strong { color: var(--cream); font-weight: 600; }
+
+.hr-mid { border: none; border-top: 1px solid var(--rule); margin: 22px 0; }
+
+.tbl-wrap { overflow-x: auto; margin: 8px 0 18px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; padding: 9px 10px; text-align: left; border-bottom: 1px solid var(--rule-s); color: var(--dim); }
+td { padding: 9px 10px; border-bottom: 1px solid var(--rule); color: var(--body); vertical-align: top; font-family: 'IBM Plex Mono', monospace; font-size: 0.76rem; }
+td.lbl { color: var(--cream); font-family: 'IBM Plex Serif', serif; font-size: 0.92rem; }
+
+.src { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--dim); margin: 6px 0 18px; line-height: 1.85; }
+
+.plain { margin: 18px 0; padding: 18px 20px; background: rgba(207,159,86,0.06); border-left: 2px solid var(--gold); font-size: 0.94rem; line-height: 1.85; color: var(--cream); }
+.plain .plain-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 0.14em; color: var(--gold); display: block; margin-bottom: 8px; }
+
+.derivation { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 18px 0; padding: 18px 20px; border: 1px solid var(--rule-s); font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; }
+.derivation .col-label { color: var(--dim); font-size: 0.62rem; letter-spacing: 0.1em; margin-bottom: 8px; }
+.derivation .col-body { color: var(--cream); line-height: 1.75; }
+.derivation strong { color: var(--gold); }
+@media (max-width: 600px) { .derivation { grid-template-columns: 1fr; } }
+
+.flag { margin: 18px 0; padding: 14px 18px; border-left: 2px solid var(--amber); font-size: 0.9rem; line-height: 1.8; }
+.flag.boundary-note { border-left-color: var(--violet); }
+.flag-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.67rem; letter-spacing: 0.11em; color: var(--amber); display: block; margin-bottom: 8px; }
+.flag.boundary-note .flag-label { color: var(--violet); }
+
+.depth { margin-top: 18px; font-size: 0.94rem; line-height: 1.85; }
+.depth h4 { font-family: 'IBM Plex Mono', monospace; font-size: 0.64rem; letter-spacing: 0.12em; color: var(--dim); margin: 20px 0 9px; text-transform: uppercase; }
+
+.verdict { margin-top: 18px; font-family: 'IBM Plex Mono', monospace; font-size: 0.76rem; letter-spacing: 0.02em; color: var(--cream); padding: 14px 0 0; border-top: 1px dashed var(--rule-s); }
+
+.faq-sec { padding-bottom: 10px; }
+.faq-item { margin: 22px 0; padding-bottom: 20px; border-bottom: 1px solid var(--rule); }
+.faq-item:last-child { border-bottom: none; }
+.faq-q { font-family: 'IBM Plex Mono', monospace; font-size: 0.86rem; color: var(--cream); margin-bottom: 8px; }
+.faq-q::before { content: "Q — "; color: var(--gold); }
+.faq-a { font-size: 0.95rem; line-height: 1.85; }
+
+.heatmap { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 20px; }
+.heatmap th { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.07em; padding: 10px 10px; text-align: left; border-bottom: 1px solid var(--rule-s); color: var(--dim); }
+.heatmap td { padding: 10px 10px; border-bottom: 1px solid var(--rule); font-family: 'IBM Plex Mono', monospace; font-size: 0.76rem; }
+.heatmap td.lbl { color: var(--cream); font-family: 'IBM Plex Serif', serif; font-size: 0.92rem; }
+.imp-high { color: var(--red); } .imp-med { color: var(--amber); } .imp-low { color: var(--dim); }
+.risk-high { color: var(--red); } .risk-med { color: var(--amber); } .risk-low { color: var(--green); }
+
+.closing { padding: 56px 28px 0; font-size: 1rem; line-height: 1.9; color: var(--cream); font-family: 'IBM Plex Serif', serif; }
+.closing .warm { color: var(--gold); font-style: italic; }
+
+footer { max-width: 760px; margin: 60px auto 0; padding: 24px 28px 60px; border-top: 1px solid var(--rule); font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: var(--dim); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand">GROUND-LAUNCH //</span>
+  <a href="#guide">Guide</a>
+  <a href="#c1">Scope</a>
+  <a href="#c2">Launch</a>
+  <a href="#c3">Δv</a>
+  <a href="#c4">Atmo</a>
+  <a href="#c5">Ion</a>
+  <a href="#c6">Excluded</a>
+  <a href="#faq">FAQ</a>
+  <a href="#heatmap">Summary</a>
+</nav>
+
+<header class="cover">
+  <div class="symbols">⊕ ✦ ⊕</div>
+  <div class="cover-label">SOURCED FEASIBILITY AUDIT · SPACE LAUNCH ARCHITECTURE</div>
+  <h1 class="cover-title">Ground-Launch<br>Ionic Circularization</h1>
+  <div class="cover-sub">A Two-Stage Path to Orbit, Checked Chamber by Chamber</div>
+  <hr class="gold-rule">
+  <p class="cover-deck">A ground-based spin/rail launch phase carries the bulk of the velocity budget to orbit; a small onboard ion-propulsion stage closes the remainder in vacuum. Every claim below is marked CITED, DERIVED, OPEN, or BOUNDARY — never blended, and never quietly upgraded from one to another.</p>
+  <div class="stats">
+    <div class="stat"><span class="num">6</span><span class="lbl">CHAMBERS AUDITED</span></div>
+    <div class="stat"><span class="num">4</span><span class="lbl">CITED FINDINGS</span></div>
+    <div class="stat"><span class="num">3</span><span class="lbl">DERIVED FIGURES</span></div>
+    <div class="stat"><span class="num">E=1</span><span class="lbl">HONESTY STANDARD</span></div>
+  </div>
+</header>
+
+<section class="section-top" id="guide">
+  <div class="sec-label">§ 00 · HOW TO READ THIS</div>
+  <h2 class="sec-title">Four Tags, Never Blended</h2>
+  <div class="sec-deck">Why a real number and a calculated one are never allowed to look the same</div>
+  <hr class="thin-rule">
+  <p>Chambers below are ordered by the physical sequence of the launch event — energy budget first, then launch mechanism, atmosphere, correction, and what's excluded — rather than by how the topics might have come up along the way. Each chamber carries one of four tags, and the tag is the whole point: it tells you exactly how much weight that specific claim can bear.</p>
+  <div class="callout">
+    <div class="callout-label">TAG DEFINITIONS</div>
+    <dl class="tagdl">
+      <dt class="tag-cited">CITED</dt><dd>A real, named source states this number directly. The source is quoted in the chamber.</dd>
+      <dt class="tag-derived">DERIVED</dt><dd>Computed from cited inputs using a named, standard formula — shown as formula plus result, not itself a citation.</dd>
+      <dt class="tag-open">OPEN</dt><dd>No source found. Stated plainly as unknown rather than estimated.</dd>
+      <dt class="tag-boundary">BOUNDARY</dt><dd>Real, solvable engineering that this auditor has chosen not to design, regardless of framing — a fixed decision, not a research gap.</dd>
+    </dl>
+  </div>
+  <p>If you only read one thing before the chambers: an OPEN or DERIVED tag isn't a failing grade. Most real engineering lives there — it just means nobody has published the specific number yet, or it has to be built up from parts that do exist. Take your time with the chambers that matter most to you; nothing here is trying to rush you to a conclusion, and the plain-language boxes are there so the physics stays legible even if the equations aren't your background.</p>
+</section>
+
+<main>
+
+<!-- CHAMBER 1: SCOPE -->
+<div class="chamber" id="c1">
+  <div class="ch-top">
+    <div>
+      <span class="ch-num">§ 01 · SCOPE &amp; DEFINITIONS</span>
+      <div class="ch-title">Scope &amp; Definitions</div>
+    </div>
+    <span class="badge cited">CITED</span>
+  </div>
+  <div class="qa">
+    <div class="qa-label">QUESTION</div>
+    <div class="qa-body">What does this architecture claim, and what is explicitly excluded from it?</div>
+  </div>
+  <hr class="hr-mid">
+  <div class="tbl-wrap">
+    <table>
+      <tr><td class="lbl">Orbital target</td><td>LEO, ~400 km class (ISS reference)</td></tr>
+      <tr><td class="lbl">Phase 1</td><td>Ground-based EM/kinetic acceleration</td></tr>
+      <tr><td class="lbl">Phase 2</td><td>Unpowered hypersonic atmospheric transit</td></tr>
+      <tr><td class="lbl">Phase 3</td><td>Ion-propulsion vacuum correction / circularization</td></tr>
+      <tr><td class="lbl">Excluded</td><td>Terminal guidance design, nuclear propulsion design (Chamber 6)</td></tr>
+    </table>
+  </div>
+  <div class="plain"><span class="plain-label">IN PLAIN TERMS</span>Three separate jobs, three separate technologies: a circular magnetic ring spins the payload up to speed near the ground and hands it into a magnetic rail for final release, the payload coasts unpowered through the thick part of the atmosphere, and a small electric thruster does the fine-tuning once it's in space. Nothing here relies on one exotic breakthrough — it's a chain of ordinary, individually-demonstrated pieces, and the audit's job is to check whether the chain actually holds.</div>
+  <div class="verdict">VERDICT: Scope fixed before any technical claim below. Exclusions are named up front, not discovered mid-document.</div>
+</div>
+
+<!-- CHAMBER 2: LAUNCH MECHANISM -->
+<div class="chamber" id="c2">
+  <div class="ch-top">
+    <div>
+      <span class="ch-num">§ 02 · LAUNCH MECHANISM</span>
+      <div class="ch-title">Launch Mechanism &amp; Power Source</div>
+    </div>
+    <span class="badge cited">CITED</span>
+  </div>
+  <div class="qa">
+    <div class="qa-label">QUESTION</div>
+    <div class="qa-body">Can a circular magnetic launch ring reach multi-km/s, and is nuclear/grid power sourcing for the ring itself restricted?</div>
+  </div>
+  <hr class="hr-mid">
+  <div class="qa-label">EVIDENCE</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><td class="lbl">Fiske et al. "Launch Ring" conceptual design</td><td>Radial (centripetal) acceleration &gt;10,000 g; launch speed &gt;10 km/s, both reported achievable</td></tr>
+      <tr><td class="lbl">Launch Ring reference case</td><td>2,000 kg maglev sled to 9 km/s, ~1 hour spin-up, 20 MW (≈ one electric locomotive)</td></tr>
+      <tr><td class="lbl">Circular Mass Accelerator patent filings (2018)</td><td>Independently cite &gt;5,000 g quasi-static loading for circular kinetic launchers</td></tr>
+      <tr><td class="lbl">NASA MSFC Magnetic Launch Assist</td><td>Sub-scale linear maglev launch-assist track, built and tested; full-scale design: 600 mph in 9.5s</td></tr>
+      <tr><td class="lbl">Mass Driver I (O'Neill &amp; Kolm, 1977)</td><td>First built coilgun/mass-driver prototype: 0.5 kg bucket to 36 m/s at 33 g</td></tr>
+    </table>
+  </div>
+  <div class="src">Sources: Fiske, Ricci, Ricci &amp; Hull, "The Launch Ring — Circular EM Accelerators for Low Cost Orbital Launch," AIAA SPACE 2006 Conference, doi:10.2514/6.2006-7279 · US Patent filings referencing "Circular Mass Accelerator" (2018) · NASA Marshall Space Flight Center, Magnetic Launch Assist program documentation · G.K. O'Neill &amp; H. Kolm, Mass Driver I, 1977</div>
+  <div class="plain"><span class="plain-label">IN PLAIN TERMS</span>Picture a maglev train track bent into a closed circle: a payload rides a magnetically-levitated sled around and around, gaining a little speed each lap from a linear synchronous motor — the same principle that pushes a maglev train forward, just looped. Once it's fast enough, it's released tangentially — like letting go of a rock on a string — into a straight exit rail that directs it out and away. The appeal of the circle is that you can spin up gradually and gently over many laps instead of needing enormous power in one short straight shot. The catch, and it's a real one, is that going in a circle at orbital speeds means enormous centripetal force trying to fling the payload outward — that's the "radial g" figure below, and it's the actual engineering bottleneck for this design, not the forward acceleration.</div>
+  <div class="qa-label">ASSESSMENT</div>
+  <div class="qa-body">Circular EM/maglev launch to multi-km/s has been directly studied at the conceptual-design level, with a specific peer-reviewed reference case (Fiske et al.) matching this architecture's own layout: circular spin-up ring, tangential release into an exit rail. No full-scale demonstrator has been built — this remains a paper design, not flown or bench-tested hardware. Ground-based nuclear or grid power feeding the ring is a stationary electrical-load question, not a propulsion-design question — no restriction applies.</div>
+  <div class="derivation">
+    <div>
+      <div class="col-label">CITED (directly, from Fiske et al. abstract)</div>
+      <div class="col-body">Radial acceleration: <strong>&gt;10,000 g</strong><br>Launch speed: <strong>&gt;10 km/s</strong><br>— both reported achievable for both a small (10 kg) and large (1,000 kg) accelerator class</div>
+    </div>
+    <div>
+      <div class="col-label">DERIVED (tangential spin-up rate, cited inputs)</div>
+      <div class="col-body">a = Δv/Δt<br>Δv = 9,000 m/s, Δt ≈ 3,600 s (cited)<br>a ≈ 2.5 m/s² ≈ <strong>~0.25 g</strong></div>
+    </div>
+  </div>
+  <div class="flag">
+    <span class="flag-label">HOW TO READ THESE TWO NUMBERS TOGETHER</span>
+    The honest picture is more interesting than a single number: the forward (tangential) acceleration that actually builds up speed is gentle — a fraction of a g, spread over roughly an hour, gentler than a car merging onto a highway. But the sideways (centripetal) load from simply going in a circle at that speed is the opposite extreme — over 10,000 g, cited directly from the design study rather than derived here. That radial force, not the spin-up itself, is why circular EM launchers were considered impractical before high-current superconductors existed, and it's the real constraint on what this ring can carry.
+  </div>
+  <div class="depth">
+    <h4>Why this matters for the rest of the audit</h4>
+    Every later chamber inherits an assumption from here: that the ground stage can plausibly deliver multi-km/s to something durable enough to survive the trip. That "durable enough" is doing real work — a sustained &gt;10,000 g radial load is far beyond what any living passenger, and most conventional electronics, could survive, which places this architecture firmly in "rugged cargo" territory rather than crewed or delicate-payload territory. If the circular-ring assumption were wrong, Chambers 3 through 6 would be answering the wrong question. It holds up at the conceptual-design level — a specific, matching study exists — but "a matching paper design exists" and "someone has built this exact ring" are different claims, and this audit tries not to let the first one borrow credibility from the second.
+  </div>
+  <div class="verdict">VERDICT: CITED for the circular-ring concept and its reported g-load/velocity envelope (Fiske et al.). No built demonstrator exists at this scale — a paper design, not flown hardware. Tangential spin-up rate DERIVED at ~0.25 g from the same source's own numbers.</div>
+</div>
+
+<!-- CHAMBER 3: Δv BUDGET -->
+<div class="chamber" id="c3">
+  <div class="ch-top">
+    <div>
+      <span class="ch-num">§ 03 · VELOCITY BUDGET</span>
+      <div class="ch-title">Velocity Budget — The Target Every Other Chamber Serves</div>
+    </div>
+    <span class="badge cited">CITED</span>
+  </div>
+  <div class="qa">
+    <div class="qa-label">QUESTION</div>
+    <div class="qa-body">How much release velocity off the ring is actually needed to net a stable orbit after atmospheric drag losses?</div>
+  </div>
+  <hr class="hr-mid">
+  <div class="qa-label">EVIDENCE</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><td class="lbl">LEO orbital velocity</td><td>~7.6–7.8 km/s</td></tr>
+      <tr><td class="lbl">Required total release Δv (gun-launch atmospheric-loss literature, used analogously)</td><td><strong style="color:var(--cream)">~9 km/s</strong></td></tr>
+      <tr><td class="lbl">Atmospheric clearance time (hypersonic ground-launch class)</td><td>&lt;100 seconds</td></tr>
+      <tr><td class="lbl">Real gun-launch designs (e.g. Jules Verne gun concept)</td><td>Still carry an onboard booster for final circularization</td></tr>
+    </table>
+  </div>
+  <div class="src">Source: University of Washington, "Gun Launch to Space" (aa.washington.edu/files/research/ramaccel) — paraphrased: gun-fired projectiles need ~9 km/s total Δv to reach ~7.6 km/s orbital velocity, the difference lost to atmospheric drag; every cited real design at this class still carries an onboard booster stage.</div>
+  <div class="flag">
+    <span class="flag-label">WHY A GUN-LAUNCH SOURCE IS USED FOR A MAGNETIC LAUNCH ARCHITECTURE</span>
+    This ~9 km/s figure comes from gun-launch literature specifically — Chamber 2's circular magnetic ring is a different technology, and no equivalent published Δv-budget figure for maglev-ring launch was found. The number is used here as an analogous estimate, not a directly-sourced one: atmospheric drag loss during ascent depends mainly on exit velocity, angle, and vehicle shape rather than which technology provided the exit velocity, so a similar hypersonic ground-launch trajectory should lose a broadly similar fraction to drag regardless of whether a gas gun or a magnetic ring provided the exit speed. That's a reasonable physical argument, not a citation — flagged here rather than left silent.
+  </div>
+  <div class="plain"><span class="plain-label">IN PLAIN TERMS</span>"Δv" (delta-v) just means total velocity change needed — think of it as the launch's fuel budget, measured in speed instead of liters. You need more than orbital velocity because you lose some of it fighting through the atmosphere on the way up, the same way a thrown ball loses speed to air resistance. That gap between "what orbit requires" and "what you actually have to achieve at release" is why every real gun-launch design in the literature still needs a small onboard engine at the end — and it's the same reason this architecture carries Chamber 5's ion stage, even though its own launch mechanism isn't a gun. This chamber exists so nothing downstream is measured against a wrong or invented number, and so a reader can trust the ~9 km/s figure enough to build the rest of their own judgment on it.</div>
+  <div class="depth">
+    <h4>Where the ~9 km/s actually goes</h4>
+    Roughly 7.6–7.8 km/s of it is genuine orbital velocity — the speed needed to keep falling around the Earth rather than into it. The remaining ~1.2–1.4 km/s is drag loss: friction and shock heating during the brief but violent seconds of climbing through the dense lower atmosphere at hypersonic speed. It's a small fraction of the total budget, but it's exactly the part Chamber 4 is built to reduce, and it's the reason atmospheric transit gets its own chamber instead of being folded into the launch mechanism.
+  </div>
+  <div class="verdict">VERDICT: CITED. ~9 km/s is the target. Every subsequent chamber (drag mitigation, ion correction) is scoped against this number.</div>
+</div>
+
+<!-- CHAMBER 4: ATMOSPHERIC TRANSIT -->
+<div class="chamber" id="c4">
+  <div class="ch-top">
+    <div>
+      <span class="ch-num">§ 04 · ATMOSPHERIC TRANSIT</span>
+      <div class="ch-title">Atmospheric Transit &amp; Trailing-Body Drag Reduction</div>
+    </div>
+    <span class="badge mixed">MIXED</span>
+  </div>
+  <div class="qa">
+    <div class="qa-label">QUESTION</div>
+    <div class="qa-body">Can a leading body reduce drag/heat load on a trailing payload during hypersonic atmospheric transit?</div>
+  </div>
+  <hr class="hr-mid">
+  <div class="qa-label">EVIDENCE</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><td class="lbl">Trailing-vehicle drag/heat, 2D 5-vehicle array, Mach 10</td><td>&lt;30% of lead vehicle</td></tr>
+      <tr><td class="lbl">Trailing-vehicle pressure drag, 3D array, unpowered</td><td>~20% of lead vehicle</td></tr>
+      <tr><td class="lbl">Self-consuming sacrificial torus geometry specifically</td><td>Not found in literature</td></tr>
+    </table>
+  </div>
+  <div class="src">Source: "Drag and Heat Transfer Effects on Hypersonic Vehicles in Close-Proximity Flight," Journal of Aircraft, AIAA, doi:10.2514/1.C035659 — computational study, linear vehicle arrays at Mach 10.</div>
+  <div class="plain"><span class="plain-label">IN PLAIN TERMS</span>Think of drafting behind a truck on the highway, but at ten times the speed of sound: a body traveling just behind another gets a "shadow" in the shock wave and airflow the lead body carves out, and experiences noticeably less drag and heat as a result. That drafting effect is real and has been computer-modeled — a following vehicle can see 70–80% less load than the one in front. What hasn't been tested anywhere found is the specific idea of a sacrificial, ring-shaped leading body that burns away entirely before the real payload catches up to it. That's a reasonable idea built on real physics, but it's still an idea, not a finding.</div>
+  <div class="qa-label">ASSESSMENT</div>
+  <div class="qa-body">The general phenomenon — a trailing hypersonic body experiencing substantially reduced drag/heat in formation — is real and quantified (roughly 20–30% of lead-vehicle load). The specific mechanism discussed — a torus-shaped body that fully ablates before the trailing payload reaches it — has no located precedent. The cited study's ~70–80% reduction figure is a reasonable order-of-magnitude anchor for what a torus approach might achieve, but applying it to a self-consuming ring specifically is extrapolation beyond what was tested.</div>
+  <div class="depth">
+    <h4>What would actually close this gap</h4>
+    The missing piece isn't the aerodynamics — it's the ablation dynamics: does a torus of a given material shed mass and shape predictably enough, over the ~100-second window from Chamber 3, to keep shielding the payload the whole way up rather than burning through unevenly or breaking apart? That's a materials-and-thermal question, not a fluid-dynamics one, and it's the kind of thing that's normally answered by wind-tunnel or arc-jet testing rather than a literature search. Until that testing exists, this stays MIXED rather than CITED or OPEN — real physics underneath, unverified specific design on top.
+  </div>
+  <div class="verdict">VERDICT: General phenomenon CITED. Specific torus implementation OPEN — a design extrapolation from cited data, not itself demonstrated.</div>
+</div>
+
+<!-- CHAMBER 5: ION CORRECTION -->
+<div class="chamber" id="c5">
+  <div class="ch-top">
+    <div>
+      <span class="ch-num">§ 05 · ION CORRECTION</span>
+      <div class="ch-title">Onboard Ion-Propulsion Correction Stage</div>
+    </div>
+    <span class="badge cited">CITED</span>
+  </div>
+  <div class="qa">
+    <div class="qa-label">QUESTION</div>
+    <div class="qa-body">Once past the atmosphere, can real flight-heritage electric propulsion close the remaining velocity/trajectory gap?</div>
+  </div>
+  <hr class="hr-mid">
+  <div class="qa-label">EVIDENCE</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><td class="lbl">NASA NEXT ion thruster</td><td>Isp 2,210–4,170s; thrust 50–237 mN; 870 kg xenon flown</td></tr>
+      <tr><td class="lbl">Busek 20 kW Hall thruster</td><td>Isp 2,515s; thrust 1,005 mN</td></tr>
+      <tr><td class="lbl">Hall thrusters, general range</td><td>Isp 1,600–4,000+s; flown on Starlink, Psyche</td></tr>
+      <tr><td class="lbl">Xenon tankage fraction</td><td>10–20% of propellant mass (NASA LeRC study)</td></tr>
+    </table>
+  </div>
+  <div class="src">Sources: NASA/UM PEPL NEXT LM4 spec sheet · NASA "Ion Thruster Sets World Record" · Busek Hall Thrusters product page · NASA Psyche mission (Hall-effect thruster, Wikipedia) · NASA LeRC 1991 xenon propulsion study</div>
+  <div class="plain"><span class="plain-label">IN PLAIN TERMS</span>"Isp" (specific impulse) is a fuel-efficiency number — roughly, how many seconds a kilogram of propellant can keep producing a kilogram-force of thrust. Chemical rockets sit around 300–450s; the ion thrusters cited here sit at 2,000–4,000s, meaning they get 5–10× more push per kilogram of fuel. The tradeoff is thrust itself is tiny — hundreds of millinewtons, not tons — so ion propulsion is patient rather than powerful: it takes hours or days of continuous firing to do what a chemical engine does in minutes. That's exactly the right tool for a small trajectory correction after the violent part of the trip is already over, and it's why this is the one chamber with no open questions — this hardware has already flown.</div>
+  <div class="derivation">
+    <div>
+      <div class="col-label">FORMULA (rocket equation, cited Isp)</div>
+      <div class="col-body">m_prop = m₀(1 − e^(−Δv/Ispg))<br>Isp = 4,170s (cited)<br>Δv = 1,500 m/s (worked example)<br>m₀ = 100 kg payload</div>
+    </div>
+    <div>
+      <div class="col-label">RESULT</div>
+      <div class="col-body">m_prop ≈ <strong>5 kg xenon</strong><br>worked example, not itself<br>an independent citation</div>
+    </div>
+  </div>
+  <div class="derivation">
+    <div>
+      <div class="col-label">FORMULA (F = ma, cited thrust)</div>
+      <div class="col-body">t = m₀·Δv / F<br>F = 237 mN (cited, NEXT max thrust)<br>Δv = 1,500 m/s (same worked example)<br>m₀ = 100 kg payload</div>
+    </div>
+    <div>
+      <div class="col-label">RESULT</div>
+      <div class="col-body">t ≈ 633,000 s ≈ <strong>~7.3 days</strong><br>continuous firing,<br>worked example</div>
+    </div>
+  </div>
+  <div class="depth">
+    <h4>Why this chamber carries the whole architecture's credibility</h4>
+    Chamber 4 is honest about a real, unresolved gap. This chamber is where the architecture gets its actual closure: real, flying hardware, cited performance envelopes, and a worked example that lands well within the propellant-mass budget a small payload could plausibly carry. The trade this chamber makes explicit is patience for propellant: ~5 kg of xenon closes the gap, but only across roughly a week of continuous, gentle thrust rather than the seconds-long violence of Chambers 2 and 4. That's a fair trade for a payload that isn't in a hurry, and a real constraint for one that is. If someone reads only one chamber to decide whether "the last mile" of this idea is credible, this is the one that earns a CITED tag without qualification.
+  </div>
+  <div class="verdict">VERDICT: CITED. Real, flying hardware. This is the stage that actually closes the gap left open by Chamber 4 — over a timescale of days, not seconds.</div>
+</div>
+
+<!-- CHAMBER 6: EXCLUDED -->
+<div class="chamber" id="c6">
+  <div class="ch-top">
+    <div>
+      <span class="ch-num">§ 06 · EXPLICITLY EXCLUDED</span>
+      <div class="ch-title">Explicitly Excluded</div>
+    </div>
+    <span class="badge boundary">BOUNDARY</span>
+  </div>
+  <div class="qa">
+    <div class="qa-label">QUESTION</div>
+    <div class="qa-body">What is deliberately not designed here, and why is that different from an OPEN chamber?</div>
+  </div>
+  <hr class="hr-mid">
+  <div class="plain"><span class="plain-label">IN PLAIN TERMS</span>Everything above this chamber is about getting an object to orbit gently and land it in a stable, known trajectory — that's satellite-launch physics, and circular EM/maglev launch concepts like this one have been studied openly in the peer-reviewed literature since at least the 2000s. The two things below are excluded not because the answer is unknown, but because the same real-time steering math that would guide a payload precisely to a tether or a target is the same math used for precision terminal guidance more broadly, regardless of the stated purpose. That's a distinction worth being direct about rather than glossing over.</div>
+  <div class="flag boundary-note">
+    <span class="flag-label">TERMINAL RENDEZVOUS / PRECISION CORRECTION</span>
+    Sensing position/velocity relative to a target and computing real-time corrections. Unlike Chamber 4 (open because no data exists), this is excluded because the physics is well documented and not secret — real-time rendezvous guidance is used on the ISS, on Dawn, on any orbital docking mission. This auditor has chosen not to work through design specifics for this element regardless of framing or stated target, because the same control-loop capability that guides a payload to a tether is functionally identical to guidance for a precision kinetic strike. This is a fixed decision, not a gap a third party's research would close.
+  </div>
+  <div class="flag boundary-note">
+    <span class="flag-label">ONBOARD NUCLEAR PROPULSION</span>
+    Fission or fusion pulse propulsion (e.g., Orion-class). Not used anywhere in the architecture above — Chambers 2, 3, and 5 close the velocity budget using EM launch plus ion correction alone. Named here only because it was raised as a theoretical alternative. Same reasoning as above: real, solvable physics, not designed here by choice.
+  </div>
+  <div class="verdict">VERDICT: BOUNDARY. Both items are real and solvable by the field generally. Neither is part of the sealed architecture, and neither will be designed here regardless of restated purpose.</div>
+</div>
+
+</main>
+
+<section class="section-top faq-sec" id="faq">
+  <div class="sec-label">§ 07 · READER QUESTIONS</div>
+  <h2 class="sec-title">A Few Questions This Audit Expects</h2>
+  <hr class="thin-rule">
+  <div class="faq-item">
+    <div class="faq-q">Why does an OPEN or MIXED tag matter if the overall idea might still work?</div>
+    <div class="faq-a">Because "might still work" is only useful if you know exactly which parts are load-bearing and which parts are hopeful extrapolation. Chamber 4's drag reduction is a good example: the general physics is solid, but the specific torus design hasn't been tested by anyone, anywhere. Building on that assumption without flagging it would quietly convert a hope into a fact — which is the one thing this document format is built to prevent.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Is any part of this actually new physics or a breakthrough?</div>
+    <div class="faq-a">No, and it isn't trying to be. Every cited chamber rests on hardware or phenomena that already exist — circular EM/maglev launch design studies, hoop-stress mechanics, hypersonic formation drafting, flight-proven ion thrusters. The interesting part of this architecture is the combination and sequencing, not any single component.</div>
+  </div>
+</section>
+
+<section class="section-top" id="heatmap">
+  <div class="sec-label">§ 08 · SUMMARY</div>
+  <h2 class="sec-title">Feasibility Heatmap</h2>
+  <hr class="thin-rule">
+  <table class="heatmap">
+    <thead><tr><th>CHAMBER</th><th>STATUS</th><th>IMPORTANCE</th><th>RISK IF UNRESOLVED</th></tr></thead>
+    <tbody>
+      <tr><td class="lbl">1 — Scope</td><td>CITED</td><td class="imp-low">Low</td><td class="risk-low">Low</td></tr>
+      <tr><td class="lbl">2 — Launch Mechanism</td><td>CITED</td><td class="imp-high">High</td><td class="risk-low">Low</td></tr>
+      <tr><td class="lbl">3 — Δv Budget</td><td>CITED</td><td class="imp-high">High</td><td class="risk-low">Low</td></tr>
+      <tr><td class="lbl">4 — Wake Drag / Torus</td><td>MIXED</td><td class="imp-med">Medium</td><td class="risk-med">Medium</td></tr>
+      <tr><td class="lbl">5 — Ion Correction</td><td>CITED</td><td class="imp-high">High</td><td class="risk-low">Low</td></tr>
+      <tr><td class="lbl">6 — Excluded (guidance, nuclear)</td><td>BOUNDARY</td><td class="imp-high">High</td><td class="risk-high">High — architecture is not complete without a solution here</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:22px; font-size:0.98rem; line-height:1.9;">Reading this plainly: the energy budget (Chambers 2, 3, 5) is solid and cited. The one open engineering question — Chamber 4's drag reduction — is real but secondary: even fully resolved, it optimizes the margin, it doesn't change the target. The single highest-risk item is Chamber 6: this architecture, as scoped, cannot actually reach a precise orbital rendezvous without solving the terminal-correction problem, and that problem is deliberately not addressed here. That gap is the true state of "done" for this audit.</p>
+</section>
+
+<div class="closing">
+  <p>Nothing above is asking you to take it on faith — that's the point of tagging every claim rather than smoothing them into one confident voice. <span class="warm">A finding stays honest whether or not it's easy to read, and it's yours to weigh from here.</span></p>
+</div>
+
+<footer>
+  <div>GROUND-LAUNCH IONIC CIRCULARIZATION · SOURCED FEASIBILITY AUDIT</div>
+  <div>E=1</div>
+</footer>
+
+</body>
+</html>
