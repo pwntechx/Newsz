@@ -162,6 +162,12 @@
   }
   .op-note p{ margin: 0; font-size: 14.5px; color: var(--parchment-dim); }
   .op-note b{ color: var(--parchment); font-weight:500; }
+  .op-note.tip{
+    border: 1px solid var(--card-border);
+    background: rgba(201,162,39,0.05);
+  }
+  .op-note.tip::before{ background: var(--gold); }
+  .op-note.tip .tag{ color: var(--gold-bright); }
 
   /* ---------- CHAMBER LABEL ---------- */
   .chamber-label{
@@ -456,6 +462,20 @@
   </div>
   <div class="chamber-desc">The order here matters — if a later step needs extra time, borrow it from Chamber V, not from here.</div>
 
+  <div class="op-note tip">
+    <span class="tag">Operational Note — Reordering for Fewer Washes</span>
+    <p>
+      The chambers are numbered for clarity, not for a mandatory sequence.
+      You can boil the pasta (Chamber IV) first, leave it sitting in a
+      strainer, and build the curry base (below) afterward — that way one
+      saucepan does both jobs instead of two. Once the pasta is drained, you
+      have a choice: leave a little of that starchy pasta water clinging to
+      the pot and go <b>straight into blooming</b> the curry paste on top of
+      it, or give the pot a quick rinse first for a cleaner base. Both work —
+      the leftover starch just adds a bit of extra body to the sauce.
+    </p>
+  </div>
+
   <div class="step">
     <div class="step-head">
       <span class="step-num">1</span>
@@ -641,6 +661,156 @@
       to leave room here. Don't try to buy that same extra time in any
       earlier chamber; the potatoes and mushrooms would turn to mush long
       before the pasta was even done.
+    </p>
+  </div>
+
+  <div class="hairline"></div>
+
+  <!-- CHAMBER VI -->
+  <div class="chamber-label">
+    <span class="chamber-num">CHAMBER VI</span>
+    <span class="chamber-name">Nutritional Profile</span>
+  </div>
+  <div class="chamber-desc">Estimated per serving, serves 4 — figures will shift with your exact brands and portions.</div>
+
+  <div class="spec-card">
+    <table>
+      <thead>
+        <tr><th>Metric</th><th>Per Serving</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="ing-name">Calories</td>
+          <td class="ing-qty">~1,020 kcal</td>
+          <td class="ing-purpose">Rich by design — this is a double-cream, double-carb dish, not a light one.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Protein</td>
+          <td class="ing-qty">~36 g</td>
+          <td class="ing-purpose">Mostly from the rotisserie chicken and pasta.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Carbohydrates</td>
+          <td class="ing-qty">~98 g</td>
+          <td class="ing-purpose">Split between the pasta and the potatoes.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Fat</td>
+          <td class="ing-qty">~49 g</td>
+          <td class="ing-purpose">Coconut cream and the Alfredo jar are the two biggest contributors.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Sodium</td>
+          <td class="ing-qty">~1,130 mg</td>
+          <td class="ing-purpose">Entirely from the curry paste and jarred Alfredo — this is exactly why no additional salt is used anywhere in the protocol.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hairline"></div>
+
+  <!-- CHAMBER VII -->
+  <div class="chamber-label">
+    <span class="chamber-num">CHAMBER VII</span>
+    <span class="chamber-name">Beyond Flavor</span>
+  </div>
+  <div class="chamber-desc">What a few key ingredients are doing for the body, not just the palate.</div>
+
+  <div class="op-note tip">
+    <span class="tag">Operational Note — Designed Twice</span>
+    <p>
+      Several choices in Chamber I were made for function as much as taste.
+      The mushrooms are <b>mixed</b> rather than one variety on purpose —
+      different species carry different active compounds (shiitake brings
+      lentinan, oyster brings ergothioneine), so a mixed cup exposes the body
+      to a wider range than any single mushroom would. The sweeteners are
+      <b>honey and maple syrup</b>, not refined sugar, because both retain
+      trace minerals and antioxidant compounds that refined sugar's
+      processing strips out. And there's no added salt anywhere in the
+      protocol — the potassium in the potatoes below is doing real work
+      against the sodium this dish already carries from the curry paste and
+      the jarred Alfredo, not just sitting alongside it.
+    </p>
+  </div>
+
+  <div class="spec-card">
+    <table>
+      <thead>
+        <tr><th>Ingredient</th><th>System / Organ</th><th>Why It Helps</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="ing-name">Olive Oil</td>
+          <td class="ing-qty">Heart &amp; Circulation</td>
+          <td class="ing-purpose">Oleic acid, its dominant fat, helps shift the balance between LDL and HDL cholesterol. Its polyphenol content — oleocanthal in particular — has a mechanism of action structurally similar to ibuprofen, inhibiting the same inflammatory enzymes. Low heat in Step 1 preserves more of it than hard frying would.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Cumin</td>
+          <td class="ing-qty">Digestive System</td>
+          <td class="ing-purpose">Its essential oils, thymol chief among them, stimulate the glands that produce digestive enzymes and bile — the traditional basis for using it to ease bloating and gas. It also carries a meaningful dose of iron per teaspoon.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Curry Base <span style="opacity:.6">(turmeric, galangal, lemongrass)</span></td>
+          <td class="ing-qty">Joints &amp; Inflammation</td>
+          <td class="ing-purpose">Curcumin is one of the more well-studied natural anti-inflammatory compounds, linked to lower markers of the chronic low-grade inflammation implicated in joint discomfort. It's also famously poor at absorbing on its own — pairing it with fat (the coconut cream and olive oil already in this dish) meaningfully improves uptake. Galangal and lemongrass add their own antioxidant compounds — galangin and citral, respectively — on top.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Rotisserie Chicken</td>
+          <td class="ing-qty">Muscles &amp; Metabolism</td>
+          <td class="ing-purpose">A complete protein, supplying every essential amino acid needed for muscle repair. Its B12 supports nerve sheath maintenance and red blood cell formation, while niacin (B3) feeds directly into the cellular pathway (NAD+) that produces usable energy.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Mixed Mushrooms</td>
+          <td class="ing-qty">Immune System</td>
+          <td class="ing-purpose">Beta-glucans activate macrophages and natural killer cells — front-line immune activity. Selenium is a required cofactor for glutathione peroxidase, an antioxidant enzyme, and separately for the enzyme that converts thyroid hormone T4 into its active form, T3.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Coconut Milk</td>
+          <td class="ing-qty">Energy Metabolism</td>
+          <td class="ing-purpose">Its medium-chain triglycerides skip the usual bile-emulsification step other fats need — they're absorbed straight into the portal vein and converted to usable energy by the liver faster than long-chain fats. Lauric acid, the main MCT here, is the same compound largely responsible for coconut's antimicrobial reputation.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Potatoes</td>
+          <td class="ing-qty">Heart &amp; Blood Pressure</td>
+          <td class="ing-purpose">Potassium works directly against sodium's effect of constricting blood vessels, and helps the kidneys excrete sodium the body doesn't need — directly relevant in a dish already carrying real sodium load from the curry paste and Alfredo. Vitamin C and, if the skin's left on, fiber round out the gut and immune benefit.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Honey &amp; Maple Syrup</td>
+          <td class="ing-qty">Blood Sugar &amp; Micronutrients</td>
+          <td class="ing-purpose">Both are still sugar and raise blood glucose — but unlike refined white sugar, neither is stripped of what it started with. Honey carries trace flavonoids with antioxidant and mild antimicrobial activity; maple syrup retains manganese and zinc. Refined sugar delivers sweetness with none of that attached.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hairline"></div>
+
+  <!-- CLEANUP -->
+  <div class="chamber-label">
+    <span class="chamber-num">CLEANUP</span>
+    <span class="chamber-name">Teardown</span>
+  </div>
+  <div class="chamber-desc">Built around minimal gear — this should take a few minutes, not a sink full of dishes.</div>
+
+  <div class="step">
+    <div class="step-head">
+      <span class="step-title">One Pot, One Basket, One Spoon</span>
+    </div>
+    <p class="step-action">
+      The entire dish runs through <b>one saucepan</b>, <b>one steamer
+      basket</b>, and <b>one wooden spoon</b>. On paper plates, that's the
+      whole cleanup — no bowls, no whisk, no extra utensils to track down.
+    </p>
+    <p class="step-mech">
+      <span class="mech-label">Order of Operations</span>
+      <b>Saucepan:</b> clean it while it's still warm — the curry starch
+      that's cooked onto the bottom releases far more easily now than after
+      it cools and sets. <b>Steamer basket:</b> rinse it right away too;
+      curry aromatics cling to metal and linger if left to air-dry.
+      <b>Wooden spoon:</b> a quick hand wash with warm water and a wipe-down
+      is all it needs — skip the soak and skip the dishwasher, since standing
+      water and high heat will crack and warp the grain over time.
     </p>
   </div>
 
