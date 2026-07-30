@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thai Yellow Curry Alfredo Pasta — Forensic Culinary Specification</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --obsidian: #12100c;
+    --obsidian-2: #1a1712;
+    --card: rgba(201,162,39,0.045);
+    --card-border: rgba(201,162,39,0.16);
+    --gold: #c9a227;
+    --gold-bright: #e0bb4a;
+    --gold-dim: #8a7239;
+    --parchment: #ece4d2;
+    --parchment-dim: #b8ae98;
+    --rule: rgba(201,162,39,0.22);
+    --red-flag: #b5502f;
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(201,162,39,0.08), transparent 60%),
+      var(--obsidian);
+    color: var(--parchment);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection{ background: rgba(201,162,39,0.35); color: var(--parchment); }
+
+  .wrap{ max-width: 860px; margin: 0 auto; padding: 0 28px 120px; }
+
+  /* ---------- SEAL ---------- */
+  .seal-band{
+    display:flex; flex-direction:column; align-items:center;
+    padding: 72px 0 36px;
+    text-align:center;
+  }
+  .seal{
+    width:86px; height:86px; margin-bottom: 22px;
+    animation: sealIn 1.1s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes sealIn{
+    from{ opacity:0; transform: scale(.85) rotate(-6deg); }
+    to{ opacity:1; transform: scale(1) rotate(0deg); }
+  }
+  .seal circle, .seal path, .seal line{ vector-effect: non-scaling-stroke; }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:.28em; text-transform:uppercase;
+    color: var(--gold-dim); margin-bottom: 14px;
+  }
+  h1{
+    font-family:'Cinzel', serif;
+    font-weight:600;
+    font-size: clamp(30px, 5vw, 46px);
+    letter-spacing: .01em;
+    margin: 0 0 10px;
+    color: var(--gold-bright);
+    text-shadow: 0 0 40px rgba(201,162,39,0.25);
+  }
+  .subtitle{
+    font-family:'Jost', sans-serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 16px;
+    color: var(--parchment-dim);
+    letter-spacing:.02em;
+  }
+  .meta-row{
+    display:flex; gap: 28px; flex-wrap:wrap; justify-content:center;
+    margin-top: 26px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--gold-dim);
+  }
+  .meta-row span b{ color: var(--parchment); font-weight:500; }
+
+  .hairline{
+    height:1px; width:100%;
+    background: linear-gradient(90deg, transparent, var(--rule) 20%, var(--rule) 80%, transparent);
+    margin: 46px 0;
+  }
+
+  /* ---------- HERO / INGREDIENT PHOTOS ---------- */
+  .hero-photo{
+    margin: 34px 0 0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,162,39,0.05);
+    position: relative;
+  }
+  .hero-photo img{
+    display:block; width:100%; height:auto;
+    max-height: 480px; object-fit: cover;
+  }
+  .hero-photo .cap{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10.5px; letter-spacing:.16em; text-transform:uppercase;
+    color: var(--gold-dim);
+    padding: 12px 18px;
+    background: var(--obsidian-2);
+    border-top: 1px solid var(--card-border);
+  }
+  .ingredient-photo{
+    margin: 0 0 26px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+  }
+  .ingredient-photo img{
+    display:block; width:100%; height:auto;
+    max-height: 340px; object-fit: cover;
+  }
+  .ingredient-photo .cap{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10.5px; letter-spacing:.16em; text-transform:uppercase;
+    color: var(--gold-dim);
+    padding: 12px 18px;
+    background: var(--obsidian-2);
+    border-top: 1px solid var(--card-border);
+  }
+
+  /* ---------- INTRO ---------- */
+  .architecture{
+    font-size: 15.5px;
+    color: var(--parchment-dim);
+    max-width: 640px;
+    margin: 0 auto;
+    text-align:center;
+  }
+  .architecture b{ color: var(--parchment); font-weight:500; }
+
+  /* ---------- OPERATIONAL NOTE ---------- */
+  .op-note{
+    margin-top: 40px;
+    border: 1px solid rgba(181,80,47,0.4);
+    background: rgba(181,80,47,0.06);
+    border-radius: 3px;
+    padding: 20px 24px;
+    position:relative;
+  }
+  .op-note::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:3px;
+    background: var(--red-flag);
+  }
+  .op-note .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10.5px; letter-spacing:.2em; text-transform:uppercase;
+    color: #d68a68;
+    margin-bottom: 8px; display:block;
+  }
+  .op-note p{ margin: 0; font-size: 14.5px; color: var(--parchment-dim); }
+  .op-note b{ color: var(--parchment); font-weight:500; }
+
+  /* ---------- CHAMBER LABEL ---------- */
+  .chamber-label{
+    display:flex; align-items:center; gap: 16px;
+    margin: 0 0 26px;
+  }
+  .chamber-num{
+    font-family:'Cinzel', serif;
+    font-size: 13px; font-weight:600;
+    letter-spacing:.14em;
+    color: var(--obsidian);
+    background: var(--gold);
+    padding: 5px 12px 4px;
+    border-radius: 2px;
+  }
+  .chamber-name{
+    font-family:'Cinzel', serif;
+    font-size: 20px; font-weight:500;
+    letter-spacing:.02em;
+    color: var(--gold-bright);
+  }
+  .chamber-desc{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px; color: var(--gold-dim);
+    margin: -18px 0 26px 0;
+    padding-left: 2px;
+  }
+
+  /* ---------- SPEC TABLE ---------- */
+  .spec-card{
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 6px 0;
+    position: relative;
+    overflow:hidden;
+  }
+  .spec-card::after{
+    content:"E=1";
+    position:absolute; right:18px; bottom:6px;
+    font-family:'Cinzel', serif; font-size:64px; font-weight:700;
+    color: rgba(201,162,39,0.035);
+    pointer-events:none; user-select:none;
+  }
+  table{ width:100%; border-collapse: collapse; position:relative; z-index:1; }
+  thead th{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10.5px; letter-spacing:.16em; text-transform:uppercase;
+    color: var(--gold-dim);
+    text-align:left;
+    padding: 16px 20px 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+  tbody td{
+    padding: 13px 20px;
+    border-bottom: 1px solid rgba(201,162,39,0.08);
+    font-size: 14px;
+    vertical-align: top;
+  }
+  tbody tr:last-child td{ border-bottom:none; }
+  .ing-name{ color: var(--parchment); font-weight:500; }
+  .ing-qty{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12.5px; color: var(--gold);
+    white-space: nowrap;
+  }
+  .ing-purpose{ color: var(--parchment-dim); font-size:13.5px; }
+
+  /* ---------- STEP CARD ---------- */
+  .step{
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 24px 26px 22px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .step-head{
+    display:flex; align-items:baseline; gap:12px;
+    margin-bottom: 12px;
+  }
+  .step-num{
+    font-family:'Cinzel', serif;
+    font-size: 13px; color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    border-radius: 50%;
+    width: 26px; height:26px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .step-title{
+    font-family:'Jost', sans-serif;
+    font-weight:600; font-size: 16px;
+    color: var(--parchment);
+    letter-spacing:.01em;
+  }
+  .step-action{
+    font-size: 14.5px;
+    color: var(--parchment);
+    margin: 0 0 14px 38px;
+    padding-left: 14px;
+    border-left: 2px solid var(--gold-dim);
+  }
+  .step-action b{ color: var(--gold-bright); font-weight:500; }
+  .step-mech{
+    margin: 0 0 0 38px;
+    font-size: 13.5px;
+    color: var(--parchment-dim);
+    line-height:1.65;
+  }
+  .step-mech .mech-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing:.18em; text-transform:uppercase;
+    color: var(--gold-dim);
+    display:block; margin-bottom:6px;
+  }
+  .step-mech code{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--gold);
+    background: rgba(201,162,39,0.08);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+  .step.no-salt{
+    border-color: rgba(181,80,47,0.3);
+  }
+  .flag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing:.12em;
+    color: #d68a68;
+    border: 1px solid rgba(181,80,47,0.4);
+    border-radius: 2px;
+    padding: 2px 7px;
+    margin-left: auto;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .colophon{
+    margin-top: 60px;
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing:.1em;
+    color: var(--gold-dim);
+  }
+  .colophon .mark{ color: var(--gold); font-size: 13px; margin-bottom: 8px; display:block; }
+
+  @media (max-width: 560px){
+    .wrap{ padding: 0 18px 90px; }
+    .seal-band{ padding: 52px 0 30px; }
+    thead th:nth-child(3), tbody td:nth-child(3){ display:none; }
+    .step-action, .step-mech{ margin-left: 0; }
+    .hero-photo img{ max-height: 300px; }
+    .ingredient-photo img{ max-height: 240px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="seal-band">
+    <svg class="seal" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="46" stroke="#c9a227" stroke-width="1.2"/>
+      <circle cx="50" cy="50" r="38" stroke="#c9a227" stroke-width="0.6" opacity="0.6"/>
+      <g stroke="#e0bb4a" stroke-width="1">
+        <line x1="50" y1="14" x2="50" y2="24"/>
+        <line x1="50" y1="76" x2="50" y2="86"/>
+        <line x1="14" y1="50" x2="24" y2="50"/>
+        <line x1="76" y1="50" x2="86" y2="50"/>
+      </g>
+      <path d="M50 32 L58 46 L50 68 L42 46 Z" stroke="#e0bb4a" stroke-width="1.1" fill="rgba(201,162,39,0.08)"/>
+      <circle cx="50" cy="46" r="2.4" fill="#e0bb4a"/>
+      <text x="50" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="6" fill="#8a7239" letter-spacing="1">E=1</text>
+    </svg>
+    <div class="eyebrow">Forensic Culinary Specification</div>
+    <h1>Thai Yellow Curry Alfredo Pasta</h1>
+    <div class="subtitle">A dual-phase flavor delivery system, engineered.</div>
+    <div class="meta-row">
+      <span>Serves&nbsp; <b>4</b></span>
+      <span>Active&nbsp; <b>~25 min</b></span>
+      <span>Total&nbsp; <b>~35 min</b></span>
+      <span>Difficulty&nbsp; <b>Moderate</b></span>
+    </div>
+  </div>
+
+  <div class="hero-photo">
+    <img src="https://raw.githubusercontent.com/pwntechx/Newsz/main/1785374085380.png" alt="Finished Thai yellow curry Alfredo pasta, twirled in a bowl with chicken, potato, and mushroom">
+    <div class="cap">The finished plate</div>
+  </div>
+
+  <p class="architecture">
+    This dish bridges bold Thai coconut-curry aromatics with a cool, stabilized
+    Alfredo finish. Every step below explains not just what to do, but why —
+    how <b>osmotic pressure</b>, <b>starch gelatinization</b>, and careful
+    <b>temperature timing</b> keep the sauce rich and unbroken, without a
+    single grain of salt.
+  </p>
+
+  <div class="op-note">
+    <span class="tag">Operational Note — Sodium Exclusion</span>
+    <p>
+      No salt goes into this recipe — not in the sauce, not in the pasta water.
+      The <b>jarred Alfredo</b> and the <b>Thai curry paste</b> already carry
+      plenty of sodium between them; stacking more on top mutes the individual
+      flavors instead of sharpening them. Instead, the dish is seasoned by
+      adjusting how much <b>curry paste</b> goes in (Step 5) — building
+      aromatic depth without raising the salt load.
+    </p>
+  </div>
+
+  <div class="hairline"></div>
+
+  <!-- CHAMBER I -->
+  <div class="chamber-label">
+    <span class="chamber-num">CHAMBER I</span>
+    <span class="chamber-name">The Ingredients</span>
+  </div>
+  <div class="chamber-desc">Everything measured up front — except the one step where taste really is the instrument.</div>
+
+  <div class="ingredient-photo">
+    <img src="https://raw.githubusercontent.com/pwntechx/Newsz/main/1785373899413.png" alt="Ingredients laid out: Thai yellow curry paste, coconut milk, Barilla spaghetti, Prego Alfredo sauce, chicken broth, diced chicken and mushrooms in measuring cups">
+    <div class="cap">Everything you'll need</div>
+  </div>
+
+  <div class="spec-card">
+    <table>
+      <thead>
+        <tr><th>Ingredient</th><th>Amount</th><th>Why It's Here</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="ing-name">Extra Virgin Olive Oil</td>
+          <td class="ing-qty">2 tbsp</td>
+          <td class="ing-purpose">Carries the curry paste's fat-soluble aromatics into the sauce.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Thai Yellow Curry Paste</td>
+          <td class="ing-qty">3½ tbsp, plus more to taste</td>
+          <td class="ing-purpose">Brings the lemongrass, galangal, and curcumin backbone — and it's the only ingredient you'll use to adjust the flavor.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Canned Coconut Milk</td>
+          <td class="ing-qty">1 can (13.5 oz), divided</td>
+          <td class="ing-purpose">Its thick cream and thin water separate naturally in the can — you'll use both, at different times.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Frozen Mixed Mushrooms</td>
+          <td class="ing-qty">2 cups</td>
+          <td class="ing-purpose">Their porous texture soaks up the curry-coconut liquid as it simmers.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Yellow / Gold Potatoes</td>
+          <td class="ing-qty">2 medium, diced ½-inch</td>
+          <td class="ing-purpose">Break down as they cook to thicken the sauce naturally — no flour needed. Keep the dice at ½ inch so they cook through in the 7-minute simmer.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Honey</td>
+          <td class="ing-qty">1 tbsp</td>
+          <td class="ing-purpose">Rounds out the curry's sharper, spicier edges.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Maple Syrup</td>
+          <td class="ing-qty">1 tbsp</td>
+          <td class="ing-purpose">Adds a deeper sweetness alongside the honey.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Rotisserie Chicken, precooked</td>
+          <td class="ing-qty">2 cups, shredded, frozen</td>
+          <td class="ing-purpose">Already cooked and frozen — it rehydrates and heats through on steam later, no extra pan needed.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Pasta</td>
+          <td class="ing-qty">12 oz — spaghetti or long strands</td>
+          <td class="ing-purpose">Long strands hold onto the sauce well; spaghetti or a similar shape works best.</td>
+        </tr>
+        <tr>
+          <td class="ing-name">Prego Alfredo Sauce</td>
+          <td class="ing-qty">1 jar (14.5 oz)</td>
+          <td class="ing-purpose">Already emulsified — added cold at the end, it won't break or separate.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hairline"></div>
+
+  <!-- CHAMBER II -->
+  <div class="chamber-label">
+    <span class="chamber-num">CHAMBER II</span>
+    <span class="chamber-name">Building the Curry Base</span>
+  </div>
+  <div class="chamber-desc">The order here matters — if a later step needs extra time, borrow it from Chamber V, not from here.</div>
+
+  <div class="step">
+    <div class="step-head">
+      <span class="step-num">1</span>
+      <span class="step-title">Bloom the Curry Paste</span>
+    </div>
+    <p class="step-action">
+      Warm the <b>olive oil</b> in a saucepan over low heat. Stir in
+      <b>3½ tbsp curry paste</b> and cook, stirring constantly, for
+      <b>60 seconds</b>.
+    </p>
+    <p class="step-mech">
+      <span class="mech-label">Why</span>
+      The curry paste's aromatics — curcumin, citral, galangal — are
+      fat-soluble. Gentle heat dissolves them into the oil so their flavor
+      spreads through the whole dish, without scorching off the volatile
+      compounds that give the paste its punch.
+    </p>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <span class="step-num">2</span>
+      <span class="step-title">Skim the Coconut Cream</span>
+    </div>
+    <p class="step-action">
+      Without shaking the can, spoon in just the thick <b>cream</b> layer
+      from the top. Set the watery layer underneath aside for Step 4.
+    </p>
+    <p class="step-mech">
+      <span class="mech-label">Why</span>
+      Coconut milk separates naturally when it sits undisturbed. Using only
+      the cream keeps the sauce rich and concentrated for now — the thinner
+      liquid gets added later, once it's needed to loosen things up.
+    </p>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <span class="step-num">3</span>
+      <span class="step-title">Simmer the Potatoes &amp; Mushrooms</span>
+    </div>
+    <p class="step-action">
+      Add the <b>potatoes</b> (½-inch dice) and <b>mushrooms</b>. Simmer on
+      medium-low for <code>7 min</code> — no longer. Don't add salt at this
+      stage.
+    </p>
+    <p class="step-mech">
+      <span class="mech-label">Why</span>
+      The rich coconut liquid pushes flavor deep into the mushrooms as they
+      soften — think of it like a marinade working in reverse, driven by heat
+      instead of time. Meanwhile the potatoes slowly break down and release
+      their starch, thickening the sauce on their own with no flour needed.
+      Keeping the dice uniform at ½ inch is what makes 7 minutes enough —
+      bigger pieces will still be raw in the center.
+    </p>
+  </div>
+
+  <div class="hairline"></div>
+
+  <!-- CHAMBER III -->
+  <div class="chamber-label">
+    <span class="chamber-num">CHAMBER III</span>
+    <span class="chamber-name">Loosening &amp; Seasoning</span>
+  </div>
+  <div class="chamber-desc">This is your one chance to adjust the flavor — with more curry paste, never with salt.</div>
+
+  <div class="step">
+    <div class="step-head">
+      <span class="step-num">4</span>
+      <span class="step-title">Loosen &amp; Sweeten the Sauce</span>
+    </div>
+    <p class="step-action">
+      Pour in the reserved <b>coconut water</b> layer. Stir in the
+      <b>honey</b> and <b>maple syrup</b>.
+    </p>
+    <p class="step-mech">
+      <span class="mech-label">Why</span>
+      Once the mushrooms have soaked up what they're going to, the thinner
+      coconut liquid loosens the sauce back to a good consistency. The honey
+      and maple then take the edge off any bitterness and soften the curry's
+      sharper top notes.
+    </p>
+  </div>
+
+  <div class="step no-salt">
+    <div class="step-head">
+      <span class="step-num">5</span>
+      <span class="step-title">Taste &amp; Adjust</span>
+      <span class="flag">no salt — ever</span>
+    </div>
+    <p class="step-action">
+      Taste the sauce. If it needs more punch, stir in <b>more curry paste</b>,
+      ½ tbsp at a time, until the curry just edges out the coconut. <b>Never
+      add salt here or at any other stage.</b> Take the pan off heat and let
+      it rest 2–3 minutes.
+    </p>
+    <p class="step-mech">
+      <span class="mech-label">Why</span>
+      Paste added now brings a brighter, more raw aromatic note than the
+      paste bloomed in Step 1 — the two aren't redundant, they layer on top
+      of each other. Resting off heat gives the starch a moment to settle,
+      so the sauce is stable before the pasta and chicken go in.
+    </p>
+  </div>
+
+  <div class="hairline"></div>
+
+  <!-- CHAMBER IV -->
+  <div class="chamber-label">
+    <span class="chamber-num">CHAMBER IV</span>
+    <span class="chamber-name">Pasta &amp; Chicken</span>
+  </div>
+  <div class="chamber-desc">The pasta comes out slightly underdone on purpose — it finishes cooking in Chamber V.</div>
+
+  <div class="step no-salt">
+    <div class="step-head">
+      <span class="step-num">6</span>
+      <span class="step-title">Cook the Pasta, Steam the Chicken</span>
+      <span class="flag">unsalted water</span>
+    </div>
+    <p class="step-action">
+      Bring a pot of <b>unsalted</b> water to a rolling boil. Add the pasta
+      and cook to the <b>short end</b> of the package's al dente time. In the
+      last 1–2 minutes, set a steamer basket over the pot, add the frozen
+      chicken, and cover. Drain the pasta once it's just shy of al dente.
+    </p>
+    <p class="step-mech">
+      <span class="mech-label">Why</span>
+      The steam escaping the boiling water heats the chicken at the same
+      time, for free — no extra pan or energy needed, and it gently rehydrates
+      the frozen meat without drying it out the way frying or microwaving
+      would. Undercooking the pasta here is intentional: it finishes in
+      Chamber V's simmer, and boiling it fully now would leave it mushy by
+      the time Step 8 adds its own cook time on top.
+    </p>
+  </div>
+
+  <div class="hairline"></div>
+
+  <!-- CHAMBER V -->
+  <div class="chamber-label">
+    <span class="chamber-num">CHAMBER V</span>
+    <span class="chamber-name">Assembly &amp; the Alfredo Finish</span>
+  </div>
+  <div class="chamber-desc">This is the one stage built to flex a little if you need extra time.</div>
+
+  <div class="step">
+    <div class="step-head">
+      <span class="step-num">7</span>
+      <span class="step-title">Combine Everything</span>
+    </div>
+    <p class="step-action">
+      Add the drained pasta and steamed chicken into the pan with the warm
+      curry sauce. Stir well so everything is evenly coated.
+    </p>
+    <p class="step-mech">
+      <span class="mech-label">Why</span>
+      The starchy film left on the pasta from being freshly drained helps the
+      curry sauce cling to every strand instead of pooling at the bottom.
+    </p>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <span class="step-num">8</span>
+      <span class="step-title">Fold in the Alfredo</span>
+    </div>
+    <p class="step-action">
+      Add the <b>Prego Alfredo</b> off heat or on low, stirring gently — don't
+      mix it in completely. Simmer for <code>1–2 min</code>, up to
+      <code>3 min</code> if the pasta needs a little longer to finish
+      cooking. Serve right away.
+    </p>
+    <p class="step-mech">
+      <span class="mech-label">Why</span>
+      Jarred Alfredo starts to break above roughly <code>85°C</code>; adding
+      it cold or on low heat keeps the pan below that threshold, so the sauce
+      stays smooth instead of separating. Stirring gently rather than
+      blending it in fully leaves a marbled sauce — cool, creamy Alfredo
+      swirled through the warm, spiced curry, rather than one flat blend of
+      both. <b>This is the only step built to absorb a slightly longer
+      simmer</b> — the pasta was left a touch underdone earlier specifically
+      to leave room here. Don't try to buy that same extra time in any
+      earlier chamber; the potatoes and mushrooms would turn to mush long
+      before the pasta was even done.
+    </p>
+  </div>
+
+  <div class="colophon">
+    <span class="mark">◈</span>
+    Forensic Culinary Specification &nbsp;·&nbsp; No sodium chloride, any stage
+  </div>
+
+</div>
+</body>
+</html>
